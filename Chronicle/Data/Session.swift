@@ -8,19 +8,21 @@
 import Foundation
 import SwiftData
 
-@Model public class Experience {
+@Model public class Session {
     @Attribute(.unique) public var id: UUID
+    public var createdAt: Date
     public var date: Date
     public var item: Item
     public var consumptionMethod: String // "Flower", "Edible", etc.
     public var duration: TimeInterval?
-    public var effects: [ExperienceEffect]
-    public var flavors: [ExperienceFlavor]
+    public var effects: [SessionEffect]
+    public var flavors: [SessionFlavor]
     public var notes: String?
     public var location: String?
     
-    init(id: UUID = UUID(), date: Date = Date(), item: Item, consumptionMethod: String, duration: TimeInterval? = nil, effects: [ExperienceEffect] = [], flavors: [ExperienceFlavor] = [], notes: String? = nil, location: String? = nil) {
+    init(id: UUID = UUID(), createdAt: Date = Date(), date: Date = Date(), item: Item, consumptionMethod: String, duration: TimeInterval? = nil, effects: [SessionEffect] = [], flavors: [SessionFlavor] = [], notes: String? = nil, location: String? = nil) {
         self.id = id
+        self.createdAt = createdAt
         self.date = date
         self.item = item
         self.consumptionMethod = consumptionMethod

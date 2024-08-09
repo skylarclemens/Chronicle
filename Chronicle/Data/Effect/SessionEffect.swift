@@ -8,14 +8,14 @@
 import Foundation
 import SwiftData
 
-@Model public class ExperienceEffect {
+@Model public class SessionEffect {
     public var effect: Effect
-    public var experience: Experience
+    public var session: Session
     public var intensity: Int
     
-    init(effect: Effect, experience: Experience, intensity: Int) {
+    init(effect: Effect, session: Session, intensity: Int) {
         self.effect = effect
-        self.experience = experience
+        self.session = session
         self.intensity = intensity
     }
 }

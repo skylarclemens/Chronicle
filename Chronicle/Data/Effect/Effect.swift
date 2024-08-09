@@ -11,13 +11,12 @@ import SwiftData
 @Model public class Effect {
     public var name: String
     public var emoji: String
-    @Relationship(inverse: \ExperienceEffect.effect)
-    public var experiences: [ExperienceEffect]
+    public var color: String?
     
-    init(name: String, emoji: String, experiences: [ExperienceEffect] = []) {
+    init(name: String, emoji: String, color: String? = nil) {
         self.name = name
         self.emoji = emoji
-        self.experiences = experiences
+        self.color = color
     }
 }
 
