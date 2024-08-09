@@ -14,7 +14,7 @@ struct ChronicleApp: App {
         let schema = Schema([
             Item.self,
             Strain.self,
-            Experience.self
+            Session.self
         ])
 
         do {

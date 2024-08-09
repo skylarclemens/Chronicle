@@ -13,7 +13,7 @@ struct ModelPreview {
     init() {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         do {
-            container = try ModelContainer(for: Schema([Item.self, Strain.self, Experience.self, Effect.self, ExperienceEffect.self, Flavor.self, ExperienceFlavor.self]), configurations: config)
+            container = try ModelContainer(for: Schema([Item.self, Strain.self, Session.self, Effect.self, SessionEffect.self, Flavor.self, SessionFlavor.self]), configurations: config)
         } catch {
             fatalError("Failed to create preview container: \(error.localizedDescription)")
         }
@@ -33,9 +33,9 @@ struct ModelPreview {
             container.mainContext.insert(item1)
             container.mainContext.insert(item2)
             
-            let experience1 = Experience(item: item1, consumptionMethod: "Smoke")
+            let session1 = Session(item: item1, consumptionMethod: "Smoke")
             
-            container.mainContext.insert(experience1)
+            container.mainContext.insert(session1)
         }
     }
 }
