@@ -14,12 +14,12 @@ import SwiftData
     public var item: Item
     public var consumptionMethod: String // "Flower", "Edible", etc.
     public var duration: TimeInterval?
-    public var effects: [String: Int] // effect name: intensity
-    public var flavors: [String: Int] // flavor name: intensity
+    public var effects: [ExperienceEffect]
+    public var flavors: [ExperienceFlavor]
     public var notes: String?
     public var location: String?
     
-    init(id: UUID = UUID(), date: Date = Date(), item: Item, consumptionMethod: String, duration: TimeInterval? = nil, effects: [String : Int] = [:], flavors: [String : Int] = [:], notes: String? = nil, location: String? = nil) {
+    init(id: UUID = UUID(), date: Date = Date(), item: Item, consumptionMethod: String, duration: TimeInterval? = nil, effects: [ExperienceEffect] = [], flavors: [ExperienceFlavor] = [], notes: String? = nil, location: String? = nil) {
         self.id = id
         self.date = date
         self.item = item
@@ -31,3 +31,5 @@ import SwiftData
         self.location = location
     }
 }
+
+

@@ -17,9 +17,9 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text("\(item.name) at \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))\nStrain: \(item.strain?.name ?? "no strain")")
                     } label: {
-                        Text(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text("\(item.name): \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))")
                     }
                 }
             }
@@ -30,10 +30,9 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
-        .modelContainer(for: [
-            Item.self,
-            Strain.self,
-            Experience.self
-        ], inMemory: true)
+    let modelPreview = ModelPreview()
+    modelPreview.addExamples()
+    
+    return ContentView()
+        .modelContainer(modelPreview.container)
 }

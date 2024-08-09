@@ -21,7 +21,7 @@ import SwiftData
     @Relationship(inverse: \Experience.item)
     public var experiences: [Experience]
     
-    init(id: UUID = UUID(), name: String, strain: Strain? = nil, date: Date = Date(), type: String, amount: Double, unit: String, composition: [String : Double] = [:], purchaseDate: Date, experiences: [Experience] = []) {
+    init(id: UUID = UUID(), name: String, strain: Strain? = nil, date: Date = Date(), type: String, amount: Double, unit: String, composition: [String : Double] = [:], purchaseDate: Date = Date(), experiences: [Experience] = []) {
         self.id = id
         self.name = name
         self.strain = strain
