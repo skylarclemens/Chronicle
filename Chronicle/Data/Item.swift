@@ -12,25 +12,25 @@ import SwiftData
     @Attribute(.unique) public var id: UUID
     public var name: String
     public var strain: Strain?
-    public var date: Date
+    public var createdAt: Date
     public var type: String
     public var amount: Double
     public var unit: String
     public var composition: [String: Double] // ["THC": 99.9]
     public var purchaseDate: Date
-    @Relationship(inverse: \Experience.item)
-    public var experiences: [Experience]
+    @Relationship(inverse: \Session.item)
+    public var sessions: [Session]
     
-    init(id: UUID = UUID(), name: String, strain: Strain? = nil, date: Date = Date(), type: String, amount: Double, unit: String, composition: [String : Double] = [:], purchaseDate: Date, experiences: [Experience] = []) {
+    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: String, amount: Double, unit: String, composition: [String : Double] = [:], purchaseDate: Date = Date(), sessions: [Session] = []) {
         self.id = id
         self.name = name
         self.strain = strain
-        self.date = date
+        self.createdAt = createdAt
         self.type = type
         self.amount = amount
         self.unit = unit
         self.composition = composition
         self.purchaseDate = purchaseDate
-        self.experiences = experiences
+        self.sessions = sessions
     }
 }

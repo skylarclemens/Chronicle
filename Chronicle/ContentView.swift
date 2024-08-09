@@ -10,30 +10,40 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query(sort: \Item.name) private var items: [Item]
+    @State private var openAddItem: Bool = false
 
     var body: some View {
         NavigationStack {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text("\(item.name) at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))\nStrain: \(item.strain?.name ?? "no strain")")
                     } label: {
-                        Text(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text("\(item.name): \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
                     }
                 }
             }
+            .toolbar {
+                Button {
+                    self.openAddItem = true
+                } label: {
+                    Label("Add", systemImage: "plus")
+                }
+            }
             .navigationTitle("Dashboard")
+            .sheet(isPresented: $openAddItem) {
+                Text("Add")
+            }
         }
         .preferredColorScheme(.dark)
     }
 }
 
 #Preview {
-    ContentView()
-        .modelContainer(for: [
-            Item.self,
-            Strain.self,
-            Experience.self
-        ], inMemory: true)
+    let modelPreview = ModelPreview()
+    modelPreview.addExamples() 
+    
+    return ContentView()
+        .modelContainer(modelPreview.container)
 }
