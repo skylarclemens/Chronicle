@@ -13,15 +13,16 @@ import SwiftData
     public var name: String
     public var strain: Strain?
     public var createdAt: Date
-    public var type: String
+    public var type: ItemType
     public var amount: Double
     public var unit: String
     public var composition: [String: Double] // ["THC": 99.9]
     public var purchaseDate: Date
+    @Attribute(.externalStorage) public var itemImage: Data?
     @Relationship(inverse: \Session.item)
     public var sessions: [Session]
     
-    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: String, amount: Double, unit: String, composition: [String : Double] = [:], purchaseDate: Date = Date(), sessions: [Session] = []) {
+    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, unit: String = "", composition: [String : Double] = [:], purchaseDate: Date = Date(), sessions: [Session] = []) {
         self.id = id
         self.name = name
         self.strain = strain
