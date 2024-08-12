@@ -102,6 +102,7 @@ struct AddItemBasicsView: View {
             .controlSize(.large)
             .tint(.accentColor)
             .padding()
+            .disabled(viewModel.name.isEmpty)
         }
         .navigationTitle("Basics")
         .toolbar {
@@ -123,13 +124,30 @@ struct AddItemDetailsView: View {
             Form {
                 switch viewModel.itemType {
                 case .edible, .tincture, .pill:
-                    TextField("Dosage Amount", value: $viewModel.dosageAmount, format: .number)
+                    Section("Dosage") {
+                        HStack {
+                            TextField("Amount (2.5)", value: $viewModel.dosageAmount, format: .number)
+                                .textFieldStyle(.roundedBorder)
+                            TextField("Unit (mg)", text: $viewModel.dosageUnit)
+                                .textFieldStyle(.roundedBorder)
+                        }
+                    }
+                    Section("Cannabinoids") {
+                        CannabinoidInputView(cannabinoids: $viewModel.cannabinoids)
+                    }
+                    Section("Terpenes") {
+                        TerpeneInputView(terpenes: $viewModel.terpenes)
+                    }
                 case .flower:
-                    TextField("Terpenes", text: $viewModel.terpenes)
+                    Section("Terpenes") {
+                        TerpeneInputView(terpenes: $viewModel.terpenes)
+                    }
                 case .concentrate:
                     TextField("Concentrate Type", text: $viewModel.subtype)
                 case .topical:
-                    TextField("Terpenes", text: $viewModel.terpenes)
+                    Section("Terpenes") {
+                        TerpeneInputView(terpenes: $viewModel.terpenes)
+                    }
                 case .other:
                     Text("Other options")
                 case .none:
@@ -166,7 +184,15 @@ struct AddItemAdditionalInfoView: View {
     var body: some View {
         VStack {
             Form {
-                
+                Section("Ingredients") {
+                    IngredientsInputView(ingredients: $viewModel.ingredients)
+                }
+                Section("Purchase Information") {
+                    TextField("Price", value: $viewModel.purchasePrice, format: .number)
+                        .keyboardType(.decimalPad)
+                    TextField("Location", text: $viewModel.purchaseLocation)
+                    DatePicker("Date", selection: $viewModel.purchaseDate)
+                }
             }
             Spacer()
             NavigationLink {
@@ -211,16 +237,24 @@ class AddItemViewModel {
     var name: String = ""
     var brand: String = ""
     var photos: [UIImage] = []
-    var dosageAmount: Double = 0
+    var dosageAmount: Double?
     var dosageUnit: String = ""
     var subtype: String = ""
     var cannabinoids: [String: Double] = [:]
-    var terpenes: String = ""
+    var terpenes: [String] = []
     var ingredients: [String] = []
-    var purchasePrice: String = ""
+    var purchasePrice: Double?
     var purchaseLocation: String = ""
     var purchaseDate: Date = Date()
     var linkedStrain: Strain?
+}
+
+#Preview {
+    @State var viewModel = AddItemViewModel()
+    viewModel.itemType = .edible
+    return NavigationStack {
+        AddItemAdditionalInfoView(viewModel: $viewModel)
+    }
 }
 
 #Preview {

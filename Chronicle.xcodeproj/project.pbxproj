@@ -21,6 +21,9 @@
 		7ECAFC272C6410340056A44E /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC262C6410340056A44E /* Session.swift */; };
 		7ECAFC2A2C6421310056A44E /* ModelPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC292C6421310056A44E /* ModelPreview.swift */; };
 		7EE6261D2C6A948500448F80 /* ItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE6261C2C6A948500448F80 /* ItemType.swift */; };
+		7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE6261F2C6AC40D00448F80 /* CannabinoidInputView.swift */; };
+		7EE626222C6ACA4B00448F80 /* TerpeneInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE626212C6ACA4B00448F80 /* TerpeneInputView.swift */; };
+		7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +42,9 @@
 		7ECAFC262C6410340056A44E /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		7ECAFC292C6421310056A44E /* ModelPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelPreview.swift; sourceTree = "<group>"; };
 		7EE6261C2C6A948500448F80 /* ItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemType.swift; sourceTree = "<group>"; };
+		7EE6261F2C6AC40D00448F80 /* CannabinoidInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannabinoidInputView.swift; sourceTree = "<group>"; };
+		7EE626212C6ACA4B00448F80 /* TerpeneInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerpeneInputView.swift; sourceTree = "<group>"; };
+		7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsInputView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,9 +95,9 @@
 		7EC008EB2C5EEDE80093217B /* Chronicle */ = {
 			isa = PBXGroup;
 			children = (
+				7EE6261E2C6AC3F300448F80 /* AddItem */,
 				7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */,
 				7EC008EE2C5EEDE80093217B /* ContentView.swift */,
-				7E7DDC182C66A8730057F983 /* AddItemView.swift */,
 				7EC008F22C5EEDEA0093217B /* Assets.xcassets */,
 				7EC008FC2C5EF1A00093217B /* Data */,
 				7EC008F42C5EEDEA0093217B /* Preview Content */,
@@ -127,6 +133,17 @@
 				7EE6261C2C6A948500448F80 /* ItemType.swift */,
 			);
 			path = Item;
+			sourceTree = "<group>";
+		};
+		7EE6261E2C6AC3F300448F80 /* AddItem */ = {
+			isa = PBXGroup;
+			children = (
+				7E7DDC182C66A8730057F983 /* AddItemView.swift */,
+				7EE6261F2C6AC40D00448F80 /* CannabinoidInputView.swift */,
+				7EE626212C6ACA4B00448F80 /* TerpeneInputView.swift */,
+				7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */,
+			);
+			path = AddItem;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,12 +222,15 @@
 				7E7A05852C64621600BA0497 /* Flavor.swift in Sources */,
 				7E7A05832C64621100BA0497 /* Effect.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
+				7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */,
 				7ECAFC2A2C6421310056A44E /* ModelPreview.swift in Sources */,
 				7E7A05892C64622200BA0497 /* SessionFlavor.swift in Sources */,
 				7E7A05872C64621C00BA0497 /* SessionEffect.swift in Sources */,
 				7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */,
+				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
 				7EC008F12C5EEDE80093217B /* Item.swift in Sources */,
 				7EC008ED2C5EEDE80093217B /* ChronicleApp.swift in Sources */,
+				7EE626222C6ACA4B00448F80 /* TerpeneInputView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
