@@ -14,6 +14,7 @@ import SwiftData
     public var strain: Strain?
     public var createdAt: Date
     public var type: ItemType
+    public var subtype: String?
     public var amount: Double
     public var unit: String
     public var composition: [String: Double] // ["THC": 99.9]

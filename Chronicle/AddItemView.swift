@@ -53,7 +53,7 @@ struct ItemTypeSelectionView: View {
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100, maxHeight: .infinity)
                     .foregroundStyle(.primary)
                     .background(.ultraThinMaterial)
-                    .background(Color.green.opacity(viewModel.itemType == type ? 0.2 : 0))
+                    .background(Color.accentColor.opacity(viewModel.itemType == type ? 0.4 : 0))
                     .clipShape(.rect(cornerRadius: 10))
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
@@ -71,7 +71,7 @@ struct ItemTypeSelectionView: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
-            .tint(.green)
+            .tint(.accentColor)
             .disabled(viewModel.itemType == nil)
         }
         .padding()
@@ -83,9 +83,6 @@ struct AddItemBasicsView: View {
     
     var body: some View {
         VStack {
-            if let itemType = viewModel.itemType {
-                SelectedTypeView(selectedType: itemType)
-            }
             Form {
                 Section("Name") {
                     TextField("Name", text: $viewModel.name)
@@ -103,11 +100,18 @@ struct AddItemBasicsView: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
-            .tint(.green)
+            .tint(.accentColor)
             .padding()
         }
         .navigationTitle("Basics")
-        //.navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                if let itemType = viewModel.itemType {
+                    SelectedTypeView(selectedType: itemType)
+                        .padding(.horizontal, 8)
+                }
+            }
+        }
     }
 }
 
@@ -116,15 +120,20 @@ struct AddItemDetailsView: View {
     
     var body: some View {
         VStack {
-            if let itemType = viewModel.itemType {
-                SelectedTypeView(selectedType: itemType)
-            }
             Form {
-                Section("Name") {
-                    TextField("Name", text: $viewModel.name)
-                }
-                Section("Brand") {
-                    TextField("Brand", text: $viewModel.brand)
+                switch viewModel.itemType {
+                case .edible, .tincture, .pill:
+                    TextField("Dosage Amount", value: $viewModel.dosageAmount, format: .number)
+                case .flower:
+                    TextField("Terpenes", text: $viewModel.terpenes)
+                case .concentrate:
+                    TextField("Concentrate Type", text: $viewModel.subtype)
+                case .topical:
+                    TextField("Terpenes", text: $viewModel.terpenes)
+                case .other:
+                    Text("Other options")
+                case .none:
+                    Text("Other")
                 }
             }
             Spacer()
@@ -136,11 +145,18 @@ struct AddItemDetailsView: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
-            .tint(.green)
+            .tint(.accentColor)
             .padding()
         }
         .navigationTitle("Details")
-        //.navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                if let itemType = viewModel.itemType {
+                    SelectedTypeView(selectedType: itemType)
+                        .padding(.horizontal, 8)
+                }
+            }
+        }
     }
 }
 
@@ -149,9 +165,6 @@ struct AddItemAdditionalInfoView: View {
     
     var body: some View {
         VStack {
-            if let itemType = viewModel.itemType {
-                SelectedTypeView(selectedType: itemType)
-            }
             Form {
                 
             }
@@ -164,11 +177,18 @@ struct AddItemAdditionalInfoView: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
-            .tint(.green)
+            .tint(.accentColor)
             .padding()
         }
         .navigationTitle("Additional Information")
-        //.navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                if let itemType = viewModel.itemType {
+                    SelectedTypeView(selectedType: itemType)
+                        .padding(.horizontal, 8)
+                }
+            }
+        }
     }
 }
 
@@ -176,27 +196,12 @@ struct SelectedTypeView: View {
     let selectedType: ItemType
     
     var body: some View {
-        HStack {
-            Image(systemName: selectedType.symbol())
-            Text(selectedType.label())
-            Spacer()
-            Button("Edit") {
-                
-            }
-            .buttonStyle(.bordered)
-            .clipShape(Capsule())
-            .controlSize(.small)
-            .tint(.green)
+        Button(selectedType.label()) {
+            
         }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
-        .background(.regularMaterial, in: .rect(cornerRadius: 10))
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(.white, lineWidth: 1)
-                .opacity(0.2)
-        )
-        .padding(.horizontal)
+        .buttonStyle(.bordered)
+        .clipShape(Capsule())
+        .controlSize(.small)
     }
 }
 
@@ -208,6 +213,7 @@ class AddItemViewModel {
     var photos: [UIImage] = []
     var dosageAmount: Double = 0
     var dosageUnit: String = ""
+    var subtype: String = ""
     var cannabinoids: [String: Double] = [:]
     var terpenes: String = ""
     var ingredients: [String] = []
@@ -217,12 +223,20 @@ class AddItemViewModel {
     var linkedStrain: Strain?
 }
 
-// Enum to track steps
-enum AddItemStep {
-    case itemTypeSelection
-    case basics
-    case details
-    case additionalInfo
+#Preview {
+    @State var viewModel = AddItemViewModel()
+    viewModel.itemType = .edible
+    return NavigationStack {
+        AddItemBasicsView(viewModel: $viewModel)
+    }
+}
+
+#Preview {
+    @State var viewModel = AddItemViewModel()
+    viewModel.itemType = .edible
+    return NavigationStack {
+        AddItemDetailsView(viewModel: $viewModel)
+    }
 }
 
 #Preview {
@@ -236,8 +250,4 @@ enum AddItemStep {
     } catch {
         fatalError("Failed to create model container.")
     }
-}
-
-#Preview {
-    SelectedTypeView(selectedType: .edible)
 }
