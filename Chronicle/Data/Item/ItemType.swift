@@ -7,14 +7,46 @@
 
 import Foundation
 
-public enum ItemType: String, Identifiable, CaseIterable {
-    case edible = "Edible"
-    case flower = "Flower"
-    case tincture = "Tincture"
-    case concentrate = "Concentrate"
-    case topical = "Topical"
-    case pill = "Pill"
-    case other = "Other"
+public enum ItemType: String, Identifiable, CaseIterable, Codable {
+    case edible, flower, tincture, concentrate, topical, pill, other
     
-    var id: String { self.rawValue }
+    public var id: Self { return self }
+    
+    func symbol() -> String {
+        switch (self) {
+        case .edible:
+            "birthday.cake"
+        case .flower:
+            "leaf"
+        case .tincture:
+            "drop"
+        case .concentrate:
+            "flame"
+        case .topical:
+            "hands.and.sparkles.fill"
+        case .pill:
+            "pills.fill"
+        case .other:
+            "sparkles"
+        }
+    }
+    
+    func label() -> String {
+        switch (self) {
+        case .edible:
+            "Edible"
+        case .flower:
+            "Flower"
+        case .tincture:
+            "Tincture"
+        case .concentrate:
+            "Concentrate"
+        case .topical:
+            "Topical"
+        case .pill:
+            "Pill"
+        case .other:
+            "Other"
+        }
+    }
 }

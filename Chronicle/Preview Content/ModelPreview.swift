@@ -27,8 +27,8 @@ struct ModelPreview {
             container.mainContext.insert(strain1)
             container.mainContext.insert(strain2)
             
-            let item1 = Item(name: "Item 1", strain: strain1, type: "Cartridge", amount: 1.0, unit: "g")
-            let item2 = Item(name: "Item 2", strain: strain2, type: "Flower", amount: 2.0, unit: "g")
+            let item1 = Item(name: "Item 1", strain: strain1, type: .concentrate, amount: 1.0, unit: "g")
+            let item2 = Item(name: "Item 2", strain: strain2, type: .flower, amount: 2.0, unit: "g")
             
             container.mainContext.insert(item1)
             container.mainContext.insert(item2)
