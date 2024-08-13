@@ -60,6 +60,9 @@ struct ContentView: View {
             .sheet(isPresented: $openAddItem) {
                 AddItemView()
             }
+            .sheet(isPresented: $openAddStrain) {
+                AddStrainView()
+            }
         }
         .preferredColorScheme(.dark)
     }

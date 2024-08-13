@@ -10,6 +10,7 @@ import SwiftData
 
 struct AddStrainView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
     @State private var viewModel = AddStrainViewModel()
     
     var body: some View {
@@ -20,9 +21,9 @@ struct AddStrainView: View {
                         TextField("Blue Dream", text: $viewModel.name)
                     }
                     Picker("Type", selection: $viewModel.type) {
-                        Text("Sativa").tag(StrainType.sativa)
-                        Text("Indica").tag(StrainType.indica)
-                        Text("Hybrid").tag(StrainType.hybrid)
+                        ForEach(StrainType.allCases) { strainType in
+                            Text(strainType.rawValue.localizedCapitalized).tag(strainType)
+                        }
                     }
                     Section("Description") {
                         TextField("Description of the strain", text: $viewModel.desc, axis: .vertical)
@@ -30,7 +31,8 @@ struct AddStrainView: View {
                 }
                 Spacer()
                 Button {
-                    
+                    save()
+                    dismiss()
                 } label: {
                     Text("Save")
                         .frame(maxWidth: .infinity)
@@ -38,7 +40,7 @@ struct AddStrainView: View {
                 .buttonStyle(.bordered)
                 .controlSize(.large)
                 .tint(.accentColor)
-                .disabled(viewModel.name.isEmpty || viewModel.type == nil)
+                .disabled(viewModel.name.isEmpty)
                 .padding()
             }
             .navigationTitle("New Strain")
@@ -55,12 +57,19 @@ struct AddStrainView: View {
             }
         }
     }
+    
+    private func save() {
+        let newStrain = Strain(name: viewModel.name, type: viewModel.type)
+        newStrain.desc = viewModel.desc
+        
+        modelContext.insert(newStrain)
+    }
 }
 
 @Observable
 class AddStrainViewModel {
     var name: String = ""
-    var type: StrainType?
+    var type: StrainType = .sativa
     var subtype: StrainSubType?
     var desc: String = ""
 }

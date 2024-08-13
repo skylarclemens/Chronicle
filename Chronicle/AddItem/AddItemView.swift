@@ -251,6 +251,7 @@ struct AddItemAdditionalInfoView: View {
     @Environment(\.modelContext) var modelContext
     @Binding var viewModel: AddItemViewModel
     let parentDismiss: DismissAction
+    @Query(sort: \Strain.name) var strains: [Strain]
     
     var body: some View {
         VStack {
@@ -264,6 +265,15 @@ struct AddItemAdditionalInfoView: View {
                     TextField("Location", text: $viewModel.purchaseLocation)
                     DatePicker("Date", selection: $viewModel.purchaseDate)
                 }
+                if strains.count > 0 {
+                    Picker("Strain", systemImage: "leaf", selection: $viewModel.linkedStrain) {
+                        Text("None").tag(nil as Strain?)
+                        ForEach(strains, id: \.self) { strain in
+                            Text(strain.name).tag(strain as Strain?)
+                        }
+                    }
+                }
+                
             }
             Spacer()
             Button {
