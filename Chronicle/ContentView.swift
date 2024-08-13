@@ -12,6 +12,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Item.name) private var items: [Item]
     @State private var openAddItem: Bool = false
+    @State private var openAddStrain: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -45,11 +46,15 @@ struct ContentView: View {
                 .onDelete(perform: removeItem)
             }
             .toolbar {
-                Button {
-                    self.openAddItem = true
-                } label: {
-                    Label("Add", systemImage: "plus")
+                Menu("Add", systemImage: "plus") {
+                    Button("Add Item") {
+                        self.openAddItem = true
+                    }
+                    Button("Add Strain") {
+                        self.openAddStrain = true
+                    }
                 }
+                
             }
             .navigationTitle("Dashboard")
             .sheet(isPresented: $openAddItem) {

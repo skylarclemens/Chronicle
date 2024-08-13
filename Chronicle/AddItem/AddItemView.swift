@@ -360,7 +360,6 @@ class AddItemViewModel {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Item.self, configurations: config)
         
-        let example = Item(name: "", type: .other, amount: 0)
         return AddItemView()
             .modelContainer(container)
     } catch {
