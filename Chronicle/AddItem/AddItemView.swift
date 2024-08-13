@@ -172,15 +172,25 @@ struct AddItemDetailsView: View {
         VStack {
             Form {
                 switch viewModel.itemType {
-                case .edible, .tincture, .pill:
+                case .edible, .tincture, .pill, .preroll:
                     Section("Dosage") {
                         HStack {
-                            TextField("Amount (2.5)", value: $viewModel.dosageAmount, format: .number)
-                                .textFieldStyle(.roundedBorder)
+                            TextField("Amount", value: $viewModel.dosageAmount, format: .number)
                                 .keyboardType(.decimalPad)
-                            TextField("Unit (mg)", text: $viewModel.dosageUnit)
-                                .textFieldStyle(.roundedBorder)
+                                .textFieldStyle(.plain)
+                                .padding(.horizontal)
+                                .padding(.vertical, 11)
+                                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                .clipShape(.rect(cornerRadius: 10))
+                            TextField("Unit", text: $viewModel.dosageUnit)
+                                .textFieldStyle(.plain)
+                                .padding(.horizontal)
+                                .padding(.vertical, 11)
+                                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                .clipShape(.rect(cornerRadius: 10))
                         }
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
                     }
                     Section("Cannabinoids") {
                         CannabinoidInputView(cannabinoids: $viewModel.cannabinoids)
@@ -310,17 +320,16 @@ struct SelectedTypeView: View {
     let selectedType: ItemType
     
     var body: some View {
-        Button(selectedType.label()) {
-            
-        }
-        .buttonStyle(.borderless)
-        .controlSize(.small)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
-        .overlay(
-            Capsule()
-                .stroke(.green.opacity(0.8), lineWidth: 1)
-        )
+        Text("New \(selectedType.label().localizedLowercase)")
+            .foregroundStyle(.accent)
+            .buttonStyle(.borderless)
+            .controlSize(.small)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .overlay(
+                Capsule()
+                    .stroke(.accent.opacity(0.8), lineWidth: 1)
+            )
     }
 }
 
@@ -347,12 +356,15 @@ class AddItemViewModel {
 }
 
 #Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var viewModel = AddItemViewModel()
-    
-    viewModel.itemType = .edible
-    return NavigationStack {
-        AddItemAdditionalInfoView(viewModel: $viewModel, parentDismiss: dismiss)
+    do {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: Item.self, configurations: config)
+        
+        let example = Item(name: "", type: .other, amount: 0)
+        return AddItemView()
+            .modelContainer(container)
+    } catch {
+        fatalError("Failed to create model container.")
     }
 }
 
@@ -375,14 +387,10 @@ class AddItemViewModel {
 }
 
 #Preview {
-    do {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: Item.self, configurations: config)
-        
-        let example = Item(name: "", type: .other, amount: 0)
-        return AddItemView()
-            .modelContainer(container)
-    } catch {
-        fatalError("Failed to create model container.")
+    @Environment(\.dismiss) var dismiss
+    @State var viewModel = AddItemViewModel()
+    viewModel.itemType = .edible
+    return NavigationStack {
+        AddItemAdditionalInfoView(viewModel: $viewModel, parentDismiss: dismiss)
     }
 }

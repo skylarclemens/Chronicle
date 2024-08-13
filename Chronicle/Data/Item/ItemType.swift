@@ -8,7 +8,7 @@
 import Foundation
 
 public enum ItemType: String, Identifiable, CaseIterable, Codable {
-    case edible, flower, tincture, concentrate, topical, pill, other
+    case edible, flower, preroll, tincture, concentrate, topical, pill, other
     
     public var id: Self { return self }
     
@@ -18,6 +18,8 @@ public enum ItemType: String, Identifiable, CaseIterable, Codable {
             "birthday.cake"
         case .flower:
             "leaf"
+        case .preroll:
+            "smoke"
         case .tincture:
             "drop"
         case .concentrate:
@@ -37,6 +39,8 @@ public enum ItemType: String, Identifiable, CaseIterable, Codable {
             "Edible"
         case .flower:
             "Flower"
+        case .preroll:
+            "Pre-roll"
         case .tincture:
             "Tincture"
         case .concentrate:

@@ -42,7 +42,7 @@ struct CannabinoidInputView: View {
             .onDelete(perform: deleteCannabinoid)
             
             HStack {
-                TextField("Cannabinoid (THC, CBD, etc.)", text: $newCannabinoidName)
+                TextField("THC, CBD, etc.", text: $newCannabinoidName)
                     .textFieldStyle(.roundedBorder)
                 HStack {
                     TextField("Percentage", value: $newCannabinoidValue, format: .number)
