@@ -12,8 +12,10 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Item.name) private var items: [Item]
     @Query(sort: \Strain.name) private var strains: [Strain]
+    @Query(sort: \Session.createdAt) private var sessions: [Session]
     @State private var openAddItem: Bool = false
     @State private var openAddStrain: Bool = false
+    @State private var openAddSession: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -58,9 +60,25 @@ struct ContentView: View {
                         }
                         .onDelete(perform: removeStrain)
                     }
+                    Section("Sessions") {
+                        if sessions.count > 0 {
+                            ForEach(sessions) { session in
+                                NavigationLink {
+                                    Text(session.item.name)
+                                    Text(session.createdAt, format: .dateTime)
+                                    Text(session.date, format: .dateTime)
+                                } label: {
+                                    Text("Session")
+                                }
+                            }
+                        }
+                    }
                 }
                 .toolbar {
                     Menu("Add", systemImage: "plus") {
+                        Button("Add Session") {
+                            self.openAddSession = true
+                        }
                         Button("Add Item") {
                             self.openAddItem = true
                         }
@@ -76,6 +94,9 @@ struct ContentView: View {
                 }
                 .sheet(isPresented: $openAddStrain) {
                     AddStrainView()
+                }
+                .sheet(isPresented: $openAddSession) {
+                    AddSessionView()
                 }
             }
             .scrollContentBackground(.hidden)

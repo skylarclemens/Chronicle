@@ -10,10 +10,10 @@ import SwiftData
 
 @Model public class SessionEffect {
     public var effect: Effect
-    public var session: Session
+    public var session: Session?
     public var intensity: Int
     
-    init(effect: Effect, session: Session, intensity: Int) {
+    init(effect: Effect, session: Session? = nil, intensity: Int) {
         self.effect = effect
         self.session = session
         self.intensity = intensity

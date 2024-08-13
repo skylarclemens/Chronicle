@@ -12,6 +12,7 @@
 		7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */; };
 		7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4202C6BF6DB00F96328 /* AddSessionView.swift */; };
 		7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */; };
+		7E08D4252C6C0C9F00F96328 /* EffectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4242C6C0C9F00F96328 /* EffectType.swift */; };
 		7E7A05832C64621100BA0497 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7A05822C64621100BA0497 /* Effect.swift */; };
 		7E7A05852C64621600BA0497 /* Flavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7A05842C64621600BA0497 /* Flavor.swift */; };
 		7E7A05872C64621C00BA0497 /* SessionEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7A05862C64621C00BA0497 /* SessionEffect.swift */; };
@@ -37,6 +38,7 @@
 		7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		7E08D4202C6BF6DB00F96328 /* AddSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionView.swift; sourceTree = "<group>"; };
 		7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerWheel.swift; sourceTree = "<group>"; };
+		7E08D4242C6C0C9F00F96328 /* EffectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectType.swift; sourceTree = "<group>"; };
 		7E7A05822C64621100BA0497 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
 		7E7A05842C64621600BA0497 /* Flavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flavor.swift; sourceTree = "<group>"; };
 		7E7A05862C64621C00BA0497 /* SessionEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEffect.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				7E7A05822C64621100BA0497 /* Effect.swift */,
+				7E08D4242C6C0C9F00F96328 /* EffectType.swift */,
 				7E7A05862C64621C00BA0497 /* SessionEffect.swift */,
 			);
 			path = Effect;
@@ -158,9 +161,9 @@
 			children = (
 				7EE6261B2C6A947700448F80 /* Item */,
 				7E08D41A2C6BD99100F96328 /* Strain */,
-				7ECAFC262C6410340056A44E /* Session.swift */,
 				7E7A05812C6461FB00BA0497 /* Flavor */,
 				7E7A05802C6461F600BA0497 /* Effect */,
+				7ECAFC262C6410340056A44E /* Session.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 				7E7A05832C64621100BA0497 /* Effect.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
 				7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */,
+				7E08D4252C6C0C9F00F96328 /* EffectType.swift in Sources */,
 				7ECAFC2A2C6421310056A44E /* ModelPreview.swift in Sources */,
 				7E7A05892C64622200BA0497 /* SessionFlavor.swift in Sources */,
 				7E7A05872C64621C00BA0497 /* SessionEffect.swift in Sources */,

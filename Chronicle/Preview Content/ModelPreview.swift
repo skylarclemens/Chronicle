@@ -33,7 +33,7 @@ struct ModelPreview {
             container.mainContext.insert(item1)
             container.mainContext.insert(item2)
             
-            let session1 = Session(item: item1, consumptionMethod: "Smoke")
+            let session1 = Session(item: item1)
             
             container.mainContext.insert(session1)
         }
