@@ -321,6 +321,7 @@ struct AddItemAdditionalInfoView: View {
         newItem.purchaseLocation = viewModel.purchaseLocation
         newItem.purchaseDate = viewModel.purchaseDate
         newItem.imagesData = viewModel.selectedImagesData
+        newItem.strain = viewModel.linkedStrain
         
         modelContext.insert(newItem)
     }

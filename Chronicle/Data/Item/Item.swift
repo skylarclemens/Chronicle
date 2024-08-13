@@ -26,7 +26,7 @@ import SwiftData
     public var purchaseDate: Date?
     public var purchaseLocation: String?
     @Attribute(.externalStorage) public var imagesData: [Data]?
-    @Relationship(deleteRule: .cascade, inverse: \Session.item)
+    @Relationship(deleteRule: .nullify)
     public var sessions: [Session]
     
     init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, composition: [String: Double] = [:], sessions: [Session] = []) {

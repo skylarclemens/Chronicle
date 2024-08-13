@@ -10,12 +10,11 @@ import SwiftData
 
 @Model public class SessionFlavor {
     public var flavor: Flavor
-    public var session: Session
-    public var intensity: Int
+    public var session: Session?
+    public var intensity: Int?
     
-    init(flavor: Flavor, session: Session, intensity: Int) {
+    init(flavor: Flavor, session: Session? = nil) {
         self.flavor = flavor
         self.session = session
-        self.intensity = intensity
     }
 }
