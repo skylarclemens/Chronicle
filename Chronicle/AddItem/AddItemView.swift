@@ -10,30 +10,19 @@ import SwiftData
 
 struct AddItemView: View {
     @Environment(\.dismiss) var dismiss
-    @Bindable var item: Item
     @State private var viewModel = AddItemViewModel()
     
     var body: some View {
         NavigationStack {
-            /*switch viewModel.currentStep {
-            case .itemTypeSelection:
-                ItemTypeSelectionView(viewModel: $viewModel)
-            case .basics:
-                AddItemBasicsView(viewModel: $viewModel)
-            case .details:
-                details
-            case .additionalInfo:
-                additionalInfo
-            }*/
-            ItemTypeSelectionView(viewModel: $viewModel)
-                .navigationTitle("What type of item?")
+            ItemTypeSelectionView(viewModel: $viewModel, parentDismiss: dismiss)
         }
     }
 }
 
 struct ItemTypeSelectionView: View {
-    let columns: [GridItem] = [GridItem](repeating: GridItem(), count: 3)
     @Binding var viewModel: AddItemViewModel
+    let parentDismiss: DismissAction
+    let columns: [GridItem] = [GridItem](repeating: GridItem(), count: 3)
     
     var body: some View {
         VStack {
@@ -64,7 +53,7 @@ struct ItemTypeSelectionView: View {
             .buttonStyle(.borderless)
             Spacer()
             NavigationLink {
-                AddItemBasicsView(viewModel: $viewModel)
+                AddItemBasicsView(viewModel: $viewModel, parentDismiss: parentDismiss)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -75,11 +64,24 @@ struct ItemTypeSelectionView: View {
             .disabled(viewModel.itemType == nil)
         }
         .padding()
+        .navigationTitle("What type of item?")
+        .toolbar {
+            ToolbarItem(placement: .destructiveAction) {
+                Button {
+                    parentDismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
+        }
     }
 }
 
 struct AddItemBasicsView: View {
     @Binding var viewModel: AddItemViewModel
+    let parentDismiss: DismissAction
     
     var body: some View {
         VStack {
@@ -93,7 +95,7 @@ struct AddItemBasicsView: View {
             }
             Spacer()
             NavigationLink {
-                AddItemDetailsView(viewModel: $viewModel)
+                AddItemDetailsView(viewModel: $viewModel, parentDismiss: parentDismiss)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -112,12 +114,22 @@ struct AddItemBasicsView: View {
                         .padding(.horizontal, 8)
                 }
             }
+            ToolbarItem(placement: .destructiveAction) {
+                Button {
+                    parentDismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 }
 
 struct AddItemDetailsView: View {
     @Binding var viewModel: AddItemViewModel
+    let parentDismiss: DismissAction
     
     var body: some View {
         VStack {
@@ -128,6 +140,7 @@ struct AddItemDetailsView: View {
                         HStack {
                             TextField("Amount (2.5)", value: $viewModel.dosageAmount, format: .number)
                                 .textFieldStyle(.roundedBorder)
+                                .keyboardType(.decimalPad)
                             TextField("Unit (mg)", text: $viewModel.dosageUnit)
                                 .textFieldStyle(.roundedBorder)
                         }
@@ -156,7 +169,7 @@ struct AddItemDetailsView: View {
             }
             Spacer()
             NavigationLink {
-                AddItemAdditionalInfoView(viewModel: $viewModel)
+                AddItemAdditionalInfoView(viewModel: $viewModel, parentDismiss: parentDismiss)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -174,12 +187,23 @@ struct AddItemDetailsView: View {
                         .padding(.horizontal, 8)
                 }
             }
+            ToolbarItem(placement: .destructiveAction) {
+                Button {
+                    parentDismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 }
 
 struct AddItemAdditionalInfoView: View {
+    @Environment(\.modelContext) var modelContext
     @Binding var viewModel: AddItemViewModel
+    let parentDismiss: DismissAction
     
     var body: some View {
         VStack {
@@ -195,8 +219,11 @@ struct AddItemAdditionalInfoView: View {
                 }
             }
             Spacer()
-            NavigationLink {
-                
+            Button {
+                withAnimation {
+                    save()
+                    parentDismiss()
+                }
             } label: {
                 Text("Save")
                     .frame(maxWidth: .infinity)
@@ -214,7 +241,30 @@ struct AddItemAdditionalInfoView: View {
                         .padding(.horizontal, 8)
                 }
             }
+            ToolbarItem(placement: .destructiveAction) {
+                Button {
+                    parentDismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
         }
+    }
+    
+    private func save() {
+        let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
+        newItem.brand = viewModel.brand
+        newItem.dosageAmount = viewModel.dosageAmount
+        newItem.dosageUnit = viewModel.dosageUnit
+        newItem.composition = viewModel.cannabinoids
+        newItem.ingredients = viewModel.ingredients
+        newItem.purchasePrice = viewModel.purchasePrice
+        newItem.purchaseLocation = viewModel.purchaseLocation
+        newItem.purchaseDate = viewModel.purchaseDate
+        
+        modelContext.insert(newItem)
     }
 }
 
@@ -225,9 +275,14 @@ struct SelectedTypeView: View {
         Button(selectedType.label()) {
             
         }
-        .buttonStyle(.bordered)
-        .clipShape(Capsule())
+        .buttonStyle(.borderless)
         .controlSize(.small)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .overlay(
+            Capsule()
+                .stroke(.green.opacity(0.8), lineWidth: 1)
+        )
     }
 }
 
@@ -250,26 +305,30 @@ class AddItemViewModel {
 }
 
 #Preview {
+    @Environment(\.dismiss) var dismiss
     @State var viewModel = AddItemViewModel()
+    
     viewModel.itemType = .edible
     return NavigationStack {
-        AddItemAdditionalInfoView(viewModel: $viewModel)
+        AddItemAdditionalInfoView(viewModel: $viewModel, parentDismiss: dismiss)
     }
 }
 
 #Preview {
+    @Environment(\.dismiss) var dismiss
     @State var viewModel = AddItemViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
-        AddItemBasicsView(viewModel: $viewModel)
+        AddItemBasicsView(viewModel: $viewModel, parentDismiss: dismiss)
     }
 }
 
 #Preview {
+    @Environment(\.dismiss) var dismiss
     @State var viewModel = AddItemViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
-        AddItemDetailsView(viewModel: $viewModel)
+        AddItemDetailsView(viewModel: $viewModel, parentDismiss: dismiss)
     }
 }
 
@@ -278,8 +337,8 @@ class AddItemViewModel {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Item.self, configurations: config)
         
-        let example = Item(name: "", type: .other, amount: 0, unit: "")
-        return AddItemView(item: example)
+        let example = Item(name: "", type: .other, amount: 0)
+        return AddItemView()
             .modelContainer(container)
     } catch {
         fatalError("Failed to create model container.")

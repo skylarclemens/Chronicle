@@ -23,6 +23,7 @@ struct ContentView: View {
                         Text("\(item.name): \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
                     }
                 }
+                .onDelete(perform: removeItem)
             }
             .toolbar {
                 Button {
@@ -33,10 +34,17 @@ struct ContentView: View {
             }
             .navigationTitle("Dashboard")
             .sheet(isPresented: $openAddItem) {
-                Text("Add")
+                AddItemView()
             }
         }
         .preferredColorScheme(.dark)
+    }
+    
+    private func removeItem(at offsets: IndexSet) {
+        for i in offsets {
+            let item = items[i]
+            modelContext.delete(item)
+        }
     }
 }
 

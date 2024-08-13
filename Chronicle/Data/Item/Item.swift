@@ -14,25 +14,29 @@ import SwiftData
     public var strain: Strain?
     public var createdAt: Date
     public var type: ItemType
+    public var brand: String?
     public var subtype: String?
     public var amount: Double
-    public var unit: String
+    public var dosageAmount: Double?
+    public var dosageUnit: String?
     public var composition: [String: Double] // ["THC": 99.9]
-    public var purchaseDate: Date
+    public var terpenes: [String] = []
+    public var ingredients: [String] = []
+    public var purchasePrice: Double?
+    public var purchaseDate: Date?
+    public var purchaseLocation: String?
     @Attribute(.externalStorage) public var itemImage: Data?
-    @Relationship(inverse: \Session.item)
+    @Relationship(deleteRule: .cascade, inverse: \Session.item)
     public var sessions: [Session]
     
-    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, unit: String = "", composition: [String : Double] = [:], purchaseDate: Date = Date(), sessions: [Session] = []) {
+    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, composition: [String: Double] = [:], sessions: [Session] = []) {
         self.id = id
         self.name = name
         self.strain = strain
         self.createdAt = createdAt
         self.type = type
         self.amount = amount
-        self.unit = unit
         self.composition = composition
-        self.purchaseDate = purchaseDate
         self.sessions = sessions
     }
 }
