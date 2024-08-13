@@ -17,67 +17,74 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Section("Items") {
-                    ForEach(items) { item in
-                        NavigationLink {
-                            VStack {
-                                if let imagesData = item.imagesData,
-                                   !imagesData.isEmpty {
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        LazyHStack(spacing: 8) {
-                                            ForEach(imagesData, id: \.self) { data in
-                                                if let uiImage = UIImage(data: data) {
-                                                    Image(uiImage: uiImage)
-                                                        .resizable()
-                                                        .scaledToFill()
-                                                        .frame(width: 150, height: 150, alignment: .leading)
-                                                        .clipShape(.rect(cornerRadius: 10))
+            ZStack {
+                List {
+                    Section("Items") {
+                        ForEach(items) { item in
+                            NavigationLink {
+                                VStack {
+                                    if let imagesData = item.imagesData,
+                                       !imagesData.isEmpty {
+                                        ScrollView(.horizontal, showsIndicators: false) {
+                                            LazyHStack(spacing: 8) {
+                                                ForEach(imagesData, id: \.self) { data in
+                                                    if let uiImage = UIImage(data: data) {
+                                                        Image(uiImage: uiImage)
+                                                            .resizable()
+                                                            .scaledToFill()
+                                                            .frame(width: 150, height: 150, alignment: .leading)
+                                                            .clipShape(.rect(cornerRadius: 10))
+                                                    }
                                                 }
                                             }
+                                            .padding()
                                         }
-                                        .padding()
                                     }
+                                    Text("\(item.name) at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))\nStrain: \(item.strain?.name ?? "no strain")")
                                 }
-                                Text("\(item.name) at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))\nStrain: \(item.strain?.name ?? "no strain")")
+                            } label: {
+                                Text("\(item.name): \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
                             }
-                        } label: {
-                            Text("\(item.name): \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        }
+                        .onDelete(perform: removeItem)
+                    }
+                    Section("Strains") {
+                        ForEach(strains) { strain in
+                            NavigationLink {
+                                Text("\(strain.name)")
+                            } label: {
+                                Text("\(strain.name)")
+                            }
+                        }
+                        .onDelete(perform: removeStrain)
+                    }
+                }
+                .toolbar {
+                    Menu("Add", systemImage: "plus") {
+                        Button("Add Item") {
+                            self.openAddItem = true
+                        }
+                        Button("Add Strain") {
+                            self.openAddStrain = true
                         }
                     }
-                    .onDelete(perform: removeItem)
+                    
                 }
-                Section("Strains") {
-                    ForEach(strains) { strain in
-                        NavigationLink {
-                            Text("\(strain.name)")
-                        } label: {
-                            Text("\(strain.name)")
-                        }
-                    }
-                    .onDelete(perform: removeStrain)
+                .navigationTitle("Dashboard")
+                .sheet(isPresented: $openAddItem) {
+                    AddItemView()
+                }
+                .sheet(isPresented: $openAddStrain) {
+                    AddStrainView()
                 }
             }
-            .toolbar {
-                Menu("Add", systemImage: "plus") {
-                    Button("Add Item") {
-                        self.openAddItem = true
-                    }
-                    Button("Add Strain") {
-                        self.openAddStrain = true
-                    }
-                }
-                
-            }
-            .navigationTitle("Dashboard")
-            .sheet(isPresented: $openAddItem) {
-                AddItemView()
-            }
-            .sheet(isPresented: $openAddStrain) {
-                AddStrainView()
-            }
+            .scrollContentBackground(.hidden)
+            .preferredColorScheme(.dark)
+            .background(
+                BackgroundView()
+            )
         }
-        .preferredColorScheme(.dark)
+        
     }
     
     private func removeItem(at offsets: IndexSet) {
