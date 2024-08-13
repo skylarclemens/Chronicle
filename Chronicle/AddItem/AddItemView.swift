@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import PhotosUI
 
 struct AddItemView: View {
     @Environment(\.dismiss) var dismiss
@@ -64,7 +65,7 @@ struct ItemTypeSelectionView: View {
             .disabled(viewModel.itemType == nil)
         }
         .padding()
-        .navigationTitle("What type of item?")
+        .navigationTitle("What are you adding?")
         .toolbar {
             ToolbarItem(placement: .destructiveAction) {
                 Button {
@@ -91,6 +92,42 @@ struct AddItemBasicsView: View {
                 }
                 Section("Brand") {
                     TextField("Brand", text: $viewModel.brand)
+                }
+                Section("Photos") {
+                    if viewModel.selectedImages.count > 0 {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            LazyHStack(spacing: 8) {
+                                ForEach(viewModel.selectedImages, id: \.self) { uiImage in
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 150, height: 150, alignment: .leading)
+                                        .clipShape(.rect(cornerRadius: 10))
+                                }
+                            }
+                            .padding()
+                        }
+                        .listRowInsets(EdgeInsets())
+                    }
+                    PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 3, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
+                        Label("Select photos", systemImage: "photo.badge.plus")
+                    }
+                    .onChange(of: viewModel.pickerItems) { oldValues, newValues in
+                        Task {
+                            viewModel.selectedImages = []
+                            viewModel.selectedImagesData = []
+                            
+                            for value in newValues {
+                                if let imageData = try? await value.loadTransferable(type: Data.self),
+                                    let uiImage = UIImage(data: imageData) {
+                                    viewModel.selectedImagesData.append(imageData)
+                                    withAnimation {
+                                        viewModel.selectedImages.append(uiImage)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             Spacer()
@@ -263,6 +300,7 @@ struct AddItemAdditionalInfoView: View {
         newItem.purchasePrice = viewModel.purchasePrice
         newItem.purchaseLocation = viewModel.purchaseLocation
         newItem.purchaseDate = viewModel.purchaseDate
+        newItem.imagesData = viewModel.selectedImagesData
         
         modelContext.insert(newItem)
     }
@@ -302,6 +340,10 @@ class AddItemViewModel {
     var purchaseLocation: String = ""
     var purchaseDate: Date = Date()
     var linkedStrain: Strain?
+    
+    var pickerItems: [PhotosPickerItem] = []
+    var selectedImagesData: [Data] = []
+    var selectedImages: [UIImage] = []
 }
 
 #Preview {

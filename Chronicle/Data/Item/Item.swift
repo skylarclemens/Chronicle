@@ -25,7 +25,7 @@ import SwiftData
     public var purchasePrice: Double?
     public var purchaseDate: Date?
     public var purchaseLocation: String?
-    @Attribute(.externalStorage) public var itemImage: Data?
+    @Attribute(.externalStorage) public var imagesData: [Data]?
     @Relationship(deleteRule: .cascade, inverse: \Session.item)
     public var sessions: [Session]
     

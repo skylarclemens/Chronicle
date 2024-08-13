@@ -18,7 +18,26 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("\(item.name) at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))\nStrain: \(item.strain?.name ?? "no strain")")
+                        VStack {
+                            if let imagesData = item.imagesData,
+                               !imagesData.isEmpty {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    LazyHStack(spacing: 8) {
+                                        ForEach(imagesData, id: \.self) { data in
+                                            if let uiImage = UIImage(data: data) {
+                                                Image(uiImage: uiImage)
+                                                    .resizable()
+                                                    .scaledToFill()
+                                                    .frame(width: 150, height: 150, alignment: .leading)
+                                                    .clipShape(.rect(cornerRadius: 10))
+                                            }
+                                        }
+                                    }
+                                    .padding()
+                                }
+                            }
+                            Text("\(item.name) at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))\nStrain: \(item.strain?.name ?? "no strain")")
+                        }
                     } label: {
                         Text("\(item.name): \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
                     }
