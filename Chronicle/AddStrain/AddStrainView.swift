@@ -75,6 +75,5 @@ class AddStrainViewModel {
 }
 
 #Preview {
-    //@State var viewModel = AddItemViewModel()
     return AddStrainView()
 }
