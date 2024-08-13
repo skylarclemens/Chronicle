@@ -21,8 +21,8 @@ struct ModelPreview {
     
     func addExamples() {
         Task { @MainActor in
-            let strain1 = Strain(name: "Blue Dream", type: "Hybrid", desc: "test")
-            let strain2 = Strain(name: "Wedding Cake", type: "Hybrid", desc: "test")
+            let strain1 = Strain(name: "Blue Dream", type: .hybrid, desc: "test")
+            let strain2 = Strain(name: "Wedding Cake", type: .hybrid, desc: "test")
             
             container.mainContext.insert(strain1)
             container.mainContext.insert(strain2)
