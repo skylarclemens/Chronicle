@@ -64,13 +64,14 @@ struct ContentView: View {
                         if sessions.count > 0 {
                             ForEach(sessions) { session in
                                 NavigationLink {
-                                    Text(session.item.name)
+                                    Text(session.item?.name ?? "")
                                     Text(session.createdAt, format: .dateTime)
                                     Text(session.date, format: .dateTime)
                                 } label: {
                                     Text("Session")
                                 }
                             }
+                            .onDelete(perform: removeSession)
                         }
                     }
                 }
@@ -112,6 +113,7 @@ struct ContentView: View {
         for i in offsets {
             let item = items[i]
             modelContext.delete(item)
+            try? modelContext.save()
         }
     }
     
@@ -119,6 +121,15 @@ struct ContentView: View {
         for i in offsets {
             let strain = strains[i]
             modelContext.delete(strain)
+            try? modelContext.save()
+        }
+    }
+    
+    private func removeSession(at offsets: IndexSet) {
+        for i in offsets {
+            let session = sessions[i]
+            modelContext.delete(session)
+            try? modelContext.save()
         }
     }
 }
