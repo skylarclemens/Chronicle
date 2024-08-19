@@ -20,9 +20,7 @@ struct AddSessionView: View {
             VStack {
                 Form {
                     Section {
-                        DatePicker(selection: $viewModel.date) {
-                            Label("Date", systemImage: "calendar")
-                        }
+                        TextField("Title", text: $viewModel.title)
                     }
                     Section {
                         Picker("Item", systemImage: "tray", selection: $viewModel.item) {
@@ -33,6 +31,9 @@ struct AddSessionView: View {
                         }
                     }
                     Section {
+                        DatePicker(selection: $viewModel.date) {
+                            Label("Date", systemImage: "calendar")
+                        }
                         HStack {
                             Label("Duration", systemImage: "clock")
                             Spacer()
@@ -245,6 +246,7 @@ struct AddSessionFlavorsView: View {
         if let item = viewModel.item {
             let newSession = Session(item: item)
             newSession.date = viewModel.date
+            newSession.title = viewModel.title
             newSession.effects = viewModel.effects
             newSession.flavors = viewModel.flavors
             newSession.notes = viewModel.notes
@@ -274,6 +276,7 @@ struct AddSessionFlavorsView: View {
 @Observable
 class AddSessionViewModel {
     var date: Date = Date()
+    var title: String = ""
     var item: Item?
     var duration: Double = 0
     var effects: [SessionEffect] = []

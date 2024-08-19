@@ -24,26 +24,7 @@ struct ContentView: View {
                     Section("Items") {
                         ForEach(items) { item in
                             NavigationLink {
-                                VStack {
-                                    if let imagesData = item.imagesData,
-                                       !imagesData.isEmpty {
-                                        ScrollView(.horizontal, showsIndicators: false) {
-                                            LazyHStack(spacing: 8) {
-                                                ForEach(imagesData, id: \.self) { data in
-                                                    if let uiImage = UIImage(data: data) {
-                                                        Image(uiImage: uiImage)
-                                                            .resizable()
-                                                            .scaledToFill()
-                                                            .frame(width: 150, height: 150, alignment: .leading)
-                                                            .clipShape(.rect(cornerRadius: 10))
-                                                    }
-                                                }
-                                            }
-                                            .padding()
-                                        }
-                                    }
-                                    Text("\(item.name) at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))\nStrain: \(item.strain?.name ?? "no strain")")
-                                }
+                                ItemDetailsView(item: item)
                             } label: {
                                 Text("\(item.name): \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
                             }
@@ -66,7 +47,6 @@ struct ContentView: View {
                                 NavigationLink {
                                     Text(session.item?.name ?? "")
                                     Text(session.createdAt, format: .dateTime)
-                                    Text(session.date, format: .dateTime)
                                 } label: {
                                     Text("Session")
                                 }
@@ -136,7 +116,7 @@ struct ContentView: View {
 
 #Preview {
     let modelPreview = ModelPreview()
-    modelPreview.addExamples() 
+    modelPreview.addExamples(sampleItems: Item.sampleItems)
     
     return ContentView()
         .modelContainer(modelPreview.container)
