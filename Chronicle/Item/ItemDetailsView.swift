@@ -13,7 +13,7 @@ struct ItemDetailsView: View {
     @Environment(\.dismiss) var dismiss
     var item: Item?
     @State private var isDeleting = false
-    
+    @State private var currentImageIndex = 0
     
     var body: some View {
         if let item {
@@ -41,21 +41,27 @@ struct ItemDetailsView: View {
                         )
                 }
                 if let imagesData = item.imagesData, !imagesData.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack(spacing: 8) {
-                            ForEach(imagesData, id: \.self) { data in
-                                if let uiImage = UIImage(data: data) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 150, height: 150, alignment: .leading)
-                                        .clipShape(.rect(cornerRadius: 10))
-                                }
+                    TabView(selection: $currentImageIndex) {
+                        ForEach(0..<imagesData.count, id: \.self) { imageIndex in
+                            if let uiImage = UIImage(data: imagesData[imageIndex]) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .tag(imageIndex)
                             }
                         }
-                        .padding()
                     }
-                    .frame(maxHeight: 160)
+                    .tabViewStyle(.page(indexDisplayMode: .automatic))
+                    .indexViewStyle(.page(backgroundDisplayMode: .interactive))
+                    .frame(maxHeight: 200)
+                    .frame(height: 200)
+                    .clipShape(.rect(cornerRadius: 10))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(.bar)
+                            .allowsHitTesting(false)
+                    )
+                    .padding(.vertical)
                 }
                 if let strain = item.strain {
                     Text(strain.name)
@@ -97,14 +103,15 @@ struct ItemDetailsView: View {
         let container = try! ModelContainer(for: Schema([Item.self, Strain.self]), configurations: config)
         
         let imageData = UIImage(named: "edibles-jar")?.pngData()
+        let imageData2 = UIImage(named: "pre-roll")?.pngData()
         
         let item = Item(name: "Dream Gummies", type: .edible)
         container.mainContext.insert(item)
         let strain = Strain(name: "Blue Dream", type: .hybrid)
         container.mainContext.insert(strain)
         
-        if let imageData {
-            item.imagesData = [imageData]
+        if let imageData, let imageData2 {
+            item.imagesData = [imageData, imageData2]
         }
         item.strain = strain
         
