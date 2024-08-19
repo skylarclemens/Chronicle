@@ -20,38 +20,52 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                List {
-                    Section("Items") {
-                        ForEach(items) { item in
-                            NavigationLink {
-                                ItemDetailsView(item: item)
-                            } label: {
-                                Text("\(item.name): \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                            }
-                        }
-                        .onDelete(perform: removeItem)
-                    }
-                    Section("Strains") {
-                        ForEach(strains) { strain in
-                            NavigationLink {
-                                Text("\(strain.name)")
-                            } label: {
-                                Text("\(strain.name)")
-                            }
-                        }
-                        .onDelete(perform: removeStrain)
-                    }
-                    Section("Sessions") {
-                        if sessions.count > 0 {
-                            ForEach(sessions) { session in
-                                NavigationLink {
-                                    Text(session.item?.name ?? "")
-                                    Text(session.createdAt, format: .dateTime)
-                                } label: {
-                                    Text("Session")
+                VStack {
+                    VStack(alignment: .leading) {
+                        Text("Stash")
+                            .font(.system(size: 28, weight: .medium, design: .rounded))
+                            .padding(.horizontal)
+                            .bold()
+                            .accessibilityAddTraits(.isHeader)
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            LazyHStack {
+                                ForEach(items) { item in
+                                    NavigationLink {
+                                        ItemDetailsView(item: item)
+                                    } label: {
+                                        ItemCardView(item: item)
+                                    }
                                 }
                             }
-                            .onDelete(perform: removeSession)
+                            .tint(.primary)
+                            .frame(maxHeight: 120)
+                            .padding(.horizontal)
+                        }
+                    }
+                    .padding(.vertical)
+                    List {
+                        Section("Strains") {
+                            ForEach(strains) { strain in
+                                NavigationLink {
+                                    Text("\(strain.name)")
+                                } label: {
+                                    Text("\(strain.name)")
+                                }
+                            }
+                            .onDelete(perform: removeStrain)
+                        }
+                        Section("Sessions") {
+                            if sessions.count > 0 {
+                                ForEach(sessions) { session in
+                                    NavigationLink {
+                                        Text(session.item?.name ?? "")
+                                        Text(session.createdAt, format: .dateTime)
+                                    } label: {
+                                        Text("Session")
+                                    }
+                                }
+                                .onDelete(perform: removeSession)
+                            }
                         }
                     }
                 }
