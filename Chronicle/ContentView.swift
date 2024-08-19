@@ -27,19 +27,34 @@ struct ContentView: View {
                             .padding(.horizontal)
                             .bold()
                             .accessibilityAddTraits(.isHeader)
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            LazyHStack {
-                                ForEach(items) { item in
-                                    NavigationLink {
-                                        ItemDetailsView(item: item)
-                                    } label: {
-                                        ItemCardView(item: item)
+                        if !items.isEmpty {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                LazyHStack {
+                                    ForEach(items) { item in
+                                        NavigationLink {
+                                            ItemDetailsView(item: item)
+                                        } label: {
+                                            ItemCardView(item: item)
+                                        }
                                     }
                                 }
+                                .tint(.primary)
+                                .frame(maxHeight: 120)
+                                .padding(.horizontal)
                             }
-                            .tint(.primary)
-                            .frame(maxHeight: 120)
-                            .padding(.horizontal)
+                        } else {
+                            ContentUnavailableView {
+                                Label("Nothing in your stash", systemImage: "tray")
+                            } description: {
+                                Text("You don't have any saved items.")
+                            } actions: {
+                                Button {
+                                    openAddItem = true
+                                } label: {
+                                    Label("Add Item", systemImage: "plus")
+                                }
+                                .buttonStyle(.borderedProminent)
+                            }
                         }
                     }
                     .padding(.vertical)
@@ -101,14 +116,6 @@ struct ContentView: View {
             )
         }
         
-    }
-    
-    private func removeItem(at offsets: IndexSet) {
-        for i in offsets {
-            let item = items[i]
-            modelContext.delete(item)
-            try? modelContext.save()
-        }
     }
     
     private func removeStrain(at offsets: IndexSet) {

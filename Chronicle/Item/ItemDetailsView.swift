@@ -10,13 +10,27 @@ import SwiftData
 
 struct ItemDetailsView: View {
     @Environment(\.modelContext) var modelContext
-    let item: Item
+    @Environment(\.dismiss) var dismiss
+    var item: Item?
+    @State private var isDeleting = false
+    
     
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                if let strain = item.strain {
-                    Text(strain.type.rawValue.localizedCapitalized)
+        if let item {
+            VStack(alignment: .leading) {
+                HStack {
+                    if let strain = item.strain {
+                        Text(strain.type.rawValue.localizedCapitalized)
+                            .font(.footnote)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(RoundedRectangle(cornerRadius: 24).fill(.ultraThickMaterial))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 24)
+                                    .stroke(.tertiary ,lineWidth: 1)
+                            )
+                    }
+                    Text(item.type.label())
                         .font(.footnote)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -26,41 +40,54 @@ struct ItemDetailsView: View {
                                 .stroke(.tertiary ,lineWidth: 1)
                         )
                 }
-                Text(item.type.label())
-                    .font(.footnote)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(RoundedRectangle(cornerRadius: 24).fill(.ultraThickMaterial))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 24)
-                            .stroke(.tertiary ,lineWidth: 1)
-                    )
-            }
-            if let imagesData = item.imagesData, !imagesData.isEmpty {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 8) {
-                        ForEach(imagesData, id: \.self) { data in
-                            if let uiImage = UIImage(data: data) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 150, height: 150, alignment: .leading)
-                                    .clipShape(.rect(cornerRadius: 10))
+                if let imagesData = item.imagesData, !imagesData.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack(spacing: 8) {
+                            ForEach(imagesData, id: \.self) { data in
+                                if let uiImage = UIImage(data: data) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 150, height: 150, alignment: .leading)
+                                        .clipShape(.rect(cornerRadius: 10))
+                                }
                             }
                         }
+                        .padding()
                     }
-                    .padding()
+                    .frame(maxHeight: 160)
                 }
-                .frame(maxHeight: 160)
+                if let strain = item.strain {
+                    Text(strain.name)
+                }
+                
+                Spacer()
             }
-            if let strain = item.strain {
-                Text(strain.name)
+            .padding(.horizontal)
+            .navigationTitle(item.name)
+            .toolbar {
+                Menu("Options", systemImage: "ellipsis") {
+                    Button(role: .destructive) {
+                        isDeleting = true
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
+                
             }
-            
-            Spacer()
+            .alert("Are you sure you want to delete \(item.name)?", isPresented: $isDeleting) {
+                Button("Yes", role: .destructive) {
+                    delete(item)
+                }
+            }
+        } else {
+            ContentUnavailableView("Select an item", systemImage: "tray")
         }
-        .padding(.horizontal)
-        .navigationTitle(item.name)
+    }
+    
+    private func delete(_ item: Item) {
+        modelContext.delete(item)
+        dismiss()
     }
 }
 
