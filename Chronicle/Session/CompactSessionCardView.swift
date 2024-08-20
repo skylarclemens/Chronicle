@@ -75,8 +75,33 @@ struct CompactSessionCardView: View {
     }
     
     private func delete(_ session: Session) {
+        updateItemEffectsAndFlavors()
         withAnimation {
             modelContext.delete(session)
+        }
+    }
+    
+    private func updateItemEffectsAndFlavors() {
+        guard let session, let item = session.item else { return }
+        
+        for effect in session.effects {
+            if let existingEffect = item.effects.first(where: { $0.effect.name == effect.effect.name }) {
+                existingEffect.count -= 1
+                existingEffect.totalIntensity -= effect.intensity
+                if existingEffect.count == 0 {
+                    modelContext.delete(existingEffect)
+                }
+            }
+        }
+        
+        for flavor in session.flavors {
+            if let existingFlavor = item.flavors.first(where: { $0.flavor.name == flavor.flavor.name }) {
+                existingFlavor.count -= 1
+                existingFlavor.totalIntensity -= (flavor.intensity ?? 0)
+                if existingFlavor.count == 0 {
+                    modelContext.delete(existingFlavor)
+                }
+            }
         }
     }
 }

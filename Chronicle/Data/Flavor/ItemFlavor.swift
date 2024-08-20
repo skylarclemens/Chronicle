@@ -9,13 +9,17 @@ import Foundation
 import SwiftData
 
 @Model public class ItemFlavor {
+    @Attribute(.unique) public var id: UUID
     public var flavor: Flavor
     public var item: Item?
-    public var averageIntensity: Double
+    public var count: Int
+    public var totalIntensity: Int
     
-    init(flavor: Flavor, item: Item? = nil, averageIntensity: Double = 0.0) {
+    init(id: UUID = UUID(), flavor: Flavor, item: Item? = nil, count: Int = 1, totalIntensity: Int = 0) {
+        self.id = id
         self.flavor = flavor
         self.item = item
-        self.averageIntensity = averageIntensity
+        self.count = count
+        self.totalIntensity = totalIntensity
     }
 }

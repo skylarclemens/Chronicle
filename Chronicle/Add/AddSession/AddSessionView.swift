@@ -140,7 +140,7 @@ struct AddSessionEffectsView: View {
                     .onDelete(perform: removeEffect)
                 }
             }
-            
+            Spacer()
             Form {
                 Picker("Effect", selection: $selectedEffect) {
                     Text("None").tag(nil as Effect?)
@@ -291,7 +291,36 @@ struct AddSessionFlavorsView: View {
             newSession.location = viewModel.location
             newSession.imagesData = viewModel.selectedImagesData
             
+            updateItemEffectsAndFlavors()
             modelContext.insert(newSession)
+        }
+    }
+    
+    private func updateItemEffectsAndFlavors() {
+        guard let item = viewModel.item else { return }
+        
+        for effect in viewModel.effects {
+            if let existingEffect = item.effects.first(where: { $0.effect.name == effect.effect.name }) {
+                existingEffect.count += 1
+                existingEffect.totalIntensity += effect.intensity
+            } else {
+                let newEffect = ItemEffect(effect: effect.effect, item: item)
+                newEffect.totalIntensity += effect.intensity
+                item.effects.append(newEffect)
+                modelContext.insert(newEffect)
+            }
+        }
+        
+        for flavor in viewModel.flavors {
+            if let existingFlavor = item.flavors.first(where: { $0.flavor.name == flavor.flavor.name }) {
+                existingFlavor.count += 1
+                existingFlavor.totalIntensity += (flavor.intensity ?? 0)
+            } else {
+                let newFlavor = ItemFlavor(flavor: flavor.flavor, item: item)
+                newFlavor.totalIntensity += (flavor.intensity ?? 0)
+                item.flavors.append(newFlavor)
+                modelContext.insert(newFlavor)
+            }
         }
     }
     

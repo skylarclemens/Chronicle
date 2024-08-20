@@ -66,6 +66,20 @@ struct ItemDetailsView: View {
                 if let strain = item.strain {
                     Text(strain.name)
                 }
+                if !item.effects.isEmpty {
+                    List {
+                        ForEach(item.effects) { effect in
+                            HStack {
+                                Text(effect.effect.name)
+                                Spacer()
+                                Text(effect.count, format: .number)
+                                Text(effect.totalIntensity, format: .number)
+                                Text("Avg intensity: ")
+                                Text(effect.averageIntensity, format: .number)
+                            }
+                        }
+                    }
+                }
                 
                 Spacer()
             }

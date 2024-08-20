@@ -10,7 +10,7 @@ import SwiftData
 import SwiftUI
 
 @Model public class Flavor {
-    public var name: String
+    @Attribute(.unique) public var name: String
     public var emoji: String
     public var color: String?
     

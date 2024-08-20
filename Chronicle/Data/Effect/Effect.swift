@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model public class Effect {
-    public var name: String
+    @Attribute(.unique) public var name: String
     public var emoji: String
     public var type: EffectType
     public var color: String?
@@ -32,19 +32,16 @@ import SwiftData
         Effect(name: "Giggly", emoji: "😂", type: .mood),
         Effect(name: "Sleepy", emoji: "😴", type: .mood),
         Effect(name: "Hungry", emoji: "🍽️", type: .mood),
-        Effect(name: "Uplifted", emoji: "🌅", type: .mood),
+        Effect(name: "Uplifted", emoji: "🌟", type: .mood),
         Effect(name: "Aroused", emoji: "🔥", type: .mood),
-        Effect(name: "Tingly", emoji: "✨", type: .wellness),
         Effect(name: "Calm", emoji: "🧘", type: .mood),
         Effect(name: "Paranoid", emoji: "😨", type: .mood),
         Effect(name: "Anxious", emoji: "😟", type: .mood),
-        Effect(name: "Uplifted Spirits", emoji: "🌟", type: .mood),
         Effect(name: "Sociable", emoji: "👥", type: .mood),
         Effect(name: "Motivated", emoji: "🚀", type: .mood),
         Effect(name: "Chilled", emoji: "❄️", type: .mood),
         Effect(name: "Mind High", emoji: "💭", type: .mood),
         Effect(name: "Inspired", emoji: "💡", type: .mood),
-        Effect(name: "Giggly and Talkative", emoji: "🎉", type: .mood),
         Effect(name: "Alert", emoji: "👀", type: .mood),
         Effect(name: "Creative Flow", emoji: "🌈", type: .mood),
         Effect(name: "Mellow", emoji: "🎶", type: .mood),
@@ -73,6 +70,7 @@ import SwiftData
         Effect(name: "Sleep Aid", emoji: "💤", type: .wellness),
         Effect(name: "Appetite Stimulation", emoji: "🍴", type: .wellness),
         Effect(name: "Pain Relief", emoji: "💊", type: .wellness),
+        Effect(name: "Tingly", emoji: "✨", type: .wellness),
         Effect(name: "Relaxed Muscles", emoji: "💪", type: .wellness),
         Effect(name: "Dizzy", emoji: "💫", type: .wellness),
         Effect(name: "Numb", emoji: "🦶", type: .wellness),

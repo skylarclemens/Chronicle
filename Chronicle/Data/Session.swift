@@ -34,5 +34,3 @@ import SwiftData
         self.flavors = flavors
     }
 }
-
-

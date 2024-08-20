@@ -26,10 +26,14 @@ import SwiftData
     public var purchaseDate: Date?
     public var purchaseLocation: String?
     @Attribute(.externalStorage) public var imagesData: [Data]?
+    @Relationship(deleteRule: .cascade)
+    public var effects: [ItemEffect]
+    @Relationship(deleteRule: .cascade)
+    public var flavors: [ItemFlavor]
     @Relationship(deleteRule: .nullify)
     public var sessions: [Session]
     
-    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, composition: [String: Double] = [:], sessions: [Session] = []) {
+    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, composition: [String: Double] = [:], effects: [ItemEffect] = [], flavors: [ItemFlavor] = [], sessions: [Session] = []) {
         self.id = id
         self.name = name
         self.strain = strain
@@ -37,6 +41,8 @@ import SwiftData
         self.type = type
         self.amount = amount
         self.composition = composition
+        self.effects = effects
+        self.flavors = flavors
         self.sessions = sessions
     }
 }
