@@ -93,6 +93,7 @@ struct DashboardView: View {
                         VStack(alignment: .leading) {
                             Text("Strains")
                                 .font(.title2)
+                                .padding(.horizontal)
                                 .bold()
                                 .accessibilityAddTraits(.isHeader)
                             ScrollView(.horizontal) {
@@ -114,11 +115,12 @@ struct DashboardView: View {
                                         }
                                     }
                                 }
+                                .padding(.horizontal)
                             }
                         }
-                        .padding()
+                        .padding(.vertical)
                         .containerRelativeFrame(
-                            [.horizontal, .vertical],
+                            [.horizontal],
                             alignment: .topLeading
                         )
                     }

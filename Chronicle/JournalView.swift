@@ -6,15 +6,24 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct JournalView: View {
+    @Query(sort: \Session.createdAt) private var sessions: [Session]
+    
     var body: some View {
         NavigationStack {
             ZStack {
-                VStack {
-                    Text("Journal")
+                List {
+                    ForEach(sessions) { session in
+                        CompactSessionCardView(session: session)
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                    }
                 }
             }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
             .background(
                 BackgroundView()
             )
@@ -24,5 +33,9 @@ struct JournalView: View {
 }
 
 #Preview {
-    JournalView()
+    let modelPreview = ModelPreview()
+    modelPreview.addExamples(sampleItems: Item.sampleItems)
+    
+    return JournalView()
+        .modelContainer(modelPreview.container)
 }
