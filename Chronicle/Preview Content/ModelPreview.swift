@@ -44,4 +44,12 @@ struct ModelPreview {
             container.mainContext.insert(session1)
         }
     }
+    
+    func addStrainExamples(sampleStrains: [Strain]) {
+        Task { @MainActor in
+            sampleStrains.forEach { strain in
+                container.mainContext.insert(strain)
+            }
+        }
+    }
 }

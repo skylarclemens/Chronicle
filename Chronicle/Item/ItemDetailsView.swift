@@ -87,7 +87,7 @@ struct ItemDetailsView: View {
                 }
             }
         } else {
-            ContentUnavailableView("Select an item", systemImage: "tray")
+            ContentUnavailableView("Item unavailable", systemImage: "tray")
         }
     }
     

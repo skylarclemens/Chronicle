@@ -24,7 +24,7 @@ struct ContentView: View {
                     ScrollView {
                         VStack(alignment: .leading) {
                             Text("Stash")
-                                .font(.system(size: 28, weight: .medium))
+                                .font(.title2)
                                 .padding(.horizontal)
                                 .bold()
                                 .accessibilityAddTraits(.isHeader)
@@ -62,7 +62,7 @@ struct ContentView: View {
                         
                         VStack(alignment: .leading) {
                             Text("Recent Sessions")
-                                .font(.system(size: 28, weight: .medium))
+                                .font(.title2)
                                 .bold()
                                 .accessibilityAddTraits(.isHeader)
                             if !sessions.isEmpty {
@@ -89,6 +89,38 @@ struct ContentView: View {
                             }
                         }
                         .padding(.horizontal)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Strains")
+                                .font(.title2)
+                                .bold()
+                                .accessibilityAddTraits(.isHeader)
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(strains) { strain in
+                                        NavigationLink {
+                                            StrainDetailsView(strain: strain)
+                                        } label: {
+                                            VStack {
+                                                HStack {
+                                                    Image(systemName: "leaf")
+                                                        .foregroundStyle(.accent)
+                                                    Text(strain.name)
+                                                }
+                                                .tint(.primary)
+                                                .padding(8)
+                                                .background(RoundedRectangle(cornerRadius: 8).fill(.regularMaterial))
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .padding()
+                        .containerRelativeFrame(
+                            [.horizontal, .vertical],
+                            alignment: .topLeading
+                        )
                     }
                 }
                 .toolbar {
