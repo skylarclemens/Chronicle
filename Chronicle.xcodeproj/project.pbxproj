@@ -14,6 +14,10 @@
 		7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */; };
 		7E08D4252C6C0C9F00F96328 /* EffectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4242C6C0C9F00F96328 /* EffectType.swift */; };
 		7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301E72C74F44000909048 /* StrainDetailsView.swift */; };
+		7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EA2C74F97500909048 /* DashboardView.swift */; };
+		7E5301ED2C74F98200909048 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EC2C74F98200909048 /* JournalView.swift */; };
+		7E5301EF2C74F99B00909048 /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EE2C74F99B00909048 /* InventoryView.swift */; };
+		7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301F02C74FD7F00909048 /* ItemRowView.swift */; };
 		7E7A05832C64621100BA0497 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7A05822C64621100BA0497 /* Effect.swift */; };
 		7E7A05852C64621600BA0497 /* Flavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7A05842C64621600BA0497 /* Flavor.swift */; };
 		7E7A05872C64621C00BA0497 /* SessionEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7A05862C64621C00BA0497 /* SessionEffect.swift */; };
@@ -45,6 +49,10 @@
 		7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerWheel.swift; sourceTree = "<group>"; };
 		7E08D4242C6C0C9F00F96328 /* EffectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectType.swift; sourceTree = "<group>"; };
 		7E5301E72C74F44000909048 /* StrainDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailsView.swift; sourceTree = "<group>"; };
+		7E5301EA2C74F97500909048 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		7E5301EC2C74F98200909048 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
+		7E5301EE2C74F99B00909048 /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
+		7E5301F02C74FD7F00909048 /* ItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowView.swift; sourceTree = "<group>"; };
 		7E7A05822C64621100BA0497 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
 		7E7A05842C64621600BA0497 /* Flavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flavor.swift; sourceTree = "<group>"; };
 		7E7A05862C64621C00BA0497 /* SessionEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEffect.swift; sourceTree = "<group>"; };
@@ -138,6 +146,7 @@
 			children = (
 				7E951CFF2C73D10E0023922C /* ItemCardView.swift */,
 				7EF0BB152C6D3A2D0068542D /* ItemDetailsView.swift */,
+				7E5301F02C74FD7F00909048 /* ItemRowView.swift */,
 			);
 			path = Item;
 			sourceTree = "<group>";
@@ -186,6 +195,9 @@
 				7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */,
 				7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */,
 				7EC008EE2C5EEDE80093217B /* ContentView.swift */,
+				7E5301EA2C74F97500909048 /* DashboardView.swift */,
+				7E5301EC2C74F98200909048 /* JournalView.swift */,
+				7E5301EE2C74F99B00909048 /* InventoryView.swift */,
 				7EC008F22C5EEDEA0093217B /* Assets.xcassets */,
 				7EC008FC2C5EF1A00093217B /* Data */,
 				7EC008F42C5EEDEA0093217B /* Preview Content */,
@@ -319,14 +331,18 @@
 				7E7A05832C64621100BA0497 /* Effect.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
 				7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */,
+				7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */,
 				7E08D4252C6C0C9F00F96328 /* EffectType.swift in Sources */,
 				7ECAFC2A2C6421310056A44E /* ModelPreview.swift in Sources */,
 				7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */,
+				7E5301EF2C74F99B00909048 /* InventoryView.swift in Sources */,
 				7E7A05892C64622200BA0497 /* SessionFlavor.swift in Sources */,
+				7E5301ED2C74F98200909048 /* JournalView.swift in Sources */,
 				7E7A05872C64621C00BA0497 /* SessionEffect.swift in Sources */,
 				7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
+				7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */,
 				7EC008F12C5EEDE80093217B /* Item.swift in Sources */,
 				7EC008ED2C5EEDE80093217B /* ChronicleApp.swift in Sources */,
 				7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */,
