@@ -22,11 +22,9 @@ struct ModelPreview {
     
     func addExamples(sampleItems: [Item]) {
         Task { @MainActor in
-            /*sampleStrains.forEach { strain in
-                container.mainContext.insert(strain)
-            }*/
-            
             let imageData = UIImage(named: "edibles-jar")?.pngData()
+            let imageData2 = UIImage(named: "pre-roll")?.pngData()
+            
             sampleItems.forEach { item in
                 if let imageData {
                     item.imagesData = [imageData]
@@ -38,6 +36,11 @@ struct ModelPreview {
             }
             
             let session1 = Session(item: sampleItems[0])
+            if let imageData2 {
+                session1.imagesData = [imageData2]
+            }
+            session1.title = "Example sesh"
+            session1.notes = "Test"
             container.mainContext.insert(session1)
         }
     }

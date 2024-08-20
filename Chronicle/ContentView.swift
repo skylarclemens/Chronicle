@@ -21,67 +21,74 @@ struct ContentView: View {
         NavigationStack {
             ZStack {
                 VStack {
-                    VStack(alignment: .leading) {
-                        Text("Stash")
-                            .font(.system(size: 28, weight: .medium, design: .rounded))
-                            .padding(.horizontal)
-                            .bold()
-                            .accessibilityAddTraits(.isHeader)
-                        if !items.isEmpty {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                LazyHStack {
-                                    ForEach(items) { item in
-                                        NavigationLink {
-                                            ItemDetailsView(item: item)
-                                        } label: {
-                                            ItemCardView(item: item)
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            Text("Stash")
+                                .font(.system(size: 28, weight: .medium))
+                                .padding(.horizontal)
+                                .bold()
+                                .accessibilityAddTraits(.isHeader)
+                            if !items.isEmpty {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    LazyHStack {
+                                        ForEach(items) { item in
+                                            NavigationLink {
+                                                ItemDetailsView(item: item)
+                                            } label: {
+                                                ItemCardView(item: item)
+                                            }
                                         }
                                     }
+                                    .tint(.primary)
+                                    .frame(maxHeight: 120)
+                                    .padding(.horizontal)
                                 }
-                                .tint(.primary)
-                                .frame(maxHeight: 120)
-                                .padding(.horizontal)
-                            }
-                        } else {
-                            ContentUnavailableView {
-                                Label("Nothing in your stash", systemImage: "tray")
-                            } description: {
-                                Text("You don't have any saved items.")
-                            } actions: {
-                                Button {
-                                    openAddItem = true
-                                } label: {
-                                    Label("Add Item", systemImage: "plus")
-                                }
-                                .buttonStyle(.borderedProminent)
-                            }
-                        }
-                    }
-                    .padding(.vertical)
-                    List {
-                        Section("Strains") {
-                            ForEach(strains) { strain in
-                                NavigationLink {
-                                    Text("\(strain.name)")
-                                } label: {
-                                    Text("\(strain.name)")
-                                }
-                            }
-                            .onDelete(perform: removeStrain)
-                        }
-                        Section("Sessions") {
-                            if sessions.count > 0 {
-                                ForEach(sessions) { session in
-                                    NavigationLink {
-                                        Text(session.item?.name ?? "")
-                                        Text(session.createdAt, format: .dateTime)
+                            } else {
+                                ContentUnavailableView {
+                                    Label("Nothing in your stash", systemImage: "tray")
+                                } description: {
+                                    Text("You don't have any saved items.")
+                                } actions: {
+                                    Button {
+                                        openAddItem = true
                                     } label: {
-                                        Text("Session")
+                                        Label("Add Item", systemImage: "plus")
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                }
+                            }
+                        }
+                        .padding(.vertical)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Recent Sessions")
+                                .font(.system(size: 28, weight: .medium))
+                                .bold()
+                                .accessibilityAddTraits(.isHeader)
+                            if !sessions.isEmpty {
+                                LazyVStack(spacing: 16) {
+                                    ForEach(sessions, id: \.id) { session in
+                                        CompactSessionCardView(session: session)
                                     }
                                 }
-                                .onDelete(perform: removeSession)
+                                .animation(.default, value: sessions)
+                                .tint(.primary)
+                            } else {
+                                ContentUnavailableView {
+                                    Label("Nothing in your journal", systemImage: "tray")
+                                } description: {
+                                    Text("You don't have any saved journal sessions.")
+                                } actions: {
+                                    Button {
+                                        openAddSession = true
+                                    } label: {
+                                        Label("Add Session", systemImage: "plus")
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                }
                             }
                         }
+                        .padding(.horizontal)
                     }
                 }
                 .toolbar {
@@ -114,23 +121,6 @@ struct ContentView: View {
             .background(
                 BackgroundView()
             )
-        }
-        
-    }
-    
-    private func removeStrain(at offsets: IndexSet) {
-        for i in offsets {
-            let strain = strains[i]
-            modelContext.delete(strain)
-            try? modelContext.save()
-        }
-    }
-    
-    private func removeSession(at offsets: IndexSet) {
-        for i in offsets {
-            let session = sessions[i]
-            modelContext.delete(session)
-            try? modelContext.save()
         }
     }
 }
