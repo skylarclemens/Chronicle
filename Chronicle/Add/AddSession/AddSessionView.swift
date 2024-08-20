@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import PhotosUI
 
 struct AddSessionView: View {
     @Environment(\.modelContext) var modelContext
@@ -20,9 +21,7 @@ struct AddSessionView: View {
             VStack {
                 Form {
                     Section {
-                        DatePicker(selection: $viewModel.date) {
-                            Label("Date", systemImage: "calendar")
-                        }
+                        TextField("Title", text: $viewModel.title)
                     }
                     Section {
                         Picker("Item", systemImage: "tray", selection: $viewModel.item) {
@@ -33,6 +32,9 @@ struct AddSessionView: View {
                         }
                     }
                     Section {
+                        DatePicker(selection: $viewModel.date) {
+                            Label("Date", systemImage: "calendar")
+                        }
                         HStack {
                             Label("Duration", systemImage: "clock")
                             Spacer()
@@ -44,6 +46,42 @@ struct AddSessionView: View {
                             Label("Location", systemImage: "map")
                             // TODO: Update to use map and location
                             TextField("My room", text: $viewModel.location)
+                        }
+                    }
+                    Section("Photos") {
+                        if viewModel.selectedImages.count > 0 {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                LazyHStack(spacing: 8) {
+                                    ForEach(viewModel.selectedImages, id: \.self) { uiImage in
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 150, height: 150, alignment: .leading)
+                                            .clipShape(.rect(cornerRadius: 10))
+                                    }
+                                }
+                                .padding()
+                            }
+                            .listRowInsets(EdgeInsets())
+                        }
+                        PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 3, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
+                            Label("Select photos", systemImage: "photo.badge.plus")
+                        }
+                        .onChange(of: viewModel.pickerItems) { oldValues, newValues in
+                            Task {
+                                viewModel.selectedImages = []
+                                viewModel.selectedImagesData = []
+                                
+                                for value in newValues {
+                                    if let imageData = try? await value.loadTransferable(type: Data.self),
+                                        let uiImage = UIImage(data: imageData) {
+                                        viewModel.selectedImagesData.append(imageData)
+                                        withAnimation {
+                                            viewModel.selectedImages.append(uiImage)
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     Section("Notes") {
@@ -245,11 +283,13 @@ struct AddSessionFlavorsView: View {
         if let item = viewModel.item {
             let newSession = Session(item: item)
             newSession.date = viewModel.date
+            newSession.title = viewModel.title
             newSession.effects = viewModel.effects
             newSession.flavors = viewModel.flavors
             newSession.notes = viewModel.notes
             newSession.duration = viewModel.duration
             newSession.location = viewModel.location
+            newSession.imagesData = viewModel.selectedImagesData
             
             modelContext.insert(newSession)
         }
@@ -274,12 +314,17 @@ struct AddSessionFlavorsView: View {
 @Observable
 class AddSessionViewModel {
     var date: Date = Date()
+    var title: String = ""
     var item: Item?
     var duration: Double = 0
     var effects: [SessionEffect] = []
     var flavors: [SessionFlavor] = []
     var notes: String = ""
     var location: String = ""
+    
+    var pickerItems: [PhotosPickerItem] = []
+    var selectedImagesData: [Data] = []
+    var selectedImages: [UIImage] = []
 }
 
 #Preview {

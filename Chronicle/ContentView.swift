@@ -20,59 +20,107 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                List {
-                    Section("Items") {
-                        ForEach(items) { item in
-                            NavigationLink {
-                                VStack {
-                                    if let imagesData = item.imagesData,
-                                       !imagesData.isEmpty {
-                                        ScrollView(.horizontal, showsIndicators: false) {
-                                            LazyHStack(spacing: 8) {
-                                                ForEach(imagesData, id: \.self) { data in
-                                                    if let uiImage = UIImage(data: data) {
-                                                        Image(uiImage: uiImage)
-                                                            .resizable()
-                                                            .scaledToFill()
-                                                            .frame(width: 150, height: 150, alignment: .leading)
-                                                            .clipShape(.rect(cornerRadius: 10))
-                                                    }
-                                                }
+                VStack {
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            Text("Stash")
+                                .font(.title2)
+                                .padding(.horizontal)
+                                .bold()
+                                .accessibilityAddTraits(.isHeader)
+                            if !items.isEmpty {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    LazyHStack {
+                                        ForEach(items) { item in
+                                            NavigationLink {
+                                                ItemDetailsView(item: item)
+                                            } label: {
+                                                ItemCardView(item: item)
                                             }
-                                            .padding()
                                         }
                                     }
-                                    Text("\(item.name) at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))\nStrain: \(item.strain?.name ?? "no strain")")
+                                    .tint(.primary)
+                                    .frame(maxHeight: 120)
+                                    .padding(.horizontal)
                                 }
-                            } label: {
-                                Text("\(item.name): \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                            }
-                        }
-                        .onDelete(perform: removeItem)
-                    }
-                    Section("Strains") {
-                        ForEach(strains) { strain in
-                            NavigationLink {
-                                Text("\(strain.name)")
-                            } label: {
-                                Text("\(strain.name)")
-                            }
-                        }
-                        .onDelete(perform: removeStrain)
-                    }
-                    Section("Sessions") {
-                        if sessions.count > 0 {
-                            ForEach(sessions) { session in
-                                NavigationLink {
-                                    Text(session.item?.name ?? "")
-                                    Text(session.createdAt, format: .dateTime)
-                                    Text(session.date, format: .dateTime)
-                                } label: {
-                                    Text("Session")
+                            } else {
+                                ContentUnavailableView {
+                                    Label("Nothing in your stash", systemImage: "tray")
+                                } description: {
+                                    Text("You don't have any saved items.")
+                                } actions: {
+                                    Button {
+                                        openAddItem = true
+                                    } label: {
+                                        Label("Add Item", systemImage: "plus")
+                                    }
+                                    .buttonStyle(.borderedProminent)
                                 }
                             }
-                            .onDelete(perform: removeSession)
                         }
+                        .padding(.vertical)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Recent Sessions")
+                                .font(.title2)
+                                .bold()
+                                .accessibilityAddTraits(.isHeader)
+                            if !sessions.isEmpty {
+                                LazyVStack(spacing: 16) {
+                                    ForEach(sessions, id: \.id) { session in
+                                        CompactSessionCardView(session: session)
+                                    }
+                                }
+                                .animation(.default, value: sessions)
+                                .tint(.primary)
+                            } else {
+                                ContentUnavailableView {
+                                    Label("Nothing in your journal", systemImage: "tray")
+                                } description: {
+                                    Text("You don't have any saved journal sessions.")
+                                } actions: {
+                                    Button {
+                                        openAddSession = true
+                                    } label: {
+                                        Label("Add Session", systemImage: "plus")
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Strains")
+                                .font(.title2)
+                                .bold()
+                                .accessibilityAddTraits(.isHeader)
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(strains) { strain in
+                                        NavigationLink {
+                                            StrainDetailsView(strain: strain)
+                                        } label: {
+                                            VStack {
+                                                HStack {
+                                                    Image(systemName: "leaf")
+                                                        .foregroundStyle(.accent)
+                                                    Text(strain.name)
+                                                }
+                                                .tint(.primary)
+                                                .padding(8)
+                                                .background(RoundedRectangle(cornerRadius: 8).fill(.regularMaterial))
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .padding()
+                        .containerRelativeFrame(
+                            [.horizontal, .vertical],
+                            alignment: .topLeading
+                        )
                     }
                 }
                 .toolbar {
@@ -106,37 +154,12 @@ struct ContentView: View {
                 BackgroundView()
             )
         }
-        
-    }
-    
-    private func removeItem(at offsets: IndexSet) {
-        for i in offsets {
-            let item = items[i]
-            modelContext.delete(item)
-            try? modelContext.save()
-        }
-    }
-    
-    private func removeStrain(at offsets: IndexSet) {
-        for i in offsets {
-            let strain = strains[i]
-            modelContext.delete(strain)
-            try? modelContext.save()
-        }
-    }
-    
-    private func removeSession(at offsets: IndexSet) {
-        for i in offsets {
-            let session = sessions[i]
-            modelContext.delete(session)
-            try? modelContext.save()
-        }
     }
 }
 
 #Preview {
     let modelPreview = ModelPreview()
-    modelPreview.addExamples() 
+    modelPreview.addExamples(sampleItems: Item.sampleItems)
     
     return ContentView()
         .modelContainer(modelPreview.container)

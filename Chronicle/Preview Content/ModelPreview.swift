@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 struct ModelPreview {
     let container: ModelContainer
@@ -19,23 +20,36 @@ struct ModelPreview {
         }
     }
     
-    func addExamples() {
+    func addExamples(sampleItems: [Item]) {
         Task { @MainActor in
-            let strain1 = Strain(name: "Blue Dream", type: .hybrid, desc: "test")
-            let strain2 = Strain(name: "Wedding Cake", type: .hybrid, desc: "test")
+            let imageData = UIImage(named: "edibles-jar")?.pngData()
+            let imageData2 = UIImage(named: "pre-roll")?.pngData()
             
-            container.mainContext.insert(strain1)
-            container.mainContext.insert(strain2)
+            sampleItems.forEach { item in
+                if let imageData {
+                    item.imagesData = [imageData]
+                }
+                container.mainContext.insert(item)
+                if let strain = item.strain {
+                    container.mainContext.insert(strain)
+                }
+            }
             
-            let item1 = Item(name: "Item 1", strain: strain1, type: .concentrate, amount: 1.0)
-            let item2 = Item(name: "Item 2", strain: strain2, type: .flower, amount: 2.0)
-            
-            container.mainContext.insert(item1)
-            container.mainContext.insert(item2)
-            
-            let session1 = Session(item: item1)
-            
+            let session1 = Session(item: sampleItems[0])
+            if let imageData2 {
+                session1.imagesData = [imageData2]
+            }
+            session1.title = "Example sesh"
+            session1.notes = "Test"
             container.mainContext.insert(session1)
+        }
+    }
+    
+    func addStrainExamples(sampleStrains: [Strain]) {
+        Task { @MainActor in
+            sampleStrains.forEach { strain in
+                container.mainContext.insert(strain)
+            }
         }
     }
 }
