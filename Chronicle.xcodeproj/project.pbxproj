@@ -13,6 +13,7 @@
 		7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4202C6BF6DB00F96328 /* AddSessionView.swift */; };
 		7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */; };
 		7E08D4252C6C0C9F00F96328 /* EffectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4242C6C0C9F00F96328 /* EffectType.swift */; };
+		7E2504DA2C76838500496296 /* ColorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504D92C76838500496296 /* ColorData.swift */; };
 		7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301E72C74F44000909048 /* StrainDetailsView.swift */; };
 		7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EA2C74F97500909048 /* DashboardView.swift */; };
 		7E5301ED2C74F98200909048 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EC2C74F98200909048 /* JournalView.swift */; };
@@ -50,6 +51,7 @@
 		7E08D4202C6BF6DB00F96328 /* AddSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionView.swift; sourceTree = "<group>"; };
 		7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerWheel.swift; sourceTree = "<group>"; };
 		7E08D4242C6C0C9F00F96328 /* EffectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectType.swift; sourceTree = "<group>"; };
+		7E2504D92C76838500496296 /* ColorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorData.swift; sourceTree = "<group>"; };
 		7E5301E72C74F44000909048 /* StrainDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailsView.swift; sourceTree = "<group>"; };
 		7E5301EA2C74F97500909048 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		7E5301EC2C74F98200909048 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				7E7A05812C6461FB00BA0497 /* Flavor */,
 				7E7A05802C6461F600BA0497 /* Effect */,
 				7ECAFC262C6410340056A44E /* Session.swift */,
+				7E2504D92C76838500496296 /* ColorData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 				7E7A05872C64621C00BA0497 /* SessionEffect.swift in Sources */,
 				7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */,
+				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
 				7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */,
 				7EC008F12C5EEDE80093217B /* Item.swift in Sources */,

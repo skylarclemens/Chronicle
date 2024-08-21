@@ -21,6 +21,12 @@ extension Item {
             ItemFlavor(flavor: Flavor.predefinedFlavors[0], count: 1),
             ItemFlavor(flavor: Flavor.predefinedFlavors[1], count: 1)
         ]
+        sample.composition = [
+            "THC": 99.9,
+            "CBD": 80.2,
+            "CBG": 20,
+        ]
+        sample.terpenes = ["Myrcene", "Pipene"]
         let session = Session(title: "Test sesh")
         session.effects = [
             SessionEffect(effect: Effect.predefinedEffects[0], intensity: 8),

@@ -50,7 +50,6 @@ struct ItemCardView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .strokeBorder(.bar, lineWidth: 1)
-                .allowsHitTesting(false)
         )
     }
 }
