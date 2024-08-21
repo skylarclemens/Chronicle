@@ -129,7 +129,7 @@ struct AddSessionEffectsView: View {
     var body: some View {
         VStack {
             List {
-                if viewModel.effects.count > 0 {
+                if !viewModel.effects.isEmpty {
                     ForEach(viewModel.effects, id: \.self) { effect in
                         HStack {
                             Text(effect.effect.name)
@@ -300,7 +300,7 @@ struct AddSessionFlavorsView: View {
         guard let item = viewModel.item else { return }
         
         for effect in viewModel.effects {
-            if let existingEffect = item.effects.first(where: { $0.effect.name == effect.effect.name }) {
+            if let existingEffect = item.effects.first(where: { $0.effect.id == effect.effect.id }) {
                 existingEffect.count += 1
                 existingEffect.totalIntensity += effect.intensity
             } else {
@@ -312,7 +312,7 @@ struct AddSessionFlavorsView: View {
         }
         
         for flavor in viewModel.flavors {
-            if let existingFlavor = item.flavors.first(where: { $0.flavor.name == flavor.flavor.name }) {
+            if let existingFlavor = item.flavors.first(where: { $0.flavor.id == flavor.flavor.id }) {
                 existingFlavor.count += 1
                 existingFlavor.totalIntensity += (flavor.intensity ?? 0)
             } else {

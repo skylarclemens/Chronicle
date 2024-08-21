@@ -33,6 +33,22 @@ import SwiftData
     @Relationship(deleteRule: .nullify)
     public var sessions: [Session]
     
+    var sortedEffects: [ItemEffect] {
+        effects.sorted {
+            $0.averageIntensity > $1.averageIntensity
+        }
+    }
+    
+    var sortedFlavors: [ItemFlavor] {
+        flavors.sorted {
+            if $0.count == $1.count {
+                return $0.flavor.name < $1.flavor.name
+            }
+            
+            return $0.count > $1.count
+        }
+    }
+    
     init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, composition: [String: Double] = [:], effects: [ItemEffect] = [], flavors: [ItemFlavor] = [], sessions: [Session] = []) {
         self.id = id
         self.name = name

@@ -10,7 +10,8 @@ import SwiftData
 import SwiftUI
 
 @Model public class Flavor {
-    @Attribute(.unique) public var name: String
+    @Attribute(.unique) public var id: UUID
+    public var name: String
     public var emoji: String
     public var color: String?
     
@@ -18,7 +19,8 @@ import SwiftUI
         Color(color ?? "green")
     }
     
-    init(name: String, emoji: String, color: String? = nil) {
+    init(id: UUID = UUID(), name: String, emoji: String, color: String? = nil) {
+        self.id = id
         self.name = name
         self.emoji = emoji
         self.color = color

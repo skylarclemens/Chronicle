@@ -9,12 +9,14 @@ import Foundation
 import SwiftData
 
 @Model public class Effect {
-    @Attribute(.unique) public var name: String
+    @Attribute(.unique) public var id: UUID
+    public var name: String
     public var emoji: String
     public var type: EffectType
     public var color: String?
     
-    init(name: String, emoji: String, type: EffectType, color: String? = nil) {
+    init(id: UUID = UUID(), name: String, emoji: String = "✨", type: EffectType, color: String? = nil) {
+        self.id = id
         self.name = name
         self.emoji = emoji
         self.type = type
@@ -39,11 +41,9 @@ import SwiftData
         Effect(name: "Anxious", emoji: "😟", type: .mood),
         Effect(name: "Sociable", emoji: "👥", type: .mood),
         Effect(name: "Motivated", emoji: "🚀", type: .mood),
-        Effect(name: "Chilled", emoji: "❄️", type: .mood),
         Effect(name: "Mind High", emoji: "💭", type: .mood),
         Effect(name: "Inspired", emoji: "💡", type: .mood),
         Effect(name: "Alert", emoji: "👀", type: .mood),
-        Effect(name: "Creative Flow", emoji: "🌈", type: .mood),
         Effect(name: "Mellow", emoji: "🎶", type: .mood),
         Effect(name: "Comfortable", emoji: "🛏️", type: .mood),
         Effect(name: "Spiritual", emoji: "🙏", type: .mood),
@@ -59,14 +59,14 @@ import SwiftData
         Effect(name: "Chill", emoji: "😎", type: .mood),
         Effect(name: "Vivid Thoughts", emoji: "💭", type: .mood),
         Effect(name: "Meditative", emoji: "🧘‍♀️", type: .mood),
-        Effect(name: "Soothed", emoji: "💆", type: .wellness),
+        Effect(name: "Soothed", emoji: "💆‍♂️", type: .wellness),
         Effect(name: "Comforted", emoji: "🤗", type: .wellness),
         Effect(name: "Relaxed Body", emoji: "💆‍♂️", type: .wellness),
         Effect(name: "Clear-headed", emoji: "🧠", type: .wellness),
         Effect(name: "Couch Locked", emoji: "🛋️", type: .wellness),
         Effect(name: "Headache Relief", emoji: "🤕", type: .wellness),
         Effect(name: "Stress Relief", emoji: "🌿", type: .wellness),
-        Effect(name: "Anxiety Relief", emoji: "😟", type: .wellness),
+        Effect(name: "Anxiety Relief", emoji: "😌", type: .wellness),
         Effect(name: "Sleep Aid", emoji: "💤", type: .wellness),
         Effect(name: "Appetite Stimulation", emoji: "🍴", type: .wellness),
         Effect(name: "Pain Relief", emoji: "💊", type: .wellness),

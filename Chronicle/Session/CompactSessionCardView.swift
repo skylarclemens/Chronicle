@@ -85,7 +85,7 @@ struct CompactSessionCardView: View {
         guard let session, let item = session.item else { return }
         
         for effect in session.effects {
-            if let existingEffect = item.effects.first(where: { $0.effect.name == effect.effect.name }) {
+            if let existingEffect = item.effects.first(where: { $0.effect.id == effect.effect.id }) {
                 existingEffect.count -= 1
                 existingEffect.totalIntensity -= effect.intensity
                 if existingEffect.count == 0 {
@@ -95,7 +95,7 @@ struct CompactSessionCardView: View {
         }
         
         for flavor in session.flavors {
-            if let existingFlavor = item.flavors.first(where: { $0.flavor.name == flavor.flavor.name }) {
+            if let existingFlavor = item.flavors.first(where: { $0.flavor.id == flavor.flavor.id }) {
                 existingFlavor.count -= 1
                 existingFlavor.totalIntensity -= (flavor.intensity ?? 0)
                 if existingFlavor.count == 0 {
