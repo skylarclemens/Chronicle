@@ -27,6 +27,7 @@ extension Item {
             "CBG": 20,
         ]
         sample.terpenes = ["Myrcene", "Pipene"]
+        sample.strain = Strain(name: "Blue Dream", type: .hybrid)
         let session = Session(title: "Test sesh")
         session.effects = [
             SessionEffect(effect: Effect.predefinedEffects[0], intensity: 8),
