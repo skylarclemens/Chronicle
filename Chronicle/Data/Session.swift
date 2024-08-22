@@ -21,6 +21,18 @@ import SwiftData
     @Relationship(deleteRule: .cascade) public var effects: [SessionEffect]
     @Relationship(deleteRule: .cascade) public var flavors: [SessionFlavor]
     
+    var sortedEffects: [SessionEffect] {
+        effects.sorted {
+            $0.intensity > $1.intensity
+        }
+    }
+    
+    var sortedFlavors: [SessionFlavor] {
+        flavors.sorted {
+            $0.flavor.name > $1.flavor.name
+        }
+    }
+    
     init(id: UUID = UUID(), createdAt: Date = Date(), title: String = "", date: Date = Date(), item: Item? = nil, duration: TimeInterval? = nil, notes: String? = nil, location: String? = nil, effects: [SessionEffect] = [], flavors: [SessionFlavor] = []) {
         self.id = id
         self.createdAt = createdAt

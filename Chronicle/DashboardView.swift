@@ -68,14 +68,18 @@ struct DashboardView: View {
                             if !sessions.isEmpty {
                                 LazyVStack(spacing: 16) {
                                     ForEach(sessions, id: \.id) { session in
-                                        CompactSessionCardView(session: session)
+                                        NavigationLink {
+                                            SessionDetailsView(session: session)
+                                        } label: {
+                                            CompactSessionCardView(session: session)
+                                        }
                                     }
                                 }
                                 .animation(.default, value: sessions)
                                 .tint(.primary)
                             } else {
                                 ContentUnavailableView {
-                                    Label("Nothing in your journal", systemImage: "tray")
+                                    Label("Nothing in your journal", systemImage: "book")
                                 } description: {
                                     Text("You don't have any saved journal sessions.")
                                 } actions: {

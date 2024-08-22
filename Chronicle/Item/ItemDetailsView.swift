@@ -14,6 +14,7 @@ struct ItemDetailsView: View {
     var item: Item?
     @State private var isDeleting = false
     @State private var currentImageIndex = 0
+    var fromSession: Bool = false
     
     var sortedMoodEffects: [ItemEffect] {
         let moods = item?.effects.filter { $0.effect.type == .mood }
@@ -74,41 +75,15 @@ struct ItemDetailsView: View {
                             }
                         }
                         ImageCarouselView(imagesData: item.imagesData)
+                            .padding(.vertical)
                     }
                     .padding(.horizontal)
-                    if !item.flavors.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Flavors")
-                                .font(.headline)
-                            DetailSection(isScrollView: true) {
-                                ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach(item.sortedFlavors) { flavor in
-                                            HStack {
-                                                Text(flavor.flavor.emoji)
-                                                    .font(.system(size: 12))
-                                                Text(flavor.flavor.name)
-                                                    .font(.subheadline)
-                                                    .fontWeight(.medium)
-                                            }
-                                            .padding(8)
-                                            .background(flavor.flavor.color.color.opacity(0.2),
-                                                        in: RoundedRectangle(cornerRadius: 12))
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
-                    
                     if !item.effects.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Effects")
                                 .font(.headline)
                             if !sortedMoodEffects.isEmpty {
-                                DetailSection(header:"Moods", headerRight: "Avg. intensity") {
+                                DetailSection(header: "Moods", headerRight: "Avg. intensity") {
                                     ForEach(sortedMoodEffects) { effect in
                                         HStack {
                                             Text(effect.effect.emoji)
@@ -151,45 +126,23 @@ struct ItemDetailsView: View {
                         }
                         .padding(.horizontal)
                     }
-                    
-                    VStack(alignment: .leading) {
-                        Text("Details")
-                            .font(.headline)
-                        if !item.composition.isEmpty {
-                            DetailSection(header: "Cannabinoids", isScrollView: true) {
-                                ScrollView(.horizontal, showsIndicators: false) {
+                    if !item.flavors.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Flavors")
+                                .font(.headline)
+                            DetailSection(isScrollView: true) {
+                                ScrollView(.horizontal) {
                                     HStack {
-                                        ForEach(item.composition) { cannabinoid in
-                                            HStack(spacing: 12) {
-                                                Text(cannabinoid.name)
-                                                    .bold()
-                                                Text(cannabinoid.value, format: .percent)
-                                                    .foregroundStyle(.secondary)
-                                            }
-                                            .padding(.vertical, 6)
-                                            .padding(.horizontal, 12)
-                                            .background(.tertiary,
-                                                        in: RoundedRectangle(cornerRadius: 12))
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                        }
-                        if !item.terpenes.isEmpty {
-                            DetailSection(header: "Terpenes", isScrollView: true) {
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack {
-                                        ForEach(item.terpenes) { terpene in
+                                        ForEach(item.sortedFlavors) { flavor in
                                             HStack {
-                                                RoundedRectangle(cornerRadius: 8)
-                                                    .frame(maxWidth: 3, maxHeight: 14)
-                                                    .foregroundStyle(terpene.color.color)
-                                                Text(terpene.name)
+                                                Text(flavor.flavor.emoji)
+                                                    .font(.system(size: 12))
+                                                Text(flavor.flavor.name)
+                                                    .font(.subheadline)
+                                                    .fontWeight(.medium)
                                             }
-                                            .padding(.vertical, 6)
-                                            .padding(.horizontal, 10)
-                                            .background(terpene.color.color.opacity(0.2),
+                                            .padding(8)
+                                            .background(flavor.flavor.color.color.opacity(0.2),
                                                         in: RoundedRectangle(cornerRadius: 12))
                                         }
                                     }
@@ -197,8 +150,57 @@ struct ItemDetailsView: View {
                                 }
                             }
                         }
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
+                    if !item.composition.isEmpty || !item.terpenes.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Details")
+                                .font(.headline)
+                            if !item.composition.isEmpty {
+                                DetailSection(header: "Cannabinoids", isScrollView: true) {
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack {
+                                            ForEach(item.composition) { cannabinoid in
+                                                HStack(spacing: 12) {
+                                                    Text(cannabinoid.name)
+                                                        .bold()
+                                                    Text(cannabinoid.value, format: .percent)
+                                                        .foregroundStyle(.secondary)
+                                                }
+                                                .padding(.vertical, 6)
+                                                .padding(.horizontal, 12)
+                                                .background(.tertiary,
+                                                            in: RoundedRectangle(cornerRadius: 12))
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                }
+                            }
+                            if !item.terpenes.isEmpty {
+                                DetailSection(header: "Terpenes", isScrollView: true) {
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack {
+                                            ForEach(item.terpenes) { terpene in
+                                                HStack {
+                                                    RoundedRectangle(cornerRadius: 8)
+                                                        .frame(maxWidth: 3, maxHeight: 14)
+                                                        .foregroundStyle(terpene.color.color)
+                                                    Text(terpene.name)
+                                                }
+                                                .padding(.vertical, 6)
+                                                .padding(.horizontal, 10)
+                                                .background(terpene.color.color.opacity(0.2),
+                                                            in: RoundedRectangle(cornerRadius: 12))
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
                     
                     if !item.sessions.isEmpty {
                         VStack(alignment: .leading) {
@@ -209,7 +211,16 @@ struct ItemDetailsView: View {
                                 ScrollView(.horizontal) {
                                     HStack {
                                         ForEach(item.sessions) { session in
-                                            CompactSessionCardView(session: session)
+                                            if !fromSession {
+                                                NavigationLink {
+                                                    SessionDetailsView(session: session, fromItem: true)
+                                                } label: {
+                                                    CompactSessionCardView(session: session)
+                                                }
+                                                .tint(.primary)
+                                            } else {
+                                                CompactSessionCardView(session: session)
+                                            }
                                         }
                                     }
                                     .padding(.horizontal)
@@ -222,6 +233,7 @@ struct ItemDetailsView: View {
                 }
             }
             .navigationTitle(item.name)
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 Menu("Options", systemImage: "ellipsis") {
                     Button(role: .destructive) {
@@ -230,7 +242,6 @@ struct ItemDetailsView: View {
                         Label("Delete", systemImage: "trash")
                     }
                 }
-                
             }
             .alert("Are you sure you want to delete \(item.name)?", isPresented: $isDeleting) {
                 Button("Yes", role: .destructive) {

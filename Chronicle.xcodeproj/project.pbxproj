@@ -19,6 +19,7 @@
 		7E2504E22C769C0800496296 /* Cannabinoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504E12C769C0800496296 /* Cannabinoid.swift */; };
 		7E2504E42C769C4500496296 /* Terpene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504E32C769C4500496296 /* Terpene.swift */; };
 		7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */; };
+		7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E523C162C77990D005B6186 /* SessionDetailsView.swift */; };
 		7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301E72C74F44000909048 /* StrainDetailsView.swift */; };
 		7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EA2C74F97500909048 /* DashboardView.swift */; };
 		7E5301ED2C74F98200909048 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EC2C74F98200909048 /* JournalView.swift */; };
@@ -62,6 +63,7 @@
 		7E2504E12C769C0800496296 /* Cannabinoid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cannabinoid.swift; sourceTree = "<group>"; };
 		7E2504E32C769C4500496296 /* Terpene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terpene.swift; sourceTree = "<group>"; };
 		7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModelContainer.swift; sourceTree = "<group>"; };
+		7E523C162C77990D005B6186 /* SessionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailsView.swift; sourceTree = "<group>"; };
 		7E5301E72C74F44000909048 /* StrainDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailsView.swift; sourceTree = "<group>"; };
 		7E5301EA2C74F97500909048 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		7E5301EC2C74F98200909048 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				7E951D042C73E7E20023922C /* CompactSessionCardView.swift */,
+				7E523C162C77990D005B6186 /* SessionDetailsView.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				7E08D41C2C6BD9A400F96328 /* StrainType.swift in Sources */,
 				7E7A05832C64621100BA0497 /* Effect.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
+				7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */,
 				7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */,
 				7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */,
 				7E08D4252C6C0C9F00F96328 /* EffectType.swift in Sources */,

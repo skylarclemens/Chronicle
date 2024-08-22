@@ -42,6 +42,7 @@ extension Item {
             SessionFlavor(flavor: Flavor.predefinedFlavors[1])
         ]
         session.notes = "Yay"
+        session.duration = 1000
         sample.sessions.append(session)
         
         let imageData = UIImage(named: "edibles-jar")?.pngData()
@@ -49,6 +50,7 @@ extension Item {
         
         if let imageData, let imageData2 {
             sample.imagesData = [imageData, imageData2]
+            session.imagesData = [imageData, imageData2]
         }
         
         return sample

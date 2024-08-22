@@ -11,7 +11,6 @@ import SwiftData
 struct CompactSessionCardView: View {
     @Environment(\.modelContext) var modelContext
     var session: Session?
-    @State private var isDeleting = false
     
     var body: some View {
         if let session {
@@ -41,18 +40,6 @@ struct CompactSessionCardView: View {
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Menu {
-                            Button(role: .destructive) {
-                                isDeleting = true
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .font(.system(size: 20))
-                                .tint(.secondary)
-                                .padding(.vertical, 4)
-                        }
                     }
                     .padding(.vertical, 4)
                 }
@@ -66,42 +53,6 @@ struct CompactSessionCardView: View {
                     .strokeBorder(.bar, lineWidth: 1)
                     .allowsHitTesting(false)
             )
-            .alert("Are you sure you want to delete \(session.title)?", isPresented: $isDeleting) {
-                Button("Yes", role: .destructive) {
-                    delete(session)
-                }
-            }
-        }
-    }
-    
-    private func delete(_ session: Session) {
-        updateItemEffectsAndFlavors()
-        withAnimation {
-            modelContext.delete(session)
-        }
-    }
-    
-    private func updateItemEffectsAndFlavors() {
-        guard let session, let item = session.item else { return }
-        
-        for effect in session.effects {
-            if let existingEffect = item.effects.first(where: { $0.effect.id == effect.effect.id }) {
-                existingEffect.count -= 1
-                existingEffect.totalIntensity -= effect.intensity
-                if existingEffect.count == 0 {
-                    modelContext.delete(existingEffect)
-                }
-            }
-        }
-        
-        for flavor in session.flavors {
-            if let existingFlavor = item.flavors.first(where: { $0.flavor.id == flavor.flavor.id }) {
-                existingFlavor.count -= 1
-                existingFlavor.totalIntensity -= (flavor.intensity ?? 0)
-                if existingFlavor.count == 0 {
-                    modelContext.delete(existingFlavor)
-                }
-            }
         }
     }
 }

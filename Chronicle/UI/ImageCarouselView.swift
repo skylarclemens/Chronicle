@@ -33,7 +33,6 @@ struct ImageCarouselView: View {
                     .strokeBorder(.bar)
                     .allowsHitTesting(false)
             )
-            .padding(.vertical)
         }
     }
 }
