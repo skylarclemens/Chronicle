@@ -47,10 +47,15 @@ extension Item {
         
         let imageData = UIImage(named: "edibles-jar")?.pngData()
         let imageData2 = UIImage(named: "pre-roll")?.pngData()
+        let imageData3 = UIImage(named: "edibles-jar")?.pngData()
+        let imageData4 = UIImage(named: "edibles-jar")?.pngData()
+        let imageData5 = UIImage(named: "pre-roll")?.pngData()
         
         if let imageData, let imageData2 {
             sample.imagesData = [imageData, imageData2]
-            session.imagesData = [imageData, imageData2]
+            if let imageData3, let imageData4, let imageData5 {
+                session.imagesData = [imageData, imageData2, imageData3, imageData4, imageData5]
+            }
         }
         
         return sample

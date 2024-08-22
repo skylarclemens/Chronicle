@@ -15,14 +15,7 @@ struct CompactSessionCardView: View {
     var body: some View {
         if let session {
             VStack {
-                if let imagesData = session.imagesData, !imagesData.isEmpty,
-                   let uiImage = UIImage(data: imagesData[0]) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: 110)
-                        .clipShape(.rect(cornerRadius: 6))
-                }
+                ImageGridView(imagesData: session.imagesData, height: 150, cornerRadius: 6)
                 Spacer()
                 VStack(alignment: .leading) {
                     HStack {

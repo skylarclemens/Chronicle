@@ -33,7 +33,8 @@ struct SessionDetailsView: View {
         if let session {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ImageCarouselView(imagesData: session.imagesData)
+                    ImageGridView(imagesData: session.imagesData, cornerRadius: 4)
+                        .padding(.vertical)
                     Text(session.title)
                         .font(.system(.title, design: .rounded))
                         .fontWeight(.semibold)
