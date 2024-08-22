@@ -316,6 +316,7 @@ struct AddItemAdditionalInfoView: View {
         newItem.dosageAmount = viewModel.dosageAmount
         newItem.dosageUnit = viewModel.dosageUnit
         newItem.composition = viewModel.cannabinoids
+        newItem.terpenes = viewModel.terpenes
         newItem.ingredients = viewModel.ingredients
         newItem.purchasePrice = viewModel.purchasePrice
         newItem.purchaseLocation = viewModel.purchaseLocation

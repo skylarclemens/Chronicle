@@ -26,11 +26,10 @@ struct CannabinoidInputView: View {
                 TextField("THC, CBD, etc.", text: $newCannabinoidName)
                     .textFieldStyle(.roundedBorder)
                 HStack {
-                    TextField("Percentage", value: $newCannabinoidValue, format: .number)
+                    TextField("Percentage", value: $newCannabinoidValue, format: .percent)
                         .textFieldStyle(.roundedBorder)
                         .keyboardType(.decimalPad)
                         .frame(maxWidth: 68)
-                    Text("%")
                 }
                 Button {
                     addCannabinoid()
