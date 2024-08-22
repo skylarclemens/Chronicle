@@ -353,8 +353,8 @@ class AddItemViewModel {
     var dosageAmount: Double?
     var dosageUnit: String = ""
     var subtype: String = ""
-    var cannabinoids: [String: Double] = [:]
-    var terpenes: [String] = []
+    var cannabinoids: [Cannabinoid] = []
+    var terpenes: [Terpene] = []
     var ingredients: [String] = []
     var purchasePrice: Double?
     var purchaseLocation: String = ""

@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct TerpeneInputView: View {
-    @Binding var terpenes: [String]
+    @Binding var terpenes: [Terpene]
     @State private var newTerpene: String = ""
     
     var body: some View {
         List {
             ForEach(terpenes, id: \.self) { terpene in
-                Text(terpene)
+                Text(terpene.name)
             }
             .onDelete(perform: deleteTerpene)
             HStack {
@@ -31,7 +31,8 @@ struct TerpeneInputView: View {
     }
     
     private func addNewTerpene() {
-        terpenes.append(newTerpene)
+        let terpene = Terpene(name: newTerpene)
+        terpenes.append(terpene)
         newTerpene = ""
     }
     
@@ -41,7 +42,7 @@ struct TerpeneInputView: View {
 }
 
 #Preview {
-    @State var terpenes: [String] = []
+    @State var terpenes: [Terpene] = []
     return Form {
         TerpeneInputView(terpenes: $terpenes)
     }

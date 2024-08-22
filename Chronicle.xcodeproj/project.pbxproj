@@ -16,6 +16,8 @@
 		7E2504DA2C76838500496296 /* ColorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504D92C76838500496296 /* ColorData.swift */; };
 		7E2504DD2C768CDB00496296 /* DetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504DC2C768CDB00496296 /* DetailSection.swift */; };
 		7E2504DF2C7693F200496296 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504DE2C7693F200496296 /* ImageCarouselView.swift */; };
+		7E2504E22C769C0800496296 /* Cannabinoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504E12C769C0800496296 /* Cannabinoid.swift */; };
+		7E2504E42C769C4500496296 /* Terpene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504E32C769C4500496296 /* Terpene.swift */; };
 		7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301E72C74F44000909048 /* StrainDetailsView.swift */; };
 		7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EA2C74F97500909048 /* DashboardView.swift */; };
 		7E5301ED2C74F98200909048 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EC2C74F98200909048 /* JournalView.swift */; };
@@ -56,6 +58,8 @@
 		7E2504D92C76838500496296 /* ColorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorData.swift; sourceTree = "<group>"; };
 		7E2504DC2C768CDB00496296 /* DetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSection.swift; sourceTree = "<group>"; };
 		7E2504DE2C7693F200496296 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
+		7E2504E12C769C0800496296 /* Cannabinoid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cannabinoid.swift; sourceTree = "<group>"; };
+		7E2504E32C769C4500496296 /* Terpene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terpene.swift; sourceTree = "<group>"; };
 		7E5301E72C74F44000909048 /* StrainDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailsView.swift; sourceTree = "<group>"; };
 		7E5301EA2C74F97500909048 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		7E5301EC2C74F98200909048 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
@@ -131,6 +135,15 @@
 				7E2504DE2C7693F200496296 /* ImageCarouselView.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		7E2504E02C769BEF00496296 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				7E2504E12C769C0800496296 /* Cannabinoid.swift */,
+				7E2504E32C769C4500496296 /* Terpene.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 		7E5301E42C74490300909048 /* Strain */ = {
@@ -253,6 +266,7 @@
 		7EE6261B2C6A947700448F80 /* Item */ = {
 			isa = PBXGroup;
 			children = (
+				7E2504E02C769BEF00496296 /* Details */,
 				7EC008F02C5EEDE80093217B /* Item.swift */,
 				7EE6261C2C6A948500448F80 /* ItemType.swift */,
 			);
@@ -359,11 +373,13 @@
 				7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */,
 				7E08D4252C6C0C9F00F96328 /* EffectType.swift in Sources */,
 				7ECAFC2A2C6421310056A44E /* ModelPreview.swift in Sources */,
+				7E2504E42C769C4500496296 /* Terpene.swift in Sources */,
 				7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */,
 				7E5301EF2C74F99B00909048 /* InventoryView.swift in Sources */,
 				7E7A05892C64622200BA0497 /* SessionFlavor.swift in Sources */,
 				7E5301ED2C74F98200909048 /* JournalView.swift in Sources */,
 				7E7A05872C64621C00BA0497 /* SessionEffect.swift in Sources */,
+				7E2504E22C769C0800496296 /* Cannabinoid.swift in Sources */,
 				7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,

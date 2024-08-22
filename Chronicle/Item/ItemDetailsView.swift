@@ -32,7 +32,7 @@ struct ItemDetailsView: View {
     var body: some View {
         if let item {
             ScrollView {
-                VStack {
+                VStack(spacing: 16) {
                     VStack(alignment: .leading) {
                         HStack {
                             Text(item.type.label())
@@ -149,8 +149,56 @@ struct ItemDetailsView: View {
                                 }
                             }
                         }
-                        .padding()
+                        .padding(.horizontal)
                     }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Details")
+                            .font(.headline)
+                        if !item.composition.isEmpty {
+                            DetailSection(header: "Cannabinoids", isScrollView: true) {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack {
+                                        ForEach(item.composition) { cannabinoid in
+                                            HStack(spacing: 12) {
+                                                Text(cannabinoid.name)
+                                                    .bold()
+                                                Text(cannabinoid.value, format: .percent)
+                                                    .foregroundStyle(.secondary)
+                                            }
+                                            .padding(.vertical, 6)
+                                            .padding(.horizontal, 12)
+                                            .background(.tertiary,
+                                                        in: RoundedRectangle(cornerRadius: 12))
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
+                            }
+                        }
+                        if !item.terpenes.isEmpty {
+                            DetailSection(header: "Terpenes", isScrollView: true) {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack {
+                                        ForEach(item.terpenes) { terpene in
+                                            HStack {
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .frame(maxWidth: 3, maxHeight: 14)
+                                                    .foregroundStyle(terpene.color.color)
+                                                Text(terpene.name)
+                                            }
+                                            .padding(.vertical, 6)
+                                            .padding(.horizontal, 10)
+                                            .background(terpene.color.color.opacity(0.2),
+                                                        in: RoundedRectangle(cornerRadius: 12))
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
                     
                     if !item.sessions.isEmpty {
                         VStack(alignment: .leading) {

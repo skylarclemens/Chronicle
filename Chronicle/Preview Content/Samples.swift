@@ -22,11 +22,14 @@ extension Item {
             ItemFlavor(flavor: Flavor.predefinedFlavors[1], count: 1)
         ]
         sample.composition = [
-            "THC": 99.9,
-            "CBD": 80.2,
-            "CBG": 20,
+            Cannabinoid(name: "THC", value: 0.99),
+            Cannabinoid(name: "CBD", value: 0.99),
+            Cannabinoid(name: "CBG", value: 0.99),
         ]
-        sample.terpenes = ["Myrcene", "Pipene"]
+        sample.terpenes = [
+            Terpene.predefinedTerpenes[0],
+            Terpene.predefinedTerpenes[1]
+        ]
         sample.strain = Strain(name: "Blue Dream", type: .hybrid)
         let session = Session(title: "Test sesh")
         session.effects = [

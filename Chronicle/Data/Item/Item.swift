@@ -19,9 +19,9 @@ import SwiftData
     public var amount: Double
     public var dosageAmount: Double?
     public var dosageUnit: String?
-    public var composition: [String: Double] // ["THC": 99.9]
-    public var terpenes: [String] = []
-    public var ingredients: [String] = []
+    public var composition: [Cannabinoid]
+    public var terpenes: [Terpene]
+    public var ingredients: [String]
     public var purchasePrice: Double?
     public var purchaseDate: Date?
     public var purchaseLocation: String?
@@ -49,7 +49,7 @@ import SwiftData
         }
     }
     
-    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, composition: [String: Double] = [:], effects: [ItemEffect] = [], flavors: [ItemFlavor] = [], sessions: [Session] = []) {
+    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, composition: [Cannabinoid] = [], terpenes: [Terpene] = [], ingredients: [String] = [], effects: [ItemEffect] = [], flavors: [ItemFlavor] = [], sessions: [Session] = []) {
         self.id = id
         self.name = name
         self.strain = strain
@@ -57,6 +57,8 @@ import SwiftData
         self.type = type
         self.amount = amount
         self.composition = composition
+        self.terpenes = terpenes
+        self.ingredients = ingredients
         self.effects = effects
         self.flavors = flavors
         self.sessions = sessions
