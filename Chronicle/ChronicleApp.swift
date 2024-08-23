@@ -10,9 +10,12 @@ import SwiftData
 
 @main
 struct ChronicleApp: App {
+    @State private var imageViewManager = ImageViewManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(imageViewManager)
         }
         .modelContainer(SharedModelContainer.create())
     }

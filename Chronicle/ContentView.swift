@@ -10,6 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(ImageViewManager.self) var imageViewManager
 
     var body: some View {
         TabView {
@@ -27,6 +28,11 @@ struct ContentView: View {
                 }
         }
         .preferredColorScheme(.dark)
+        .overlay {
+            if imageViewManager.showImageViewer {
+                ImageViewerView()
+            }
+        }
     }
 }
 
@@ -36,4 +42,5 @@ struct ContentView: View {
     
     return ContentView()
         .modelContainer(modelPreview.container)
+        .environment(ImageViewManager())
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 @Model public class Item {
     @Attribute(.unique) public var id: UUID

@@ -15,7 +15,7 @@ struct CompactSessionCardView: View {
     var body: some View {
         if let session {
             VStack {
-                ImageGridView(imagesData: session.imagesData, height: 150, cornerRadius: 6)
+                ImageGridView(imagesData: session.imagesData, height: 150, cornerRadius: 6, allowImageViewer: false)
                 Spacer()
                 VStack(alignment: .leading) {
                     HStack {

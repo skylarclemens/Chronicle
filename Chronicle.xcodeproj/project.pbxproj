@@ -18,6 +18,8 @@
 		7E2504DF2C7693F200496296 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504DE2C7693F200496296 /* ImageCarouselView.swift */; };
 		7E2504E22C769C0800496296 /* Cannabinoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504E12C769C0800496296 /* Cannabinoid.swift */; };
 		7E2504E42C769C4500496296 /* Terpene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504E32C769C4500496296 /* Terpene.swift */; };
+		7E309D992C792DF40004A25A /* ImageViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E309D982C792DF40004A25A /* ImageViewerView.swift */; };
+		7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E309D9B2C7936EC0004A25A /* ImageViewManager.swift */; };
 		7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */; };
 		7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E523C162C77990D005B6186 /* SessionDetailsView.swift */; };
 		7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E523C182C77BFD6005B6186 /* ImageGridView.swift */; };
@@ -63,6 +65,8 @@
 		7E2504DE2C7693F200496296 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
 		7E2504E12C769C0800496296 /* Cannabinoid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cannabinoid.swift; sourceTree = "<group>"; };
 		7E2504E32C769C4500496296 /* Terpene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terpene.swift; sourceTree = "<group>"; };
+		7E309D982C792DF40004A25A /* ImageViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerView.swift; sourceTree = "<group>"; };
+		7E309D9B2C7936EC0004A25A /* ImageViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewManager.swift; sourceTree = "<group>"; };
 		7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModelContainer.swift; sourceTree = "<group>"; };
 		7E523C162C77990D005B6186 /* SessionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailsView.swift; sourceTree = "<group>"; };
 		7E523C182C77BFD6005B6186 /* ImageGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridView.swift; sourceTree = "<group>"; };
@@ -137,9 +141,8 @@
 		7E2504DB2C768CA900496296 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				7E523C1A2C77E0DE005B6186 /* Images */,
 				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
-				7E2504DE2C7693F200496296 /* ImageCarouselView.swift */,
-				7E523C182C77BFD6005B6186 /* ImageGridView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -151,6 +154,24 @@
 				7E2504E32C769C4500496296 /* Terpene.swift */,
 			);
 			path = Details;
+			sourceTree = "<group>";
+		};
+		7E309D9A2C7936DD0004A25A /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				7E309D9B2C7936EC0004A25A /* ImageViewManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		7E523C1A2C77E0DE005B6186 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				7E2504DE2C7693F200496296 /* ImageCarouselView.swift */,
+				7E523C182C77BFD6005B6186 /* ImageGridView.swift */,
+				7E309D982C792DF40004A25A /* ImageViewerView.swift */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		7E5301E42C74490300909048 /* Strain */ = {
@@ -262,6 +283,7 @@
 		7EC008FC2C5EF1A00093217B /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				7E309D9A2C7936DD0004A25A /* Managers */,
 				7EE6261B2C6A947700448F80 /* Item */,
 				7E08D41A2C6BD99100F96328 /* Strain */,
 				7E7A05812C6461FB00BA0497 /* Flavor */,
@@ -377,6 +399,7 @@
 				7E7A05852C64621600BA0497 /* Flavor.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
 				7E08D41C2C6BD9A400F96328 /* StrainType.swift in Sources */,
+				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
 				7E7A05832C64621100BA0497 /* Effect.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
 				7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */,
@@ -398,6 +421,7 @@
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
 				7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */,
 				7EC008F12C5EEDE80093217B /* Item.swift in Sources */,
+				7E309D992C792DF40004A25A /* ImageViewerView.swift in Sources */,
 				7EC008ED2C5EEDE80093217B /* ChronicleApp.swift in Sources */,
 				7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */,
 				7E2504DD2C768CDB00496296 /* DetailSection.swift in Sources */,

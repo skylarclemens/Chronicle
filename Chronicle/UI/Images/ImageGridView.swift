@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct ImageGridView: View {
+    @Environment(ImageViewManager.self) var imageViewManager
     var imagesData: [Data]?
     var spacing: CGFloat = 8
     var height: CGFloat = 200
     var cornerRadius: CGFloat = 10
+    @State var selectedImageIndex = 0
+    @State var allowImageViewer = true
     
     var body: some View {
         if let imagesData {
@@ -33,6 +36,13 @@ struct ImageGridView: View {
                             .scaledToFill()
                             .frame(width: primaryWidth, height: totalHeight)
                             .clipShape(.rect(cornerRadius: cornerRadius))
+                            .onTapGestureIf(allowImageViewer) {
+                                if allowImageViewer {
+                                    imageViewManager.imagesToShow = imagesData
+                                    imageViewManager.selectedImage = 0
+                                    imageViewManager.showImageViewer = true
+                                }
+                            }
                     }
                     if imagesData.count > 1 {
                         VStack(spacing: imagesData.count == 2 ? 0 : spacing) {
@@ -43,6 +53,13 @@ struct ImageGridView: View {
                                         .scaledToFill()
                                         .frame(width: secondaryWidth, height: imagesData.count == 2 ? totalHeight : halfHeight)
                                         .clipShape(.rect(cornerRadius: cornerRadius))
+                                        .onTapGestureIf(allowImageViewer) {
+                                            if allowImageViewer {
+                                                imageViewManager.imagesToShow = imagesData
+                                                imageViewManager.selectedImage = 1
+                                                imageViewManager.showImageViewer = true
+                                            }
+                                        }
                                 }
                             }
                             HStack(spacing: spacing) {
@@ -53,6 +70,13 @@ struct ImageGridView: View {
                                             .scaledToFill()
                                             .frame(width: secondaryWidth, height: halfHeight)
                                             .clipShape(.rect(cornerRadius: cornerRadius))
+                                            .onTapGestureIf(allowImageViewer) {
+                                                if allowImageViewer {
+                                                    imageViewManager.imagesToShow = imagesData
+                                                    imageViewManager.selectedImage = 2
+                                                    imageViewManager.showImageViewer = true
+                                                }
+                                            }
                                     }
                                 } else if imagesData.count >= 4 {
                                     if let uiImage = UIImage(data: imagesData[2]) {
@@ -61,6 +85,13 @@ struct ImageGridView: View {
                                             .scaledToFill()
                                             .frame(width: tertiaryWidth, height: halfHeight)
                                             .clipShape(.rect(cornerRadius: cornerRadius))
+                                            .onTapGestureIf(allowImageViewer) {
+                                                if allowImageViewer {
+                                                    imageViewManager.imagesToShow = imagesData
+                                                    imageViewManager.selectedImage = 2
+                                                    imageViewManager.showImageViewer = true
+                                                }
+                                            }
                                     }
                                     if let uiImage = UIImage(data: imagesData[3]) {
                                         ZStack {
@@ -74,6 +105,13 @@ struct ImageGridView: View {
                                                     RoundedRectangle(cornerRadius: cornerRadius)
                                                         .fill(.black.opacity(imagesData.count > 4 ? 0.15 : 0))
                                                 )
+                                                .onTapGestureIf(allowImageViewer) {
+                                                    if allowImageViewer {
+                                                        imageViewManager.imagesToShow = imagesData
+                                                        imageViewManager.selectedImage = 3
+                                                        imageViewManager.showImageViewer = true
+                                                    }
+                                                }
                                             if imagesData.count > 4 {
                                                 Text("+\(imagesData.indices.count - 3)")
                                                     .font(.system(.headline, design: .rounded))
@@ -89,6 +127,15 @@ struct ImageGridView: View {
             }
             .frame(height: height)
         }
+    }
+}
+
+extension View {
+    func onTapGestureIf(_ condition: Bool, closure: @escaping () -> ()) -> some View {
+        self.allowsHitTesting(condition)
+            .onTapGesture {
+                closure()
+            }
     }
 }
 

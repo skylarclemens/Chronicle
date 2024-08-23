@@ -13,6 +13,7 @@ struct SessionDetailsView: View {
     @Environment(\.dismiss) var dismiss
     var session: Session?
     @State private var isDeleting = false
+
     var fromItem: Bool = false
     
     var sortedMoodEffects: [SessionEffect] {
@@ -242,5 +243,6 @@ struct SessionDetailsView: View {
     
     return NavigationStack {
         SessionDetailsView(session: item.sessions[0])
+            .environment(ImageViewManager())
     }
 }
