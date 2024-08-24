@@ -37,7 +37,7 @@ struct ImageGridView: View {
                             .frame(width: primaryWidth, height: totalHeight)
                             .clipShape(.rect(cornerRadius: cornerRadius))
                             .onTapGestureIf(allowImageViewer) {
-                                if allowImageViewer {
+                                withAnimation {
                                     imageViewManager.imagesToShow = imagesData
                                     imageViewManager.selectedImage = 0
                                     imageViewManager.showImageViewer = true
@@ -54,11 +54,9 @@ struct ImageGridView: View {
                                         .frame(width: secondaryWidth, height: imagesData.count == 2 ? totalHeight : halfHeight)
                                         .clipShape(.rect(cornerRadius: cornerRadius))
                                         .onTapGestureIf(allowImageViewer) {
-                                            if allowImageViewer {
-                                                imageViewManager.imagesToShow = imagesData
-                                                imageViewManager.selectedImage = 1
-                                                imageViewManager.showImageViewer = true
-                                            }
+                                            imageViewManager.imagesToShow = imagesData
+                                            imageViewManager.selectedImage = 1
+                                            imageViewManager.showImageViewer = true
                                         }
                                 }
                             }
@@ -71,11 +69,9 @@ struct ImageGridView: View {
                                             .frame(width: secondaryWidth, height: halfHeight)
                                             .clipShape(.rect(cornerRadius: cornerRadius))
                                             .onTapGestureIf(allowImageViewer) {
-                                                if allowImageViewer {
-                                                    imageViewManager.imagesToShow = imagesData
-                                                    imageViewManager.selectedImage = 2
-                                                    imageViewManager.showImageViewer = true
-                                                }
+                                                imageViewManager.imagesToShow = imagesData
+                                                imageViewManager.selectedImage = 2
+                                                imageViewManager.showImageViewer = true
                                             }
                                     }
                                 } else if imagesData.count >= 4 {
@@ -86,11 +82,9 @@ struct ImageGridView: View {
                                             .frame(width: tertiaryWidth, height: halfHeight)
                                             .clipShape(.rect(cornerRadius: cornerRadius))
                                             .onTapGestureIf(allowImageViewer) {
-                                                if allowImageViewer {
-                                                    imageViewManager.imagesToShow = imagesData
-                                                    imageViewManager.selectedImage = 2
-                                                    imageViewManager.showImageViewer = true
-                                                }
+                                                imageViewManager.imagesToShow = imagesData
+                                                imageViewManager.selectedImage = 2
+                                                imageViewManager.showImageViewer = true
                                             }
                                     }
                                     if let uiImage = UIImage(data: imagesData[3]) {
@@ -106,7 +100,7 @@ struct ImageGridView: View {
                                                         .fill(.black.opacity(imagesData.count > 4 ? 0.15 : 0))
                                                 )
                                                 .onTapGestureIf(allowImageViewer) {
-                                                    if allowImageViewer {
+                                                    withAnimation {
                                                         imageViewManager.imagesToShow = imagesData
                                                         imageViewManager.selectedImage = 3
                                                         imageViewManager.showImageViewer = true

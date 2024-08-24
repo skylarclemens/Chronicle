@@ -10,10 +10,16 @@ import SwiftUI
 struct ImageViewerView: View {
     @Environment(ImageViewManager.self) var imageViewManager
     
+    @State private var currentMagnify = 0.0
+    @State private var finalMagnify = 1.0
+    
+    //@GestureState private var zoom = 1.0
+    
     var body: some View {
         if let imagesData = imageViewManager.imagesToShow, !imagesData.isEmpty {
             ZStack {
-                Color.black
+                Rectangle()
+                    .fill(.regularMaterial)
                     .ignoresSafeArea()
                 TabView(selection: imageViewManager.selectedImageBinding) {
                     ForEach(0..<imagesData.count, id: \.self) { imageIndex in
@@ -21,6 +27,27 @@ struct ImageViewerView: View {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .scaleEffect(finalMagnify + currentMagnify)
+                                .gesture(
+                                    MagnifyGesture()
+                                        .onChanged { value in
+                                            currentMagnify = value.magnification - 1
+                                        }
+                                        .onEnded { value in
+                                            withAnimation {
+                                                let val = finalMagnify + currentMagnify
+                                                print(val)
+                                                if val < 1.0 {
+                                                    finalMagnify = 1.0
+                                                } else {
+                                                    finalMagnify = val
+                                                }
+                            
+                                                currentMagnify = 0
+                                            }
+                                        }
+
+                                )
                                 .tag(imageIndex)
                         }
                     }
@@ -30,9 +57,9 @@ struct ImageViewerView: View {
             }
             .overlay(alignment: .topTrailing) {
                 Button("", systemImage: "xmark.circle.fill") {
-                    imageViewManager.showImageViewer = false
-                    imageViewManager.selectedImage = 0
-                    imageViewManager.imagesToShow = nil
+                    withAnimation {
+                        imageViewManager.showImageViewer = false
+                    }
                 }
                 .font(.title)
                 .foregroundStyle(.primary, .tertiary)
