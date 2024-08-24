@@ -74,7 +74,7 @@ struct ItemTypeSelectionView: View {
             .buttonStyle(.borderless)
             Spacer()
             NavigationLink {
-                AddItemBasicsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
+                ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -100,7 +100,7 @@ struct ItemTypeSelectionView: View {
     }
 }
 
-struct AddItemBasicsView: View {
+struct ItemEditorBasicsView: View {
     @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
     var item: Item?
@@ -166,7 +166,7 @@ struct AddItemBasicsView: View {
             }
             Spacer()
             NavigationLink {
-                AddItemDetailsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
+                ItemEditorDetailsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -198,7 +198,7 @@ struct AddItemBasicsView: View {
     }
 }
 
-struct AddItemDetailsView: View {
+struct ItemEditorDetailsView: View {
     @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
     var item: Item?
@@ -438,7 +438,7 @@ class ItemEditorViewModel {
     @State var viewModel = ItemEditorViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
-        AddItemBasicsView(viewModel: $viewModel, parentDismiss: dismiss)
+        ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: dismiss)
     }
 }
 
@@ -447,7 +447,7 @@ class ItemEditorViewModel {
     @State var viewModel = ItemEditorViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
-        AddItemDetailsView(viewModel: $viewModel, parentDismiss: dismiss)
+        ItemEditorDetailsView(viewModel: $viewModel, parentDismiss: dismiss)
     }
 }
 
