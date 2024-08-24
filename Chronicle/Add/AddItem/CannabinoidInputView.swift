@@ -8,35 +8,16 @@
 import SwiftUI
 
 struct CannabinoidInputView: View {
-    @Binding var cannabinoids: [String: Double]
+    @Binding var cannabinoids: [Cannabinoid]
     @State private var newCannabinoidName: String = ""
     @State private var newCannabinoidValue: Double = 0.0
     
     var body: some View {
         List {
-            ForEach(Array(cannabinoids.keys.sorted()), id: \.self) { key in
+            ForEach(cannabinoids, id: \.self) { cannabinoid in
                 HStack {
-                    TextField("Cannabinoid", text: Binding(
-                        get: { key },
-                        set: { newKey in
-                            if let value = cannabinoids.removeValue(forKey: key) {
-                                cannabinoids[newKey] = value
-                            }
-                        }
-                    ))
-                    .textFieldStyle(.roundedBorder)
-                    HStack {
-                        TextField("Percentage", value: Binding(
-                            get: { cannabinoids[key] ?? 0.0 },
-                            set: { newValue in
-                                cannabinoids[key] = newValue
-                            }
-                        ), format: .number)
-                        .textFieldStyle(.roundedBorder)
-                        .keyboardType(.decimalPad)
-                        .frame(maxWidth: 68)
-                        Text("%")
-                    }
+                    Text(cannabinoid.name)
+                    Text(cannabinoid.value, format: .percent)
                 }
             }
             .onDelete(perform: deleteCannabinoid)
@@ -45,11 +26,10 @@ struct CannabinoidInputView: View {
                 TextField("THC, CBD, etc.", text: $newCannabinoidName)
                     .textFieldStyle(.roundedBorder)
                 HStack {
-                    TextField("Percentage", value: $newCannabinoidValue, format: .number)
+                    TextField("Percentage", value: $newCannabinoidValue, format: .percent)
                         .textFieldStyle(.roundedBorder)
                         .keyboardType(.decimalPad)
                         .frame(maxWidth: 68)
-                    Text("%")
                 }
                 Button {
                     addCannabinoid()
@@ -63,21 +43,19 @@ struct CannabinoidInputView: View {
     }
     
     private func addCannabinoid() {
-        cannabinoids[newCannabinoidName] = newCannabinoidValue
+        let newCannabinoid = Cannabinoid(name: newCannabinoidName, value: newCannabinoidValue)
+        cannabinoids.append(newCannabinoid)
         newCannabinoidName = ""
         newCannabinoidValue = 0.0
     }
     
     private func deleteCannabinoid(at offsets: IndexSet) {
-        for index in offsets {
-            let key = Array(cannabinoids.keys.sorted())[index]
-            cannabinoids.removeValue(forKey: key)
-        }
+        cannabinoids.remove(atOffsets: offsets)
     }
 }
 
 #Preview {
-    @State var cannabinoids: [String: Double] = [:]
+    @State var cannabinoids: [Cannabinoid] = []
     return Form {
         CannabinoidInputView(cannabinoids: $cannabinoids)
     }

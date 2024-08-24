@@ -8,31 +8,37 @@
 import SwiftUI
 
 struct TerpeneInputView: View {
-    @Binding var terpenes: [String]
+    @Binding var terpenes: [Terpene]
     @State private var newTerpene: String = ""
+    @State private var selectedTerpene: Terpene?
     
     var body: some View {
-        List {
-            ForEach(terpenes, id: \.self) { terpene in
-                Text(terpene)
-            }
-            .onDelete(perform: deleteTerpene)
-            HStack {
-                TextField("Terpene", text: $newTerpene)
-                Button {
-                    addNewTerpene()
-                } label: {
-                    Image(systemName: "plus.circle.fill")
+        Group {
+            List {
+                ForEach(terpenes, id: \.self) { terpene in
+                    Text(terpene.name)
                 }
-                .disabled(newTerpene.isEmpty)
-                .padding(.leading, 16)
+                .onDelete(perform: deleteTerpene)
             }
+            Picker("Terpene", selection: $selectedTerpene) {
+                Text("None").tag(nil as Terpene?)
+                ForEach(Terpene.predefinedTerpenes, id: \.self) { terpene in
+                    Text(terpene.name)
+                        .tag(terpene as Terpene?)
+                }
+            }.pickerStyle(.navigationLink)
+            Button("Add Terpene") {
+                addNewTerpene()
+            }
+            .disabled(selectedTerpene == nil)
         }
     }
     
     private func addNewTerpene() {
-        terpenes.append(newTerpene)
-        newTerpene = ""
+        if let selectedTerpene {
+            terpenes.append(selectedTerpene)
+        }
+        selectedTerpene = nil
     }
     
     private func deleteTerpene(at offsets: IndexSet) {
@@ -41,7 +47,7 @@ struct TerpeneInputView: View {
 }
 
 #Preview {
-    @State var terpenes: [String] = []
+    @State var terpenes: [Terpene] = []
     return Form {
         TerpeneInputView(terpenes: $terpenes)
     }

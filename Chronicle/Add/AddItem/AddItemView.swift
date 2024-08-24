@@ -316,6 +316,7 @@ struct AddItemAdditionalInfoView: View {
         newItem.dosageAmount = viewModel.dosageAmount
         newItem.dosageUnit = viewModel.dosageUnit
         newItem.composition = viewModel.cannabinoids
+        newItem.terpenes = viewModel.terpenes
         newItem.ingredients = viewModel.ingredients
         newItem.purchasePrice = viewModel.purchasePrice
         newItem.purchaseLocation = viewModel.purchaseLocation
@@ -353,8 +354,8 @@ class AddItemViewModel {
     var dosageAmount: Double?
     var dosageUnit: String = ""
     var subtype: String = ""
-    var cannabinoids: [String: Double] = [:]
-    var terpenes: [String] = []
+    var cannabinoids: [Cannabinoid] = []
+    var terpenes: [Terpene] = []
     var ingredients: [String] = []
     var purchasePrice: Double?
     var purchaseLocation: String = ""

@@ -10,24 +10,13 @@ import SwiftData
 
 @main
 struct ChronicleApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-            Strain.self,
-            Session.self
-        ])
-
-        do {
-            return try ModelContainer(for: schema)
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    @State private var imageViewManager = ImageViewManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(imageViewManager)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(SharedModelContainer.create())
     }
 }

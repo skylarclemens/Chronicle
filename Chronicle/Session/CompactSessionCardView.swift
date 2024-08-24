@@ -11,19 +11,11 @@ import SwiftData
 struct CompactSessionCardView: View {
     @Environment(\.modelContext) var modelContext
     var session: Session?
-    @State private var isDeleting = false
     
     var body: some View {
         if let session {
             VStack {
-                if let imagesData = session.imagesData, !imagesData.isEmpty,
-                   let uiImage = UIImage(data: imagesData[0]) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: 110)
-                        .clipShape(.rect(cornerRadius: 6))
-                }
+                ImageGridView(imagesData: session.imagesData, height: 150, cornerRadius: 6, allowImageViewer: false)
                 Spacer()
                 VStack(alignment: .leading) {
                     HStack {
@@ -41,18 +33,6 @@ struct CompactSessionCardView: View {
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Menu {
-                            Button(role: .destructive) {
-                                isDeleting = true
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .font(.system(size: 20))
-                                .tint(.secondary)
-                                .padding(.vertical, 4)
-                        }
                     }
                     .padding(.vertical, 4)
                 }
@@ -66,17 +46,6 @@ struct CompactSessionCardView: View {
                     .strokeBorder(.bar, lineWidth: 1)
                     .allowsHitTesting(false)
             )
-            .alert("Are you sure you want to delete \(session.title)?", isPresented: $isDeleting) {
-                Button("Yes", role: .destructive) {
-                    delete(session)
-                }
-            }
-        }
-    }
-    
-    private func delete(_ session: Session) {
-        withAnimation {
-            modelContext.delete(session)
         }
     }
 }
