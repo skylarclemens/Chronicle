@@ -148,7 +148,7 @@ struct DashboardView: View {
                     ItemEditorView()
                 }
                 .sheet(isPresented: $openAddStrain) {
-                    AddStrainView()
+                    StrainEditorView()
                 }
                 .sheet(isPresented: $openAddSession) {
                     AddSessionView()
@@ -168,4 +168,5 @@ struct DashboardView: View {
     
     return DashboardView()
         .modelContainer(modelPreview.container)
+        .environment(ImageViewManager())
 }

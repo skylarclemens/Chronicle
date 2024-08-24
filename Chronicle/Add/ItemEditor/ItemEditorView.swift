@@ -1,5 +1,5 @@
 //
-//  ItemEditor.swift
+//  ItemEditorView.swift
 //  Chronicle
 //
 //  Created by Skylar Clemens on 8/9/24.
@@ -181,7 +181,7 @@ struct ItemEditorBasicsView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if let itemType = viewModel.itemType {
-                    SelectedTypeView(selectedType: itemType)
+                    SelectedTypeView(selectedType: itemType, editing: item != nil)
                         .padding(.horizontal, 8)
                 }
             }
@@ -265,7 +265,7 @@ struct ItemEditorDetailsView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if let itemType = viewModel.itemType {
-                    SelectedTypeView(selectedType: itemType)
+                    SelectedTypeView(selectedType: itemType, editing: item != nil)
                         .padding(.horizontal, 8)
                 }
             }
@@ -330,7 +330,7 @@ struct ItemEditorAdditionalInfoView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if let itemType = viewModel.itemType {
-                    SelectedTypeView(selectedType: itemType)
+                    SelectedTypeView(selectedType: itemType, editing: item != nil)
                         .padding(.horizontal, 8)
                 }
             }
@@ -382,9 +382,11 @@ struct ItemEditorAdditionalInfoView: View {
 
 struct SelectedTypeView: View {
     let selectedType: ItemType
+    let editing: Bool
     
     var body: some View {
-        Text("New \(selectedType.label().localizedLowercase)")
+        Text("\(editing ? "Editing" : "New") \(selectedType.label().localizedLowercase)")
+            .font(.subheadline)
             .foregroundStyle(.accent)
             .buttonStyle(.borderless)
             .controlSize(.small)
