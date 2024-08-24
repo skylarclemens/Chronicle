@@ -145,7 +145,7 @@ struct DashboardView: View {
                 }
                 .navigationTitle("Dashboard")
                 .sheet(isPresented: $openAddItem) {
-                    AddItemView()
+                    ItemEditorView()
                 }
                 .sheet(isPresented: $openAddStrain) {
                     AddStrainView()
