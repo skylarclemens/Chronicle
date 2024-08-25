@@ -11,6 +11,7 @@ struct StrainDetailsView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     var strain: Strain?
+    @State private var isEditing = false
     @State private var isDeleting = false
     
     var body: some View {
@@ -26,6 +27,11 @@ struct StrainDetailsView: View {
             }
             .toolbar {
                 Menu("Options", systemImage: "ellipsis") {
+                    Button {
+                        isEditing = true
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                    }
                     Button(role: .destructive) {
                         isDeleting = true
                     } label: {
@@ -38,8 +44,11 @@ struct StrainDetailsView: View {
                     delete(strain)
                 }
             }
+            .sheet(isPresented: $isEditing) {
+                StrainEditorView(strain: strain)
+            }
         } else {
-            ContentUnavailableView("Strain unavailable", systemImage: "tray")
+            ContentUnavailableView("Strain unavailable", systemImage: "leaf")
         }
     }
     

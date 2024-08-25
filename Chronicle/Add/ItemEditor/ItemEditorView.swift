@@ -1,5 +1,5 @@
 //
-//  AddItemView.swift
+//  ItemEditorView.swift
 //  Chronicle
 //
 //  Created by Skylar Clemens on 8/9/24.
@@ -9,21 +9,41 @@ import SwiftUI
 import SwiftData
 import PhotosUI
 
-struct AddItemView: View {
+struct ItemEditorView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var viewModel = AddItemViewModel()
+    @State private var viewModel = ItemEditorViewModel()
+    var item: Item?
     
     var body: some View {
         NavigationStack {
-            ItemTypeSelectionView(viewModel: $viewModel, parentDismiss: dismiss)
+            ItemTypeSelectionView(viewModel: $viewModel, parentDismiss: dismiss, item: item)
+        }
+        .onAppear {
+            if let item {
+                viewModel.itemType = item.type
+                viewModel.name = item.name
+                viewModel.brand = item.brand ?? ""
+                viewModel.dosageAmount = item.dosageAmount
+                viewModel.dosageUnit = item.dosageUnit ?? ""
+                viewModel.subtype = item.subtype ?? ""
+                viewModel.cannabinoids = item.composition
+                viewModel.terpenes = item.terpenes
+                viewModel.ingredients = item.ingredients
+                viewModel.purchasePrice = item.purchasePrice
+                viewModel.purchaseLocation = item.purchaseLocation ?? ""
+                viewModel.purchaseDate = item.purchaseDate ?? Date()
+                viewModel.linkedStrain = item.strain
+                viewModel.selectedImagesData = item.imagesData ?? []
+            }
         }
     }
 }
 
 struct ItemTypeSelectionView: View {
-    @Binding var viewModel: AddItemViewModel
+    @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
     let columns: [GridItem] = [GridItem](repeating: GridItem(), count: 3)
+    var item: Item?
     
     var body: some View {
         VStack {
@@ -54,7 +74,7 @@ struct ItemTypeSelectionView: View {
             .buttonStyle(.borderless)
             Spacer()
             NavigationLink {
-                AddItemBasicsView(viewModel: $viewModel, parentDismiss: parentDismiss)
+                ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -65,7 +85,7 @@ struct ItemTypeSelectionView: View {
             .disabled(viewModel.itemType == nil)
         }
         .padding()
-        .navigationTitle("What are you adding?")
+        .navigationTitle(item == nil ? "What are you adding?" : "What type of item?")
         .toolbar {
             ToolbarItem(placement: .destructiveAction) {
                 Button {
@@ -80,9 +100,10 @@ struct ItemTypeSelectionView: View {
     }
 }
 
-struct AddItemBasicsView: View {
-    @Binding var viewModel: AddItemViewModel
+struct ItemEditorBasicsView: View {
+    @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
+    var item: Item?
     
     var body: some View {
         VStack {
@@ -94,15 +115,29 @@ struct AddItemBasicsView: View {
                     TextField("Brand", text: $viewModel.brand)
                 }
                 Section("Photos") {
-                    if viewModel.selectedImages.count > 0 {
+                    if viewModel.selectedImagesData.count > 0 {
                         ScrollView(.horizontal, showsIndicators: false) {
                             LazyHStack(spacing: 8) {
-                                ForEach(viewModel.selectedImages, id: \.self) { uiImage in
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 150, height: 150, alignment: .leading)
-                                        .clipShape(.rect(cornerRadius: 10))
+                                ForEach(viewModel.selectedImagesData, id: \.self) { imageData in
+                                    if let uiImage = UIImage(data: imageData) {
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 150, height: 150, alignment: .leading)
+                                            .clipShape(.rect(cornerRadius: 10))
+                                            .overlay(alignment: .topTrailing) {
+                                                Button {
+                                                    viewModel.selectedImagesData.remove(at: viewModel.selectedImagesData.firstIndex(of: imageData)!)
+                                                } label: {
+                                                    Image(systemName: "xmark.circle.fill")
+                                                        .padding(4)
+                                                        .font(.title2)
+                                                        .foregroundStyle(.primary, .secondary)
+                                                }
+                                                .buttonStyle(.plain)
+                                                
+                                            }
+                                    }
                                 }
                             }
                             .padding()
@@ -114,25 +149,24 @@ struct AddItemBasicsView: View {
                     }
                     .onChange(of: viewModel.pickerItems) { oldValues, newValues in
                         Task {
-                            viewModel.selectedImages = []
-                            viewModel.selectedImagesData = []
+                            if viewModel.pickerItems.count == 0 { return }
                             
                             for value in newValues {
-                                if let imageData = try? await value.loadTransferable(type: Data.self),
-                                    let uiImage = UIImage(data: imageData) {
-                                    viewModel.selectedImagesData.append(imageData)
+                                if let imageData = try? await value.loadTransferable(type: Data.self) {
                                     withAnimation {
-                                        viewModel.selectedImages.append(uiImage)
+                                        viewModel.selectedImagesData.append(imageData)
                                     }
                                 }
                             }
+                            
+                            viewModel.pickerItems.removeAll()
                         }
                     }
                 }
             }
             Spacer()
             NavigationLink {
-                AddItemDetailsView(viewModel: $viewModel, parentDismiss: parentDismiss)
+                ItemEditorDetailsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -147,7 +181,7 @@ struct AddItemBasicsView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if let itemType = viewModel.itemType {
-                    SelectedTypeView(selectedType: itemType)
+                    SelectedTypeView(selectedType: itemType, editing: item != nil)
                         .padding(.horizontal, 8)
                 }
             }
@@ -164,9 +198,10 @@ struct AddItemBasicsView: View {
     }
 }
 
-struct AddItemDetailsView: View {
-    @Binding var viewModel: AddItemViewModel
+struct ItemEditorDetailsView: View {
+    @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
+    var item: Item?
     
     var body: some View {
         VStack {
@@ -216,7 +251,7 @@ struct AddItemDetailsView: View {
             }
             Spacer()
             NavigationLink {
-                AddItemAdditionalInfoView(viewModel: $viewModel, parentDismiss: parentDismiss)
+                ItemEditorAdditionalInfoView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -230,7 +265,7 @@ struct AddItemDetailsView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if let itemType = viewModel.itemType {
-                    SelectedTypeView(selectedType: itemType)
+                    SelectedTypeView(selectedType: itemType, editing: item != nil)
                         .padding(.horizontal, 8)
                 }
             }
@@ -247,11 +282,12 @@ struct AddItemDetailsView: View {
     }
 }
 
-struct AddItemAdditionalInfoView: View {
+struct ItemEditorAdditionalInfoView: View {
     @Environment(\.modelContext) var modelContext
-    @Binding var viewModel: AddItemViewModel
+    @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
     @Query(sort: \Strain.name) var strains: [Strain]
+    var item: Item?
     
     var body: some View {
         VStack {
@@ -294,7 +330,7 @@ struct AddItemAdditionalInfoView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if let itemType = viewModel.itemType {
-                    SelectedTypeView(selectedType: itemType)
+                    SelectedTypeView(selectedType: itemType, editing: item != nil)
                         .padding(.horizontal, 8)
                 }
             }
@@ -311,28 +347,46 @@ struct AddItemAdditionalInfoView: View {
     }
     
     private func save() {
-        let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
-        newItem.brand = viewModel.brand
-        newItem.dosageAmount = viewModel.dosageAmount
-        newItem.dosageUnit = viewModel.dosageUnit
-        newItem.composition = viewModel.cannabinoids
-        newItem.terpenes = viewModel.terpenes
-        newItem.ingredients = viewModel.ingredients
-        newItem.purchasePrice = viewModel.purchasePrice
-        newItem.purchaseLocation = viewModel.purchaseLocation
-        newItem.purchaseDate = viewModel.purchaseDate
-        newItem.imagesData = viewModel.selectedImagesData
-        newItem.strain = viewModel.linkedStrain
-        
-        modelContext.insert(newItem)
+        if let item {
+            item.name = viewModel.name
+            item.type = viewModel.itemType ?? .other
+            item.brand = viewModel.brand
+            item.dosageAmount = viewModel.dosageAmount
+            item.dosageUnit = viewModel.dosageUnit
+            item.composition = viewModel.cannabinoids
+            item.terpenes = viewModel.terpenes
+            item.ingredients = viewModel.ingredients
+            item.purchasePrice = viewModel.purchasePrice
+            item.purchaseLocation = viewModel.purchaseLocation
+            item.purchaseDate = viewModel.purchaseDate
+            item.imagesData = viewModel.selectedImagesData
+            item.strain = viewModel.linkedStrain
+        } else {
+            let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
+            newItem.brand = viewModel.brand
+            newItem.dosageAmount = viewModel.dosageAmount
+            newItem.dosageUnit = viewModel.dosageUnit
+            newItem.composition = viewModel.cannabinoids
+            newItem.terpenes = viewModel.terpenes
+            newItem.ingredients = viewModel.ingredients
+            newItem.purchasePrice = viewModel.purchasePrice
+            newItem.purchaseLocation = viewModel.purchaseLocation
+            newItem.purchaseDate = viewModel.purchaseDate
+            newItem.imagesData = viewModel.selectedImagesData
+            newItem.strain = viewModel.linkedStrain
+            
+            modelContext.insert(newItem)
+        }
     }
 }
 
 struct SelectedTypeView: View {
     let selectedType: ItemType
+    let editing: Bool
     
     var body: some View {
-        Text("New \(selectedType.label().localizedLowercase)")
+        Text("\(editing ? "Editing" : "New") \(selectedType.label().localizedLowercase)")
+            .font(.subheadline)
             .foregroundStyle(.accent)
             .buttonStyle(.borderless)
             .controlSize(.small)
@@ -346,11 +400,11 @@ struct SelectedTypeView: View {
 }
 
 @Observable
-class AddItemViewModel {
+class ItemEditorViewModel {
+    var item: Item?
     var itemType: ItemType?
     var name: String = ""
     var brand: String = ""
-    var photos: [UIImage] = []
     var dosageAmount: Double?
     var dosageUnit: String = ""
     var subtype: String = ""
@@ -364,7 +418,6 @@ class AddItemViewModel {
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
-    var selectedImages: [UIImage] = []
 }
 
 #Preview {
@@ -372,7 +425,10 @@ class AddItemViewModel {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Item.self, configurations: config)
         
-        return AddItemView()
+        let item = Item.sampleItem
+        container.mainContext.insert(item)
+        
+        return ItemEditorView(item: item)
             .modelContainer(container)
     } catch {
         fatalError("Failed to create model container.")
@@ -381,27 +437,27 @@ class AddItemViewModel {
 
 #Preview {
     @Environment(\.dismiss) var dismiss
-    @State var viewModel = AddItemViewModel()
+    @State var viewModel = ItemEditorViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
-        AddItemBasicsView(viewModel: $viewModel, parentDismiss: dismiss)
+        ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: dismiss)
     }
 }
 
 #Preview {
     @Environment(\.dismiss) var dismiss
-    @State var viewModel = AddItemViewModel()
+    @State var viewModel = ItemEditorViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
-        AddItemDetailsView(viewModel: $viewModel, parentDismiss: dismiss)
+        ItemEditorDetailsView(viewModel: $viewModel, parentDismiss: dismiss)
     }
 }
 
 #Preview {
     @Environment(\.dismiss) var dismiss
-    @State var viewModel = AddItemViewModel()
+    @State var viewModel = ItemEditorViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
-        AddItemAdditionalInfoView(viewModel: $viewModel, parentDismiss: dismiss)
+        ItemEditorAdditionalInfoView(viewModel: $viewModel, parentDismiss: dismiss)
     }
 }

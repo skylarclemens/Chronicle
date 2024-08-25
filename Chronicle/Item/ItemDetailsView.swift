@@ -12,6 +12,8 @@ struct ItemDetailsView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     var item: Item?
+    
+    @State private var isEditing = false
     @State private var isDeleting = false
     @State private var currentImageIndex = 0
     var fromSession: Bool = false
@@ -236,6 +238,11 @@ struct ItemDetailsView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 Menu("Options", systemImage: "ellipsis") {
+                    Button {
+                        isEditing = true
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                    }
                     Button(role: .destructive) {
                         isDeleting = true
                     } label: {
@@ -247,6 +254,9 @@ struct ItemDetailsView: View {
                 Button("Yes", role: .destructive) {
                     delete(item)
                 }
+            }
+            .sheet(isPresented: $isEditing) {
+                ItemEditorView(item: item)
             }
         } else {
             ContentUnavailableView("Item unavailable", systemImage: "tray")
@@ -269,5 +279,6 @@ struct ItemDetailsView: View {
     return NavigationStack {
         ItemDetailsView(item: item)
             .modelContainer(container)
+            .environment(ImageViewManager())
     }
 }

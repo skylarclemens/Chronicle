@@ -1,5 +1,5 @@
 //
-//  AddStrainView.swift
+//  StrainEditorView.swift
 //  Chronicle
 //
 //  Created by Skylar Clemens on 8/13/24.
@@ -8,10 +8,11 @@
 import SwiftUI
 import SwiftData
 
-struct AddStrainView: View {
+struct StrainEditorView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     @State private var viewModel = AddStrainViewModel()
+    var strain: Strain?
     
     var body: some View {
         NavigationStack {
@@ -43,7 +44,7 @@ struct AddStrainView: View {
                 .disabled(viewModel.name.isEmpty)
                 .padding()
             }
-            .navigationTitle("New Strain")
+            .navigationTitle("\(strain != nil ? "Editing" : "New") Strain")
             .toolbar {
                 ToolbarItem(placement: .destructiveAction) {
                     Button {
@@ -55,14 +56,29 @@ struct AddStrainView: View {
                     .buttonStyle(.plain)
                 }
             }
+            .onAppear {
+                if let strain {
+                    viewModel.name = strain.name
+                    viewModel.type = strain.type
+                    viewModel.subtype = strain.subtype
+                    viewModel.desc = strain.desc
+                }
+            }
         }
     }
     
     private func save() {
-        let newStrain = Strain(name: viewModel.name, type: viewModel.type)
-        newStrain.desc = viewModel.desc
-        
-        modelContext.insert(newStrain)
+        if let strain {
+            strain.name = viewModel.name
+            strain.type = viewModel.type
+            strain.subtype = viewModel.subtype
+            strain.desc = viewModel.desc
+        } else {
+            let newStrain = Strain(name: viewModel.name, type: viewModel.type)
+            newStrain.desc = viewModel.desc
+            
+            modelContext.insert(newStrain)
+        }
     }
 }
 
@@ -75,5 +91,5 @@ class AddStrainViewModel {
 }
 
 #Preview {
-    return AddStrainView()
+    return StrainEditorView()
 }

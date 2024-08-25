@@ -94,10 +94,10 @@ struct ImageGridView: View {
                                                 .scaledToFill()
                                                 .frame(width: tertiaryWidth, height: halfHeight)
                                                 .clipShape(.rect(cornerRadius: cornerRadius))
-                                                .blur(radius: imagesData.count > 4 ? 5 : 0)
+                                                .blur(radius: imagesData.count > 4 ? 1 : 0)
                                                 .overlay(
                                                     RoundedRectangle(cornerRadius: cornerRadius)
-                                                        .fill(.black.opacity(imagesData.count > 4 ? 0.15 : 0))
+                                                        .fill(.black.opacity(imagesData.count > 4 ? 0.33 : 0))
                                                 )
                                                 .onTapGestureIf(allowImageViewer) {
                                                     withAnimation {
@@ -145,4 +145,5 @@ extension View {
     }
     
     return ImageGridView(imagesData: imagesData)
+        .environment(ImageViewManager())
 }

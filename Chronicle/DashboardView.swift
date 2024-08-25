@@ -145,10 +145,10 @@ struct DashboardView: View {
                 }
                 .navigationTitle("Dashboard")
                 .sheet(isPresented: $openAddItem) {
-                    AddItemView()
+                    ItemEditorView()
                 }
                 .sheet(isPresented: $openAddStrain) {
-                    AddStrainView()
+                    StrainEditorView()
                 }
                 .sheet(isPresented: $openAddSession) {
                     AddSessionView()
@@ -168,4 +168,5 @@ struct DashboardView: View {
     
     return DashboardView()
         .modelContainer(modelPreview.container)
+        .environment(ImageViewManager())
 }
