@@ -12,7 +12,6 @@
 		7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */; };
 		7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4202C6BF6DB00F96328 /* AddSessionView.swift */; };
 		7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */; };
-		7E08D4252C6C0C9F00F96328 /* EffectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4242C6C0C9F00F96328 /* EffectType.swift */; };
 		7E2504DA2C76838500496296 /* ColorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504D92C76838500496296 /* ColorData.swift */; };
 		7E2504DD2C768CDB00496296 /* DetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504DC2C768CDB00496296 /* DetailSection.swift */; };
 		7E2504DF2C7693F200496296 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504DE2C7693F200496296 /* ImageCarouselView.swift */; };
@@ -51,6 +50,9 @@
 		7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */; };
 		7EF0BB162C6D3A2D0068542D /* ItemDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0BB152C6D3A2D0068542D /* ItemDetailsView.swift */; };
 		7EF0BB182C6D3CDD0068542D /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0BB172C6D3CDD0068542D /* Samples.swift */; };
+		7EFCC60B2C7E6DB00090588D /* ItemTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60A2C7E6DB00090588D /* ItemTrait.swift */; };
+		7EFCC60D2C7E6DC40090588D /* SessionTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60C2C7E6DC40090588D /* SessionTrait.swift */; };
+		7EFCC60F2C7E6DC90090588D /* Trait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60E2C7E6DC90090588D /* Trait.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,7 +61,6 @@
 		7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		7E08D4202C6BF6DB00F96328 /* AddSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionView.swift; sourceTree = "<group>"; };
 		7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerWheel.swift; sourceTree = "<group>"; };
-		7E08D4242C6C0C9F00F96328 /* EffectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectType.swift; sourceTree = "<group>"; };
 		7E2504D92C76838500496296 /* ColorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorData.swift; sourceTree = "<group>"; };
 		7E2504DC2C768CDB00496296 /* DetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSection.swift; sourceTree = "<group>"; };
 		7E2504DE2C7693F200496296 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
@@ -99,6 +100,9 @@
 		7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsInputView.swift; sourceTree = "<group>"; };
 		7EF0BB152C6D3A2D0068542D /* ItemDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsView.swift; sourceTree = "<group>"; };
 		7EF0BB172C6D3CDD0068542D /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
+		7EFCC60A2C7E6DB00090588D /* ItemTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTrait.swift; sourceTree = "<group>"; };
+		7EFCC60C2C7E6DC40090588D /* SessionTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTrait.swift; sourceTree = "<group>"; };
+		7EFCC60E2C7E6DC90090588D /* Trait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trait.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,7 +190,6 @@
 			isa = PBXGroup;
 			children = (
 				7E7A05822C64621100BA0497 /* Effect.swift */,
-				7E08D4242C6C0C9F00F96328 /* EffectType.swift */,
 				7E7A05862C64621C00BA0497 /* SessionEffect.swift */,
 				7E5301F42C753CE500909048 /* ItemEffect.swift */,
 			);
@@ -284,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				7E309D9A2C7936DD0004A25A /* Managers */,
+				7EFCC6092C7E6DA20090588D /* Trait */,
 				7EE6261B2C6A947700448F80 /* Item */,
 				7E08D41A2C6BD99100F96328 /* Strain */,
 				7E7A05812C6461FB00BA0497 /* Flavor */,
@@ -313,6 +317,16 @@
 				7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */,
 			);
 			path = ItemEditor;
+			sourceTree = "<group>";
+		};
+		7EFCC6092C7E6DA20090588D /* Trait */ = {
+			isa = PBXGroup;
+			children = (
+				7EFCC60E2C7E6DC90090588D /* Trait.swift */,
+				7EFCC60A2C7E6DB00090588D /* ItemTrait.swift */,
+				7EFCC60C2C7E6DC40090588D /* SessionTrait.swift */,
+			);
+			path = Trait;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -398,14 +412,15 @@
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E7A05852C64621600BA0497 /* Flavor.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
+				7EFCC60D2C7E6DC40090588D /* SessionTrait.swift in Sources */,
 				7E08D41C2C6BD9A400F96328 /* StrainType.swift in Sources */,
 				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
 				7E7A05832C64621100BA0497 /* Effect.swift in Sources */,
+				7EFCC60B2C7E6DB00090588D /* ItemTrait.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
 				7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */,
 				7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */,
 				7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */,
-				7E08D4252C6C0C9F00F96328 /* EffectType.swift in Sources */,
 				7ECAFC2A2C6421310056A44E /* ModelPreview.swift in Sources */,
 				7E2504E42C769C4500496296 /* Terpene.swift in Sources */,
 				7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */,
@@ -417,6 +432,7 @@
 				7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */,
 				7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */,
+				7EFCC60F2C7E6DC90090588D /* Trait.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
 				7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */,
