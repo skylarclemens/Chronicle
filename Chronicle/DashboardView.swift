@@ -163,10 +163,7 @@ struct DashboardView: View {
 }
 
 #Preview {
-    let modelPreview = ModelPreview()
-    modelPreview.addExamples(sampleItems: Item.sampleItems)
-    
     return DashboardView()
-        .modelContainer(modelPreview.container)
+        .modelContainer(SampleData.shared.container)
         .environment(ImageViewManager())
 }

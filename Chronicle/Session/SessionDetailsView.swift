@@ -235,14 +235,9 @@ struct SessionDetailsView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Schema([Item.self, Strain.self]), configurations: config)
-    
-    let item = Item.sampleItem
-    container.mainContext.insert(item)
-    
-    return NavigationStack {
-        SessionDetailsView(session: item.sessions[0])
+    NavigationStack {
+        SessionDetailsView(session: SampleData.shared.session)
             .environment(ImageViewManager())
     }
+    .modelContainer(SampleData.shared.container)
 }

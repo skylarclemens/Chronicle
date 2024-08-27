@@ -281,15 +281,9 @@ struct ItemDetailsView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Schema([Item.self, Strain.self]), configurations: config)
-    
-    let item = Item.sampleItem
-    container.mainContext.insert(item)
-    
-    return NavigationStack {
-        ItemDetailsView(item: item)
-            .modelContainer(container)
-            .environment(ImageViewManager())
+    NavigationStack {
+        ItemDetailsView(item: SampleData.shared.item)
     }
+    .modelContainer(SampleData.shared.container)
+    .environment(ImageViewManager())
 }

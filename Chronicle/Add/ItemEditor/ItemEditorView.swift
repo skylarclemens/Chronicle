@@ -411,18 +411,8 @@ class ItemEditorViewModel {
 }
 
 #Preview {
-    do {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: Item.self, configurations: config)
-        
-        let item = Item.sampleItem
-        container.mainContext.insert(item)
-        
-        return ItemEditorView(item: item)
-            .modelContainer(container)
-    } catch {
-        fatalError("Failed to create model container.")
-    }
+    ItemEditorView(item: SampleData.shared.item)
+        .modelContainer(SampleData.shared.container)
 }
 
 #Preview {

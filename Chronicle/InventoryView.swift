@@ -44,9 +44,7 @@ struct InventoryView: View {
 }
 
 #Preview {
-    let modelPreview = ModelPreview()
-    modelPreview.addExamples(sampleItems: Item.sampleItems)
-    
     return InventoryView()
-        .modelContainer(modelPreview.container)
+        .modelContainer(SampleData.shared.container)
+        .environment(ImageViewManager())
 }

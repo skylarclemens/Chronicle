@@ -59,10 +59,8 @@ struct StrainDetailsView: View {
 }
 
 #Preview {
-    let modelPreview = ModelPreview()
-    modelPreview.addStrainExamples(sampleStrains: Strain.sampleStrains)
-    
     return NavigationStack {
-        StrainDetailsView(strain: Strain.sampleStrains[0])
+        StrainDetailsView(strain: SampleData.shared.strain)
     }
+    .modelContainer(SampleData.shared.container)
 }
