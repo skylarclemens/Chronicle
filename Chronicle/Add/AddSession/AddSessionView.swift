@@ -137,7 +137,7 @@ struct AddSessionEffectsView: View {
                             Text("Intensity: \(effect.intensity)")
                         }
                     }
-                    //.onDelete(perform: removeEffect)
+                    .onDelete(perform: viewModel.removeEffect)
                 }
             }
             Spacer()
@@ -166,7 +166,11 @@ struct AddSessionEffectsView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 Button("Add Effect") {
-                    //addEffect()
+                    if let selectedEffect {
+                        viewModel.addTrait(selectedEffect, intensity: Int(intensity))
+                        self.selectedEffect = nil
+                        intensity = 5
+                    }
                 }
                 .disabled(selectedEffect == nil)
             }
@@ -195,22 +199,6 @@ struct AddSessionEffectsView: View {
             }
         }
     }
-    
-    /*private func addEffect() {
-        if let selectedEffect = selectedEffect {
-            let sessionEffect = SessionEffect(effect: selectedEffect, intensity: Int(intensity))
-            
-            modelContext.insert(sessionEffect)
-            viewModel.effects.append(sessionEffect)
-        }
-        
-        selectedEffect = nil
-        intensity = 5
-    }
-    
-    private func removeEffect(at offsets: IndexSet) {
-        viewModel.effects.remove(atOffsets: offsets)
-    }*/
 }
 
 struct AddSessionFlavorsView: View {
@@ -230,7 +218,7 @@ struct AddSessionFlavorsView: View {
                             Text(flavor.trait.name)
                         }
                     }
-                    //.onDelete(perform: removeFlavor)
+                    .onDelete(perform: viewModel.removeFlavor)
                 }
             }
             
@@ -247,14 +235,17 @@ struct AddSessionFlavorsView: View {
                     }
                 }.pickerStyle(.navigationLink)
                 Button("Add Flavor") {
-                    //addFlavor()
+                    if let selectedFlavor {
+                        viewModel.addTrait(selectedFlavor)
+                        self.selectedFlavor = nil
+                    }
                 }
                 .disabled(selectedFlavor == nil)
             }
             
             Spacer()
             Button {
-                save()
+                viewModel.save(modelContext: modelContext)
                 parentDismiss()
             } label: {
                 Text("Save")
@@ -276,22 +267,6 @@ struct AddSessionFlavorsView: View {
                 }
                 .buttonStyle(.plain)
             }
-        }
-    }
-    
-    private func save() {
-        if let item = viewModel.item {
-            let newSession = Session(item: item)
-            newSession.date = viewModel.date
-            newSession.title = viewModel.title
-            //newSession.traits = viewModel.effects + viewModel.flavors
-            newSession.notes = viewModel.notes
-            newSession.duration = viewModel.duration
-            newSession.location = viewModel.location
-            newSession.imagesData = viewModel.selectedImagesData
-            
-            //updateItemEffectsAndFlavors()
-            modelContext.insert(newSession)
         }
     }
     
@@ -322,21 +297,6 @@ struct AddSessionFlavorsView: View {
             }
         }
     }*/
-    
-    /*private func addFlavor() {
-        if let selectedFlavor = selectedFlavor {
-            let sessionFlavor = SessionTraitViewModel(flavor: selectedFlavor)
-            
-            modelContext.insert(sessionFlavor)
-            viewModel.flavors.append(sessionFlavor)
-        }
-        
-        selectedFlavor = nil
-    }
-    
-    private func removeFlavor(at offsets: IndexSet) {
-        viewModel.flavors.remove(atOffsets: offsets)
-    }*/
 }
 
 @Observable
@@ -347,12 +307,57 @@ class AddSessionViewModel {
     var duration: Double = 0
     var effects: [SessionTraitViewModel] = []
     var flavors: [SessionTraitViewModel] = []
+    var sessionTraits: [SessionTrait] = []
     var notes: String = ""
     var location: String = ""
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
     var selectedImages: [UIImage] = []
+    
+    func save(modelContext: ModelContext) {
+        if let item {
+            let newSession = Session(item: item)
+            newSession.date = date
+            newSession.title = title
+            newSession.notes = notes
+            newSession.duration = duration
+            newSession.location = location
+            newSession.imagesData = selectedImagesData
+            
+            updateTraits(for: effects, modelContext: modelContext)
+            updateTraits(for: flavors, modelContext: modelContext)
+            
+            modelContext.insert(newSession)
+        }
+    }
+    
+    private func updateTraits(for traitViewModels: [SessionTraitViewModel], modelContext: ModelContext) {
+        if let item {
+            for traitVM in traitViewModels {
+                let itemTrait = item.traits.first { $0.trait.id == traitVM.trait.id } ?? ItemTrait(trait: traitVM.trait, item: item)
+                let sessionTrait = SessionTrait(itemTrait: itemTrait, intensity: traitVM.intensity)
+                
+                sessionTraits.append(sessionTrait)
+            }
+        }
+    }
+    
+    func addTrait(_ trait: Trait, intensity: Int = 0) {
+        if trait.type == .effect {
+            effects.append(SessionTraitViewModel(trait: trait, intensity: intensity))
+        } else if trait.type == .flavor {
+            flavors.append(SessionTraitViewModel(trait: trait))
+        }
+    }
+    
+    func removeEffect(at offsets: IndexSet) {
+        effects.remove(atOffsets: offsets)
+    }
+    
+    func removeFlavor(at offsets: IndexSet) {
+        flavors.remove(atOffsets: offsets)
+    }
 }
 
 struct SessionTraitViewModel: Identifiable, Hashable {
@@ -360,15 +365,10 @@ struct SessionTraitViewModel: Identifiable, Hashable {
     let trait: Trait
     let intensity: Int
     
-    init(trait: Trait, intensity: Int) {
+    init(trait: Trait, intensity: Int = 0) {
         self.trait = trait
         self.intensity = intensity
     }
-    
-//    init(sessionTrait: SessionTrait) {
-//        self.trait = sessionTrait.itemTrait!.trait
-//        self.intensity = sessionTrait.intensity ?? 0
-//    }
 }
 
 #Preview {

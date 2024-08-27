@@ -22,6 +22,32 @@ import SwiftUI
     @Relationship(deleteRule: .cascade)
     public var traits: [SessionTrait]
     
+    var effects: [SessionTrait] {
+        traits.filter { $0.itemTrait?.trait.type == .effect }
+    }
+    
+    var sortedMoods: [SessionTrait] {
+        let moods = effects.filter { $0.itemTrait?.trait.subtype == .mood }
+        return moods.sorted {
+            $0.intensity ?? 0 > $1.intensity ?? 0
+        }
+    }
+    
+    var sortedWellness: [SessionTrait] {
+        let wellness = effects.filter { $0.itemTrait?.trait.subtype == .wellness }
+        return wellness.sorted {
+            $0.itemTrait?.traitName ?? "" > $1.itemTrait?.traitName ?? ""
+        }
+    }
+    
+    var flavors: [SessionTrait] {
+        traits.filter { $0.itemTrait?.trait.type == .flavor }
+    }
+    
+    var sortedFlavors: [SessionTrait] {
+        return flavors.sorted { $0.itemTrait?.trait.name ?? "" > $1.itemTrait?.trait.name ?? "" }
+    }
+    
     init(id: UUID = UUID(), createdAt: Date = Date(), title: String = "", date: Date = Date(), item: Item? = nil, duration: TimeInterval? = nil, notes: String? = nil, location: String? = nil, traits: [SessionTrait] = []) {
         self.id = id
         self.createdAt = createdAt
