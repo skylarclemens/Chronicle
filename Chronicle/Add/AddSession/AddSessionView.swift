@@ -291,12 +291,12 @@ struct AddSessionFlavorsView: View {
             newSession.location = viewModel.location
             newSession.imagesData = viewModel.selectedImagesData
             
-            updateItemEffectsAndFlavors()
+            //updateItemEffectsAndFlavors()
             modelContext.insert(newSession)
         }
     }
     
-    private func updateItemEffectsAndFlavors() {
+    /*private func updateItemEffectsAndFlavors() {
         guard let item = viewModel.item else { return }
         
         for effect in viewModel.effects {
@@ -322,7 +322,7 @@ struct AddSessionFlavorsView: View {
                 modelContext.insert(newFlavor)
             }
         }
-    }
+    }*/
     
     private func addFlavor() {
         if let selectedFlavor = selectedFlavor {

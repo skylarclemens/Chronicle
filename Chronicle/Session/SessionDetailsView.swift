@@ -202,14 +202,14 @@ struct SessionDetailsView: View {
     }
     
     private func delete(_ session: Session) {
-        updateItemEffectsAndFlavors()
+        //updateItemEffectsAndFlavors()
         withAnimation {
             modelContext.delete(session)
         }
         dismiss()
     }
     
-    private func updateItemEffectsAndFlavors() {
+    /*private func updateItemEffectsAndFlavors() {
         guard let session, let item = session.item else { return }
         
         for effect in session.effects {
@@ -231,7 +231,7 @@ struct SessionDetailsView: View {
                 }
             }
         }
-    }
+    }*/
 }
 
 #Preview {

@@ -12,7 +12,7 @@ extension Item {
     static var sampleItem: Item {
         let sample = Item(name: "Blue Dream", type: .edible)
         sample.brand = "Test Brand"
-        sample.effects = [
+        /*sample.effects = [
             ItemEffect(effect: Effect.predefinedEffects[0], count: 1, totalIntensity: 8),
             ItemEffect(effect: Effect.predefinedEffects[1], count: 1, totalIntensity: 6),
             ItemEffect(effect: Effect.predefinedEffects[40], count: 1, totalIntensity: 5)
@@ -29,10 +29,10 @@ extension Item {
         sample.terpenes = [
             Terpene.predefinedTerpenes[0],
             Terpene.predefinedTerpenes[1]
-        ]
+        ]*/
         sample.strain = Strain(name: "Blue Dream", type: .hybrid)
         let session = Session(title: "Test sesh")
-        session.effects = [
+        /*session.effects = [
             SessionEffect(effect: Effect.predefinedEffects[0], intensity: 8),
             SessionEffect(effect: Effect.predefinedEffects[1], intensity: 6),
             SessionEffect(effect: Effect.predefinedEffects[40], intensity: 5)
@@ -40,7 +40,7 @@ extension Item {
         session.flavors = [
             SessionFlavor(flavor: Flavor.predefinedFlavors[0]),
             SessionFlavor(flavor: Flavor.predefinedFlavors[1])
-        ]
+        ]*/
         session.notes = "Yay"
         session.duration = 1000
         sample.sessions.append(session)

@@ -18,17 +18,24 @@ struct ItemDetailsView: View {
     @State private var currentImageIndex = 0
     var fromSession: Bool = false
     
-    var sortedMoodEffects: [ItemEffect] {
-        let moods = item?.effects.filter { $0.effect.type == .mood }
+    var sortedMoodEffects: [ItemTrait] {
+        let moods = item?.traits.filter { $0.trait.type == .effect && $0.trait.subtype == .mood }
         return moods?.sorted {
             $0.averageIntensity > $1.averageIntensity
         } ?? []
     }
     
-    var sortedWellnessEffects: [ItemEffect] {
-        let wellness = item?.effects.filter { $0.effect.type == .wellness }
+    var sortedWellnessEffects: [ItemTrait] {
+        let wellness = item?.traits.filter { $0.trait.type == .effect && $0.trait.subtype == .wellness }
         return wellness?.sorted {
-            $0.averageIntensity > $1.averageIntensity
+            $0.traitName > $1.traitName
+        } ?? []
+    }
+    
+    var sortedFlavors: [ItemTrait] {
+        let flavors = item?.traits.filter { $0.trait.type == .flavor }
+        return flavors?.sorted {
+            $0.traitName > $1.traitName
         } ?? []
     }
     
@@ -80,44 +87,73 @@ struct ItemDetailsView: View {
                             .padding(.vertical)
                     }
                     .padding(.horizontal)
-                    if !item.effects.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Effects")
-                                .font(.headline)
-                            if !sortedMoodEffects.isEmpty {
-                                DetailSection(header: "Moods", headerRight: "Avg. intensity") {
-                                    ForEach(sortedMoodEffects) { effect in
-                                        HStack {
-                                            Text(effect.effect.emoji)
-                                                .font(.system(size: 14))
-                                            Text(effect.effect.name)
-                                                .font(.footnote)
-                                                .fontWeight(.medium)
-                                                .frame(width: 80, alignment: .leading)
-                                            Spacer()
-                                            ProgressView(value: effect.averageIntensity/10)
-                                            Text(effect.averageIntensity, format: .number)
-                                                .font(.footnote)
-                                                .bold()
+                    VStack {
+                        if !sortedMoodEffects.isEmpty || !sortedWellnessEffects.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Effects")
+                                    .font(.headline)
+                                
+                                if !sortedMoodEffects.isEmpty {
+                                    DetailSection(header: "Moods", headerRight: "Avg. intensity") {
+                                        ForEach(sortedMoodEffects) { effect in
+                                            HStack {
+                                                Text(effect.traitEmoji)
+                                                    .font(.system(size: 14))
+                                                Text(effect.traitName)
+                                                    .font(.footnote)
+                                                    .fontWeight(.medium)
+                                                    .frame(width: 80, alignment: .leading)
+                                                Spacer()
+                                                ProgressView(value: Double(effect.averageIntensity) / 10)
+                                                Text(effect.averageIntensity, format: .number)
+                                                    .font(.footnote)
+                                                    .bold()
+                                            }
+                                        }
+                                    }
+                                }
+                                if !sortedWellnessEffects.isEmpty {
+                                    DetailSection(header: "Wellness", isScrollView: true) {
+                                        ScrollView(.horizontal) {
+                                            HStack {
+                                                ForEach(sortedWellnessEffects) { effect in
+                                                    HStack {
+                                                        Text(effect.traitEmoji)
+                                                            .font(.system(size: 12))
+                                                        Text(effect.traitName)
+                                                            .font(.footnote)
+                                                            .fontWeight(.medium)
+                                                    }
+                                                    .padding(.vertical, 6)
+                                                    .padding(.horizontal, 8)
+                                                    .background(.secondary,
+                                                                in: RoundedRectangle(cornerRadius: 12))
+                                                }
+                                            }
+                                            .padding(.horizontal)
                                         }
                                     }
                                 }
                             }
-                            if !sortedWellnessEffects.isEmpty {
-                                DetailSection(header: "Wellness", isScrollView: true) {
+                            .padding(.top)
+                        }
+                        if !sortedFlavors.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Flavors")
+                                    .font(.headline)
+                                DetailSection(isScrollView: true) {
                                     ScrollView(.horizontal) {
                                         HStack {
-                                            ForEach(sortedWellnessEffects) { effect in
+                                            ForEach(sortedFlavors) { flavor in
                                                 HStack {
-                                                    Text(effect.effect.emoji)
+                                                    Text(flavor.traitEmoji)
                                                         .font(.system(size: 12))
-                                                    Text(effect.effect.name)
-                                                        .font(.footnote)
+                                                    Text(flavor.traitName)
+                                                        .font(.subheadline)
                                                         .fontWeight(.medium)
                                                 }
-                                                .padding(.vertical, 6)
-                                                .padding(.horizontal, 8)
-                                                .background(.secondary,
+                                                .padding(8)
+                                                .background(flavor.traitColor.color.opacity(0.2),
                                                             in: RoundedRectangle(cornerRadius: 12))
                                             }
                                         }
@@ -125,44 +161,19 @@ struct ItemDetailsView: View {
                                     }
                                 }
                             }
+                            .padding(.top)
                         }
-                        .padding(.horizontal)
                     }
-                    if !item.flavors.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Flavors")
-                                .font(.headline)
-                            DetailSection(isScrollView: true) {
-                                ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach(item.sortedFlavors) { flavor in
-                                            HStack {
-                                                Text(flavor.flavor.emoji)
-                                                    .font(.system(size: 12))
-                                                Text(flavor.flavor.name)
-                                                    .font(.subheadline)
-                                                    .fontWeight(.medium)
-                                            }
-                                            .padding(8)
-                                            .background(flavor.flavor.color.color.opacity(0.2),
-                                                        in: RoundedRectangle(cornerRadius: 12))
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
-                    if !item.composition.isEmpty || !item.terpenes.isEmpty {
+                    .padding(.horizontal)
+                    if !item.compounds.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Details")
                                 .font(.headline)
-                            if !item.composition.isEmpty {
+                            if !item.cannabinoids.isEmpty {
                                 DetailSection(header: "Cannabinoids", isScrollView: true) {
                                     ScrollView(.horizontal, showsIndicators: false) {
                                         HStack {
-                                            ForEach(item.composition) { cannabinoid in
+                                            ForEach(item.cannabinoids) { cannabinoid in
                                                 HStack(spacing: 12) {
                                                     Text(cannabinoid.name)
                                                         .bold()
