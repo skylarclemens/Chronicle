@@ -53,6 +53,9 @@
 		7EFCC60B2C7E6DB00090588D /* ItemTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60A2C7E6DB00090588D /* ItemTrait.swift */; };
 		7EFCC60D2C7E6DC40090588D /* SessionTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60C2C7E6DC40090588D /* SessionTrait.swift */; };
 		7EFCC60F2C7E6DC90090588D /* Trait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60E2C7E6DC90090588D /* Trait.swift */; };
+		7EFCC6112C7E6F040090588D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6102C7E6F040090588D /* Compound.swift */; };
+		7EFCC6132C7E6F420090588D /* Dosage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6122C7E6F420090588D /* Dosage.swift */; };
+		7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +106,9 @@
 		7EFCC60A2C7E6DB00090588D /* ItemTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTrait.swift; sourceTree = "<group>"; };
 		7EFCC60C2C7E6DC40090588D /* SessionTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTrait.swift; sourceTree = "<group>"; };
 		7EFCC60E2C7E6DC90090588D /* Trait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trait.swift; sourceTree = "<group>"; };
+		7EFCC6102C7E6F040090588D /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
+		7EFCC6122C7E6F420090588D /* Dosage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dosage.swift; sourceTree = "<group>"; };
+		7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +162,9 @@
 			children = (
 				7E2504E12C769C0800496296 /* Cannabinoid.swift */,
 				7E2504E32C769C4500496296 /* Terpene.swift */,
+				7EFCC6102C7E6F040090588D /* Compound.swift */,
+				7EFCC6122C7E6F420090588D /* Dosage.swift */,
+				7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -409,9 +418,11 @@
 				7E5301F52C753CE500909048 /* ItemEffect.swift in Sources */,
 				7EE6261D2C6A948500448F80 /* ItemType.swift in Sources */,
 				7E08D4192C6BD95700F96328 /* StrainEditorView.swift in Sources */,
+				7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */,
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E7A05852C64621600BA0497 /* Flavor.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
+				7EFCC6112C7E6F040090588D /* Compound.swift in Sources */,
 				7EFCC60D2C7E6DC40090588D /* SessionTrait.swift in Sources */,
 				7E08D41C2C6BD9A400F96328 /* StrainType.swift in Sources */,
 				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
@@ -432,6 +443,7 @@
 				7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */,
 				7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */,
+				7EFCC6132C7E6F420090588D /* Dosage.swift in Sources */,
 				7EFCC60F2C7E6DC90090588D /* Trait.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,

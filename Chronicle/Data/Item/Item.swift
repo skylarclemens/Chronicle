@@ -28,7 +28,7 @@ import SwiftUI
     public var purchaseLocation: String?
     @Attribute(.externalStorage) public var imagesData: [Data]?
     @Relationship(deleteRule: .cascade)
-    public var effects: [ItemEffect]
+    public var traits: [ItemEffect]
     @Relationship(deleteRule: .cascade)
     public var flavors: [ItemFlavor]
     @Relationship(deleteRule: .nullify)
