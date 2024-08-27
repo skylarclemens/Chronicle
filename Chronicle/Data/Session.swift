@@ -19,22 +19,10 @@ import SwiftUI
     public var notes: String?
     public var location: String?
     @Attribute(.externalStorage) public var imagesData: [Data]?
-    @Relationship(deleteRule: .cascade) public var effects: [SessionEffect]
-    @Relationship(deleteRule: .cascade) public var flavors: [SessionFlavor]
+    @Relationship(deleteRule: .cascade)
+    public var traits: [SessionTrait]
     
-    var sortedEffects: [SessionEffect] {
-        effects.sorted {
-            $0.intensity > $1.intensity
-        }
-    }
-    
-    var sortedFlavors: [SessionFlavor] {
-        flavors.sorted {
-            $0.flavor.name > $1.flavor.name
-        }
-    }
-    
-    init(id: UUID = UUID(), createdAt: Date = Date(), title: String = "", date: Date = Date(), item: Item? = nil, duration: TimeInterval? = nil, notes: String? = nil, location: String? = nil, effects: [SessionEffect] = [], flavors: [SessionFlavor] = []) {
+    init(id: UUID = UUID(), createdAt: Date = Date(), title: String = "", date: Date = Date(), item: Item? = nil, duration: TimeInterval? = nil, notes: String? = nil, location: String? = nil, traits: [SessionTrait] = []) {
         self.id = id
         self.createdAt = createdAt
         self.title = title
@@ -43,7 +31,6 @@ import SwiftUI
         self.duration = duration
         self.notes = notes
         self.location = location
-        self.effects = effects
-        self.flavors = flavors
+        self.traits = traits
     }
 }

@@ -123,7 +123,7 @@ struct AddSessionEffectsView: View {
     @Binding var viewModel: AddSessionViewModel
     let parentDismiss: DismissAction
     
-    @State var selectedEffect: Effect?
+    @State var selectedEffect: Trait?
     @State var intensity: Double = 5.0
     
     var body: some View {
@@ -132,24 +132,24 @@ struct AddSessionEffectsView: View {
                 if !viewModel.effects.isEmpty {
                     ForEach(viewModel.effects, id: \.self) { effect in
                         HStack {
-                            Text(effect.effect.name)
+                            Text(effect.trait.name)
                             Spacer()
                             Text("Intensity: \(effect.intensity)")
                         }
                     }
-                    .onDelete(perform: removeEffect)
+                    //.onDelete(perform: removeEffect)
                 }
             }
             Spacer()
             Form {
                 Picker("Effect", selection: $selectedEffect) {
-                    Text("None").tag(nil as Effect?)
-                    ForEach(Effect.predefinedEffects, id: \.self) { effect in
+                    Text("None").tag(nil as Trait?)
+                    ForEach(Trait.predefinedEffects, id: \.self) { effect in
                         HStack(spacing: 4) {
-                            Text(effect.emoji)
+                            Text(effect.emoji ?? "")
                             Text(effect.name)
                         }
-                        .tag(effect as Effect?)
+                        .tag(effect as Trait?)
                         
                     }
                 }.pickerStyle(.navigationLink)
@@ -166,7 +166,7 @@ struct AddSessionEffectsView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 Button("Add Effect") {
-                    addEffect()
+                    //addEffect()
                 }
                 .disabled(selectedEffect == nil)
             }
@@ -196,7 +196,7 @@ struct AddSessionEffectsView: View {
         }
     }
     
-    private func addEffect() {
+    /*private func addEffect() {
         if let selectedEffect = selectedEffect {
             let sessionEffect = SessionEffect(effect: selectedEffect, intensity: Int(intensity))
             
@@ -210,7 +210,7 @@ struct AddSessionEffectsView: View {
     
     private func removeEffect(at offsets: IndexSet) {
         viewModel.effects.remove(atOffsets: offsets)
-    }
+    }*/
 }
 
 struct AddSessionFlavorsView: View {
@@ -218,7 +218,7 @@ struct AddSessionFlavorsView: View {
     @Binding var viewModel: AddSessionViewModel
     let parentDismiss: DismissAction
     
-    @State var selectedFlavor: Flavor?
+    @State var selectedFlavor: Trait?
     
     var body: some View {
         VStack {
@@ -226,28 +226,28 @@ struct AddSessionFlavorsView: View {
                 if viewModel.flavors.count > 0 {
                     ForEach(viewModel.flavors, id: \.self) { flavor in
                         HStack(spacing: 4) {
-                            Text(flavor.flavor.emoji)
-                            Text(flavor.flavor.name)
+                            Text(flavor.trait.emoji ?? "")
+                            Text(flavor.trait.name)
                         }
                     }
-                    .onDelete(perform: removeFlavor)
+                    //.onDelete(perform: removeFlavor)
                 }
             }
             
             Form {
                 Picker("Flavor", selection: $selectedFlavor) {
-                    Text("None").tag(nil as Flavor?)
-                    ForEach(Flavor.predefinedFlavors, id: \.self) { flavor in
+                    Text("None").tag(nil as Trait?)
+                    ForEach(Trait.predefinedFlavors, id: \.self) { flavor in
                         HStack(spacing: 4) {
-                            Text(flavor.emoji)
+                            Text(flavor.emoji ?? "")
                             Text(flavor.name)
                         }
-                        .tag(flavor as Flavor?)
+                        .tag(flavor as Trait?)
                         
                     }
                 }.pickerStyle(.navigationLink)
                 Button("Add Flavor") {
-                    addFlavor()
+                    //addFlavor()
                 }
                 .disabled(selectedFlavor == nil)
             }
@@ -284,8 +284,7 @@ struct AddSessionFlavorsView: View {
             let newSession = Session(item: item)
             newSession.date = viewModel.date
             newSession.title = viewModel.title
-            newSession.effects = viewModel.effects
-            newSession.flavors = viewModel.flavors
+            //newSession.traits = viewModel.effects + viewModel.flavors
             newSession.notes = viewModel.notes
             newSession.duration = viewModel.duration
             newSession.location = viewModel.location
@@ -324,9 +323,9 @@ struct AddSessionFlavorsView: View {
         }
     }*/
     
-    private func addFlavor() {
+    /*private func addFlavor() {
         if let selectedFlavor = selectedFlavor {
-            let sessionFlavor = SessionFlavor(flavor: selectedFlavor)
+            let sessionFlavor = SessionTraitViewModel(flavor: selectedFlavor)
             
             modelContext.insert(sessionFlavor)
             viewModel.flavors.append(sessionFlavor)
@@ -337,7 +336,7 @@ struct AddSessionFlavorsView: View {
     
     private func removeFlavor(at offsets: IndexSet) {
         viewModel.flavors.remove(atOffsets: offsets)
-    }
+    }*/
 }
 
 @Observable
@@ -346,14 +345,30 @@ class AddSessionViewModel {
     var title: String = ""
     var item: Item?
     var duration: Double = 0
-    var effects: [SessionEffect] = []
-    var flavors: [SessionFlavor] = []
+    var effects: [SessionTraitViewModel] = []
+    var flavors: [SessionTraitViewModel] = []
     var notes: String = ""
     var location: String = ""
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
     var selectedImages: [UIImage] = []
+}
+
+struct SessionTraitViewModel: Identifiable, Hashable {
+    let id = UUID()
+    let trait: Trait
+    let intensity: Int
+    
+    init(trait: Trait, intensity: Int) {
+        self.trait = trait
+        self.intensity = intensity
+    }
+    
+//    init(sessionTrait: SessionTrait) {
+//        self.trait = sessionTrait.itemTrait!.trait
+//        self.intensity = sessionTrait.intensity ?? 0
+//    }
 }
 
 #Preview {

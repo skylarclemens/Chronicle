@@ -16,7 +16,7 @@ struct SessionDetailsView: View {
 
     var fromItem: Bool = false
     
-    var sortedMoodEffects: [SessionEffect] {
+    /*var sortedMoodEffects: [SessionEffect] {
         let moods = session?.effects.filter { $0.effect.type == .mood }
         return moods?.sorted {
             $0.intensity > $1.intensity
@@ -28,7 +28,7 @@ struct SessionDetailsView: View {
         return wellness?.sorted {
             $0.effect.name > $1.effect.name
         } ?? []
-    }
+    }*/
     
     var body: some View {
         if let session {
@@ -92,7 +92,7 @@ struct SessionDetailsView: View {
                         .padding(.top)
                     }
                     
-                    if !session.effects.isEmpty {
+                    /*if !session.effects.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Effects")
                                 .font(.headline)
@@ -167,7 +167,7 @@ struct SessionDetailsView: View {
                             }
                         }
                         .padding(.top)
-                    }
+                    }*/
                     
                     Spacer()
                 }
