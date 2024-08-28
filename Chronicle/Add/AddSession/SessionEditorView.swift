@@ -51,15 +51,28 @@ struct SessionEditorView: View {
                         }
                     }
                     Section("Photos") {
-                        if viewModel.selectedImages.count > 0 {
+                        if viewModel.selectedImagesData.count > 0 {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 LazyHStack(spacing: 8) {
-                                    ForEach(viewModel.selectedImages, id: \.self) { uiImage in
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 150, height: 150, alignment: .leading)
-                                            .clipShape(.rect(cornerRadius: 10))
+                                    ForEach(viewModel.selectedImagesData, id: \.self) { imageData in
+                                        if let uiImage = UIImage(data: imageData) {
+                                            Image(uiImage: uiImage)
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 150, height: 150, alignment: .leading)
+                                                .clipShape(.rect(cornerRadius: 10))
+                                                .overlay(alignment: .topTrailing) {
+                                                    Button {
+                                                        viewModel.selectedImagesData.remove(at: viewModel.selectedImagesData.firstIndex(of: imageData)!)
+                                                    } label: {
+                                                        Image(systemName: "xmark.circle.fill")
+                                                            .padding(4)
+                                                            .font(.title2)
+                                                            .foregroundStyle(.primary, .secondary)
+                                                    }
+                                                    .buttonStyle(.plain)
+                                                }
+                                        }
                                     }
                                 }
                                 .padding()
@@ -71,18 +84,17 @@ struct SessionEditorView: View {
                         }
                         .onChange(of: viewModel.pickerItems) { oldValues, newValues in
                             Task {
-                                viewModel.selectedImages = []
-                                viewModel.selectedImagesData = []
+                                if viewModel.pickerItems.count == 0 { return }
                                 
                                 for value in newValues {
-                                    if let imageData = try? await value.loadTransferable(type: Data.self),
-                                        let uiImage = UIImage(data: imageData) {
-                                        viewModel.selectedImagesData.append(imageData)
+                                    if let imageData = try? await value.loadTransferable(type: Data.self) {
                                         withAnimation {
-                                            viewModel.selectedImages.append(uiImage)
+                                            viewModel.selectedImagesData.append(imageData)
                                         }
                                     }
                                 }
+                                
+                                viewModel.pickerItems.removeAll()
                             }
                         }
                     }
@@ -338,7 +350,6 @@ class SessionEditorViewModel {
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
-    var selectedImages: [UIImage] = []
     
     func updateTraits(for traitViewModels: [SessionTraitViewModel], modelContext: ModelContext) {
         if let item {
