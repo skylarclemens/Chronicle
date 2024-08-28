@@ -354,7 +354,7 @@ class SessionEditorViewModel {
     func updateTraits(for traitViewModels: [SessionTraitViewModel], modelContext: ModelContext) {
         if let item {
             for traitVM in traitViewModels {
-                let itemTrait = item.traits.first { $0.trait.id == traitVM.trait.id } ?? ItemTrait(trait: traitVM.trait, item: item)
+                let itemTrait = item.traits.first { $0.trait.name == traitVM.trait.name } ?? ItemTrait(trait: traitVM.trait, item: item)
                 let sessionTrait = SessionTrait(itemTrait: itemTrait, intensity: traitVM.intensity)
                 
                 sessionTraits.append(sessionTrait)
