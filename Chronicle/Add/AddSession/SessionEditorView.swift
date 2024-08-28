@@ -1,5 +1,5 @@
 //
-//  AddSessionView.swift
+//  SessionEditorView.swift
 //  Chronicle
 //
 //  Created by Skylar Clemens on 8/13/24.
@@ -9,10 +9,12 @@ import SwiftUI
 import SwiftData
 import PhotosUI
 
-struct AddSessionView: View {
+struct SessionEditorView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
-    @State private var viewModel = AddSessionViewModel()
+    @State private var viewModel = SessionEditorViewModel()
+    
+    var session: Session?
     
     @Query(sort: \Item.name) var items: [Item]
     
@@ -91,7 +93,7 @@ struct AddSessionView: View {
                 }
                 Spacer()
                 NavigationLink {
-                    AddSessionEffectsView(viewModel: $viewModel, parentDismiss: dismiss)
+                    SessionEditorEffectsView(viewModel: $viewModel, parentDismiss: dismiss, session: session)
                 } label: {
                     Text("Next")
                         .frame(maxWidth: .infinity)
@@ -115,13 +117,33 @@ struct AddSessionView: View {
                 }
             }
         }
+        .onAppear {
+            if let session {
+                viewModel.item = session.item
+                viewModel.title = session.title
+                viewModel.date = session.date
+                viewModel.duration = session.duration ?? 0
+                viewModel.location = session.location ?? ""
+                viewModel.notes = session.notes ?? ""
+                viewModel.selectedImagesData = session.imagesData ?? []
+                
+                viewModel.effects = session.traits
+                    .filter { $0.itemTrait?.trait.type == .effect }
+                    .map { SessionTraitViewModel($0) }
+                viewModel.flavors = session.traits
+                    .filter { $0.itemTrait?.trait.type == .flavor }
+                    .map { SessionTraitViewModel($0) }
+            }
+        }
     }
 }
 
-struct AddSessionEffectsView: View {
+struct SessionEditorEffectsView: View {
     @Environment(\.modelContext) var modelContext
-    @Binding var viewModel: AddSessionViewModel
+    @Binding var viewModel: SessionEditorViewModel
     let parentDismiss: DismissAction
+    
+    var session: Session?
     
     @State var selectedEffect: Trait?
     @State var intensity: Double = 5.0
@@ -176,7 +198,7 @@ struct AddSessionEffectsView: View {
             }
             Spacer()
             NavigationLink {
-                AddSessionFlavorsView(viewModel: $viewModel, parentDismiss: parentDismiss)
+                SessionEditorFlavorsView(viewModel: $viewModel, parentDismiss: parentDismiss, session: session)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -201,10 +223,12 @@ struct AddSessionEffectsView: View {
     }
 }
 
-struct AddSessionFlavorsView: View {
+struct SessionEditorFlavorsView: View {
     @Environment(\.modelContext) var modelContext
-    @Binding var viewModel: AddSessionViewModel
+    @Binding var viewModel: SessionEditorViewModel
     let parentDismiss: DismissAction
+    
+    var session: Session?
     
     @State var selectedFlavor: Trait?
     
@@ -246,7 +270,7 @@ struct AddSessionFlavorsView: View {
             Spacer()
             Button {
                 do {
-                    try viewModel.save(modelContext: modelContext)
+                    try save()
                 } catch {
                     print("New session could not be saved.")
                 }
@@ -273,10 +297,35 @@ struct AddSessionFlavorsView: View {
             }
         }
     }
+    
+    func save() throws {
+        if let item = viewModel.item {
+            let newSession = session ?? Session(item: item)
+            newSession.date = viewModel.date
+            newSession.title = viewModel.title
+            newSession.notes = viewModel.notes
+            newSession.duration = viewModel.duration
+            newSession.location = viewModel.location
+            newSession.imagesData = viewModel.selectedImagesData
+            
+            newSession.traits.forEach { modelContext.delete($0) }
+            newSession.traits.removeAll()
+            
+            viewModel.updateTraits(for: viewModel.effects, modelContext: modelContext)
+            viewModel.updateTraits(for: viewModel.flavors, modelContext: modelContext)
+            
+            newSession.traits = viewModel.sessionTraits
+            if session == nil {
+                modelContext.insert(newSession)
+            }
+            
+            try modelContext.save()
+        }
+    }
 }
 
 @Observable
-class AddSessionViewModel {
+class SessionEditorViewModel {
     var date: Date = Date()
     var title: String = ""
     var item: Item?
@@ -291,28 +340,7 @@ class AddSessionViewModel {
     var selectedImagesData: [Data] = []
     var selectedImages: [UIImage] = []
     
-    func save(modelContext: ModelContext) throws {
-        if let item {
-            let newSession = Session(item: item)
-            newSession.date = date
-            newSession.title = title
-            newSession.notes = notes
-            newSession.duration = duration
-            newSession.location = location
-            newSession.imagesData = selectedImagesData
-            
-            updateTraits(for: effects, modelContext: modelContext)
-            updateTraits(for: flavors, modelContext: modelContext)
-            
-            newSession.traits = sessionTraits
-            
-            modelContext.insert(newSession)
-            
-            try modelContext.save()
-        }
-    }
-    
-    private func updateTraits(for traitViewModels: [SessionTraitViewModel], modelContext: ModelContext) {
+    func updateTraits(for traitViewModels: [SessionTraitViewModel], modelContext: ModelContext) {
         if let item {
             for traitVM in traitViewModels {
                 let itemTrait = item.traits.first { $0.trait.id == traitVM.trait.id } ?? ItemTrait(trait: traitVM.trait, item: item)
@@ -349,26 +377,34 @@ struct SessionTraitViewModel: Identifiable, Hashable {
         self.trait = trait
         self.intensity = intensity
     }
-}
-
-#Preview {
-    AddSessionView()
-}
-
-#Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var viewModel = AddSessionViewModel()
     
-    return NavigationStack {
-        AddSessionEffectsView(viewModel: $viewModel, parentDismiss: dismiss)
+    init(_ sessionTrait: SessionTrait) {
+        self.trait = sessionTrait.itemTrait!.trait
+        self.intensity = sessionTrait.intensity ?? 0
     }
 }
 
 #Preview {
+    SessionEditorView(session: SampleData.shared.session)
+        .modelContainer(SampleData.shared.container)
+}
+
+#Preview {
     @Environment(\.dismiss) var dismiss
-    @State var viewModel = AddSessionViewModel()
+    @State var viewModel = SessionEditorViewModel()
     
     return NavigationStack {
-        AddSessionFlavorsView(viewModel: $viewModel, parentDismiss: dismiss)
+        SessionEditorEffectsView(viewModel: $viewModel, parentDismiss: dismiss)
     }
+    .modelContainer(SampleData.shared.container)
+}
+
+#Preview {
+    @Environment(\.dismiss) var dismiss
+    @State var viewModel = SessionEditorViewModel()
+    
+    return NavigationStack {
+        SessionEditorFlavorsView(viewModel: $viewModel, parentDismiss: dismiss)
+    }
+    .modelContainer(SampleData.shared.container)
 }
