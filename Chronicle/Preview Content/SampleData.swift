@@ -19,7 +19,7 @@ class SampleData {
         container.mainContext
     }
     
-    init() {
+    private init() {
         let schema = Schema([
             Item.self,
             Session.self,

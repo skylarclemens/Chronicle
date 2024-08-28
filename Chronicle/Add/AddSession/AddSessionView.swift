@@ -245,7 +245,11 @@ struct AddSessionFlavorsView: View {
             
             Spacer()
             Button {
-                viewModel.save(modelContext: modelContext)
+                do {
+                    try viewModel.save(modelContext: modelContext)
+                } catch {
+                    print("New session could not be saved.")
+                }
                 parentDismiss()
             } label: {
                 Text("Save")
@@ -269,34 +273,6 @@ struct AddSessionFlavorsView: View {
             }
         }
     }
-    
-    /*private func updateItemEffectsAndFlavors() {
-        guard let item = viewModel.item else { return }
-        
-        for effect in viewModel.effects {
-            if let existingEffect = item.effects.first(where: { $0.effect.id == effect.effect.id }) {
-                existingEffect.count += 1
-                existingEffect.totalIntensity += effect.intensity
-            } else {
-                let newEffect = ItemEffect(effect: effect.effect, item: item)
-                newEffect.totalIntensity += effect.intensity
-                item.effects.append(newEffect)
-                modelContext.insert(newEffect)
-            }
-        }
-        
-        for flavor in viewModel.flavors {
-            if let existingFlavor = item.flavors.first(where: { $0.flavor.id == flavor.flavor.id }) {
-                existingFlavor.count += 1
-                existingFlavor.totalIntensity += (flavor.intensity ?? 0)
-            } else {
-                let newFlavor = ItemFlavor(flavor: flavor.flavor, item: item)
-                newFlavor.totalIntensity += (flavor.intensity ?? 0)
-                item.flavors.append(newFlavor)
-                modelContext.insert(newFlavor)
-            }
-        }
-    }*/
 }
 
 @Observable
@@ -315,7 +291,7 @@ class AddSessionViewModel {
     var selectedImagesData: [Data] = []
     var selectedImages: [UIImage] = []
     
-    func save(modelContext: ModelContext) {
+    func save(modelContext: ModelContext) throws {
         if let item {
             let newSession = Session(item: item)
             newSession.date = date
@@ -328,7 +304,11 @@ class AddSessionViewModel {
             updateTraits(for: effects, modelContext: modelContext)
             updateTraits(for: flavors, modelContext: modelContext)
             
+            newSession.traits = sessionTraits
+            
             modelContext.insert(newSession)
+            
+            try modelContext.save()
         }
     }
     

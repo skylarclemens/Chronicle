@@ -25,7 +25,7 @@ import SwiftUI
     @Attribute(.externalStorage) public var imagesData: [Data]?
     @Relationship(deleteRule: .cascade, inverse: \ItemTrait.item)
     public var traits: [ItemTrait]
-    @Relationship(deleteRule: .nullify)
+    @Relationship(deleteRule: .nullify, inverse: \Session.item)
     public var sessions: [Session]
     
     var cannabinoids: [Compound] {

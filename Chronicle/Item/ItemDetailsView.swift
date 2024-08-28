@@ -132,6 +132,7 @@ struct ItemDetailsView: View {
                                             }
                                             .padding(.horizontal)
                                         }
+                                        .scrollIndicators(.hidden)
                                     }
                                 }
                             }
@@ -159,6 +160,7 @@ struct ItemDetailsView: View {
                                         }
                                         .padding(.horizontal)
                                     }
+                                    .scrollIndicators(.hidden)
                                 }
                             }
                             .padding(.top)
@@ -171,7 +173,7 @@ struct ItemDetailsView: View {
                                 .font(.headline)
                             if !item.cannabinoids.isEmpty {
                                 DetailSection(header: "Cannabinoids", isScrollView: true) {
-                                    ScrollView(.horizontal, showsIndicators: false) {
+                                    ScrollView(.horizontal) {
                                         HStack {
                                             ForEach(item.cannabinoids) { cannabinoid in
                                                 HStack(spacing: 12) {
@@ -188,11 +190,12 @@ struct ItemDetailsView: View {
                                         }
                                         .padding(.horizontal)
                                     }
+                                    .scrollIndicators(.hidden)
                                 }
                             }
                             if !item.terpenes.isEmpty {
                                 DetailSection(header: "Terpenes", isScrollView: true) {
-                                    ScrollView(.horizontal, showsIndicators: false) {
+                                    ScrollView(.horizontal) {
                                         HStack {
                                             ForEach(item.terpenes) { terpene in
                                                 HStack {
@@ -209,6 +212,7 @@ struct ItemDetailsView: View {
                                         }
                                         .padding(.horizontal)
                                     }
+                                    .scrollIndicators(.hidden)
                                 }
                             }
                         }
@@ -238,6 +242,7 @@ struct ItemDetailsView: View {
                                     }
                                     .padding(.horizontal)
                                 }
+                                .scrollIndicators(.hidden)
                             }
                         }
                     }
@@ -269,6 +274,7 @@ struct ItemDetailsView: View {
             .sheet(isPresented: $isEditing) {
                 ItemEditorView(item: item)
             }
+            .scrollIndicators(.hidden)
         } else {
             ContentUnavailableView("Item unavailable", systemImage: "tray")
         }
