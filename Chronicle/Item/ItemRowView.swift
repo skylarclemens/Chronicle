@@ -28,24 +28,10 @@ struct ItemRowView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Schema([Item.self, Strain.self]), configurations: config)
-    
-    let imageData = UIImage(named: "edibles-jar")?.pngData()
-    
-    let item = Item(name: "Dream Gummies", type: .edible)
-    container.mainContext.insert(item)
-    let strain = Strain(name: "Blue Dream", type: .hybrid)
-    container.mainContext.insert(strain)
-    
-    if let imageData {
-        item.imagesData = [imageData]
-    }
-    item.strain = strain
-    
-    return NavigationStack {
+    NavigationStack {
         List {
-            ItemRowView(item: item)
+            ItemRowView(item: SampleData.shared.item)
         }
     }
+    .modelContainer(SampleData.shared.container)
 }

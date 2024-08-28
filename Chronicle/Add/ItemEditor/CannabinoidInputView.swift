@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct CannabinoidInputView: View {
-    @Binding var cannabinoids: [Cannabinoid]
+    @Binding var compounds: [Compound]
     @State private var newCannabinoidName: String = ""
     @State private var newCannabinoidValue: Double = 0.0
     
     var body: some View {
         List {
-            ForEach(cannabinoids, id: \.self) { cannabinoid in
-                HStack {
-                    Text(cannabinoid.name)
-                    Text(cannabinoid.value, format: .percent)
+            ForEach(compounds, id: \.self) { compound in
+                if compound.type == .cannabinoid {
+                    HStack {
+                        Text(compound.name)
+                        Text(compound.value, format: .percent)
+                    }
                 }
             }
             .onDelete(perform: deleteCannabinoid)
@@ -43,20 +45,20 @@ struct CannabinoidInputView: View {
     }
     
     private func addCannabinoid() {
-        let newCannabinoid = Cannabinoid(name: newCannabinoidName, value: newCannabinoidValue)
-        cannabinoids.append(newCannabinoid)
+        let newCannabinoid = Compound(name: newCannabinoidName, value: newCannabinoidValue, type: .cannabinoid)
+        compounds.append(newCannabinoid)
         newCannabinoidName = ""
         newCannabinoidValue = 0.0
     }
     
     private func deleteCannabinoid(at offsets: IndexSet) {
-        cannabinoids.remove(atOffsets: offsets)
+        compounds.remove(atOffsets: offsets)
     }
 }
 
 #Preview {
-    @State var cannabinoids: [Cannabinoid] = []
+    @State var compounds: [Compound] = []
     return Form {
-        CannabinoidInputView(cannabinoids: $cannabinoids)
+        CannabinoidInputView(compounds: $compounds)
     }
 }

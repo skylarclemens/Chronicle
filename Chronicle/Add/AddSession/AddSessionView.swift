@@ -123,7 +123,7 @@ struct AddSessionEffectsView: View {
     @Binding var viewModel: AddSessionViewModel
     let parentDismiss: DismissAction
     
-    @State var selectedEffect: Effect?
+    @State var selectedEffect: Trait?
     @State var intensity: Double = 5.0
     
     var body: some View {
@@ -132,24 +132,24 @@ struct AddSessionEffectsView: View {
                 if !viewModel.effects.isEmpty {
                     ForEach(viewModel.effects, id: \.self) { effect in
                         HStack {
-                            Text(effect.effect.name)
+                            Text(effect.trait.name)
                             Spacer()
                             Text("Intensity: \(effect.intensity)")
                         }
                     }
-                    .onDelete(perform: removeEffect)
+                    .onDelete(perform: viewModel.removeEffect)
                 }
             }
             Spacer()
             Form {
                 Picker("Effect", selection: $selectedEffect) {
-                    Text("None").tag(nil as Effect?)
-                    ForEach(Effect.predefinedEffects, id: \.self) { effect in
+                    Text("None").tag(nil as Trait?)
+                    ForEach(Trait.predefinedEffects, id: \.self) { effect in
                         HStack(spacing: 4) {
-                            Text(effect.emoji)
+                            Text(effect.emoji ?? "")
                             Text(effect.name)
                         }
-                        .tag(effect as Effect?)
+                        .tag(effect as Trait?)
                         
                     }
                 }.pickerStyle(.navigationLink)
@@ -166,7 +166,11 @@ struct AddSessionEffectsView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 Button("Add Effect") {
-                    addEffect()
+                    if let selectedEffect {
+                        viewModel.addTrait(selectedEffect, intensity: Int(intensity))
+                        self.selectedEffect = nil
+                        intensity = 5
+                    }
                 }
                 .disabled(selectedEffect == nil)
             }
@@ -195,22 +199,6 @@ struct AddSessionEffectsView: View {
             }
         }
     }
-    
-    private func addEffect() {
-        if let selectedEffect = selectedEffect {
-            let sessionEffect = SessionEffect(effect: selectedEffect, intensity: Int(intensity))
-            
-            modelContext.insert(sessionEffect)
-            viewModel.effects.append(sessionEffect)
-        }
-        
-        selectedEffect = nil
-        intensity = 5
-    }
-    
-    private func removeEffect(at offsets: IndexSet) {
-        viewModel.effects.remove(atOffsets: offsets)
-    }
 }
 
 struct AddSessionFlavorsView: View {
@@ -218,7 +206,7 @@ struct AddSessionFlavorsView: View {
     @Binding var viewModel: AddSessionViewModel
     let parentDismiss: DismissAction
     
-    @State var selectedFlavor: Flavor?
+    @State var selectedFlavor: Trait?
     
     var body: some View {
         VStack {
@@ -226,35 +214,42 @@ struct AddSessionFlavorsView: View {
                 if viewModel.flavors.count > 0 {
                     ForEach(viewModel.flavors, id: \.self) { flavor in
                         HStack(spacing: 4) {
-                            Text(flavor.flavor.emoji)
-                            Text(flavor.flavor.name)
+                            Text(flavor.trait.emoji ?? "")
+                            Text(flavor.trait.name)
                         }
                     }
-                    .onDelete(perform: removeFlavor)
+                    .onDelete(perform: viewModel.removeFlavor)
                 }
             }
             
             Form {
                 Picker("Flavor", selection: $selectedFlavor) {
-                    Text("None").tag(nil as Flavor?)
-                    ForEach(Flavor.predefinedFlavors, id: \.self) { flavor in
+                    Text("None").tag(nil as Trait?)
+                    ForEach(Trait.predefinedFlavors, id: \.self) { flavor in
                         HStack(spacing: 4) {
-                            Text(flavor.emoji)
+                            Text(flavor.emoji ?? "")
                             Text(flavor.name)
                         }
-                        .tag(flavor as Flavor?)
+                        .tag(flavor as Trait?)
                         
                     }
                 }.pickerStyle(.navigationLink)
                 Button("Add Flavor") {
-                    addFlavor()
+                    if let selectedFlavor {
+                        viewModel.addTrait(selectedFlavor)
+                        self.selectedFlavor = nil
+                    }
                 }
                 .disabled(selectedFlavor == nil)
             }
             
             Spacer()
             Button {
-                save()
+                do {
+                    try viewModel.save(modelContext: modelContext)
+                } catch {
+                    print("New session could not be saved.")
+                }
                 parentDismiss()
             } label: {
                 Text("Save")
@@ -278,66 +273,6 @@ struct AddSessionFlavorsView: View {
             }
         }
     }
-    
-    private func save() {
-        if let item = viewModel.item {
-            let newSession = Session(item: item)
-            newSession.date = viewModel.date
-            newSession.title = viewModel.title
-            newSession.effects = viewModel.effects
-            newSession.flavors = viewModel.flavors
-            newSession.notes = viewModel.notes
-            newSession.duration = viewModel.duration
-            newSession.location = viewModel.location
-            newSession.imagesData = viewModel.selectedImagesData
-            
-            updateItemEffectsAndFlavors()
-            modelContext.insert(newSession)
-        }
-    }
-    
-    private func updateItemEffectsAndFlavors() {
-        guard let item = viewModel.item else { return }
-        
-        for effect in viewModel.effects {
-            if let existingEffect = item.effects.first(where: { $0.effect.id == effect.effect.id }) {
-                existingEffect.count += 1
-                existingEffect.totalIntensity += effect.intensity
-            } else {
-                let newEffect = ItemEffect(effect: effect.effect, item: item)
-                newEffect.totalIntensity += effect.intensity
-                item.effects.append(newEffect)
-                modelContext.insert(newEffect)
-            }
-        }
-        
-        for flavor in viewModel.flavors {
-            if let existingFlavor = item.flavors.first(where: { $0.flavor.id == flavor.flavor.id }) {
-                existingFlavor.count += 1
-                existingFlavor.totalIntensity += (flavor.intensity ?? 0)
-            } else {
-                let newFlavor = ItemFlavor(flavor: flavor.flavor, item: item)
-                newFlavor.totalIntensity += (flavor.intensity ?? 0)
-                item.flavors.append(newFlavor)
-                modelContext.insert(newFlavor)
-            }
-        }
-    }
-    
-    private func addFlavor() {
-        if let selectedFlavor = selectedFlavor {
-            let sessionFlavor = SessionFlavor(flavor: selectedFlavor)
-            
-            modelContext.insert(sessionFlavor)
-            viewModel.flavors.append(sessionFlavor)
-        }
-        
-        selectedFlavor = nil
-    }
-    
-    private func removeFlavor(at offsets: IndexSet) {
-        viewModel.flavors.remove(atOffsets: offsets)
-    }
 }
 
 @Observable
@@ -346,14 +281,74 @@ class AddSessionViewModel {
     var title: String = ""
     var item: Item?
     var duration: Double = 0
-    var effects: [SessionEffect] = []
-    var flavors: [SessionFlavor] = []
+    var effects: [SessionTraitViewModel] = []
+    var flavors: [SessionTraitViewModel] = []
+    var sessionTraits: [SessionTrait] = []
     var notes: String = ""
     var location: String = ""
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
     var selectedImages: [UIImage] = []
+    
+    func save(modelContext: ModelContext) throws {
+        if let item {
+            let newSession = Session(item: item)
+            newSession.date = date
+            newSession.title = title
+            newSession.notes = notes
+            newSession.duration = duration
+            newSession.location = location
+            newSession.imagesData = selectedImagesData
+            
+            updateTraits(for: effects, modelContext: modelContext)
+            updateTraits(for: flavors, modelContext: modelContext)
+            
+            newSession.traits = sessionTraits
+            
+            modelContext.insert(newSession)
+            
+            try modelContext.save()
+        }
+    }
+    
+    private func updateTraits(for traitViewModels: [SessionTraitViewModel], modelContext: ModelContext) {
+        if let item {
+            for traitVM in traitViewModels {
+                let itemTrait = item.traits.first { $0.trait.id == traitVM.trait.id } ?? ItemTrait(trait: traitVM.trait, item: item)
+                let sessionTrait = SessionTrait(itemTrait: itemTrait, intensity: traitVM.intensity)
+                
+                sessionTraits.append(sessionTrait)
+            }
+        }
+    }
+    
+    func addTrait(_ trait: Trait, intensity: Int = 0) {
+        if trait.type == .effect {
+            effects.append(SessionTraitViewModel(trait: trait, intensity: intensity))
+        } else if trait.type == .flavor {
+            flavors.append(SessionTraitViewModel(trait: trait))
+        }
+    }
+    
+    func removeEffect(at offsets: IndexSet) {
+        effects.remove(atOffsets: offsets)
+    }
+    
+    func removeFlavor(at offsets: IndexSet) {
+        flavors.remove(atOffsets: offsets)
+    }
+}
+
+struct SessionTraitViewModel: Identifiable, Hashable {
+    let id = UUID()
+    let trait: Trait
+    let intensity: Int
+    
+    init(trait: Trait, intensity: Int = 0) {
+        self.trait = trait
+        self.intensity = intensity
+    }
 }
 
 #Preview {

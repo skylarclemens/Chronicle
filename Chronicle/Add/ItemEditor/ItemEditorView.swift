@@ -23,15 +23,14 @@ struct ItemEditorView: View {
                 viewModel.itemType = item.type
                 viewModel.name = item.name
                 viewModel.brand = item.brand ?? ""
-                viewModel.dosageAmount = item.dosageAmount
-                viewModel.dosageUnit = item.dosageUnit ?? ""
+                viewModel.dosageAmount = item.dosage?.amount
+                viewModel.dosageUnit = item.dosage?.unit ?? ""
                 viewModel.subtype = item.subtype ?? ""
-                viewModel.cannabinoids = item.composition
-                viewModel.terpenes = item.terpenes
+                viewModel.compounds = item.compounds
                 viewModel.ingredients = item.ingredients
-                viewModel.purchasePrice = item.purchasePrice
-                viewModel.purchaseLocation = item.purchaseLocation ?? ""
-                viewModel.purchaseDate = item.purchaseDate ?? Date()
+                viewModel.purchasePrice = item.purchaseInfo?.price
+                viewModel.purchaseLocation = item.purchaseInfo?.location ?? ""
+                viewModel.purchaseDate = item.purchaseInfo?.date ?? Date()
                 viewModel.linkedStrain = item.strain
                 viewModel.selectedImagesData = item.imagesData ?? []
             }
@@ -228,20 +227,20 @@ struct ItemEditorDetailsView: View {
                         .listRowBackground(Color.clear)
                     }
                     Section("Cannabinoids") {
-                        CannabinoidInputView(cannabinoids: $viewModel.cannabinoids)
+                        CannabinoidInputView(compounds: $viewModel.compounds)
                     }
                     Section("Terpenes") {
-                        TerpeneInputView(terpenes: $viewModel.terpenes)
+                        TerpeneInputView(compounds: $viewModel.compounds)
                     }
                 case .flower:
                     Section("Terpenes") {
-                        TerpeneInputView(terpenes: $viewModel.terpenes)
+                        TerpeneInputView(compounds: $viewModel.compounds)
                     }
                 case .concentrate:
                     TextField("Concentrate Type", text: $viewModel.subtype)
                 case .topical:
                     Section("Terpenes") {
-                        TerpeneInputView(terpenes: $viewModel.terpenes)
+                        TerpeneInputView(compounds: $viewModel.compounds)
                     }
                 case .other:
                     Text("Other options")
@@ -351,27 +350,19 @@ struct ItemEditorAdditionalInfoView: View {
             item.name = viewModel.name
             item.type = viewModel.itemType ?? .other
             item.brand = viewModel.brand
-            item.dosageAmount = viewModel.dosageAmount
-            item.dosageUnit = viewModel.dosageUnit
-            item.composition = viewModel.cannabinoids
-            item.terpenes = viewModel.terpenes
+            item.dosage = Dosage(amount: viewModel.dosageAmount ?? 0, unit: viewModel.dosageUnit)
+            item.compounds = viewModel.compounds
             item.ingredients = viewModel.ingredients
-            item.purchasePrice = viewModel.purchasePrice
-            item.purchaseLocation = viewModel.purchaseLocation
-            item.purchaseDate = viewModel.purchaseDate
+            item.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation)
             item.imagesData = viewModel.selectedImagesData
             item.strain = viewModel.linkedStrain
         } else {
             let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
             newItem.brand = viewModel.brand
-            newItem.dosageAmount = viewModel.dosageAmount
-            newItem.dosageUnit = viewModel.dosageUnit
-            newItem.composition = viewModel.cannabinoids
-            newItem.terpenes = viewModel.terpenes
+            newItem.dosage = Dosage(amount: viewModel.dosageAmount ?? 0, unit: viewModel.dosageUnit)
+            newItem.compounds = viewModel.compounds
             newItem.ingredients = viewModel.ingredients
-            newItem.purchasePrice = viewModel.purchasePrice
-            newItem.purchaseLocation = viewModel.purchaseLocation
-            newItem.purchaseDate = viewModel.purchaseDate
+            newItem.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation)
             newItem.imagesData = viewModel.selectedImagesData
             newItem.strain = viewModel.linkedStrain
             
@@ -408,8 +399,7 @@ class ItemEditorViewModel {
     var dosageAmount: Double?
     var dosageUnit: String = ""
     var subtype: String = ""
-    var cannabinoids: [Cannabinoid] = []
-    var terpenes: [Terpene] = []
+    var compounds: [Compound] = []
     var ingredients: [String] = []
     var purchasePrice: Double?
     var purchaseLocation: String = ""
@@ -421,18 +411,8 @@ class ItemEditorViewModel {
 }
 
 #Preview {
-    do {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: Item.self, configurations: config)
-        
-        let item = Item.sampleItem
-        container.mainContext.insert(item)
-        
-        return ItemEditorView(item: item)
-            .modelContainer(container)
-    } catch {
-        fatalError("Failed to create model container.")
-    }
+    ItemEditorView(item: SampleData.shared.item)
+        .modelContainer(SampleData.shared.container)
 }
 
 #Preview {

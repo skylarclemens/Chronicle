@@ -8,23 +8,25 @@
 import SwiftUI
 
 struct TerpeneInputView: View {
-    @Binding var terpenes: [Terpene]
+    @Binding var compounds: [Compound]
     @State private var newTerpene: String = ""
-    @State private var selectedTerpene: Terpene?
+    @State private var selectedTerpene: Compound?
     
     var body: some View {
         Group {
             List {
-                ForEach(terpenes, id: \.self) { terpene in
-                    Text(terpene.name)
+                ForEach(compounds, id: \.self) { compound in
+                    if compound.type == .terpene {
+                        Text(compound.name)
+                    }
                 }
                 .onDelete(perform: deleteTerpene)
             }
             Picker("Terpene", selection: $selectedTerpene) {
-                Text("None").tag(nil as Terpene?)
-                ForEach(Terpene.predefinedTerpenes, id: \.self) { terpene in
+                Text("None").tag(nil as Compound?)
+                ForEach(Compound.predefinedTerpenes, id: \.self) { terpene in
                     Text(terpene.name)
-                        .tag(terpene as Terpene?)
+                        .tag(terpene as Compound?)
                 }
             }.pickerStyle(.navigationLink)
             Button("Add Terpene") {
@@ -36,19 +38,19 @@ struct TerpeneInputView: View {
     
     private func addNewTerpene() {
         if let selectedTerpene {
-            terpenes.append(selectedTerpene)
+            compounds.append(selectedTerpene)
         }
         selectedTerpene = nil
     }
     
     private func deleteTerpene(at offsets: IndexSet) {
-        terpenes.remove(atOffsets: offsets)
+        compounds.remove(atOffsets: offsets)
     }
 }
 
 #Preview {
-    @State var terpenes: [Terpene] = []
+    @State var compounds: [Compound] = []
     return Form {
-        TerpeneInputView(terpenes: $terpenes)
+        TerpeneInputView(compounds: $compounds)
     }
 }

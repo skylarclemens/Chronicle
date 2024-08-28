@@ -15,23 +15,17 @@ actor SharedModelContainer {
             Item.self,
             Strain.self,
             Session.self,
-            Effect.self,
-            SessionEffect.self,
-            ItemEffect.self,
-            Flavor.self,
-            SessionFlavor.self,
-            ItemFlavor.self,
-            Cannabinoid.self,
-            Terpene.self
+            Trait.self,
+            ItemTrait.self,
+            SessionTrait.self
         ])
         let configuration = ModelConfiguration()
 
         do {
             let container = try ModelContainer(for: schema, configurations: configuration)
             
-            Effect.predefinedEffects.forEach { container.mainContext.insert($0) }
-            Flavor.predefinedFlavors.forEach { container.mainContext.insert($0) }
-            Terpene.predefinedTerpenes.forEach { container.mainContext.insert($0) }
+            Trait.predefinedEffects.forEach { container.mainContext.insert($0) }
+            Trait.predefinedFlavors.forEach { container.mainContext.insert($0) }
             
             return container
         } catch {

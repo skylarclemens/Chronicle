@@ -18,50 +18,34 @@ import SwiftUI
     public var brand: String?
     public var subtype: String?
     public var amount: Double
-    public var dosageAmount: Double?
-    public var dosageUnit: String?
-    public var composition: [Cannabinoid]
-    public var terpenes: [Terpene]
+    public var dosage: Dosage?
+    public var compounds: [Compound]
     public var ingredients: [String]
-    public var purchasePrice: Double?
-    public var purchaseDate: Date?
-    public var purchaseLocation: String?
+    public var purchaseInfo: PurchaseInfo?
     @Attribute(.externalStorage) public var imagesData: [Data]?
-    @Relationship(deleteRule: .cascade)
-    public var effects: [ItemEffect]
-    @Relationship(deleteRule: .cascade)
-    public var flavors: [ItemFlavor]
-    @Relationship(deleteRule: .nullify)
+    @Relationship(deleteRule: .cascade, inverse: \ItemTrait.item)
+    public var traits: [ItemTrait]
+    @Relationship(deleteRule: .nullify, inverse: \Session.item)
     public var sessions: [Session]
     
-    var sortedEffects: [ItemEffect] {
-        effects.sorted {
-            $0.averageIntensity > $1.averageIntensity
-        }
+    var cannabinoids: [Compound] {
+        compounds.filter { $0.type == .cannabinoid }
     }
     
-    var sortedFlavors: [ItemFlavor] {
-        flavors.sorted {
-            if $0.count == $1.count {
-                return $0.flavor.name < $1.flavor.name
-            }
-            
-            return $0.count > $1.count
-        }
+    var terpenes: [Compound] {
+        compounds.filter { $0.type == .terpene }
     }
     
-    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, composition: [Cannabinoid] = [], terpenes: [Terpene] = [], ingredients: [String] = [], effects: [ItemEffect] = [], flavors: [ItemFlavor] = [], sessions: [Session] = []) {
+    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, compounds: [Compound] = [], ingredients: [String] = [], traits: [ItemTrait] = [], sessions: [Session] = []) {
         self.id = id
         self.name = name
         self.strain = strain
         self.createdAt = createdAt
         self.type = type
         self.amount = amount
-        self.composition = composition
-        self.terpenes = terpenes
+        self.compounds = compounds
         self.ingredients = ingredients
-        self.effects = effects
-        self.flavors = flavors
+        self.traits = traits
         self.sessions = sessions
     }
 }

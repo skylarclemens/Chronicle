@@ -37,10 +37,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    let modelPreview = ModelPreview()
-    modelPreview.addExamples(sampleItems: Item.sampleItems)
-    
-    return ContentView()
-        .modelContainer(modelPreview.container)
+    ContentView()
+        .modelContainer(SampleData.shared.container)
         .environment(ImageViewManager())
 }

@@ -51,36 +51,14 @@ struct CompactSessionCardView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Schema([Item.self, Strain.self, Session.self]), configurations: config)
-    
-    let imageData = UIImage(named: "edibles-jar")?.pngData()
-    let imageData2 = UIImage(named: "pre-roll")?.pngData()
-    
-    let item = Item(name: "Dream Gummies", type: .edible)
-    container.mainContext.insert(item)
-    let strain = Strain(name: "Blue Dream", type: .hybrid)
-    container.mainContext.insert(strain)
-    
-    if let imageData {
-        item.imagesData = [imageData]
-    }
-    item.strain = strain
-    
-    let session = Session(item: item)
-    if let imageData2 {
-        session.imagesData = [imageData2]
-    }
-    session.title = "Nighttime sesh"
-    session.notes = "Test"
-    container.mainContext.insert(session)
-    
-    return NavigationStack {
+    NavigationStack {
         VStack {
-            CompactSessionCardView(session: session)
+            CompactSessionCardView(session: SampleData.shared.session)
         }
     }
     .background(
         BackgroundView()
     )
+    .modelContainer(SampleData.shared.container)
+    .environment(ImageViewManager())
 }
