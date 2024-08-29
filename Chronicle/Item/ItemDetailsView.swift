@@ -82,6 +82,17 @@ struct ItemDetailsView: View {
                                             .stroke(.tertiary, lineWidth: 1)
                                     )
                             }
+                            Spacer()
+                            Button {
+                                item.favorite.toggle()
+                                do {
+                                    try modelContext.save()
+                                } catch {
+                                    print("Failed to save model context.")
+                                }
+                            } label: {
+                                Image(systemName: item.favorite ? "star.fill": "star")
+                            }
                         }
                         ImageCarouselView(imagesData: item.imagesData)
                             .padding(.vertical)

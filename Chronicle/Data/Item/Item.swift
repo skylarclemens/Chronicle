@@ -22,6 +22,7 @@ import SwiftUI
     public var compounds: [Compound]
     public var ingredients: [String]
     public var purchaseInfo: PurchaseInfo?
+    public var favorite: Bool
     @Attribute(.externalStorage) public var imagesData: [Data]?
     @Relationship(deleteRule: .cascade, inverse: \ItemTrait.item)
     public var traits: [ItemTrait]
@@ -36,7 +37,7 @@ import SwiftUI
         compounds.filter { $0.type == .terpene }
     }
     
-    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, compounds: [Compound] = [], ingredients: [String] = [], traits: [ItemTrait] = [], sessions: [Session] = []) {
+    init(id: UUID = UUID(), name: String, strain: Strain? = nil, createdAt: Date = Date(), type: ItemType, amount: Double = 0, compounds: [Compound] = [], ingredients: [String] = [], favorite: Bool = false, traits: [ItemTrait] = [], sessions: [Session] = []) {
         self.id = id
         self.name = name
         self.strain = strain
@@ -45,6 +46,7 @@ import SwiftUI
         self.amount = amount
         self.compounds = compounds
         self.ingredients = ingredients
+        self.favorite = favorite
         self.traits = traits
         self.sessions = sessions
     }
