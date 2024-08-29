@@ -44,7 +44,7 @@ struct ItemDetailsView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     VStack(alignment: .leading) {
-                        HStack {
+                        HStack(alignment: .center) {
                             Text(item.type.label())
                                 .font(.footnote)
                                 .padding(.horizontal, 8)
@@ -83,16 +83,6 @@ struct ItemDetailsView: View {
                                     )
                             }
                             Spacer()
-                            Button {
-                                item.favorite.toggle()
-                                do {
-                                    try modelContext.save()
-                                } catch {
-                                    print("Failed to save model context.")
-                                }
-                            } label: {
-                                Image(systemName: item.favorite ? "star.fill": "star")
-                            }
                         }
                         ImageCarouselView(imagesData: item.imagesData)
                             .padding(.vertical)
@@ -264,16 +254,30 @@ struct ItemDetailsView: View {
             .navigationTitle(item.name)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
-                Menu("Options", systemImage: "ellipsis") {
-                    Button {
-                        isEditing = true
-                    } label: {
-                        Label("Edit", systemImage: "pencil")
-                    }
-                    Button(role: .destructive) {
-                        isDeleting = true
-                    } label: {
-                        Label("Delete", systemImage: "trash")
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack {
+                        Button {
+                            item.favorite.toggle()
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("Failed to save model context.")
+                            }
+                        } label: {
+                            Image(systemName: item.favorite ? "star.fill": "star")
+                        }
+                        Menu("Options", systemImage: "ellipsis") {
+                            Button {
+                                isEditing = true
+                            } label: {
+                                Label("Edit", systemImage: "pencil")
+                            }
+                            Button(role: .destructive) {
+                                isDeleting = true
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
                     }
                 }
             }

@@ -6,13 +6,37 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ItemsListView: View {
+    @Query(sort: \Item.name) private var items: [Item]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(items) { item in
+                NavigationLink {
+                    ItemDetailsView(item: item)
+                } label: {
+                    ItemRowView(item: item)
+                }
+            }
+        }
+    }
+    
+    init(sort: SortDescriptor<Item>, searchString: String) {
+        _items = Query(filter: #Predicate {
+            if searchString.isEmpty {
+                return true
+            } else {
+                return $0.name.localizedStandardContains(searchString)
+            }
+        }, sort: [sort])
     }
 }
 
 #Preview {
-    ItemsListView()
+    NavigationStack {
+        ItemsListView(sort: SortDescriptor(\Item.name), searchString: "")
+    }
+    .modelContainer(SampleData.shared.container)
 }

@@ -22,6 +22,10 @@ struct ItemRowView: View {
                         .clipShape(.rect(cornerRadius: 4))
                 }
                 Text(item.name)
+                Spacer()
+                if item.favorite {
+                    Image(systemName: "star.fill")
+                }
             }
         }
     }

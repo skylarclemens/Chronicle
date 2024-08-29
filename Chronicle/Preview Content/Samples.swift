@@ -10,7 +10,7 @@ import UIKit
 
 extension Item {
     static let sampleData: [Item] = [
-        Item(name: "Blue Dream", type: .edible, amount: 1.0),
+        Item(name: "Blue Dream", type: .edible, amount: 1.0, favorite: true),
         Item(name: "Wedding Cake", type: .flower, amount: 2.0),
     ]
     
