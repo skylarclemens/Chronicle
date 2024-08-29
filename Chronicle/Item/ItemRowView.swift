@@ -25,6 +25,8 @@ struct ItemRowView: View {
                 Spacer()
                 if item.favorite {
                     Image(systemName: "star.fill")
+                        .font(.caption)
+                        .foregroundStyle(.accent)
                 }
             }
         }

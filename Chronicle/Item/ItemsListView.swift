@@ -21,22 +21,17 @@ struct ItemsListView: View {
                 }
             }
         }
+        .animation(.default, value: items)
     }
     
-    init(sort: SortDescriptor<Item>, searchString: String) {
-        _items = Query(filter: #Predicate {
-            if searchString.isEmpty {
-                return true
-            } else {
-                return $0.name.localizedStandardContains(searchString)
-            }
-        }, sort: [sort])
+    init(filter: ItemFilter, sort: SortDescriptor<Item>, searchText: String) {
+        _items = Query(filter: Item.predicate(filter: filter, searchText: searchText), sort: [sort])
     }
 }
 
 #Preview {
     NavigationStack {
-        ItemsListView(sort: SortDescriptor(\Item.name), searchString: "")
+        ItemsListView(filter: .all, sort: SortDescriptor(\Item.name), searchText: "")
     }
     .modelContainer(SampleData.shared.container)
 }

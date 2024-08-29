@@ -83,7 +83,13 @@ struct ItemDetailsView: View {
                                     )
                             }
                             Spacer()
+                            if item.favorite {
+                                Image(systemName: "star.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(.accent)
+                            }
                         }
+                        .frame(height: 24)
                         ImageCarouselView(imagesData: item.imagesData)
                             .padding(.vertical)
                     }
@@ -137,7 +143,6 @@ struct ItemDetailsView: View {
                                     }
                                 }
                             }
-                            .padding(.top)
                         }
                         if !sortedFlavors.isEmpty {
                             VStack(alignment: .leading) {
@@ -255,18 +260,8 @@ struct ItemDetailsView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    HStack {
-                        Button {
-                            item.favorite.toggle()
-                            do {
-                                try modelContext.save()
-                            } catch {
-                                print("Failed to save model context.")
-                            }
-                        } label: {
-                            Image(systemName: item.favorite ? "star.fill": "star")
-                        }
-                        Menu("Options", systemImage: "ellipsis") {
+                    Menu("Options", systemImage: "ellipsis") {
+                        Section {
                             Button {
                                 isEditing = true
                             } label: {
@@ -277,6 +272,16 @@ struct ItemDetailsView: View {
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
+                        }
+                        Button {
+                            item.favorite.toggle()
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("Failed to save model context.")
+                            }
+                        } label: {
+                            Label(item.favorite ? "Unfavorite" : "Favorite", systemImage: item.favorite ? "star.slash": "star")
                         }
                     }
                 }

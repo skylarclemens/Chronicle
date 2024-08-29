@@ -50,4 +50,20 @@ import SwiftUI
         self.traits = traits
         self.sessions = sessions
     }
+    
+    static func predicate(
+        filter: ItemFilter = .all,
+        searchText: String
+    ) -> Predicate<Item> {
+        if filter == .favorites {
+            return #Predicate<Item> { item in
+                (searchText.isEmpty || item.name.localizedStandardContains(searchText))
+                &&
+                item.favorite
+            }
+        }
+        return #Predicate<Item> { item in
+            searchText.isEmpty || item.name.localizedStandardContains(searchText)
+        }
+    }
 }
