@@ -12,6 +12,7 @@ struct SessionDetailsView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @State var session: Session?
+    @State private var isEditing = false
     @State private var isDeleting = false
 
     var fromItem: Bool = false
@@ -170,6 +171,11 @@ struct SessionDetailsView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu("Options", systemImage: "ellipsis") {
+                        Button {
+                            isEditing = true
+                        } label: {
+                            Label("Edit", systemImage: "pencil")
+                        }
                         Button(role: .destructive) {
                             isDeleting = true
                         } label: {
@@ -187,6 +193,9 @@ struct SessionDetailsView: View {
                         print("Could not save session deletion.")
                     }
                 }
+            }
+            .sheet(isPresented: $isEditing) {
+                SessionEditorView(session: session)
             }
         } else {
             ContentUnavailableView("Session unavailable", systemImage: "tray")

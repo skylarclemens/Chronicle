@@ -151,7 +151,7 @@ struct DashboardView: View {
                     StrainEditorView()
                 }
                 .sheet(isPresented: $openAddSession) {
-                    AddSessionView()
+                    SessionEditorView()
                 }
             }
             .scrollContentBackground(.hidden)

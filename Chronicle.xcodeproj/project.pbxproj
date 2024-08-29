@@ -10,7 +10,7 @@
 		7E08D4192C6BD95700F96328 /* StrainEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4182C6BD95700F96328 /* StrainEditorView.swift */; };
 		7E08D41C2C6BD9A400F96328 /* StrainType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D41B2C6BD9A400F96328 /* StrainType.swift */; };
 		7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */; };
-		7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4202C6BF6DB00F96328 /* AddSessionView.swift */; };
+		7E08D4212C6BF6DB00F96328 /* SessionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4202C6BF6DB00F96328 /* SessionEditorView.swift */; };
 		7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */; };
 		7E2504DA2C76838500496296 /* ColorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504D92C76838500496296 /* ColorData.swift */; };
 		7E2504DD2C768CDB00496296 /* DetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2504DC2C768CDB00496296 /* DetailSection.swift */; };
@@ -54,7 +54,7 @@
 		7E08D4182C6BD95700F96328 /* StrainEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainEditorView.swift; sourceTree = "<group>"; };
 		7E08D41B2C6BD9A400F96328 /* StrainType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainType.swift; sourceTree = "<group>"; };
 		7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
-		7E08D4202C6BF6DB00F96328 /* AddSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionView.swift; sourceTree = "<group>"; };
+		7E08D4202C6BF6DB00F96328 /* SessionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEditorView.swift; sourceTree = "<group>"; };
 		7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerWheel.swift; sourceTree = "<group>"; };
 		7E2504D92C76838500496296 /* ColorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorData.swift; sourceTree = "<group>"; };
 		7E2504DC2C768CDB00496296 /* DetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSection.swift; sourceTree = "<group>"; };
@@ -126,7 +126,7 @@
 		7E08D41F2C6BF6C000F96328 /* AddSession */ = {
 			isa = PBXGroup;
 			children = (
-				7E08D4202C6BF6DB00F96328 /* AddSessionView.swift */,
+				7E08D4202C6BF6DB00F96328 /* SessionEditorView.swift */,
 				7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */,
 			);
 			path = AddSession;
@@ -394,7 +394,7 @@
 				7E5301ED2C74F98200909048 /* JournalView.swift in Sources */,
 				7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */,
 				7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */,
-				7E08D4212C6BF6DB00F96328 /* AddSessionView.swift in Sources */,
+				7E08D4212C6BF6DB00F96328 /* SessionEditorView.swift in Sources */,
 				7EFCC6132C7E6F420090588D /* Dosage.swift in Sources */,
 				7EFCC60F2C7E6DC90090588D /* Trait.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,

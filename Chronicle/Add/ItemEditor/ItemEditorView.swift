@@ -134,7 +134,6 @@ struct ItemEditorBasicsView: View {
                                                         .foregroundStyle(.primary, .secondary)
                                                 }
                                                 .buttonStyle(.plain)
-                                                
                                             }
                                     }
                                 }

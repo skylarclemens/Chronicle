@@ -36,7 +36,6 @@ struct ImageViewerView: View {
                                         .onEnded { value in
                                             withAnimation {
                                                 let val = finalMagnify + currentMagnify
-                                                print(val)
                                                 if val < 1.0 {
                                                     finalMagnify = 1.0
                                                 } else {
