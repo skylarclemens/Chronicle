@@ -25,6 +25,7 @@
 		7E5301ED2C74F98200909048 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EC2C74F98200909048 /* JournalView.swift */; };
 		7E5301EF2C74F99B00909048 /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EE2C74F99B00909048 /* InventoryView.swift */; };
 		7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301F02C74FD7F00909048 /* ItemRowView.swift */; };
+		7E7349B72C80EEC800262930 /* ItemsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349B62C80EEC800262930 /* ItemsListView.swift */; };
 		7E7DDC192C66A8730057F983 /* ItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7DDC182C66A8730057F983 /* ItemEditorView.swift */; };
 		7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951CFF2C73D10E0023922C /* ItemCardView.swift */; };
 		7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951D042C73E7E20023922C /* CompactSessionCardView.swift */; };
@@ -69,6 +70,7 @@
 		7E5301EC2C74F98200909048 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
 		7E5301EE2C74F99B00909048 /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
 		7E5301F02C74FD7F00909048 /* ItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowView.swift; sourceTree = "<group>"; };
+		7E7349B62C80EEC800262930 /* ItemsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsListView.swift; sourceTree = "<group>"; };
 		7E7DDC182C66A8730057F983 /* ItemEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorView.swift; sourceTree = "<group>"; };
 		7E951CFF2C73D10E0023922C /* ItemCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCardView.swift; sourceTree = "<group>"; };
 		7E951D042C73E7E20023922C /* CompactSessionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactSessionCardView.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				7E951CFF2C73D10E0023922C /* ItemCardView.swift */,
 				7EF0BB152C6D3A2D0068542D /* ItemDetailsView.swift */,
 				7E5301F02C74FD7F00909048 /* ItemRowView.swift */,
+				7E7349B62C80EEC800262930 /* ItemsListView.swift */,
 			);
 			path = Item;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 				7EFCC60F2C7E6DC90090588D /* Trait.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
+				7E7349B72C80EEC800262930 /* ItemsListView.swift in Sources */,
 				7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */,
 				7EC008F12C5EEDE80093217B /* Item.swift in Sources */,
 				7E309D992C792DF40004A25A /* ImageViewerView.swift in Sources */,

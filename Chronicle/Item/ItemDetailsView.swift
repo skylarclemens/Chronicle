@@ -44,7 +44,7 @@ struct ItemDetailsView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     VStack(alignment: .leading) {
-                        HStack {
+                        HStack(alignment: .center) {
                             Text(item.type.label())
                                 .font(.footnote)
                                 .padding(.horizontal, 8)
@@ -82,7 +82,14 @@ struct ItemDetailsView: View {
                                             .stroke(.tertiary, lineWidth: 1)
                                     )
                             }
+                            Spacer()
+                            if item.favorite {
+                                Image(systemName: "star.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(.accent)
+                            }
                         }
+                        .frame(height: 24)
                         ImageCarouselView(imagesData: item.imagesData)
                             .padding(.vertical)
                     }
@@ -136,7 +143,6 @@ struct ItemDetailsView: View {
                                     }
                                 }
                             }
-                            .padding(.top)
                         }
                         if !sortedFlavors.isEmpty {
                             VStack(alignment: .leading) {
@@ -253,16 +259,30 @@ struct ItemDetailsView: View {
             .navigationTitle(item.name)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
-                Menu("Options", systemImage: "ellipsis") {
-                    Button {
-                        isEditing = true
-                    } label: {
-                        Label("Edit", systemImage: "pencil")
-                    }
-                    Button(role: .destructive) {
-                        isDeleting = true
-                    } label: {
-                        Label("Delete", systemImage: "trash")
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu("Options", systemImage: "ellipsis") {
+                        Section {
+                            Button {
+                                isEditing = true
+                            } label: {
+                                Label("Edit", systemImage: "pencil")
+                            }
+                            Button(role: .destructive) {
+                                isDeleting = true
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
+                        Button {
+                            item.favorite.toggle()
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("Failed to save model context.")
+                            }
+                        } label: {
+                            Label(item.favorite ? "Unfavorite" : "Favorite", systemImage: item.favorite ? "star.slash": "star")
+                        }
                     }
                 }
             }
