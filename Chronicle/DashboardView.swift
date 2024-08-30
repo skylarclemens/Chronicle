@@ -128,6 +128,7 @@ struct DashboardView: View {
                             alignment: .topLeading
                         )
                     }
+                    .scrollIndicators(.hidden)
                 }
                 .toolbar {
                     Menu("Add", systemImage: "plus") {

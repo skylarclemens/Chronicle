@@ -59,4 +59,23 @@ import SwiftUI
         self.location = location
         self.traits = traits
     }
+    
+    static func predicate(
+        date: Date?
+    ) -> Predicate<Session> {
+        let calendar = Calendar.current
+        if let date {
+            let startOfDay = calendar.startOfDay(for: date)
+            var components = DateComponents()
+            components.day = 1
+            components.second = -1
+            let endOfDay = calendar.date(byAdding: components, to: startOfDay)!
+            return #Predicate<Session> { session in
+                return startOfDay <= session.date && session.date <= endOfDay
+            }
+        }
+        return #Predicate<Session> { session in
+            return true
+        }
+    }
 }

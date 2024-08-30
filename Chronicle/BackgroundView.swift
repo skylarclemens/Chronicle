@@ -18,10 +18,6 @@ struct BackgroundView: View {
                     Circle()
                         .fill(.green)
                         .position(x: 300, y: 50)
-                    Ellipse()
-                        .fill(.white)
-                        .position(x: 250, y: -125)
-                        .frame(width: 500, height: 100)
                 }
                 .clipped()
                 Spacer()
