@@ -9,18 +9,13 @@ import SwiftUI
 import SwiftData
 
 struct JournalView: View {
-    @Query(sort: \Session.createdAt) private var sessions: [Session]
+    @State private var openCalendar: Bool = false
+    @State private var date: Date?
     
     var body: some View {
         NavigationStack {
             ZStack {
-                List {
-                    ForEach(sessions) { session in
-                        CompactSessionCardView(session: session)
-                            .listRowBackground(Color.clear)
-                            .listRowSeparator(.hidden)
-                    }
-                }
+                SessionsListView(date: date)
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
@@ -28,6 +23,39 @@ struct JournalView: View {
                 BackgroundView()
             )
             .navigationTitle("Journal")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        openCalendar = true
+                    } label: {
+                        HStack {
+                            if let date {
+                                Text(date, style: .date)
+                                    .font(.system(size: 14, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 4)
+                            }
+                            Image(systemName:"calendar")
+                                .font(.subheadline)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 7)
+                    .background(.quaternary,
+                                in: RoundedRectangle(cornerRadius: 50))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 50)
+                            .strokeBorder(.quaternary)
+                    )
+                }
+            }
+            .sheet(isPresented: $openCalendar) {
+                NavigationStack {
+                    CalendarView(date: $date)
+                }
+                .presentationDetents([.medium])
+                .presentationBackground(.thickMaterial)
+            }
         }
     }
 }
