@@ -18,6 +18,7 @@ import SwiftUI
     public var duration: TimeInterval?
     public var notes: String?
     public var location: String?
+    public var favorite: Bool
     @Attribute(.externalStorage) public var imagesData: [Data]?
     @Relationship(deleteRule: .cascade)
     public var traits: [SessionTrait]
@@ -48,7 +49,7 @@ import SwiftUI
         return flavors.sorted { $0.itemTrait?.trait.name ?? "" > $1.itemTrait?.trait.name ?? "" }
     }
     
-    init(id: UUID = UUID(), createdAt: Date = Date(), title: String = "", date: Date = Date(), item: Item? = nil, duration: TimeInterval? = nil, notes: String? = nil, location: String? = nil, traits: [SessionTrait] = []) {
+    init(id: UUID = UUID(), createdAt: Date = Date(), title: String = "", date: Date = Date(), item: Item? = nil, duration: TimeInterval? = nil, notes: String? = nil, location: String? = nil, favorite: Bool = false, traits: [SessionTrait] = []) {
         self.id = id
         self.createdAt = createdAt
         self.title = title
@@ -57,6 +58,7 @@ import SwiftUI
         self.duration = duration
         self.notes = notes
         self.location = location
+        self.favorite = favorite
         self.traits = traits
     }
     

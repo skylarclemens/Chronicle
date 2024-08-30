@@ -22,6 +22,11 @@ struct CompactSessionCardView: View {
                         Text(session.title)
                             .font(.system(size: 17, weight: .regular, design: .rounded))
                             .bold()
+                        if session.favorite {
+                            Image(systemName: "bookmark.fill")
+                                .font(.caption)
+                                .foregroundStyle(.accent)
+                        }
                         if let notes = session.notes, !notes.isEmpty {
                             Image(systemName: "note.text")
                                 .foregroundStyle(.secondary)
