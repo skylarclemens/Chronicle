@@ -23,10 +23,17 @@ struct SessionDetailsView: View {
                 VStack(alignment: .leading) {
                     ImageGridView(imagesData: session.imagesData, cornerRadius: 4)
                         .padding(.vertical)
-                    Text(session.title)
-                        .font(.system(.title, design: .rounded))
-                        .fontWeight(.semibold)
-                        .padding(.vertical, 1)
+                    HStack {
+                        Text(session.title)
+                            .font(.system(.title, design: .rounded))
+                            .fontWeight(.semibold)
+                            .padding(.vertical, 1)
+                        if session.favorite {
+                            Image(systemName: "bookmark.fill")
+                                .font(.caption)
+                                .foregroundStyle(.accent)
+                        }
+                    }
                     if let item = session.item {
                         HStack {
                             VStack {
@@ -171,15 +178,27 @@ struct SessionDetailsView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu("Options", systemImage: "ellipsis") {
-                        Button {
-                            isEditing = true
-                        } label: {
-                            Label("Edit", systemImage: "pencil")
+                        Section {
+                            Button {
+                                isEditing = true
+                            } label: {
+                                Label("Edit", systemImage: "pencil")
+                            }
+                            Button(role: .destructive) {
+                                isDeleting = true
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
                         }
-                        Button(role: .destructive) {
-                            isDeleting = true
+                        Button {
+                            session.favorite.toggle()
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("Failed to save model context.")
+                            }
                         } label: {
-                            Label("Delete", systemImage: "trash")
+                            Label(session.favorite ? "Remove bookmark" : "Bookmark", systemImage: session.favorite ? "bookmark.slash" : "bookmark")
                         }
                     }
                 }

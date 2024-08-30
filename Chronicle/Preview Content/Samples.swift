@@ -30,7 +30,7 @@ extension Item {
 
 extension Session {
     static let sampleData: [Session] = [
-        Session(title: "Test sesh"),
+        Session(title: "Test sesh", favorite: true),
         Session(title: "2nd test sesh")
     ]
 }
