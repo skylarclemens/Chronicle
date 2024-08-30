@@ -95,7 +95,6 @@ struct SimpleAnalyticsDataView: View {
         }
         .frame(minWidth: .zero, maxWidth: 110, alignment: .leading)
         .fixedSize(horizontal: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
-        //.background(.regularMaterial)
     }
 }
 
