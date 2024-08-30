@@ -23,6 +23,10 @@ struct DashboardView: View {
                 VStack {
                     ScrollView {
                         VStack(alignment: .leading) {
+                            SimpleAnalyticsView()
+                        }
+                        .padding(.horizontal)
+                        VStack(alignment: .leading) {
                             Text("Stash")
                                 .font(.title2)
                                 .padding(.horizontal)

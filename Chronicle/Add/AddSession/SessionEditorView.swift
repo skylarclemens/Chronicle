@@ -312,7 +312,8 @@ struct SessionEditorFlavorsView: View {
     
     func save() throws {
         if let item = viewModel.item {
-            let newSession = session ?? Session(item: item)
+            let newSession = session ?? Session()
+            newSession.item = item
             newSession.date = viewModel.date
             newSession.title = viewModel.title
             newSession.notes = viewModel.notes
