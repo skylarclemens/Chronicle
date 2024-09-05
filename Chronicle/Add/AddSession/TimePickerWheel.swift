@@ -12,7 +12,8 @@ struct TimePickerWheel: View {
     var totalInSeconds: Double {
         Double((time.hours * 3600) + time.minutes * 60)
     }
-    
+    var label: String = ""
+    var showBackground: Bool = true
     @Binding var timerNumber: Double
     
     @State var openPopover: Bool = false
@@ -20,10 +21,22 @@ struct TimePickerWheel: View {
         Button {
             openPopover = true
         } label: {
-            Text("\(time.hours) hr, \(time.minutes) min")
-                .padding(EdgeInsets(top: 6, leading: 11, bottom: 6, trailing: 11))
-                .background(Color(UIColor.tertiarySystemFill))
-                .clipShape(.rect(cornerRadius: 6))
+            if !label.isEmpty && timerNumber == 0 {
+                Text(label)
+                    .font(.subheadline)
+            } else {
+                let timeStr = time.hours > 0 ? "\(time.hours) hr, \(time.minutes) min" : "\(time.minutes) min"
+                if showBackground {
+                    Text(timeStr)
+                        .font(.subheadline)
+                        .padding(EdgeInsets(top: 6, leading: 11, bottom: 6, trailing: 11))
+                        .background(Color(UIColor.tertiarySystemFill))
+                        .clipShape(.rect(cornerRadius: 6))
+                } else {
+                    Text(timeStr)
+                        .font(.subheadline)
+                }
+            }
         }
         .buttonStyle(.plain)
         .popover(isPresented: $openPopover) {

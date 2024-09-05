@@ -51,7 +51,9 @@ struct JournalView: View {
             }
             .sheet(isPresented: $openCalendar) {
                 NavigationStack {
-                    CalendarView(date: $date)
+                    CalendarView(date: $date.safeBinding(defaultValue: Date()), clearFunction: {
+                        self.date = nil
+                    })
                 }
                 .presentationDetents([.medium])
                 .presentationBackground(.thickMaterial)

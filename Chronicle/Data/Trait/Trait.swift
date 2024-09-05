@@ -122,10 +122,18 @@ public class Trait {
         Trait(name: "Sour", emoji: "🍋", type: .flavor, color: ColorData(color: .yellow)),
         Trait(name: "Creamy", emoji: "🥛", type: .flavor, color: ColorData(color: .white))
     ]
+    
+    public static let predefinedMoods: [Trait] = [
+        Trait(name: "Very unpleasant", type: .mood),
+        Trait(name: "Unpleasant", type: .mood),
+        Trait(name: "Neutral", type: .mood, color: ColorData(color: .white)),
+        Trait(name: "Good", type: .mood),
+        Trait(name: "Amazing", type: .mood)
+    ]
 }
 
 public enum TraitType: String, Codable {
-    case effect, flavor
+    case effect, flavor, mood
 }
 
 public enum EffectType: String, Identifiable, CaseIterable, Codable {
