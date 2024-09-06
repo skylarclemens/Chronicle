@@ -45,7 +45,7 @@ class SampleData {
         }
         
         for session in Session.sampleData {
-            session.imagesData = [Item.sampleImages.randomElement()!]
+            session.imagesData = [Item.sampleImages.randomElement()!, Item.sampleImages.randomElement()!]
             container.mainContext.insert(session)
         }
         

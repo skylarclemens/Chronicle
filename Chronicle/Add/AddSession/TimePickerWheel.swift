@@ -23,18 +23,15 @@ struct TimePickerWheel: View {
         } label: {
             if !label.isEmpty && timerNumber == 0 {
                 Text(label)
-                    .font(.subheadline)
             } else {
                 let timeStr = time.hours > 0 ? "\(time.hours) hr, \(time.minutes) min" : "\(time.minutes) min"
                 if showBackground {
                     Text(timeStr)
-                        .font(.subheadline)
                         .padding(EdgeInsets(top: 6, leading: 11, bottom: 6, trailing: 11))
                         .background(Color(UIColor.tertiarySystemFill))
                         .clipShape(.rect(cornerRadius: 6))
                 } else {
                     Text(timeStr)
-                        .font(.subheadline)
                 }
             }
         }
