@@ -34,7 +34,7 @@ struct BackgroundView: View {
         .blur(radius: 75)
         .overlay(
             Rectangle()
-                .fill(.black)
+                .fill(.background)
                 .opacity(0.75)
         )
         .ignoresSafeArea()

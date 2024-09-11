@@ -97,40 +97,41 @@ struct DashboardView: View {
                             }
                         }
                         .padding(.horizontal)
-                        
-                        VStack(alignment: .leading) {
-                            Text("Strains")
-                                .font(.title2)
-                                .padding(.horizontal)
-                                .bold()
-                                .accessibilityAddTraits(.isHeader)
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(strains) { strain in
-                                        NavigationLink {
-                                            StrainDetailsView(strain: strain)
-                                        } label: {
-                                            VStack {
-                                                HStack {
-                                                    Image(systemName: "leaf")
-                                                        .foregroundStyle(.accent)
-                                                    Text(strain.name)
+                        if !strains.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Strains")
+                                    .font(.title2)
+                                    .padding(.horizontal)
+                                    .bold()
+                                    .accessibilityAddTraits(.isHeader)
+                                ScrollView(.horizontal) {
+                                    HStack {
+                                        ForEach(strains) { strain in
+                                            NavigationLink {
+                                                StrainDetailsView(strain: strain)
+                                            } label: {
+                                                VStack {
+                                                    HStack {
+                                                        Image(systemName: "leaf")
+                                                            .foregroundStyle(.accent)
+                                                        Text(strain.name)
+                                                    }
+                                                    .tint(.primary)
+                                                    .padding(8)
+                                                    .background(RoundedRectangle(cornerRadius: 8).fill(.regularMaterial))
                                                 }
-                                                .tint(.primary)
-                                                .padding(8)
-                                                .background(RoundedRectangle(cornerRadius: 8).fill(.regularMaterial))
                                             }
                                         }
                                     }
+                                    .padding(.horizontal)
                                 }
-                                .padding(.horizontal)
                             }
+                            .padding(.vertical)
+                            .containerRelativeFrame(
+                                [.horizontal],
+                                alignment: .topLeading
+                            )
                         }
-                        .padding(.vertical)
-                        .containerRelativeFrame(
-                            [.horizontal],
-                            alignment: .topLeading
-                        )
                     }
                     .scrollIndicators(.hidden)
                 }

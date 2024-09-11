@@ -46,9 +46,10 @@ extension ItemTrait {
     static let sampleData: [ItemTrait] = [
         ItemTrait(trait: Trait.predefinedEffects[4]),
         ItemTrait(trait: Trait.predefinedEffects[5]),
-        ItemTrait(trait: Trait.predefinedEffects[42]),
+        ItemTrait(trait: Trait.predefinedEffects[8]),
         ItemTrait(trait: Trait.predefinedFlavors[4]),
-        ItemTrait(trait: Trait.predefinedFlavors[6])
+        ItemTrait(trait: Trait.predefinedFlavors[6]),
+        ItemTrait(trait: Trait.predefinedMoods[3])
     ]
 }
 
@@ -58,6 +59,7 @@ extension SessionTrait {
         SessionTrait(itemTrait: ItemTrait.sampleData[1], intensity: 8),
         SessionTrait(itemTrait: ItemTrait.sampleData[2], intensity: 10),
         SessionTrait(itemTrait: ItemTrait.sampleData[3]),
-        SessionTrait(itemTrait: ItemTrait.sampleData[4])
+        SessionTrait(itemTrait: ItemTrait.sampleData[4]),
+        SessionTrait(itemTrait: ItemTrait.sampleData[5])
     ]
 }

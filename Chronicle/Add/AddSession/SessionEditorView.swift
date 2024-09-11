@@ -10,9 +10,17 @@ import SwiftData
 import PhotosUI
 
 struct SessionEditorView: View {
+    enum Field {
+        case title, notes
+    }
+    
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @State private var viewModel = SessionEditorViewModel()
+    @State private var openCalendar: Bool = false
+    @State private var openNotes: Bool = false
+    @State private var openMood: Bool = false
+    @FocusState var focusedField: Field?
     
     var session: Session?
     
@@ -20,104 +28,226 @@ struct SessionEditorView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Form {
-                    Section {
-                        TextField("Title", text: $viewModel.title)
-                    }
-                    Section {
-                        Picker("Item", systemImage: "tray", selection: $viewModel.item) {
-                            Text("None").tag(nil as Item?)
-                            ForEach(items, id: \.self) { item in
-                                Text(item.name).tag(item as Item?)
+            ZStack(alignment: .bottom) {
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
+                            .frame(height: 180)
+                        VStack(alignment: .leading) {
+                            Section {
+                                TextField("Title", text: $viewModel.title)
+                                    .font(.system(size: 24, weight: .medium, design: .rounded))
+                                    .padding(.vertical, 8)
+                                    .padding(.trailing)
+                                    .focused($focusedField, equals: .title)
+                                    .submitLabel(.done)
                             }
-                        }
-                    }
-                    Section {
-                        DatePicker(selection: $viewModel.date) {
-                            Label("Date", systemImage: "calendar")
-                        }
-                        HStack {
-                            Label("Duration", systemImage: "clock")
-                            Spacer()
-                            TimePickerWheel(timerNumber: $viewModel.duration)
-                        }
-                    }
-                    Section {
-                        HStack(spacing: 16) {
-                            Label("Location", systemImage: "map")
-                            // TODO: Update to use map and location
-                            TextField("My room", text: $viewModel.location)
-                        }
-                    }
-                    Section("Photos") {
-                        if viewModel.selectedImagesData.count > 0 {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                LazyHStack(spacing: 8) {
-                                    ForEach(viewModel.selectedImagesData, id: \.self) { imageData in
-                                        if let uiImage = UIImage(data: imageData) {
-                                            Image(uiImage: uiImage)
-                                                .resizable()
-                                                .scaledToFill()
-                                                .frame(width: 150, height: 150, alignment: .leading)
-                                                .clipShape(.rect(cornerRadius: 10))
-                                                .overlay(alignment: .topTrailing) {
-                                                    Button {
-                                                        viewModel.selectedImagesData.remove(at: viewModel.selectedImagesData.firstIndex(of: imageData)!)
-                                                    } label: {
-                                                        Image(systemName: "xmark.circle.fill")
-                                                            .padding(4)
-                                                            .font(.title2)
-                                                            .foregroundStyle(.primary, .secondary)
+                            VStack(alignment: .leading, spacing: 8) {
+                                Section {
+                                    HStack(spacing: -4) {
+                                        Image(systemName: "link")
+                                        Picker("Item", systemImage: "tray", selection: $viewModel.item) {
+                                            Text("Item").tag(nil as Item?)
+                                            ForEach(items, id: \.self) { item in
+                                                Text(item.name).tag(item as Item?)
+                                            }
+                                        }
+                                    }
+                                    .tint(.primary)
+                                    .padding(.leading, 8)
+                                    .background(.accent.opacity(0.33),
+                                                in: RoundedRectangle(cornerRadius: 50))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 50)
+                                            .strokeBorder(.accent.opacity(0.5))
+                                    )
+                                }
+                                Section {
+                                    HStack {
+                                        Button {
+                                            openCalendar = true
+                                        } label: {
+                                            HStack {
+                                                Image(systemName: "calendar")
+                                                Text("\(viewModel.dateString), \(viewModel.date.formatted(date: .omitted, time: .shortened))")
+                                            }
+                                        }
+                                        .buttonStyle(.plain)
+                                        .padding(.vertical, 8)
+                                        .padding(.horizontal, 12)
+                                        .background(.regularMaterial,
+                                                    in: RoundedRectangle(cornerRadius: 50))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 50)
+                                                .strokeBorder(.quaternary)
+                                        )
+                                        
+                                        Button {} label: {
+                                            HStack {
+                                                Image(systemName: "timer")
+                                                TimePickerWheel(label: "Duration", showBackground: false, timerNumber: $viewModel.duration)
+                                            }
+                                        }
+                                        .buttonStyle(.plain)
+                                        .foregroundStyle(viewModel.duration == 0 ? .secondary : .primary)
+                                        .padding(.vertical, 8)
+                                        .padding(.horizontal, 12)
+                                        .background(.regularMaterial,
+                                                    in: RoundedRectangle(cornerRadius: 50))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 50)
+                                                .strokeBorder(.quaternary)
+                                        )
+                                    }
+                                }
+                            }
+                            if !viewModel.notes.isEmpty {
+                                Section {
+                                    VStack(alignment: .leading) {
+                                        Text("Notes")
+                                            .font(.title2)
+                                            .fontWeight(.semibold)
+                                        Text(viewModel.notes)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(12)
+                                            .background(Color(UIColor.secondarySystemGroupedBackground),
+                                                        in: RoundedRectangle(cornerRadius: 8))
+                                    }
+                                    .padding(.vertical)
+                                }
+                            }
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("Mood")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                    if let currentMood = viewModel.moodTrait {
+                                        HStack(alignment: .bottom) {
+                                            Text(currentMood.trait.name)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 4)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .fill(currentMood.trait.color.color.opacity(0.33))
+                                                )
+                                            Spacer()
+                                            Button {
+                                                openMood = true
+                                            } label: {
+                                                Text("Edit")
+                                                    .font(.footnote)
+                                                    .contentShape(RoundedRectangle(cornerRadius: 12))
+                                            }
+                                            .buttonStyle(.plain)
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 4)
+                                            .background(
+                                                Capsule()
+                                                    .fill(
+                                                        LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
+                                                            .opacity(0.25)
+                                                    )
+                                            )
+                                            .overlay(
+                                                Capsule()
+                                                    .strokeBorder(
+                                                        LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
+                                                            .opacity(0.75)
+                                                    )
+                                            )
+                                        }
+                                    }
+                                }
+                                if !viewModel.effects.isEmpty {
+                                    DetailSection(header: "Feelings", isScrollView: true) {
+                                        ScrollView(.horizontal) {
+                                            HStack {
+                                                ForEach(viewModel.effects, id: \.self) { effect in
+                                                    HStack {
+                                                        Text(effect.trait.emoji ?? "")
+                                                            .font(.system(size: 12))
+                                                        Text(effect.trait.name)
+                                                            .font(.subheadline)
+                                                            .fontWeight(.medium)
                                                     }
-                                                    .buttonStyle(.plain)
+                                                    .padding(8)
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 12)
+                                                            .fill(.ultraThinMaterial)
+                                                    )
                                                 }
+                                            }
                                         }
+                                        .contentMargins(.horizontal, 16)
+                                        .scrollIndicators(.hidden)
                                     }
-                                }
-                                .padding()
-                            }
-                            .listRowInsets(EdgeInsets())
-                        }
-                        PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 3, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-                            Label("Select photos", systemImage: "photo.badge.plus")
-                        }
-                        .onChange(of: viewModel.pickerItems) { oldValues, newValues in
-                            Task {
-                                if viewModel.pickerItems.count == 0 { return }
-                                
-                                for value in newValues {
-                                    if let imageData = try? await value.loadTransferable(type: Data.self) {
-                                        withAnimation {
-                                            viewModel.selectedImagesData.append(imageData)
+                                } else {
+                                    Button {
+                                        openMood = true
+                                    } label: {
+                                        HStack {
+                                            Text("Log how you're feeling")
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                                .foregroundStyle(.secondary)
                                         }
+                                        .contentShape(RoundedRectangle(cornerRadius: 12))
                                     }
+                                    .buttonStyle(.plain)
+                                    .padding(12)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(
+                                                LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
+                                                    .opacity(0.25)
+                                            )
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .strokeBorder(
+                                                LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
+                                                    .opacity(0.75)
+                                            )
+                                    )
                                 }
-                                
-                                viewModel.pickerItems.removeAll()
                             }
+                            .padding(.vertical)
                         }
+                        .padding(.horizontal)
                     }
-                    Section("Notes") {
-                        TextField("Best sesh ever.", text: $viewModel.notes, axis: .vertical)
-                            .lineLimit(8, reservesSpace: true)
+                    .padding(.bottom, 120)
+                }
+                // Save Session button
+                VStack {
+                    Spacer()
+                    Button {
+                        do {
+                            try save()
+                        } catch {
+                            print("New/edited session could not be saved.")
+                        }
+                        dismiss()
+                    } label: {
+                        Text("Save")
+                            .frame(maxWidth: .infinity)
                     }
+                    .disabled(viewModel.item == nil || viewModel.title.isEmpty)
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
+                    .padding()
                 }
-                Spacer()
-                NavigationLink {
-                    SessionEditorEffectsView(viewModel: $viewModel, parentDismiss: dismiss, session: session)
-                } label: {
-                    Text("Next")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
-                .tint(.accentColor)
-                .padding()
-                .disabled(viewModel.item == nil)
+                .background(
+                    Color(UIColor.systemBackground).mask(
+                        LinearGradient(gradient: Gradient(colors: [.black, .clear]), startPoint: .bottom, endPoint: .top)
+                    )
+                )
+                .frame(height: 120)
             }
-            .navigationTitle("New Session")
+            .navigationTitle("\(session == nil ? "New" : "Edit") Session")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                // Close
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -127,6 +257,81 @@ struct SessionEditorView: View {
                     }
                     .buttonStyle(.plain)
                 }
+                // Toolbar to add items to session
+                ToolbarItemGroup(placement: .bottomBar) {
+                    PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
+                        Label("Select photos", systemImage: "photo.fill")
+                    }
+                    .tint(.primary)
+                    Spacer()
+                    Button("Open notes", systemImage: "note.text") {
+                        openNotes = true
+                    }
+                    .labelStyle(.iconOnly)
+                    .tint(.primary)
+                    Spacer()
+                }
+                // Show same toolbar when keyboard opens
+                ToolbarItemGroup(placement: .keyboard) {
+                    PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
+                        Label("Select photos", systemImage: "photo.fill")
+                    }
+                    .tint(.primary)
+                    Spacer()
+                    Button("Open notes", systemImage: "note.text") {
+                        openNotes = true
+                    }
+                    .labelStyle(.iconOnly)
+                    .tint(.primary)
+                    .padding(.horizontal)
+                    Spacer()
+                    Button {
+                        focusedField = nil
+                    } label: {
+                        Image(systemName: "keyboard.chevron.compact.down")
+                    }
+                    .tint(.primary)
+                }
+            }
+            .toolbarBackground(.visible, for: .bottomBar)
+            .interactiveDismissDisabled()
+            .scrollDismissesKeyboard(.interactively)
+            .onChange(of: viewModel.pickerItems) { oldValues, newValues in
+                Task {
+                    if viewModel.pickerItems.count == 0 { return }
+                    
+                    for value in newValues {
+                        if let imageData = try? await value.loadTransferable(type: Data.self) {
+                            withAnimation {
+                                viewModel.selectedImagesData.append(imageData)
+                            }
+                        }
+                    }
+                    
+                    viewModel.pickerItems.removeAll()
+                }
+            }
+            .sheet(isPresented: $openCalendar) {
+                NavigationStack {
+                    CalendarView(date: $viewModel.date, displayedComponents: [.date, .hourAndMinute])
+                }
+                .presentationDetents([.height(460)])
+                .presentationBackground(.thickMaterial)
+            }
+            .sheet(isPresented: $openNotes) {
+                NavigationStack {
+                    NotesEditorView(notes: $viewModel.notes)
+                }
+                .presentationDetents([.medium])
+                .presentationBackground(.thickMaterial)
+            }
+            .sheet(isPresented: $openMood) {
+                NavigationStack {
+                    MoodSelectorView(viewModel: $viewModel)
+                }
+                .tint(.primary)
+                .presentationDetents([.large])
+                .presentationBackground(.thickMaterial)
             }
         }
         .onAppear {
@@ -142,194 +347,43 @@ struct SessionEditorView: View {
                 viewModel.effects = session.traits
                     .filter { $0.itemTrait?.trait.type == .effect }
                     .map { SessionTraitViewModel($0) }
-                viewModel.flavors = session.traits
-                    .filter { $0.itemTrait?.trait.type == .flavor }
-                    .map { SessionTraitViewModel($0) }
-            }
-        }
-    }
-}
-
-struct SessionEditorEffectsView: View {
-    @Environment(\.modelContext) var modelContext
-    @Binding var viewModel: SessionEditorViewModel
-    let parentDismiss: DismissAction
-    
-    var session: Session?
-    
-    @State var selectedEffect: Trait?
-    @State var intensity: Double = 5.0
-    
-    var body: some View {
-        VStack {
-            List {
-                if !viewModel.effects.isEmpty {
-                    ForEach(viewModel.effects, id: \.self) { effect in
-                        HStack {
-                            Text(effect.trait.name)
-                            Spacer()
-                            Text("Intensity: \(effect.intensity)")
-                        }
-                    }
-                    .onDelete(perform: viewModel.removeEffect)
-                }
-            }
-            Spacer()
-            Form {
-                Picker("Effect", selection: $selectedEffect) {
-                    Text("None").tag(nil as Trait?)
-                    ForEach(Trait.predefinedEffects, id: \.self) { effect in
-                        HStack(spacing: 4) {
-                            Text(effect.emoji ?? "")
-                            Text(effect.name)
-                        }
-                        .tag(effect as Trait?)
-                        
-                    }
-                }.pickerStyle(.navigationLink)
-                VStack(alignment: .leading) {
-                    Text("Intensity")
-                    Slider(value: $intensity, in: 0...10, step: 1) {
-                        Text("Intensity")
-                    } minimumValueLabel: {
-                        Text("0")
-                    } maximumValueLabel: {
-                        Text("10")
-                    }
-                    Text(intensity, format: .number)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                }
-                Button("Add Effect") {
-                    if let selectedEffect {
-                        viewModel.addTrait(selectedEffect, intensity: Int(intensity))
-                        self.selectedEffect = nil
-                        intensity = 5
-                    }
-                }
-                .disabled(selectedEffect == nil)
-            }
-            Spacer()
-            NavigationLink {
-                SessionEditorFlavorsView(viewModel: $viewModel, parentDismiss: parentDismiss, session: session)
-            } label: {
-                Text("Next")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            .tint(.accentColor)
-            .padding()
-        }
-        .navigationTitle("Effects")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    parentDismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
-}
-
-struct SessionEditorFlavorsView: View {
-    @Environment(\.modelContext) var modelContext
-    @Binding var viewModel: SessionEditorViewModel
-    let parentDismiss: DismissAction
-    
-    var session: Session?
-    
-    @State var selectedFlavor: Trait?
-    
-    var body: some View {
-        VStack {
-            List {
-                if viewModel.flavors.count > 0 {
-                    ForEach(viewModel.flavors, id: \.self) { flavor in
-                        HStack(spacing: 4) {
-                            Text(flavor.trait.emoji ?? "")
-                            Text(flavor.trait.name)
-                        }
-                    }
-                    .onDelete(perform: viewModel.removeFlavor)
+                if let moodTrait = session.traits.first(where: { $0.itemTrait?.trait.type == .mood }) {
+                    viewModel.moodTrait = SessionTraitViewModel(moodTrait)
                 }
             }
             
-            Form {
-                Picker("Flavor", selection: $selectedFlavor) {
-                    Text("None").tag(nil as Trait?)
-                    ForEach(Trait.predefinedFlavors, id: \.self) { flavor in
-                        HStack(spacing: 4) {
-                            Text(flavor.emoji ?? "")
-                            Text(flavor.name)
-                        }
-                        .tag(flavor as Trait?)
-                        
-                    }
-                }.pickerStyle(.navigationLink)
-                Button("Add Flavor") {
-                    if let selectedFlavor {
-                        viewModel.addTrait(selectedFlavor)
-                        self.selectedFlavor = nil
-                    }
-                }
-                .disabled(selectedFlavor == nil)
-            }
-            
-            Spacer()
-            Button {
-                do {
-                    try save()
-                } catch {
-                    print("New session could not be saved.")
-                }
-                parentDismiss()
-            } label: {
-                Text("Save")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            .tint(.accentColor)
-            .padding()
-        }
-        .navigationTitle("Flavors")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    parentDismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.plain)
-            }
+            focusedField = .title
         }
     }
     
+    @MainActor
     func save() throws {
         if let item = viewModel.item {
-            let newSession = session ?? Session()
-            newSession.item = item
-            newSession.date = viewModel.date
-            newSession.title = viewModel.title
-            newSession.notes = viewModel.notes
-            newSession.duration = viewModel.duration
-            newSession.location = viewModel.location
-            newSession.imagesData = viewModel.selectedImagesData
+            let session = self.session ?? Session()
+            session.item = item
+            session.date = viewModel.date
+            session.title = viewModel.title
+            session.notes = viewModel.notes
+            session.duration = viewModel.duration
+            session.location = viewModel.location
+            session.imagesData = viewModel.selectedImagesData
             
-            newSession.traits.forEach { modelContext.delete($0) }
-            newSession.traits.removeAll()
+            // Update removed traits
+            let currentTraitIDs = Set(viewModel.effects.map { $0.trait.id } + [viewModel.moodTrait?.trait.id])
+            session.traits.forEach { sessionTrait in
+                if !currentTraitIDs.contains(sessionTrait.itemTrait?.trait.id) {
+                    modelContext.delete(sessionTrait)
+                }
+            }
             
-            viewModel.updateTraits(for: viewModel.effects, modelContext: modelContext)
-            viewModel.updateTraits(for: viewModel.flavors, modelContext: modelContext)
+            // Update current traits and add new ones
+            viewModel.updateTraits(for: viewModel.effects, in: session, modelContext: modelContext)
+            if let moodTrait = viewModel.moodTrait {
+                viewModel.updateTraits(for: [moodTrait], in: session, modelContext: modelContext)
+            }
             
-            newSession.traits = viewModel.sessionTraits
-            if session == nil {
-                modelContext.insert(newSession)
+            if self.session == nil {
+                modelContext.insert(session)
             }
             
             try modelContext.save()
@@ -344,21 +398,32 @@ class SessionEditorViewModel {
     var item: Item?
     var duration: Double = 0
     var effects: [SessionTraitViewModel] = []
-    var flavors: [SessionTraitViewModel] = []
-    var sessionTraits: [SessionTrait] = []
+    var moodTrait: SessionTraitViewModel?
     var notes: String = ""
     var location: String = ""
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
     
-    func updateTraits(for traitViewModels: [SessionTraitViewModel], modelContext: ModelContext) {
-        if let item {
+    var dateString: String {
+        let calendar = Calendar.current
+        return calendar.isDateInToday(date) ? "Today" : date.formatted(date: .abbreviated, time: .omitted)
+    }
+    
+    func updateTraits(for traitViewModels: [SessionTraitViewModel], in session: Session, modelContext: ModelContext) {
+        if let item = session.item {
             for traitVM in traitViewModels {
-                let itemTrait = item.traits.first { $0.trait.name == traitVM.trait.name } ?? ItemTrait(trait: traitVM.trait, item: item)
-                let sessionTrait = SessionTrait(itemTrait: itemTrait, intensity: traitVM.intensity)
+                let itemTrait = item.traits.first { $0.trait.name == traitVM.trait.name } ?? {
+                    let trait = getTrait(traitVM.trait, modelContext: modelContext)
+                    return ItemTrait(trait: trait, item: item)
+                }()
                 
-                sessionTraits.append(sessionTrait)
+                if let existingSessionTrait = session.traits.first(where: { $0.itemTrait?.trait.name == traitVM.trait.name }) {
+                    existingSessionTrait.intensity = traitVM.intensity
+                } else {
+                    let sessionTrait = SessionTrait(itemTrait: itemTrait, session: session, intensity: traitVM.intensity)
+                    session.traits.append(sessionTrait)
+                }
             }
         }
     }
@@ -366,8 +431,8 @@ class SessionEditorViewModel {
     func addTrait(_ trait: Trait, intensity: Int = 0) {
         if trait.type == .effect {
             effects.append(SessionTraitViewModel(trait: trait, intensity: intensity))
-        } else if trait.type == .flavor {
-            flavors.append(SessionTraitViewModel(trait: trait))
+        } else if trait.type == .mood {
+            moodTrait = SessionTraitViewModel(trait: trait)
         }
     }
     
@@ -375,8 +440,14 @@ class SessionEditorViewModel {
         effects.remove(atOffsets: offsets)
     }
     
-    func removeFlavor(at offsets: IndexSet) {
-        flavors.remove(atOffsets: offsets)
+    func getTrait(_ trait: Trait, modelContext: ModelContext) -> Trait {
+        let id = trait.id
+        var traitFetchDescriptor = FetchDescriptor<Trait>(predicate: #Predicate {
+            $0.id == id
+        })
+        traitFetchDescriptor.fetchLimit = 1
+        let fetchedTrait = try? modelContext.fetch(traitFetchDescriptor).first
+        return fetchedTrait ?? trait
     }
 }
 
@@ -399,24 +470,4 @@ struct SessionTraitViewModel: Identifiable, Hashable {
 #Preview {
     SessionEditorView(session: SampleData.shared.session)
         .modelContainer(SampleData.shared.container)
-}
-
-#Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var viewModel = SessionEditorViewModel()
-    
-    return NavigationStack {
-        SessionEditorEffectsView(viewModel: $viewModel, parentDismiss: dismiss)
-    }
-    .modelContainer(SampleData.shared.container)
-}
-
-#Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var viewModel = SessionEditorViewModel()
-    
-    return NavigationStack {
-        SessionEditorFlavorsView(viewModel: $viewModel, parentDismiss: dismiss)
-    }
-    .modelContainer(SampleData.shared.container)
 }

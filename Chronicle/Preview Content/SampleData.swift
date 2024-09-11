@@ -45,7 +45,7 @@ class SampleData {
         }
         
         for session in Session.sampleData {
-            session.imagesData = [Item.sampleImages.randomElement()!]
+            session.imagesData = [Item.sampleImages.randomElement()!, Item.sampleImages.randomElement()!]
             container.mainContext.insert(session)
         }
         
@@ -55,6 +55,10 @@ class SampleData {
         
         for flavor in Trait.predefinedFlavors {
             container.mainContext.insert(flavor)
+        }
+        
+        for mood in Trait.predefinedMoods {
+            container.mainContext.insert(mood)
         }
         
         for itemTrait in ItemTrait.sampleData {
@@ -76,6 +80,10 @@ class SampleData {
         sessionTrait.itemTrait = itemTrait
         itemTrait.item = item
         itemTrait.sessionTraits.append(sessionTrait)
+        sessionMoodTrait.session = session
+        sessionMoodTrait.itemTrait = itemMoodTrait
+        itemMoodTrait.item = item
+        itemMoodTrait.sessionTraits.append(sessionMoodTrait)
         
         do {
             try context.save()
@@ -100,7 +108,15 @@ class SampleData {
         ItemTrait.sampleData[0]
     }
     
+    var itemMoodTrait: ItemTrait {
+        ItemTrait.sampleData[5]
+    }
+    
     var sessionTrait: SessionTrait {
         SessionTrait.sampleData[0]
+    }
+    
+    var sessionMoodTrait: SessionTrait {
+        SessionTrait.sampleData[5]
     }
 }

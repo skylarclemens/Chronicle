@@ -77,7 +77,8 @@ struct SessionDetailsView: View {
                     if let notes = session.notes, !notes.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Notes")
-                                .font(.headline)
+                                .font(.title2)
+                                .fontWeight(.semibold)
                             DetailSection {
                                 Text(notes)
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -87,27 +88,46 @@ struct SessionDetailsView: View {
                     }
                     if !session.effects.isEmpty {
                         VStack(alignment: .leading) {
-                            Text("Effects")
-                                .font(.headline)
+                            HStack(alignment: .bottom) {
+                                Text("Mood")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                if let currentMood = session.mood,
+                                   let moodItemTrait = currentMood.itemTrait {
+                                    Text(moodItemTrait.traitName)
+                                        .font(.subheadline)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .fill(moodItemTrait.traitColor.color.opacity(0.33))
+                                        )
+                                }
+                            }
                             if !session.sortedMoods.isEmpty {
-                                DetailSection(header: "Moods", headerRight: "Intensity") {
-                                    ForEach(session.sortedMoods) { effect in
-                                        if let itemTrait = effect.itemTrait {
-                                            HStack {
-                                                Text(itemTrait.traitEmoji)
-                                                    .font(.system(size: 14))
-                                                Text(itemTrait.traitName)
-                                                    .font(.footnote)
-                                                    .fontWeight(.medium)
-                                                    .frame(width: 80, alignment: .leading)
-                                                Spacer()
-                                                ProgressView(value: Double(effect.intensity ?? 0)/10)
-                                                Text(effect.intensity ?? 0, format: .number)
-                                                    .font(.footnote)
-                                                    .bold()
+                                DetailSection(header: "Feelings", isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(session.sortedMoods) { effect in
+                                                if let itemTrait = effect.itemTrait {
+                                                    HStack {
+                                                        Text(itemTrait.traitEmoji)
+                                                            .font(.system(size: 12))
+                                                        Text(itemTrait.traitName)
+                                                            .font(.subheadline)
+                                                            .fontWeight(.medium)
+                                                    }
+                                                    .padding(8)
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 12)
+                                                            .fill(.ultraThinMaterial)
+                                                    )
+                                                }
                                             }
                                         }
                                     }
+                                    .contentMargins(.horizontal, 16)
+                                    .scrollIndicators(.hidden)
                                 }
                             }
                             if !session.sortedWellness.isEmpty {
@@ -140,7 +160,8 @@ struct SessionDetailsView: View {
                     if !session.flavors.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Flavors")
-                                .font(.headline)
+                                .font(.title2)
+                                .fontWeight(.semibold)
                             DetailSection(isScrollView: true) {
                                 ScrollView(.horizontal) {
                                     HStack {

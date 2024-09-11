@@ -9,13 +9,15 @@ import SwiftUI
 
 struct CalendarView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var date: Date?
+    @Binding var date: Date
+    var clearFunction: (() -> Void)?
+    var displayedComponents: DatePickerComponents = [.date]
     
     var body: some View {
         VStack {
-            DatePicker("", selection: Binding<Date>(get: {self.date ?? Date()}, set: {self.date = $0}), displayedComponents: [.date])
+            DatePicker("", selection: $date, displayedComponents: displayedComponents)
                 .datePickerStyle(.graphical)
-                .frame(width: 320)
+                .frame(width: 320, height: 360)
         }
         .padding()
         .background(.regularMaterial,
@@ -28,7 +30,11 @@ struct CalendarView: View {
             }
             ToolbarItem(placement: .topBarLeading) {
                 Button("Clear") {
-                    date = nil
+                    if let clearFunction {
+                        clearFunction()
+                    } else {
+                        date = Date()
+                    }
                     dismiss()
                 }
             }
@@ -37,8 +43,16 @@ struct CalendarView: View {
 }
 
 #Preview {
-    @State var date: Date?
-    return NavigationView {
-        CalendarView(date: $date)
+    @State var date: Date = Date()
+    @State var show = true
+    return VStack {
+        
+    }
+    .sheet(isPresented: $show) {
+        NavigationStack {
+            CalendarView(date: $date, displayedComponents: [.date, .hourAndMinute])
+        }
+        .presentationDetents([.height(460)])
+        .presentationBackground(.thickMaterial)
     }
 }
