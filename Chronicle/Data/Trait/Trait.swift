@@ -10,22 +10,36 @@ import SwiftData
 
 @Model
 public class Trait {
-    @Attribute(.unique) public var id: UUID
+    @Attribute(.unique) public var id: String
     public var name: String
     public var emoji: String?
     public var type: TraitType
     public var subtype: EffectType?
     public var color: ColorData
     
-    init(id: UUID = UUID(), name: String, emoji: String? = nil, type: TraitType, subtype: EffectType? = nil, color: ColorData = ColorData(color: .accent)) {
-        self.id = id
+    init(name: String, emoji: String? = nil, type: TraitType, subtype: EffectType? = nil, color: ColorData = ColorData(color: .accent)) {
+        self.id = UUID().uuidString
         self.name = name
         self.emoji = emoji
         self.type = type
         self.subtype = subtype
         self.color = color
     }
+}
+
+public enum TraitType: String, Codable {
+    case effect, flavor, mood
+}
+
+public enum EffectType: String, Identifiable, CaseIterable, Codable {
+    case mood, wellness
     
+    public var id: Self { return self }
+}
+
+extension Trait {
+    
+    // General mood effects
     public static let predefinedEffects: [Trait] = [
         Trait(name: "Relaxed", emoji: "😌", type: .effect, subtype: .mood),
         Trait(name: "Energetic", emoji: "⚡️", type: .effect, subtype: .mood),
@@ -61,24 +75,10 @@ public class Trait {
         Trait(name: "Joyful", emoji: "😁", type: .effect, subtype: .mood),
         Trait(name: "Chill", emoji: "😎", type: .effect, subtype: .mood),
         Trait(name: "Vivid Thoughts", emoji: "💭", type: .effect, subtype: .mood),
-        Trait(name: "Meditative", emoji: "🧘‍♀️", type: .effect, subtype: .mood),
-        Trait(name: "Soothed", emoji: "💆‍♂️", type: .effect, subtype: .wellness),
-        Trait(name: "Comforted", emoji: "🤗", type: .effect, subtype: .wellness),
-        Trait(name: "Relaxed Body", emoji: "💆‍♂️", type: .effect, subtype: .wellness),
-        Trait(name: "Clear-headed", emoji: "🧠", type: .effect, subtype: .wellness),
-        Trait(name: "Couch Locked", emoji: "🛋️", type: .effect, subtype: .wellness),
-        Trait(name: "Headache Relief", emoji: "🤕", type: .effect, subtype: .wellness),
-        Trait(name: "Stress Relief", emoji: "🌿", type: .effect, subtype: .wellness),
-        Trait(name: "Anxiety Relief", emoji: "😌", type: .effect, subtype: .wellness),
-        Trait(name: "Sleep Aid", emoji: "💤", type: .effect, subtype: .wellness),
-        Trait(name: "Appetite Stimulation", emoji: "🍴", type: .effect, subtype: .wellness),
-        Trait(name: "Pain Relief", emoji: "💊", type: .effect, subtype: .wellness),
-        Trait(name: "Tingly", emoji: "✨", type: .effect, subtype: .wellness),
-        Trait(name: "Relaxed Muscles", emoji: "💪", type: .effect, subtype: .wellness),
-        Trait(name: "Dizzy", emoji: "💫", type: .effect, subtype: .wellness),
-        Trait(name: "Numb", emoji: "🦶", type: .effect, subtype: .wellness)
+        Trait(name: "Meditative", emoji: "🧘‍♀️", type: .effect, subtype: .mood)
     ]
     
+    // Flavors
     public static let predefinedFlavors: [Trait] = [
         Trait(name: "Citrus", emoji: "🍊", type: .flavor, color: ColorData(color: .orange)),
         Trait(name: "Lemon", emoji: "🍋", type: .flavor, color: ColorData(color: .yellow)),
@@ -123,21 +123,12 @@ public class Trait {
         Trait(name: "Creamy", emoji: "🥛", type: .flavor, color: ColorData(color: .white))
     ]
     
+    // Moods
     public static let predefinedMoods: [Trait] = [
-        Trait(name: "Very unpleasant", type: .mood),
-        Trait(name: "Unpleasant", type: .mood),
+        Trait(name: "Very Negative", type: .mood, color: ColorData(color: .red)),
+        Trait(name: "Negative", type: .mood, color: ColorData(color: .yellow)),
         Trait(name: "Neutral", type: .mood, color: ColorData(color: .white)),
-        Trait(name: "Good", type: .mood),
-        Trait(name: "Amazing", type: .mood)
+        Trait(name: "Positive", type: .mood, color: ColorData(color: .blue)),
+        Trait(name: "Very Positive", type: .mood, color: ColorData(color: .green))
     ]
-}
-
-public enum TraitType: String, Codable {
-    case effect, flavor, mood
-}
-
-public enum EffectType: String, Identifiable, CaseIterable, Codable {
-    case mood, wellness
-    
-    public var id: Self { return self }
 }

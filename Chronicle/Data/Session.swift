@@ -27,6 +27,10 @@ import SwiftUI
         traits.filter { $0.itemTrait?.trait.type == .effect }
     }
     
+    var mood: SessionTrait? {
+        traits.first { $0.itemTrait?.trait.type == .mood }
+    }
+    
     var sortedMoods: [SessionTrait] {
         let moods = effects.filter { $0.itemTrait?.trait.subtype == .mood }
         return moods.sorted {

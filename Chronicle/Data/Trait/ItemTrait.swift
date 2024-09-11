@@ -10,11 +10,15 @@ import SwiftData
 
 @Model
 public class ItemTrait {
-    @Attribute(.unique) public var id: UUID
+    @Attribute(.unique) public var id: String
     public var trait: Trait
     public var item: Item?
     @Relationship(deleteRule: .cascade)
     public var sessionTraits: [SessionTrait]
+    
+    var totalCount: Int {
+        return sessionTraits.count
+    }
     
     var totalIntensity: Int {
         return sessionTraits.reduce(0) { $0 + ($1.intensity ?? 0) }
@@ -36,8 +40,8 @@ public class ItemTrait {
         return trait.color
     }
     
-    init(id: UUID = UUID(), trait: Trait, item: Item? = nil, sessionTraits: [SessionTrait] = []) {
-        self.id = id
+    init(trait: Trait, item: Item? = nil, sessionTraits: [SessionTrait] = []) {
+        self.id = UUID().uuidString
         self.trait = trait
         self.item = item
         self.sessionTraits = sessionTraits

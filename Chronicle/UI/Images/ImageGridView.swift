@@ -17,7 +17,7 @@ struct ImageGridView: View {
     @State var allowImageViewer = true
     
     var body: some View {
-        if let imagesData {
+        if let imagesData, !imagesData.isEmpty {
             GeometryReader { geometry in
                 let totalWidth = geometry.size.width
                 let totalHeight = geometry.size.height

@@ -19,6 +19,7 @@ struct SessionEditorView: View {
     @State private var viewModel = SessionEditorViewModel()
     @State private var openCalendar: Bool = false
     @State private var openNotes: Bool = false
+    @State private var openMood: Bool = false
     @FocusState var focusedField: Field?
     
     var session: Session?
@@ -74,7 +75,7 @@ struct SessionEditorView: View {
                                         .buttonStyle(.plain)
                                         .padding(.vertical, 8)
                                         .padding(.horizontal, 12)
-                                        .background(.quaternary,
+                                        .background(.regularMaterial,
                                                     in: RoundedRectangle(cornerRadius: 50))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 50)
@@ -91,7 +92,7 @@ struct SessionEditorView: View {
                                         .foregroundStyle(viewModel.duration == 0 ? .secondary : .primary)
                                         .padding(.vertical, 8)
                                         .padding(.horizontal, 12)
-                                        .background(.quaternary,
+                                        .background(.regularMaterial,
                                                     in: RoundedRectangle(cornerRadius: 50))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 50)
@@ -115,9 +116,106 @@ struct SessionEditorView: View {
                                     .padding(.vertical)
                                 }
                             }
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("Mood")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                    if let currentMood = viewModel.moodTrait {
+                                        HStack(alignment: .bottom) {
+                                            Text(currentMood.trait.name)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 4)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .fill(currentMood.trait.color.color.opacity(0.33))
+                                                )
+                                            Spacer()
+                                            Button {
+                                                openMood = true
+                                            } label: {
+                                                Text("Edit")
+                                                    .font(.footnote)
+                                                    .contentShape(RoundedRectangle(cornerRadius: 12))
+                                            }
+                                            .buttonStyle(.plain)
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 4)
+                                            .background(
+                                                Capsule()
+                                                    .fill(
+                                                        LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
+                                                            .opacity(0.25)
+                                                    )
+                                            )
+                                            .overlay(
+                                                Capsule()
+                                                    .strokeBorder(
+                                                        LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
+                                                            .opacity(0.75)
+                                                    )
+                                            )
+                                        }
+                                    }
+                                }
+                                if !viewModel.effects.isEmpty {
+                                    DetailSection(header: "Feelings", isScrollView: true) {
+                                        ScrollView(.horizontal) {
+                                            HStack {
+                                                ForEach(viewModel.effects, id: \.self) { effect in
+                                                    HStack {
+                                                        Text(effect.trait.emoji ?? "")
+                                                            .font(.system(size: 12))
+                                                        Text(effect.trait.name)
+                                                            .font(.subheadline)
+                                                            .fontWeight(.medium)
+                                                    }
+                                                    .padding(8)
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 12)
+                                                            .fill(.ultraThinMaterial)
+                                                    )
+                                                }
+                                            }
+                                        }
+                                        .contentMargins(.horizontal, 16)
+                                        .scrollIndicators(.hidden)
+                                    }
+                                } else {
+                                    Button {
+                                        openMood = true
+                                    } label: {
+                                        HStack {
+                                            Text("Log how you're feeling")
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                                .foregroundStyle(.secondary)
+                                        }
+                                        .contentShape(RoundedRectangle(cornerRadius: 12))
+                                    }
+                                    .buttonStyle(.plain)
+                                    .padding(12)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(
+                                                LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
+                                                    .opacity(0.25)
+                                            )
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .strokeBorder(
+                                                LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
+                                                    .opacity(0.75)
+                                            )
+                                    )
+                                }
+                            }
+                            .padding(.vertical)
                         }
                         .padding(.horizontal)
                     }
+                    .padding(.bottom, 120)
                 }
                 // Save Session button
                 VStack {
@@ -144,7 +242,7 @@ struct SessionEditorView: View {
                         LinearGradient(gradient: Gradient(colors: [.black, .clear]), startPoint: .bottom, endPoint: .top)
                     )
                 )
-                .frame(height: 100)
+                .frame(height: 120)
             }
             .navigationTitle("\(session == nil ? "New" : "Edit") Session")
             .navigationBarTitleDisplayMode(.inline)
@@ -227,6 +325,14 @@ struct SessionEditorView: View {
                 .presentationDetents([.medium])
                 .presentationBackground(.thickMaterial)
             }
+            .sheet(isPresented: $openMood) {
+                NavigationStack {
+                    MoodSelectorView(viewModel: $viewModel)
+                }
+                .tint(.primary)
+                .presentationDetents([.large])
+                .presentationBackground(.thickMaterial)
+            }
         }
         .onAppear {
             if let session {
@@ -241,184 +347,46 @@ struct SessionEditorView: View {
                 viewModel.effects = session.traits
                     .filter { $0.itemTrait?.trait.type == .effect }
                     .map { SessionTraitViewModel($0) }
-                viewModel.flavors = session.traits
-                    .filter { $0.itemTrait?.trait.type == .flavor }
-                    .map { SessionTraitViewModel($0) }
+                if let moodTrait = session.traits.first(where: { $0.itemTrait?.trait.type == .mood }) {
+                    viewModel.moodTrait = SessionTraitViewModel(moodTrait)
+                }
             }
             
             focusedField = .title
         }
     }
     
+    @MainActor
     func save() throws {
         if let item = viewModel.item {
-            let newSession = session ?? Session()
-            newSession.item = item
-            newSession.date = viewModel.date
-            newSession.title = viewModel.title
-            newSession.notes = viewModel.notes
-            newSession.duration = viewModel.duration
-            newSession.location = viewModel.location
-            newSession.imagesData = viewModel.selectedImagesData
+            let session = self.session ?? Session()
+            session.item = item
+            session.date = viewModel.date
+            session.title = viewModel.title
+            session.notes = viewModel.notes
+            session.duration = viewModel.duration
+            session.location = viewModel.location
+            session.imagesData = viewModel.selectedImagesData
             
-            newSession.traits.forEach { modelContext.delete($0) }
-            newSession.traits.removeAll()
+            // Update removed traits
+            let currentTraitIDs = Set(viewModel.effects.map { $0.trait.id } + [viewModel.moodTrait?.trait.id])
+            session.traits.forEach { sessionTrait in
+                if !currentTraitIDs.contains(sessionTrait.itemTrait?.trait.id) {
+                    modelContext.delete(sessionTrait)
+                }
+            }
             
-            viewModel.updateTraits(for: viewModel.effects, modelContext: modelContext)
-            viewModel.updateTraits(for: viewModel.flavors, modelContext: modelContext)
+            // Update current traits and add new ones
+            viewModel.updateTraits(for: viewModel.effects, in: session, modelContext: modelContext)
+            if let moodTrait = viewModel.moodTrait {
+                viewModel.updateTraits(for: [moodTrait], in: session, modelContext: modelContext)
+            }
             
-            newSession.traits = viewModel.sessionTraits
-            if session == nil {
-                modelContext.insert(newSession)
+            if self.session == nil {
+                modelContext.insert(session)
             }
             
             try modelContext.save()
-        }
-    }
-}
-
-struct SessionEditorEffectsView: View {
-    @Environment(\.modelContext) var modelContext
-    @Binding var viewModel: SessionEditorViewModel
-    let parentDismiss: DismissAction
-    
-    var session: Session?
-    
-    @State var selectedEffect: Trait?
-    @State var intensity: Double = 5.0
-    
-    var body: some View {
-        VStack {
-            List {
-                if !viewModel.effects.isEmpty {
-                    ForEach(viewModel.effects, id: \.self) { effect in
-                        HStack {
-                            Text(effect.trait.name)
-                            Spacer()
-                            Text("Intensity: \(effect.intensity)")
-                        }
-                    }
-                    .onDelete(perform: viewModel.removeEffect)
-                }
-            }
-            Spacer()
-            Form {
-                Picker("Effect", selection: $selectedEffect) {
-                    Text("None").tag(nil as Trait?)
-                    ForEach(Trait.predefinedEffects, id: \.self) { effect in
-                        HStack(spacing: 4) {
-                            Text(effect.emoji ?? "")
-                            Text(effect.name)
-                        }
-                        .tag(effect as Trait?)
-                        
-                    }
-                }.pickerStyle(.navigationLink)
-                VStack(alignment: .leading) {
-                    Text("Intensity")
-                    Slider(value: $intensity, in: 0...10, step: 1) {
-                        Text("Intensity")
-                    } minimumValueLabel: {
-                        Text("0")
-                    } maximumValueLabel: {
-                        Text("10")
-                    }
-                    Text(intensity, format: .number)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                }
-                Button("Add Effect") {
-                    if let selectedEffect {
-                        viewModel.addTrait(selectedEffect, intensity: Int(intensity))
-                        self.selectedEffect = nil
-                        intensity = 5
-                    }
-                }
-                .disabled(selectedEffect == nil)
-            }
-            Spacer()
-            NavigationLink {
-                SessionEditorFlavorsView(viewModel: $viewModel, parentDismiss: parentDismiss, session: session)
-            } label: {
-                Text("Next")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            .tint(.accentColor)
-            .padding()
-        }
-        .navigationTitle("Effects")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    parentDismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
-}
-
-struct SessionEditorFlavorsView: View {
-    @Environment(\.modelContext) var modelContext
-    @Binding var viewModel: SessionEditorViewModel
-    let parentDismiss: DismissAction
-    
-    var session: Session?
-    
-    @State var selectedFlavor: Trait?
-    
-    var body: some View {
-        VStack {
-            List {
-                if viewModel.flavors.count > 0 {
-                    ForEach(viewModel.flavors, id: \.self) { flavor in
-                        HStack(spacing: 4) {
-                            Text(flavor.trait.emoji ?? "")
-                            Text(flavor.trait.name)
-                        }
-                    }
-                    .onDelete(perform: viewModel.removeFlavor)
-                }
-            }
-            
-            Form {
-                Picker("Flavor", selection: $selectedFlavor) {
-                    Text("None").tag(nil as Trait?)
-                    ForEach(Trait.predefinedFlavors, id: \.self) { flavor in
-                        HStack(spacing: 4) {
-                            Text(flavor.emoji ?? "")
-                            Text(flavor.name)
-                        }
-                        .tag(flavor as Trait?)
-                        
-                    }
-                }.pickerStyle(.navigationLink)
-                Button("Add Flavor") {
-                    if let selectedFlavor {
-                        viewModel.addTrait(selectedFlavor)
-                        self.selectedFlavor = nil
-                    }
-                }
-                .disabled(selectedFlavor == nil)
-            }
-            
-            Spacer()
-        }
-        .navigationTitle("Flavors")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    parentDismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.plain)
-            }
         }
     }
 }
@@ -430,8 +398,7 @@ class SessionEditorViewModel {
     var item: Item?
     var duration: Double = 0
     var effects: [SessionTraitViewModel] = []
-    var flavors: [SessionTraitViewModel] = []
-    var sessionTraits: [SessionTrait] = []
+    var moodTrait: SessionTraitViewModel?
     var notes: String = ""
     var location: String = ""
     
@@ -443,13 +410,20 @@ class SessionEditorViewModel {
         return calendar.isDateInToday(date) ? "Today" : date.formatted(date: .abbreviated, time: .omitted)
     }
     
-    func updateTraits(for traitViewModels: [SessionTraitViewModel], modelContext: ModelContext) {
-        if let item {
+    func updateTraits(for traitViewModels: [SessionTraitViewModel], in session: Session, modelContext: ModelContext) {
+        if let item = session.item {
             for traitVM in traitViewModels {
-                let itemTrait = item.traits.first { $0.trait.name == traitVM.trait.name } ?? ItemTrait(trait: traitVM.trait, item: item)
-                let sessionTrait = SessionTrait(itemTrait: itemTrait, intensity: traitVM.intensity)
+                let itemTrait = item.traits.first { $0.trait.name == traitVM.trait.name } ?? {
+                    let trait = getTrait(traitVM.trait, modelContext: modelContext)
+                    return ItemTrait(trait: trait, item: item)
+                }()
                 
-                sessionTraits.append(sessionTrait)
+                if let existingSessionTrait = session.traits.first(where: { $0.itemTrait?.trait.name == traitVM.trait.name }) {
+                    existingSessionTrait.intensity = traitVM.intensity
+                } else {
+                    let sessionTrait = SessionTrait(itemTrait: itemTrait, session: session, intensity: traitVM.intensity)
+                    session.traits.append(sessionTrait)
+                }
             }
         }
     }
@@ -457,8 +431,8 @@ class SessionEditorViewModel {
     func addTrait(_ trait: Trait, intensity: Int = 0) {
         if trait.type == .effect {
             effects.append(SessionTraitViewModel(trait: trait, intensity: intensity))
-        } else if trait.type == .flavor {
-            flavors.append(SessionTraitViewModel(trait: trait))
+        } else if trait.type == .mood {
+            moodTrait = SessionTraitViewModel(trait: trait)
         }
     }
     
@@ -466,8 +440,14 @@ class SessionEditorViewModel {
         effects.remove(atOffsets: offsets)
     }
     
-    func removeFlavor(at offsets: IndexSet) {
-        flavors.remove(atOffsets: offsets)
+    func getTrait(_ trait: Trait, modelContext: ModelContext) -> Trait {
+        let id = trait.id
+        var traitFetchDescriptor = FetchDescriptor<Trait>(predicate: #Predicate {
+            $0.id == id
+        })
+        traitFetchDescriptor.fetchLimit = 1
+        let fetchedTrait = try? modelContext.fetch(traitFetchDescriptor).first
+        return fetchedTrait ?? trait
     }
 }
 
@@ -491,23 +471,3 @@ struct SessionTraitViewModel: Identifiable, Hashable {
     SessionEditorView(session: SampleData.shared.session)
         .modelContainer(SampleData.shared.container)
 }
-
-/*#Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var viewModel = SessionEditorViewModel()
-    
-    return NavigationStack {
-        SessionEditorEffectsView(viewModel: $viewModel, parentDismiss: dismiss)
-    }
-    .modelContainer(SampleData.shared.container)
-}
-
-#Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var viewModel = SessionEditorViewModel()
-    
-    return NavigationStack {
-        SessionEditorFlavorsView(viewModel: $viewModel, parentDismiss: dismiss)
-    }
-    .modelContainer(SampleData.shared.container)
-}*/

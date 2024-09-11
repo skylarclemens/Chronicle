@@ -57,6 +57,10 @@ class SampleData {
             container.mainContext.insert(flavor)
         }
         
+        for mood in Trait.predefinedMoods {
+            container.mainContext.insert(mood)
+        }
+        
         for itemTrait in ItemTrait.sampleData {
             container.mainContext.insert(itemTrait)
         }
@@ -76,6 +80,10 @@ class SampleData {
         sessionTrait.itemTrait = itemTrait
         itemTrait.item = item
         itemTrait.sessionTraits.append(sessionTrait)
+        sessionMoodTrait.session = session
+        sessionMoodTrait.itemTrait = itemMoodTrait
+        itemMoodTrait.item = item
+        itemMoodTrait.sessionTraits.append(sessionMoodTrait)
         
         do {
             try context.save()
@@ -100,7 +108,15 @@ class SampleData {
         ItemTrait.sampleData[0]
     }
     
+    var itemMoodTrait: ItemTrait {
+        ItemTrait.sampleData[5]
+    }
+    
     var sessionTrait: SessionTrait {
         SessionTrait.sampleData[0]
+    }
+    
+    var sessionMoodTrait: SessionTrait {
+        SessionTrait.sampleData[5]
     }
 }

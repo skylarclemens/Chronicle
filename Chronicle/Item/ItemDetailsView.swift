@@ -21,14 +21,14 @@ struct ItemDetailsView: View {
     var sortedMoodEffects: [ItemTrait] {
         let moods = item?.traits.filter { $0.trait.type == .effect && $0.trait.subtype == .mood }
         return moods?.sorted {
-            $0.averageIntensity > $1.averageIntensity
+            $0.sessionTraits.count > $1.sessionTraits.count
         } ?? []
     }
     
     var sortedWellnessEffects: [ItemTrait] {
         let wellness = item?.traits.filter { $0.trait.type == .effect && $0.trait.subtype == .wellness }
         return wellness?.sorted {
-            $0.traitName > $1.traitName
+            $0.sessionTraits.count > $1.sessionTraits.count
         } ?? []
     }
     
@@ -98,10 +98,11 @@ struct ItemDetailsView: View {
                         if !sortedMoodEffects.isEmpty || !sortedWellnessEffects.isEmpty {
                             VStack(alignment: .leading) {
                                 Text("Effects")
-                                    .font(.headline)
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
                                 
                                 if !sortedMoodEffects.isEmpty {
-                                    DetailSection(header: "Moods", headerRight: "Avg. intensity") {
+                                    DetailSection(header: "Feelings", headerRight: "Count") {
                                         ForEach(sortedMoodEffects) { effect in
                                             HStack {
                                                 Text(effect.traitEmoji)
@@ -111,8 +112,8 @@ struct ItemDetailsView: View {
                                                     .fontWeight(.medium)
                                                     .frame(width: 80, alignment: .leading)
                                                 Spacer()
-                                                ProgressView(value: Double(effect.averageIntensity) / 10)
-                                                Text(effect.averageIntensity, format: .number)
+                                                ProgressView(value: Double(effect.totalCount) / Double(sortedMoodEffects.count))
+                                                Text(effect.totalCount, format: .number)
                                                     .font(.footnote)
                                                     .bold()
                                             }
@@ -147,7 +148,8 @@ struct ItemDetailsView: View {
                         if !sortedFlavors.isEmpty {
                             VStack(alignment: .leading) {
                                 Text("Flavors")
-                                    .font(.headline)
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
                                 DetailSection(isScrollView: true) {
                                     ScrollView(.horizontal) {
                                         HStack {
@@ -176,7 +178,8 @@ struct ItemDetailsView: View {
                     if !item.compounds.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Details")
-                                .font(.headline)
+                                .font(.title2)
+                                .fontWeight(.semibold)
                             if !item.cannabinoids.isEmpty {
                                 DetailSection(header: "Cannabinoids", isScrollView: true) {
                                     ScrollView(.horizontal) {
@@ -228,7 +231,8 @@ struct ItemDetailsView: View {
                     if !item.sessions.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Sessions")
-                                .font(.headline)
+                                .font(.title2)
+                                .fontWeight(.semibold)
                                 .padding(.horizontal)
                             VStack(alignment: .leading) {
                                 ScrollView(.horizontal) {
