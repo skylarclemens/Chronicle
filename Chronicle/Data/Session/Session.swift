@@ -20,40 +20,21 @@ import SwiftUI
     public var location: String?
     public var favorite: Bool
     @Attribute(.externalStorage) public var imagesData: [Data]?
-    @Relationship(deleteRule: .cascade)
-    public var traits: [SessionTrait]
+    @Relationship(deleteRule: .cascade, inverse: \Mood.session)
+    public var mood: Mood?
     
-    var effects: [SessionTrait] {
-        traits.filter { $0.itemTrait?.trait.type == .effect }
-    }
-    
-    var mood: SessionTrait? {
-        traits.first { $0.itemTrait?.trait.type == .mood }
-    }
-    
-    var sortedMoods: [SessionTrait] {
-        let moods = effects.filter { $0.itemTrait?.trait.subtype == .mood }
-        return moods.sorted {
-            $0.intensity ?? 0 > $1.intensity ?? 0
-        }
-    }
-    
-    var sortedWellness: [SessionTrait] {
-        let wellness = effects.filter { $0.itemTrait?.trait.subtype == .wellness }
-        return wellness.sorted {
-            $0.itemTrait?.traitName ?? "" > $1.itemTrait?.traitName ?? ""
-        }
-    }
-    
-    var flavors: [SessionTrait] {
-        traits.filter { $0.itemTrait?.trait.type == .flavor }
-    }
-    
-    var sortedFlavors: [SessionTrait] {
-        return flavors.sorted { $0.itemTrait?.trait.name ?? "" > $1.itemTrait?.trait.name ?? "" }
-    }
-    
-    init(id: UUID = UUID(), createdAt: Date = Date(), title: String = "", date: Date = Date(), item: Item? = nil, duration: TimeInterval? = nil, notes: String? = nil, location: String? = nil, favorite: Bool = false, traits: [SessionTrait] = []) {
+    init(
+        id: UUID = UUID(),
+        createdAt: Date = Date(),
+        title: String = "",
+        date: Date = Date(),
+        item: Item? = nil,
+        duration: TimeInterval? = nil,
+        notes: String? = nil,
+        location: String? = nil,
+        favorite: Bool = false,
+        moods: Mood? = nil
+    ) {
         self.id = id
         self.createdAt = createdAt
         self.title = title
@@ -63,7 +44,7 @@ import SwiftUI
         self.notes = notes
         self.location = location
         self.favorite = favorite
-        self.traits = traits
+        self.mood = mood
     }
     
     static func predicate(

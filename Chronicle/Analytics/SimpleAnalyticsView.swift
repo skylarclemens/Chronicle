@@ -26,8 +26,8 @@ struct SimpleAnalyticsView: View {
             SimpleAnalyticsDataView(
                 iconName: "theatermasks.fill",
                 iconColor: .purple,
-                analyticsDetails: "Most Common Effect",
-                stringData: mostCommonEffect)
+                analyticsDetails: "Most Common Mood",
+                stringData: mostCommonMood)
             Divider()
             SimpleAnalyticsDataView(
                 iconName: "leaf.fill",
@@ -39,20 +39,20 @@ struct SimpleAnalyticsView: View {
         .frame(maxHeight: 60)
     }
     
-    // Total number of sessions
+    /// Total number of sessions logged
     private var totalSessions: Int {
         sessions.count
     }
     
-    // Most common effect
-    private var mostCommonEffect: String {
-        let effectCounts = sessions.flatMap { $0.traits }.filter { $0.itemTrait?.trait.type == .effect }.reduce(into: [:]) { counts, effect in
-            counts[effect.itemTrait?.trait.name ?? "", default: 0] += 1
+    /// Most common mood across all items
+    private var mostCommonMood: String {
+        let moodCounts = sessions.compactMap { $0.mood }.reduce(into: [:]) { counts, mood in
+            counts[mood.type.label, default: 0] += 1
         }
-        return effectCounts.max(by: { $0.value < $1.value })?.key ?? "None"
+        return moodCounts.max(by: { $0.value < $1.value })?.key ?? "None"
     }
     
-    // Most used item
+    /// Most used item
     private var mostUsedItem: String {
         let itemCounts = sessions.compactMap { $0.item }.reduce(into: [:]) { counts, item in
             counts[item.name, default: 0] += 1

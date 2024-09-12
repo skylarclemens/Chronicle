@@ -30,6 +30,11 @@
 		7E5301EF2C74F99B00909048 /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EE2C74F99B00909048 /* InventoryView.swift */; };
 		7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301F02C74FD7F00909048 /* ItemRowView.swift */; };
 		7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */; };
+		7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97B2C9214980092ECE7 /* Mood.swift */; };
+		7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97D2C9214BC0092ECE7 /* Flavor.swift */; };
+		7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */; };
+		7E70B9842C92567E0092ECE7 /* SessionInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9832C9256790092ECE7 /* SessionInputButton.swift */; };
+		7E70B9862C925BD10092ECE7 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9852C925BCD0092ECE7 /* Double.swift */; };
 		7E7349B72C80EEC800262930 /* ItemsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349B62C80EEC800262930 /* ItemsListView.swift */; };
 		7E7349B92C81148B00262930 /* SessionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349B82C81148B00262930 /* SessionsListView.swift */; };
 		7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349BA2C811BE300262930 /* CalendarView.swift */; };
@@ -54,9 +59,7 @@
 		7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */; };
 		7EF0BB162C6D3A2D0068542D /* ItemDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0BB152C6D3A2D0068542D /* ItemDetailsView.swift */; };
 		7EF0BB182C6D3CDD0068542D /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0BB172C6D3CDD0068542D /* Samples.swift */; };
-		7EFCC60B2C7E6DB00090588D /* ItemTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60A2C7E6DB00090588D /* ItemTrait.swift */; };
-		7EFCC60D2C7E6DC40090588D /* SessionTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60C2C7E6DC40090588D /* SessionTrait.swift */; };
-		7EFCC60F2C7E6DC90090588D /* Trait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60E2C7E6DC90090588D /* Trait.swift */; };
+		7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60E2C7E6DC90090588D /* Emotion.swift */; };
 		7EFCC6112C7E6F040090588D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6102C7E6F040090588D /* Compound.swift */; };
 		7EFCC6132C7E6F420090588D /* Dosage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6122C7E6F420090588D /* Dosage.swift */; };
 		7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */; };
@@ -86,6 +89,11 @@
 		7E5301EE2C74F99B00909048 /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
 		7E5301F02C74FD7F00909048 /* ItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowView.swift; sourceTree = "<group>"; };
 		7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAnalyticsView.swift; sourceTree = "<group>"; };
+		7E70B97B2C9214980092ECE7 /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
+		7E70B97D2C9214BC0092ECE7 /* Flavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flavor.swift; sourceTree = "<group>"; };
+		7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodButtonStyle.swift; sourceTree = "<group>"; };
+		7E70B9832C9256790092ECE7 /* SessionInputButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionInputButton.swift; sourceTree = "<group>"; };
+		7E70B9852C925BCD0092ECE7 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		7E7349B62C80EEC800262930 /* ItemsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsListView.swift; sourceTree = "<group>"; };
 		7E7349B82C81148B00262930 /* SessionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsListView.swift; sourceTree = "<group>"; };
 		7E7349BA2C811BE300262930 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -111,9 +119,7 @@
 		7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsInputView.swift; sourceTree = "<group>"; };
 		7EF0BB152C6D3A2D0068542D /* ItemDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsView.swift; sourceTree = "<group>"; };
 		7EF0BB172C6D3CDD0068542D /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
-		7EFCC60A2C7E6DB00090588D /* ItemTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTrait.swift; sourceTree = "<group>"; };
-		7EFCC60C2C7E6DC40090588D /* SessionTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTrait.swift; sourceTree = "<group>"; };
-		7EFCC60E2C7E6DC90090588D /* Trait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trait.swift; sourceTree = "<group>"; };
+		7EFCC60E2C7E6DC90090588D /* Emotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
 		7EFCC6102C7E6F040090588D /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
 		7EFCC6122C7E6F420090588D /* Dosage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dosage.swift; sourceTree = "<group>"; };
 		7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseInfo.swift; sourceTree = "<group>"; };
@@ -164,9 +170,11 @@
 		7E2504DB2C768CA900496296 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				7E70B9802C9253450092ECE7 /* Button */,
 				7E523C1A2C77E0DE005B6186 /* Images */,
 				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
 				7E7349BA2C811BE300262930 /* CalendarView.swift */,
+				7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -193,6 +201,7 @@
 		7E3B557F2C8A4D0900AB0961 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				7E70B9852C925BCD0092ECE7 /* Double.swift */,
 				7E3B55822C8A524D00AB0961 /* Binding.swift */,
 				7ED747922C8BC67B00F07679 /* CGFloat.swift */,
 			);
@@ -224,6 +233,23 @@
 				7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */,
 			);
 			path = Analytics;
+			sourceTree = "<group>";
+		};
+		7E70B97F2C9218D50092ECE7 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				7ECAFC262C6410340056A44E /* Session.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		7E70B9802C9253450092ECE7 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				7E70B9832C9256790092ECE7 /* SessionInputButton.swift */,
+				7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */,
+			);
+			path = Button;
 			sourceTree = "<group>";
 		};
 		7E951D012C73D1140023922C /* Item */ = {
@@ -282,7 +308,6 @@
 				7E951D012C73D1140023922C /* Item */,
 				7E951D032C73E7C70023922C /* Session */,
 				7E5301E42C74490300909048 /* Strain */,
-				7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */,
 				7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */,
 				7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */,
 				7EC008EE2C5EEDE80093217B /* ContentView.swift */,
@@ -311,10 +336,10 @@
 			children = (
 				7E3B557F2C8A4D0900AB0961 /* Extensions */,
 				7E309D9A2C7936DD0004A25A /* Managers */,
-				7EFCC6092C7E6DA20090588D /* Trait */,
+				7EFCC6092C7E6DA20090588D /* Traits */,
 				7EE6261B2C6A947700448F80 /* Item */,
+				7E70B97F2C9218D50092ECE7 /* Session */,
 				7E08D41A2C6BD99100F96328 /* Strain */,
-				7ECAFC262C6410340056A44E /* Session.swift */,
 				7E2504D92C76838500496296 /* ColorData.swift */,
 			);
 			path = Data;
@@ -340,14 +365,14 @@
 			path = ItemEditor;
 			sourceTree = "<group>";
 		};
-		7EFCC6092C7E6DA20090588D /* Trait */ = {
+		7EFCC6092C7E6DA20090588D /* Traits */ = {
 			isa = PBXGroup;
 			children = (
-				7EFCC60E2C7E6DC90090588D /* Trait.swift */,
-				7EFCC60A2C7E6DB00090588D /* ItemTrait.swift */,
-				7EFCC60C2C7E6DC40090588D /* SessionTrait.swift */,
+				7EFCC60E2C7E6DC90090588D /* Emotion.swift */,
+				7E70B97B2C9214980092ECE7 /* Mood.swift */,
+				7E70B97D2C9214BC0092ECE7 /* Flavor.swift */,
 			);
-			path = Trait;
+			path = Traits;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -437,12 +462,11 @@
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
 				7E7349B92C81148B00262930 /* SessionsListView.swift in Sources */,
 				7EFCC6112C7E6F040090588D /* Compound.swift in Sources */,
-				7EFCC60D2C7E6DC40090588D /* SessionTrait.swift in Sources */,
 				7E08D41C2C6BD9A400F96328 /* StrainType.swift in Sources */,
 				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
-				7EFCC60B2C7E6DB00090588D /* ItemTrait.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
 				7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */,
+				7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */,
 				7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */,
 				7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */,
 				7ED7478D2C8A909E00F07679 /* NotesEditorView.swift in Sources */,
@@ -452,10 +476,13 @@
 				7E5301ED2C74F98200909048 /* JournalView.swift in Sources */,
 				7E3B557C2C8A2EFD00AB0961 /* DurationPickerView.swift in Sources */,
 				7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */,
+				7E70B9842C92567E0092ECE7 /* SessionInputButton.swift in Sources */,
 				7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* SessionEditorView.swift in Sources */,
+				7E70B9862C925BD10092ECE7 /* Double.swift in Sources */,
 				7EFCC6132C7E6F420090588D /* Dosage.swift in Sources */,
-				7EFCC60F2C7E6DC90090588D /* Trait.swift in Sources */,
+				7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */,
+				7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
 				7E079F882C8CFE4E009391D0 /* MoodDescriptorSelectView.swift in Sources */,
@@ -464,6 +491,7 @@
 				7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */,
 				7EC008F12C5EEDE80093217B /* Item.swift in Sources */,
 				7E309D992C792DF40004A25A /* ImageViewerView.swift in Sources */,
+				7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */,
 				7EC008ED2C5EEDE80093217B /* ChronicleApp.swift in Sources */,
 				7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */,
 				7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */,
