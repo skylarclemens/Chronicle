@@ -16,27 +16,33 @@ struct ItemDetailsView: View {
     @State private var isEditing = false
     @State private var isDeleting = false
     @State private var currentImageIndex = 0
-    var fromSession: Bool = false
     
-    var sortedMoodEffects: [ItemTrait] {
-        let moods = item?.traits.filter { $0.trait.type == .effect && $0.trait.subtype == .mood }
-        return moods?.sorted {
-            $0.sessionTraits.count > $1.sessionTraits.count
-        } ?? []
+    var moodTypes: [MoodType: Int] {
+        var counts: [MoodType: Int] = [:]
+        if let item {
+            for session in item.sessions {
+                if let moodType = session.mood?.type {
+                    counts[moodType, default: 0] += 1
+                }
+            }
+        }
+        return counts
     }
     
-    var sortedWellnessEffects: [ItemTrait] {
-        let wellness = item?.traits.filter { $0.trait.type == .effect && $0.trait.subtype == .wellness }
-        return wellness?.sorted {
-            $0.sessionTraits.count > $1.sessionTraits.count
-        } ?? []
-    }
-    
-    var sortedFlavors: [ItemTrait] {
-        let flavors = item?.traits.filter { $0.trait.type == .flavor }
-        return flavors?.sorted {
-            $0.traitName > $1.traitName
-        } ?? []
+    var topEmotions: [Emotion: Int] {
+        var counts: [Emotion: Int] = [:]
+        if let item {
+            for session in item.sessions {
+                if let emotions = session.mood?.emotions {
+                    for emotion in emotions {
+                        counts[emotion, default: 0] += 1
+                    }
+                }
+            }
+        }
+        return counts.sorted { $0.value > $1.value }.prefix(5).reduce(into: [:]) {
+            $0[$1.key] = $1.value
+        }
     }
     
     var body: some View {
@@ -94,87 +100,6 @@ struct ItemDetailsView: View {
                             .padding(.vertical)
                     }
                     .padding(.horizontal)
-                    VStack {
-                        if !sortedMoodEffects.isEmpty || !sortedWellnessEffects.isEmpty {
-                            VStack(alignment: .leading) {
-                                Text("Effects")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                                
-                                if !sortedMoodEffects.isEmpty {
-                                    DetailSection(header: "Feelings", headerRight: "Count") {
-                                        ForEach(sortedMoodEffects) { effect in
-                                            HStack {
-                                                Text(effect.traitEmoji)
-                                                    .font(.system(size: 14))
-                                                Text(effect.traitName)
-                                                    .font(.footnote)
-                                                    .fontWeight(.medium)
-                                                    .frame(width: 80, alignment: .leading)
-                                                Spacer()
-                                                ProgressView(value: Double(effect.totalCount) / Double(sortedMoodEffects.count))
-                                                Text(effect.totalCount, format: .number)
-                                                    .font(.footnote)
-                                                    .bold()
-                                            }
-                                        }
-                                    }
-                                }
-                                if !sortedWellnessEffects.isEmpty {
-                                    DetailSection(header: "Wellness", isScrollView: true) {
-                                        ScrollView(.horizontal) {
-                                            HStack {
-                                                ForEach(sortedWellnessEffects) { effect in
-                                                    HStack {
-                                                        Text(effect.traitEmoji)
-                                                            .font(.system(size: 12))
-                                                        Text(effect.traitName)
-                                                            .font(.footnote)
-                                                            .fontWeight(.medium)
-                                                    }
-                                                    .padding(.vertical, 6)
-                                                    .padding(.horizontal, 8)
-                                                    .background(.secondary,
-                                                                in: RoundedRectangle(cornerRadius: 12))
-                                                }
-                                            }
-                                            .padding(.horizontal)
-                                        }
-                                        .scrollIndicators(.hidden)
-                                    }
-                                }
-                            }
-                        }
-                        if !sortedFlavors.isEmpty {
-                            VStack(alignment: .leading) {
-                                Text("Flavors")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                                DetailSection(isScrollView: true) {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(sortedFlavors) { flavor in
-                                                HStack {
-                                                    Text(flavor.traitEmoji)
-                                                        .font(.system(size: 12))
-                                                    Text(flavor.traitName)
-                                                        .font(.subheadline)
-                                                        .fontWeight(.medium)
-                                                }
-                                                .padding(8)
-                                                .background(flavor.traitColor.color.opacity(0.2),
-                                                            in: RoundedRectangle(cornerRadius: 12))
-                                            }
-                                        }
-                                        .padding(.horizontal)
-                                    }
-                                    .scrollIndicators(.hidden)
-                                }
-                            }
-                            .padding(.top)
-                        }
-                    }
-                    .padding(.horizontal)
                     if !item.compounds.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Details")
@@ -230,6 +155,57 @@ struct ItemDetailsView: View {
                     
                     if !item.sessions.isEmpty {
                         VStack(alignment: .leading) {
+                            Text("Moods")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal)
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(MoodType.allCases, id: \.self) { moodType in
+                                        if let count = moodTypes[moodType] {
+                                            HStack {
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .frame(maxWidth: 3, maxHeight: 14)
+                                                    .foregroundStyle(moodType.color)
+                                                Text(moodType.label)
+                                                Text(count, format: .number)
+                                                    .font(.footnote)
+                                                    .fontWeight(.semibold)
+                                                    .fontDesign(.rounded)
+                                                    .padding(.horizontal, 8)
+                                                    .padding(.vertical, 4)
+                                                    .background(.background.opacity(0.33),
+                                                                in: RoundedRectangle(cornerRadius: 8))
+                                            }
+                                            .padding(.vertical, 6)
+                                            .padding(.horizontal, 10)
+                                            .background(moodType.color.opacity(0.33),
+                                                        in: RoundedRectangle(cornerRadius: 12))
+                                        }
+                                    }
+                                }
+                            }
+                            .contentMargins(.horizontal, 16)
+                            DetailSection(header: "Top Feelings", headerRight: "Count") {
+                                ForEach(Array(topEmotions.keys), id: \.id) { emotion in
+                                    if let count = topEmotions[emotion] {
+                                        HStack {
+                                            if let emoji = emotion.emoji {
+                                                Text(emoji)
+                                            }
+                                            Text(emotion.name)
+                                            Spacer()
+                                            Text(count, format: .number)
+                                        }
+                                        .padding(.vertical, 2)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.top, 8)
+                        }
+                        
+                        VStack(alignment: .leading) {
                             Text("Sessions")
                                 .font(.title2)
                                 .fontWeight(.semibold)
@@ -238,16 +214,12 @@ struct ItemDetailsView: View {
                                 ScrollView(.horizontal) {
                                     HStack {
                                         ForEach(item.sessions) { session in
-                                            if !fromSession {
-                                                NavigationLink {
-                                                    SessionDetailsView(session: session, fromItem: true)
-                                                } label: {
-                                                    CompactSessionCardView(session: session)
-                                                }
-                                                .tint(.primary)
-                                            } else {
+                                            NavigationLink {
+                                                SessionDetailsView(session: session, fromItem: true)
+                                            } label: {
                                                 CompactSessionCardView(session: session)
                                             }
+                                            .tint(.primary)
                                         }
                                     }
                                     .padding(.horizontal)

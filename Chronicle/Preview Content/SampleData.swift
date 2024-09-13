@@ -24,9 +24,6 @@ class SampleData {
             Item.self,
             Session.self,
             Strain.self,
-            Trait.self,
-            ItemTrait.self,
-            SessionTrait.self
         ])
         let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
         do {
@@ -49,24 +46,8 @@ class SampleData {
             container.mainContext.insert(session)
         }
         
-        for effect in Trait.predefinedEffects {
-            container.mainContext.insert(effect)
-        }
-        
-        for flavor in Trait.predefinedFlavors {
-            container.mainContext.insert(flavor)
-        }
-        
-        for mood in Trait.predefinedMoods {
+        for mood in Mood.sampleData {
             container.mainContext.insert(mood)
-        }
-        
-        for itemTrait in ItemTrait.sampleData {
-            container.mainContext.insert(itemTrait)
-        }
-        
-        for sessionTrait in SessionTrait.sampleData {
-            container.mainContext.insert(sessionTrait)
         }
         
         for strain in Strain.sampleData {
@@ -76,14 +57,7 @@ class SampleData {
         item.strain = strain
         item.sessions.append(session)
         session.item = item
-        sessionTrait.session = session
-        sessionTrait.itemTrait = itemTrait
-        itemTrait.item = item
-        itemTrait.sessionTraits.append(sessionTrait)
-        sessionMoodTrait.session = session
-        sessionMoodTrait.itemTrait = itemMoodTrait
-        itemMoodTrait.item = item
-        itemMoodTrait.sessionTraits.append(sessionMoodTrait)
+        session.mood = mood
         
         do {
             try context.save()
@@ -104,19 +78,7 @@ class SampleData {
         Strain.sampleData[0]
     }
     
-    var itemTrait: ItemTrait {
-        ItemTrait.sampleData[0]
-    }
-    
-    var itemMoodTrait: ItemTrait {
-        ItemTrait.sampleData[5]
-    }
-    
-    var sessionTrait: SessionTrait {
-        SessionTrait.sampleData[0]
-    }
-    
-    var sessionMoodTrait: SessionTrait {
-        SessionTrait.sampleData[5]
+    var mood: Mood {
+        Mood.sampleData[0]
     }
 }

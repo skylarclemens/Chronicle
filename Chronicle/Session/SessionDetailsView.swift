@@ -39,7 +39,7 @@ struct SessionDetailsView: View {
                             VStack {
                                 if !fromItem {
                                     NavigationLink {
-                                        ItemDetailsView(item: item, fromSession: true)
+                                        ItemDetailsView(item: item)
                                     } label: {
                                         Label(item.name, systemImage: "link")
                                             .font(.footnote)
@@ -86,101 +86,43 @@ struct SessionDetailsView: View {
                         }
                         .padding(.top)
                     }
-                    if !session.effects.isEmpty {
+                    if let mood = session.mood {
                         VStack(alignment: .leading) {
-                            HStack(alignment: .bottom) {
+                            HStack {
                                 Text("Mood")
                                     .font(.title2)
                                     .fontWeight(.semibold)
-                                if let currentMood = session.mood,
-                                   let moodItemTrait = currentMood.itemTrait {
-                                    Text(moodItemTrait.traitName)
-                                        .font(.subheadline)
+                                    Text(mood.type.label)
                                         .padding(.horizontal, 8)
                                         .padding(.vertical, 4)
                                         .background(
                                             RoundedRectangle(cornerRadius: 12)
-                                                .fill(moodItemTrait.traitColor.color.opacity(0.33))
+                                                .fill(mood.type.color.opacity(0.33))
                                         )
-                                }
+                                    Spacer()
                             }
-                            if !session.sortedMoods.isEmpty {
+                            if !mood.emotions.isEmpty {
                                 DetailSection(header: "Feelings", isScrollView: true) {
                                     ScrollView(.horizontal) {
                                         HStack {
-                                            ForEach(session.sortedMoods) { effect in
-                                                if let itemTrait = effect.itemTrait {
-                                                    HStack {
-                                                        Text(itemTrait.traitEmoji)
-                                                            .font(.system(size: 12))
-                                                        Text(itemTrait.traitName)
-                                                            .font(.subheadline)
-                                                            .fontWeight(.medium)
-                                                    }
-                                                    .padding(8)
-                                                    .background(
-                                                        RoundedRectangle(cornerRadius: 12)
-                                                            .fill(.ultraThinMaterial)
-                                                    )
+                                            ForEach(mood.emotions, id: \.self) { emotion in
+                                                HStack {
+                                                    Text(emotion.emoji ?? "")
+                                                        .font(.system(size: 12))
+                                                    Text(emotion.name)
+                                                        .font(.subheadline)
+                                                        .fontWeight(.medium)
                                                 }
+                                                .padding(8)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .fill(.ultraThinMaterial)
+                                                )
                                             }
                                         }
                                     }
                                     .contentMargins(.horizontal, 16)
                                     .scrollIndicators(.hidden)
-                                }
-                            }
-                            if !session.sortedWellness.isEmpty {
-                                DetailSection(header: "Wellness", isScrollView: true) {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(session.sortedWellness) { effect in
-                                                if let itemTrait = effect.itemTrait {
-                                                    HStack {
-                                                        Text(itemTrait.traitEmoji)
-                                                            .font(.system(size: 12))
-                                                        Text(itemTrait.traitName)
-                                                            .font(.footnote)
-                                                            .fontWeight(.medium)
-                                                    }
-                                                    .padding(.vertical, 6)
-                                                    .padding(.horizontal, 8)
-                                                    .background(.secondary,
-                                                                in: RoundedRectangle(cornerRadius: 12))
-                                                }
-                                            }
-                                        }
-                                        .padding(.horizontal)
-                                    }
-                                }
-                            }
-                        }
-                        .padding(.top)
-                    }
-                    if !session.flavors.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Flavors")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            DetailSection(isScrollView: true) {
-                                ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach(session.sortedFlavors) { flavor in
-                                            if let itemTrait = flavor.itemTrait {
-                                                HStack {
-                                                    Text(itemTrait.traitEmoji)
-                                                        .font(.system(size: 12))
-                                                    Text(itemTrait.traitName)
-                                                        .font(.subheadline)
-                                                        .fontWeight(.medium)
-                                                }
-                                                .padding(8)
-                                                .background(itemTrait.traitColor.color.opacity(0.2),
-                                                            in: RoundedRectangle(cornerRadius: 12))
-                                            }
-                                        }
-                                    }
-                                    .padding(.horizontal)
                                 }
                             }
                         }
@@ -243,27 +185,12 @@ struct SessionDetailsView: View {
     }
     
     private func delete(_ session: Session) throws {
-        updateItemTraits()
         withAnimation {
             modelContext.delete(session)
             self.session = nil
         }
         try modelContext.save()
         dismiss()
-    }
-    
-    private func updateItemTraits() {
-        guard let session, let item = session.item else { return }
-        
-        for trait in session.traits {
-            if let itemTrait = trait.itemTrait {
-                itemTrait.sessionTraits.removeAll { $0.id == trait.id }
-                if itemTrait.sessionTraits.isEmpty {
-                    item.traits.removeAll { $0.id == itemTrait.id }
-                    modelContext.delete(itemTrait)
-                }
-            }
-        }
     }
 }
 

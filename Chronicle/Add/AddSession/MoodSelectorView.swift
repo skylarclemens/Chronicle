@@ -6,19 +6,24 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MoodSelectorView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var viewModel: SessionEditorViewModel
-    @State private var selectedMoodIndex: Double = 2
+    @Binding var sessionViewModel: SessionEditorViewModel
+    @State private var viewModel = MoodSelectorViewModel()
+    @State private var selectedMoodIndex: Double = 0.0
     
     @State private var gradientColors: [Color] = [.white.opacity(0.2), .black.opacity(0)]
     
+    
     var moodColors: [Color] {
-        Trait.predefinedMoods.map { $0.color.color }
+        MoodType.allCases.map { $0.color }
     }
-    var currentMood: Trait? {
-        Trait.predefinedMoods[Int(round(selectedMoodIndex))]
+    
+    var selectedMood: MoodType {
+        let moodValence = selectedMoodIndex.round(toNearest: 0.5)
+        return MoodType(rawValue: moodValence) ?? .neutral
     }
 
     var body: some View {
@@ -35,19 +40,19 @@ struct MoodSelectorView: View {
                     .font(.largeTitle)
                     .fontWeight(.semibold)
                     .fontDesign(.rounded)
-                Text(currentMood?.name ?? "")
+                Text(selectedMood.label)
                     .font(.system(size: 38, weight: .medium, design: .rounded))
                     .padding(.horizontal)
                     .padding(.vertical, 4)
                     .background(.white.opacity(0.1),
                                 in: RoundedRectangle(cornerRadius: 10))
-                CustomSliderView(value: $selectedMoodIndex, range: 0...CGFloat((Trait.predefinedMoods.count - 1)))
+                CustomSliderView(value: $selectedMoodIndex, range: -1...1)
                     .frame(height: 42)
                     .padding(.horizontal)
             }
             .frame(maxHeight: .infinity)
             NavigationLink {
-                MoodDescriptorSelectView(viewModel: $viewModel, parentDismiss: dismiss, currentMood: currentMood)
+                MoodDescriptorSelectView(sessionViewModel: $sessionViewModel, viewModel: $viewModel, parentDismiss: dismiss)
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
@@ -64,13 +69,17 @@ struct MoodSelectorView: View {
             .padding()
         }
         .onAppear {
-            if let sessionMood = viewModel.moodTrait,
-               let moodIndex = Trait.predefinedMoods.firstIndex(where: { $0.id == sessionMood.trait.id }) {
-                selectedMoodIndex = Double(moodIndex)
+            if let mood = sessionViewModel.mood {
+                viewModel.mood = mood
+                viewModel.emotions = mood.emotions
+                selectedMoodIndex = mood.type.rawValue
+            } else {
+                viewModel.mood = Mood(type: .neutral)
             }
         }
         .onChange(of: selectedMoodIndex) { oldValue, newValue in
             updateGradientColors(for: newValue)
+            viewModel.mood?.type = selectedMood
         }
         .tint(.primary)
         .toolbar {
@@ -87,9 +96,12 @@ struct MoodSelectorView: View {
     }
     
     private func updateGradientColors(for value: Double) {
-        let lowerIndex = Int(floor(value))
-        let upperIndex = Int(ceil(value))
-        let interpolation = value - Double(lowerIndex)
+        let colorsCount = moodColors.count
+        let normalizedValue = (value + 1) / 2
+        let index = normalizedValue * Double(colorsCount - 1)
+        let lowerIndex = Int(floor(index))
+        let upperIndex = Int(ceil(index))
+        let interpolation = index - Double(lowerIndex)
         
         let lowerColor = moodColors[lowerIndex]
         let upperColor = moodColors[upperIndex]
@@ -113,11 +125,17 @@ struct MoodSelectorView: View {
     }
 }
 
+@Observable
+class MoodSelectorViewModel {
+    var mood: Mood?
+    var emotions: [Emotion] = []
+}
+
 #Preview {
     @State var viewModel = SessionEditorViewModel()
     
     return NavigationStack {
-        MoodSelectorView(viewModel: $viewModel)
+        MoodSelectorView(sessionViewModel: $viewModel)
             .modelContainer(SampleData.shared.container)
     }
 }

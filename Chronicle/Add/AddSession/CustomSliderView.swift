@@ -17,7 +17,7 @@ struct CustomSliderView: View {
     var thumbSize: CGFloat
     var leadingOffset: CGFloat
 
-    init(value: Binding<Double>, lastSliderPosition: CGFloat = 0.0, range: ClosedRange<CGFloat> = 1...100, thumbSize: CGFloat = 32, leadingOffset: CGFloat? = nil) {
+    init(value: Binding<Double>, lastSliderPosition: CGFloat = 0.0, range: ClosedRange<CGFloat> = -1...1, thumbSize: CGFloat = 32, leadingOffset: CGFloat? = nil) {
         self._value = value
         self.lastSliderPosition = lastSliderPosition
         self.range = range

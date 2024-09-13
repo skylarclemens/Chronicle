@@ -72,32 +72,14 @@ struct SessionEditorView: View {
                                                 Text("\(viewModel.dateString), \(viewModel.date.formatted(date: .omitted, time: .shortened))")
                                             }
                                         }
-                                        .buttonStyle(.plain)
-                                        .padding(.vertical, 8)
-                                        .padding(.horizontal, 12)
-                                        .background(.regularMaterial,
-                                                    in: RoundedRectangle(cornerRadius: 50))
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 50)
-                                                .strokeBorder(.quaternary)
-                                        )
-                                        
+                                        .buttonStyle(SessionInputButton())
                                         Button {} label: {
                                             HStack {
                                                 Image(systemName: "timer")
                                                 TimePickerWheel(label: "Duration", showBackground: false, timerNumber: $viewModel.duration)
                                             }
                                         }
-                                        .buttonStyle(.plain)
-                                        .foregroundStyle(viewModel.duration == 0 ? .secondary : .primary)
-                                        .padding(.vertical, 8)
-                                        .padding(.horizontal, 12)
-                                        .background(.regularMaterial,
-                                                    in: RoundedRectangle(cornerRadius: 50))
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 50)
-                                                .strokeBorder(.quaternary)
-                                        )
+                                        .buttonStyle(SessionInputButton())
                                     }
                                 }
                             }
@@ -121,52 +103,35 @@ struct SessionEditorView: View {
                                     Text("Mood")
                                         .font(.title2)
                                         .fontWeight(.semibold)
-                                    if let currentMood = viewModel.moodTrait {
+                                    if let currentMood = viewModel.mood {
                                         HStack(alignment: .bottom) {
-                                            Text(currentMood.trait.name)
+                                            Text(currentMood.type.label)
                                                 .padding(.horizontal, 8)
                                                 .padding(.vertical, 4)
                                                 .background(
                                                     RoundedRectangle(cornerRadius: 12)
-                                                        .fill(currentMood.trait.color.color.opacity(0.33))
+                                                        .fill(currentMood.type.color.opacity(0.33))
                                                 )
                                             Spacer()
                                             Button {
                                                 openMood = true
                                             } label: {
                                                 Text("Edit")
-                                                    .font(.footnote)
-                                                    .contentShape(RoundedRectangle(cornerRadius: 12))
                                             }
-                                            .buttonStyle(.plain)
-                                            .padding(.horizontal, 8)
-                                            .padding(.vertical, 4)
-                                            .background(
-                                                Capsule()
-                                                    .fill(
-                                                        LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
-                                                            .opacity(0.25)
-                                                    )
-                                            )
-                                            .overlay(
-                                                Capsule()
-                                                    .strokeBorder(
-                                                        LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
-                                                            .opacity(0.75)
-                                                    )
-                                            )
+                                            .buttonStyle(.mood)
+                                            .controlSize(.small)
                                         }
                                     }
                                 }
-                                if !viewModel.effects.isEmpty {
+                                if let currentMood = viewModel.mood, !currentMood.emotions.isEmpty {
                                     DetailSection(header: "Feelings", isScrollView: true) {
                                         ScrollView(.horizontal) {
                                             HStack {
-                                                ForEach(viewModel.effects, id: \.self) { effect in
+                                                ForEach(currentMood.emotions, id: \.self) { emotion in
                                                     HStack {
-                                                        Text(effect.trait.emoji ?? "")
+                                                        Text(emotion.emoji ?? "")
                                                             .font(.system(size: 12))
-                                                        Text(effect.trait.name)
+                                                        Text(emotion.name)
                                                             .font(.subheadline)
                                                             .fontWeight(.medium)
                                                     }
@@ -191,24 +156,9 @@ struct SessionEditorView: View {
                                             Image(systemName: "chevron.right")
                                                 .foregroundStyle(.secondary)
                                         }
-                                        .contentShape(RoundedRectangle(cornerRadius: 12))
                                     }
-                                    .buttonStyle(.plain)
-                                    .padding(12)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(
-                                                LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
-                                                    .opacity(0.25)
-                                            )
-                                    )
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .strokeBorder(
-                                                LinearGradient(colors: [Color(red: 10 / 255, green: 132 / 255, blue: 255 / 255), Color(red: 191 / 255, green: 90 / 255, blue: 242 / 255)], startPoint: .leading, endPoint: .trailing)
-                                                    .opacity(0.75)
-                                            )
-                                    )
+                                    .buttonStyle(.mood)
+                                    .controlSize(.large)
                                 }
                             }
                             .padding(.vertical)
@@ -216,10 +166,10 @@ struct SessionEditorView: View {
                         .padding(.horizontal)
                     }
                     .padding(.bottom, 120)
+                    .frame(maxHeight: .infinity)
                 }
-                // Save Session button
+                /// Save Session button
                 VStack {
-                    Spacer()
                     Button {
                         do {
                             try save()
@@ -247,7 +197,7 @@ struct SessionEditorView: View {
             .navigationTitle("\(session == nil ? "New" : "Edit") Session")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // Close
+                /// Close
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -257,7 +207,7 @@ struct SessionEditorView: View {
                     }
                     .buttonStyle(.plain)
                 }
-                // Toolbar to add items to session
+                /// Toolbar to add items to session
                 ToolbarItemGroup(placement: .bottomBar) {
                     PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
                         Label("Select photos", systemImage: "photo.fill")
@@ -271,7 +221,7 @@ struct SessionEditorView: View {
                     .tint(.primary)
                     Spacer()
                 }
-                // Show same toolbar when keyboard opens
+                /// Show same toolbar when keyboard opens
                 ToolbarItemGroup(placement: .keyboard) {
                     PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
                         Label("Select photos", systemImage: "photo.fill")
@@ -327,7 +277,7 @@ struct SessionEditorView: View {
             }
             .sheet(isPresented: $openMood) {
                 NavigationStack {
-                    MoodSelectorView(viewModel: $viewModel)
+                    MoodSelectorView(sessionViewModel: $viewModel)
                 }
                 .tint(.primary)
                 .presentationDetents([.large])
@@ -344,11 +294,8 @@ struct SessionEditorView: View {
                 viewModel.notes = session.notes ?? ""
                 viewModel.selectedImagesData = session.imagesData ?? []
                 
-                viewModel.effects = session.traits
-                    .filter { $0.itemTrait?.trait.type == .effect }
-                    .map { SessionTraitViewModel($0) }
-                if let moodTrait = session.traits.first(where: { $0.itemTrait?.trait.type == .mood }) {
-                    viewModel.moodTrait = SessionTraitViewModel(moodTrait)
+                if let mood = session.mood {
+                    viewModel.mood = mood
                 }
             }
             
@@ -367,20 +314,7 @@ struct SessionEditorView: View {
             session.duration = viewModel.duration
             session.location = viewModel.location
             session.imagesData = viewModel.selectedImagesData
-            
-            // Update removed traits
-            let currentTraitIDs = Set(viewModel.effects.map { $0.trait.id } + [viewModel.moodTrait?.trait.id])
-            session.traits.forEach { sessionTrait in
-                if !currentTraitIDs.contains(sessionTrait.itemTrait?.trait.id) {
-                    modelContext.delete(sessionTrait)
-                }
-            }
-            
-            // Update current traits and add new ones
-            viewModel.updateTraits(for: viewModel.effects, in: session, modelContext: modelContext)
-            if let moodTrait = viewModel.moodTrait {
-                viewModel.updateTraits(for: [moodTrait], in: session, modelContext: modelContext)
-            }
+            session.mood = viewModel.mood
             
             if self.session == nil {
                 modelContext.insert(session)
@@ -397,8 +331,7 @@ class SessionEditorViewModel {
     var title: String = ""
     var item: Item?
     var duration: Double = 0
-    var effects: [SessionTraitViewModel] = []
-    var moodTrait: SessionTraitViewModel?
+    var mood: Mood?
     var notes: String = ""
     var location: String = ""
     
@@ -408,62 +341,6 @@ class SessionEditorViewModel {
     var dateString: String {
         let calendar = Calendar.current
         return calendar.isDateInToday(date) ? "Today" : date.formatted(date: .abbreviated, time: .omitted)
-    }
-    
-    func updateTraits(for traitViewModels: [SessionTraitViewModel], in session: Session, modelContext: ModelContext) {
-        if let item = session.item {
-            for traitVM in traitViewModels {
-                let itemTrait = item.traits.first { $0.trait.name == traitVM.trait.name } ?? {
-                    let trait = getTrait(traitVM.trait, modelContext: modelContext)
-                    return ItemTrait(trait: trait, item: item)
-                }()
-                
-                if let existingSessionTrait = session.traits.first(where: { $0.itemTrait?.trait.name == traitVM.trait.name }) {
-                    existingSessionTrait.intensity = traitVM.intensity
-                } else {
-                    let sessionTrait = SessionTrait(itemTrait: itemTrait, session: session, intensity: traitVM.intensity)
-                    session.traits.append(sessionTrait)
-                }
-            }
-        }
-    }
-    
-    func addTrait(_ trait: Trait, intensity: Int = 0) {
-        if trait.type == .effect {
-            effects.append(SessionTraitViewModel(trait: trait, intensity: intensity))
-        } else if trait.type == .mood {
-            moodTrait = SessionTraitViewModel(trait: trait)
-        }
-    }
-    
-    func removeEffect(at offsets: IndexSet) {
-        effects.remove(atOffsets: offsets)
-    }
-    
-    func getTrait(_ trait: Trait, modelContext: ModelContext) -> Trait {
-        let id = trait.id
-        var traitFetchDescriptor = FetchDescriptor<Trait>(predicate: #Predicate {
-            $0.id == id
-        })
-        traitFetchDescriptor.fetchLimit = 1
-        let fetchedTrait = try? modelContext.fetch(traitFetchDescriptor).first
-        return fetchedTrait ?? trait
-    }
-}
-
-struct SessionTraitViewModel: Identifiable, Hashable {
-    let id = UUID()
-    let trait: Trait
-    let intensity: Int
-    
-    init(trait: Trait, intensity: Int = 0) {
-        self.trait = trait
-        self.intensity = intensity
-    }
-    
-    init(_ sessionTrait: SessionTrait) {
-        self.trait = sessionTrait.itemTrait!.trait
-        self.intensity = sessionTrait.intensity ?? 0
     }
 }
 

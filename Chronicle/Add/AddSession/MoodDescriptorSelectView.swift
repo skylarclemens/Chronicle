@@ -9,11 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct MoodDescriptorSelectView: View {
-    @Binding var viewModel: SessionEditorViewModel
+    @Binding var sessionViewModel: SessionEditorViewModel
+    @Binding var viewModel: MoodSelectorViewModel
     let parentDismiss: DismissAction
     
-    @State var currentMood: Trait?
-    @State var selectedEffects: [Trait] = []
+    @State var selectedEmotions: [Emotion] = []
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -27,19 +27,14 @@ struct MoodDescriptorSelectView: View {
                     .fontDesign(.rounded)
                     .multilineTextAlignment(.center)
                     .padding()
-                EffectsSelectView(selectedEffects: $selectedEffects)
+                EmotionsSelectView(selectedEmotions: $selectedEmotions)
             }
             .frame(maxHeight: .infinity)
             VStack {
                 Button {
-                    if !selectedEffects.isEmpty {
-                        viewModel.effects.removeAll()
-                        for effect in selectedEffects {
-                            viewModel.addTrait(effect)
-                        }
-                    }
-                    if let currentMood {
-                        viewModel.addTrait(currentMood)
+                    if let mood = viewModel.mood {
+                        mood.emotions = selectedEmotions
+                        sessionViewModel.mood = mood
                     }
                     parentDismiss()
                 } label: {
@@ -66,12 +61,11 @@ struct MoodDescriptorSelectView: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
-            if !viewModel.effects.isEmpty {
-                var initialSelectedEffects: [Trait] = []
-                for effect in viewModel.effects {
-                    initialSelectedEffects.append(effect.trait)
-                }
-                self.selectedEffects = initialSelectedEffects
+            if let mood = viewModel.mood {
+                print(mood.type.label)
+            }
+            if !viewModel.emotions.isEmpty {
+                selectedEmotions = viewModel.emotions
             }
         }
         .toolbar {
@@ -88,45 +82,34 @@ struct MoodDescriptorSelectView: View {
     }
 }
 
-struct EffectsSelectView: View {
-    @Query var allEffects: [Trait]
-    @Binding var selectedEffects: [Trait]
-    
-    init(selectedEffects: Binding<[Trait]>) {
-        self._selectedEffects = selectedEffects
-        
-        let effect = TraitType.effect.rawValue
-        let filter = #Predicate<Trait> {
-            $0.type.rawValue == effect
-        }
-        self._allEffects = Query(filter: filter)
-    }
+struct EmotionsSelectView: View {
+    @Binding var selectedEmotions: [Emotion]
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.flexible(minimum: 30)), GridItem(.flexible(minimum: 30)), GridItem(.flexible(minimum: 30))]) {
-                ForEach(allEffects, id: \.self) { effect in
-                    let effectSelected = selectedEffects.contains { $0.name == effect.name }
+                ForEach(Emotion.initialEmotions, id: \.self) { emotion in
+                    let emotionSelected = selectedEmotions.contains { $0.name == emotion.name }
                     Button {
-                        if effectSelected {
-                            selectedEffects.removeAll { $0.name == effect.name }
+                        if emotionSelected {
+                            selectedEmotions.removeAll { $0.name == emotion.name }
                         } else {
-                            selectedEffects.append(effect)
+                            selectedEmotions.append(emotion)
                         }
                     } label: {
                         HStack(spacing: 4) {
-                            Text(effect.emoji ?? "")
+                            Text(emotion.emoji ?? "")
                                 .font(.footnote)
-                            Text(effect.name)
+                            Text(emotion.name)
                                 .font(.footnote)
-                            if effectSelected {
+                            if emotionSelected {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.footnote)
                             }
                         }
                     }
                     .buttonStyle(.plain)
-                    .tag(effect as Trait?)
+                    .tag(emotion as Emotion?)
                     .padding(8)
                     .background(.regularMaterial,
                                 in: RoundedRectangle(cornerRadius: 12)
@@ -146,16 +129,11 @@ struct EffectsSelectView: View {
 
 #Preview {
     @Environment(\.dismiss) var dismiss
-    @State var viewModel = SessionEditorViewModel()
+    @State var sessionViewModel = SessionEditorViewModel()
+    @State var viewModel = MoodSelectorViewModel()
     
     return NavigationStack {
-        MoodDescriptorSelectView(viewModel: $viewModel, parentDismiss: dismiss)
+        MoodDescriptorSelectView(sessionViewModel: $sessionViewModel, viewModel: $viewModel, parentDismiss: dismiss)
     }
     .modelContainer(SampleData.shared.container)
-}
-
-#Preview {
-    @State var selectedEffects: [Trait] = []
-    return EffectsSelectView(selectedEffects: $selectedEffects)
-        .modelContainer(SampleData.shared.container)
 }
