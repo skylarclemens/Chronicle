@@ -44,7 +44,7 @@ struct DetailSection<Content: View>: View {
         .padding(.horizontal, isScrollView ? 0 : nil)
         .padding(.vertical)
         .background(.regularMaterial,
-                    in: RoundedRectangle(cornerRadius: 10))
+                    in: RoundedRectangle(cornerRadius: 12))
     }
 }
 

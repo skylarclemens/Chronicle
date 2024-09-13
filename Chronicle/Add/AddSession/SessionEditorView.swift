@@ -10,10 +10,6 @@ import SwiftData
 import PhotosUI
 
 struct SessionEditorView: View {
-    enum Field {
-        case title, notes
-    }
-    
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @State private var viewModel = SessionEditorViewModel()
@@ -46,7 +42,7 @@ struct SessionEditorView: View {
                                 Section {
                                     HStack(spacing: -4) {
                                         Image(systemName: "link")
-                                        Picker("Item", systemImage: "tray", selection: $viewModel.item) {
+                                        Picker("Item", selection: $viewModel.item) {
                                             Text("Item").tag(nil as Item?)
                                             ForEach(items, id: \.self) { item in
                                                 Text(item.name).tag(item as Item?)
@@ -56,9 +52,9 @@ struct SessionEditorView: View {
                                     .tint(.primary)
                                     .padding(.leading, 8)
                                     .background(.accent.opacity(0.33),
-                                                in: RoundedRectangle(cornerRadius: 50))
+                                                in: Capsule())
                                     .overlay(
-                                        RoundedRectangle(cornerRadius: 50)
+                                        Capsule()
                                             .strokeBorder(.accent.opacity(0.5))
                                     )
                                 }
@@ -72,14 +68,14 @@ struct SessionEditorView: View {
                                                 Text("\(viewModel.dateString), \(viewModel.date.formatted(date: .omitted, time: .shortened))")
                                             }
                                         }
-                                        .buttonStyle(SessionInputButton())
+                                        .buttonStyle(.editorInput)
                                         Button {} label: {
                                             HStack {
                                                 Image(systemName: "timer")
                                                 TimePickerWheel(label: "Duration", showBackground: false, timerNumber: $viewModel.duration)
                                             }
                                         }
-                                        .buttonStyle(SessionInputButton())
+                                        .buttonStyle(.editorInput)
                                     }
                                 }
                             }
@@ -322,6 +318,10 @@ struct SessionEditorView: View {
             
             try modelContext.save()
         }
+    }
+    
+    enum Field {
+        case title, notes
     }
 }
 

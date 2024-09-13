@@ -26,7 +26,8 @@ struct ItemEditorView: View {
                 viewModel.dosageAmount = item.dosage?.amount
                 viewModel.dosageUnit = item.dosage?.unit ?? ""
                 viewModel.subtype = item.subtype ?? ""
-                viewModel.compounds = item.compounds
+                viewModel.cannabinoids = item.compounds.filter { $0.type == .cannabinoid }
+                viewModel.terpenes = item.compounds.filter { $0.type == .terpene }
                 viewModel.ingredients = item.ingredients
                 viewModel.purchasePrice = item.purchaseInfo?.price
                 viewModel.purchaseLocation = item.purchaseInfo?.location ?? ""
@@ -103,86 +104,60 @@ struct ItemEditorBasicsView: View {
     @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
     var item: Item?
+    @FocusState var focusedField: Field?
+    
+    @Query(sort: \Strain.name) var strains: [Strain]
     
     var body: some View {
-        VStack {
-            Form {
-                Section("Name") {
-                    TextField("Name", text: $viewModel.name)
-                }
-                Section("Brand") {
-                    TextField("Brand", text: $viewModel.brand)
-                }
-                Section("Photos") {
-                    if viewModel.selectedImagesData.count > 0 {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            LazyHStack(spacing: 8) {
-                                ForEach(viewModel.selectedImagesData, id: \.self) { imageData in
-                                    if let uiImage = UIImage(data: imageData) {
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 150, height: 150, alignment: .leading)
-                                            .clipShape(.rect(cornerRadius: 10))
-                                            .overlay(alignment: .topTrailing) {
-                                                Button {
-                                                    viewModel.selectedImagesData.remove(at: viewModel.selectedImagesData.firstIndex(of: imageData)!)
-                                                } label: {
-                                                    Image(systemName: "xmark.circle.fill")
-                                                        .padding(4)
-                                                        .font(.title2)
-                                                        .foregroundStyle(.primary, .secondary)
-                                                }
-                                                .buttonStyle(.plain)
-                                            }
+        ScrollView {
+            VStack {
+                HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
+                    .frame(height: 180)
+                VStack(alignment: .leading) {
+                    VStack(alignment: .leading) {
+                        TextField("Item Name", text: $viewModel.name)
+                            .font(.system(size: 24, weight: .medium, design: .rounded))
+                            .padding(.vertical, 8)
+                            .padding(.trailing)
+                            .focused($focusedField, equals: .name)
+                            .submitLabel(.done)
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
+                                    Label("Select photos", systemImage: "photo.badge.plus")
+                                }
+                                .tint(.primary)
+                                .buttonStyle(.editorInput)
+                            }
+                            HStack(spacing: -4) {
+                                Image(systemName: "leaf")
+                                Picker("Strain", selection: $viewModel.linkedStrain) {
+                                    Text("Strain").tag(nil as Strain?)
+                                    ForEach(strains, id: \.self) { strain in
+                                        Text(strain.name).tag(strain as Strain?)
                                     }
                                 }
                             }
-                            .padding()
-                        }
-                        .listRowInsets(EdgeInsets())
-                    }
-                    PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 3, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-                        Label("Select photos", systemImage: "photo.badge.plus")
-                    }
-                    .onChange(of: viewModel.pickerItems) { oldValues, newValues in
-                        Task {
-                            if viewModel.pickerItems.count == 0 { return }
-                            
-                            for value in newValues {
-                                if let imageData = try? await value.loadTransferable(type: Data.self) {
-                                    withAnimation {
-                                        viewModel.selectedImagesData.append(imageData)
-                                    }
-                                }
-                            }
-                            
-                            viewModel.pickerItems.removeAll()
+                            .tint(.primary)
+                            .padding(.leading, 8)
+                            .background(.accent.opacity(0.33),
+                                        in: Capsule())
+                            .overlay(
+                                Capsule()
+                                    .strokeBorder(.accent.opacity(0.5))
+                            )
                         }
                     }
+                    ItemEditorDetailsView(viewModel: $viewModel, item: item)
+                        .padding(.vertical)
                 }
+                .padding(.horizontal)
+                Spacer()
             }
-            Spacer()
-            NavigationLink {
-                ItemEditorDetailsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
-            } label: {
-                Text("Next")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            .tint(.accentColor)
-            .padding()
-            .disabled(viewModel.name.isEmpty)
         }
-        .navigationTitle("Basics")
+        .navigationTitle("\(item != nil ? "Edit" : "Add") Item")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                if let itemType = viewModel.itemType {
-                    SelectedTypeView(selectedType: itemType, editing: item != nil)
-                        .padding(.horizontal, 8)
-                }
-            }
             ToolbarItem(placement: .destructiveAction) {
                 Button {
                     parentDismiss()
@@ -193,88 +168,61 @@ struct ItemEditorBasicsView: View {
                 .buttonStyle(.plain)
             }
         }
+        .onChange(of: viewModel.pickerItems) { oldValues, newValues in
+            Task {
+                if viewModel.pickerItems.count == 0 { return }
+                
+                for value in newValues {
+                    if let imageData = try? await value.loadTransferable(type: Data.self) {
+                        withAnimation {
+                            viewModel.selectedImagesData.append(imageData)
+                        }
+                    }
+                }
+                
+                viewModel.pickerItems.removeAll()
+            }
+        }
+    }
+        
+    enum Field {
+        case name
     }
 }
 
 struct ItemEditorDetailsView: View {
     @Binding var viewModel: ItemEditorViewModel
-    let parentDismiss: DismissAction
     var item: Item?
     
     var body: some View {
-        VStack {
-            Form {
-                switch viewModel.itemType {
-                case .edible, .tincture, .pill, .preroll:
-                    Section("Dosage") {
-                        HStack {
-                            TextField("Amount", value: $viewModel.dosageAmount, format: .number)
-                                .keyboardType(.decimalPad)
-                                .textFieldStyle(.plain)
-                                .padding(.horizontal)
-                                .padding(.vertical, 11)
-                                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                .clipShape(.rect(cornerRadius: 10))
-                            TextField("Unit", text: $viewModel.dosageUnit)
-                                .textFieldStyle(.plain)
-                                .padding(.horizontal)
-                                .padding(.vertical, 11)
-                                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                .clipShape(.rect(cornerRadius: 10))
-                        }
-                        .listRowInsets(EdgeInsets())
-                        .listRowBackground(Color.clear)
-                    }
-                    Section("Cannabinoids") {
-                        CannabinoidInputView(compounds: $viewModel.compounds)
-                    }
-                    Section("Terpenes") {
-                        TerpeneInputView(compounds: $viewModel.compounds)
-                    }
-                case .flower:
-                    Section("Terpenes") {
-                        TerpeneInputView(compounds: $viewModel.compounds)
-                    }
-                case .concentrate:
-                    TextField("Concentrate Type", text: $viewModel.subtype)
-                case .topical:
-                    Section("Terpenes") {
-                        TerpeneInputView(compounds: $viewModel.compounds)
-                    }
-                case .other:
-                    Text("Other options")
-                case .none:
-                    Text("Other")
+        VStack(alignment: .leading) {
+            Text("Details")
+                .font(.title2)
+                .fontWeight(.semibold)
+            /*Section("Dosage") {
+                HStack {
+                    TextField("Amount", value: $viewModel.dosageAmount, format: .number)
+                        .keyboardType(.decimalPad)
+                        .textFieldStyle(.plain)
+                        .padding(.horizontal)
+                        .padding(.vertical, 11)
+                        .background(Color(uiColor: .secondarySystemGroupedBackground))
+                        .clipShape(.rect(cornerRadius: 10))
+                    TextField("Unit", text: $viewModel.dosageUnit)
+                        .textFieldStyle(.plain)
+                        .padding(.horizontal)
+                        .padding(.vertical, 11)
+                        .background(Color(uiColor: .secondarySystemGroupedBackground))
+                        .clipShape(.rect(cornerRadius: 10))
                 }
+                .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
+            }*/
+            DetailSection(header: "Cannabinoids") {
+                CannabinoidInputView(compounds: $viewModel.cannabinoids)
             }
-            Spacer()
-            NavigationLink {
-                ItemEditorAdditionalInfoView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
-            } label: {
-                Text("Next")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            .tint(.accentColor)
-            .padding()
-        }
-        .navigationTitle("Details")
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                if let itemType = viewModel.itemType {
-                    SelectedTypeView(selectedType: itemType, editing: item != nil)
-                        .padding(.horizontal, 8)
-                }
-            }
-            ToolbarItem(placement: .destructiveAction) {
-                Button {
-                    parentDismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.plain)
+            DetailSection(header: "Terpenes") {
+                TerpeneInputView(compounds: $viewModel.terpenes)
             }
         }
     }
@@ -326,12 +274,6 @@ struct ItemEditorAdditionalInfoView: View {
         }
         .navigationTitle("Additional Information")
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                if let itemType = viewModel.itemType {
-                    SelectedTypeView(selectedType: itemType, editing: item != nil)
-                        .padding(.horizontal, 8)
-                }
-            }
             ToolbarItem(placement: .destructiveAction) {
                 Button {
                     parentDismiss()
@@ -350,7 +292,7 @@ struct ItemEditorAdditionalInfoView: View {
             item.type = viewModel.itemType ?? .other
             item.brand = viewModel.brand
             item.dosage = Dosage(amount: viewModel.dosageAmount ?? 0, unit: viewModel.dosageUnit)
-            item.compounds = viewModel.compounds
+            item.compounds = viewModel.cannabinoids + viewModel.terpenes
             item.ingredients = viewModel.ingredients
             item.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation)
             item.imagesData = viewModel.selectedImagesData
@@ -359,7 +301,7 @@ struct ItemEditorAdditionalInfoView: View {
             let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
             newItem.brand = viewModel.brand
             newItem.dosage = Dosage(amount: viewModel.dosageAmount ?? 0, unit: viewModel.dosageUnit)
-            newItem.compounds = viewModel.compounds
+            newItem.compounds = viewModel.cannabinoids + viewModel.terpenes
             newItem.ingredients = viewModel.ingredients
             newItem.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation)
             newItem.imagesData = viewModel.selectedImagesData
@@ -367,25 +309,6 @@ struct ItemEditorAdditionalInfoView: View {
             
             modelContext.insert(newItem)
         }
-    }
-}
-
-struct SelectedTypeView: View {
-    let selectedType: ItemType
-    let editing: Bool
-    
-    var body: some View {
-        Text("\(editing ? "Editing" : "New") \(selectedType.label().localizedLowercase)")
-            .font(.subheadline)
-            .foregroundStyle(.accent)
-            .buttonStyle(.borderless)
-            .controlSize(.small)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .overlay(
-                Capsule()
-                    .stroke(.accent.opacity(0.8), lineWidth: 1)
-            )
     }
 }
 
@@ -398,7 +321,8 @@ class ItemEditorViewModel {
     var dosageAmount: Double?
     var dosageUnit: String = ""
     var subtype: String = ""
-    var compounds: [Compound] = []
+    var cannabinoids: [Compound] = []
+    var terpenes: [Compound] = []
     var ingredients: [String] = []
     var purchasePrice: Double?
     var purchaseLocation: String = ""
@@ -407,11 +331,6 @@ class ItemEditorViewModel {
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
-}
-
-#Preview {
-    ItemEditorView(item: SampleData.shared.item)
-        .modelContainer(SampleData.shared.container)
 }
 
 #Preview {
@@ -424,19 +343,6 @@ class ItemEditorViewModel {
 }
 
 #Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var viewModel = ItemEditorViewModel()
-    viewModel.itemType = .edible
-    return NavigationStack {
-        ItemEditorDetailsView(viewModel: $viewModel, parentDismiss: dismiss)
-    }
-}
-
-#Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var viewModel = ItemEditorViewModel()
-    viewModel.itemType = .edible
-    return NavigationStack {
-        ItemEditorAdditionalInfoView(viewModel: $viewModel, parentDismiss: dismiss)
-    }
+    ItemEditorView(item: SampleData.shared.item)
+        .modelContainer(SampleData.shared.container)
 }

@@ -132,16 +132,7 @@ struct ItemDetailsView: View {
                                     ScrollView(.horizontal) {
                                         HStack {
                                             ForEach(item.terpenes) { terpene in
-                                                HStack {
-                                                    RoundedRectangle(cornerRadius: 8)
-                                                        .frame(maxWidth: 3, maxHeight: 14)
-                                                        .foregroundStyle(terpene.color.color)
-                                                    Text(terpene.name)
-                                                }
-                                                .padding(.vertical, 6)
-                                                .padding(.horizontal, 10)
-                                                .background(terpene.color.color.opacity(0.2),
-                                                            in: RoundedRectangle(cornerRadius: 12))
+                                                TerpeneView(terpene)
                                             }
                                         }
                                         .padding(.horizontal)
