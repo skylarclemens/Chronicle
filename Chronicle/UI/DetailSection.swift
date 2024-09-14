@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct DetailSection<Content: View>: View {
+struct DetailSection<Content: View, HeaderRight: View>: View {
     let content: () -> Content
     var header: String?
-    var headerRight: String?
+    var headerRight: (() -> HeaderRight)?
     var isScrollView: Bool
     
-    init(header: String? = nil, headerRight: String? = nil, isScrollView: Bool = false, @ViewBuilder content: @escaping () -> Content) {
+    init(header: String? = nil, isScrollView: Bool = false, @ViewBuilder content: @escaping () -> Content, headerRight: (() -> HeaderRight)?) {
         self.content = content
         self.header = header
         self.headerRight = headerRight
@@ -26,16 +26,14 @@ struct DetailSection<Content: View>: View {
                 HStack {
                     if let header {
                         Text(header)
-                            .font(.subheadline)
+                            .font(.title3)
                             .bold()
                             .foregroundStyle(.secondary)
                             .padding(.horizontal, isScrollView ? nil : 0)
                     }
                     Spacer()
                     if let headerRight {
-                        Text(headerRight)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
+                        headerRight()
                     }
                 }
             }
@@ -43,13 +41,19 @@ struct DetailSection<Content: View>: View {
         }
         .padding(.horizontal, isScrollView ? 0 : nil)
         .padding(.vertical)
-        .background(.regularMaterial,
+        .background(Color(uiColor: UIColor.secondarySystemGroupedBackground),
                     in: RoundedRectangle(cornerRadius: 12))
     }
 }
 
 #Preview {
-    DetailSection(header: "Header", headerRight: "test") {
+    DetailSection(header: "Header") {
         Text("Hello")
+    }
+}
+
+extension DetailSection {
+    init(header: String? = nil, isScrollView: Bool = false, @ViewBuilder content: @escaping () -> Content) where HeaderRight == Never {
+        self.init(header: header, isScrollView: isScrollView, content: content, headerRight: nil)
     }
 }

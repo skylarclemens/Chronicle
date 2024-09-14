@@ -50,7 +50,9 @@ struct ItemTypeSelectionView: View {
             LazyVGrid(columns: columns, spacing: 8) {
                 ForEach(ItemType.allCases, id: \.id) { type in
                     Button {
-                        viewModel.itemType = type
+                        withAnimation {
+                            viewModel.itemType = type
+                        }
                     } label: {
                         VStack {
                             Image(systemName: type.symbol())
@@ -63,7 +65,7 @@ struct ItemTypeSelectionView: View {
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100, maxHeight: .infinity)
                     .foregroundStyle(.primary)
                     .background(.ultraThinMaterial)
-                    .background(Color.accentColor.opacity(viewModel.itemType == type ? 0.4 : 0))
+                    .background(.accent.opacity(viewModel.itemType == type ? 0.33 : 0))
                     .clipShape(.rect(cornerRadius: 10))
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
@@ -101,6 +103,7 @@ struct ItemTypeSelectionView: View {
 }
 
 struct ItemEditorBasicsView: View {
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
     @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
     var item: Item?
@@ -109,52 +112,78 @@ struct ItemEditorBasicsView: View {
     @Query(sort: \Strain.name) var strains: [Strain]
     
     var body: some View {
-        ScrollView {
-            VStack {
-                HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
-                    .frame(height: 180)
-                VStack(alignment: .leading) {
+        ZStack(alignment: .bottom) {
+            ScrollView {
+                VStack {
+                    HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
+                        .frame(height: 180)
                     VStack(alignment: .leading) {
-                        TextField("Item Name", text: $viewModel.name)
-                            .font(.system(size: 24, weight: .medium, design: .rounded))
-                            .padding(.vertical, 8)
-                            .padding(.trailing)
-                            .focused($focusedField, equals: .name)
-                            .submitLabel(.done)
-                        VStack(alignment: .leading, spacing: 8) {
-                            HStack {
-                                PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-                                    Label("Select photos", systemImage: "photo.badge.plus")
+                        VStack(alignment: .leading) {
+                            TextField("Item Name", text: $viewModel.name)
+                                .font(.system(size: 24, weight: .medium, design: .rounded))
+                                .padding(.vertical, 8)
+                                .padding(.trailing)
+                                .focused($focusedField, equals: .name)
+                                .submitLabel(.done)
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
+                                        Label("Select photos", systemImage: "photo.badge.plus")
+                                    }
+                                    .tint(.primary)
+                                    .buttonStyle(.editorInput)
                                 }
-                                .tint(.primary)
-                                .buttonStyle(.editorInput)
-                            }
-                            HStack(spacing: -4) {
-                                Image(systemName: "leaf")
-                                Picker("Strain", selection: $viewModel.linkedStrain) {
-                                    Text("Strain").tag(nil as Strain?)
-                                    ForEach(strains, id: \.self) { strain in
-                                        Text(strain.name).tag(strain as Strain?)
+                                HStack(spacing: -4) {
+                                    Image(systemName: "leaf")
+                                    Picker("Strain", selection: $viewModel.linkedStrain) {
+                                        Text("Strain").tag(nil as Strain?)
+                                        ForEach(strains, id: \.self) { strain in
+                                            Text(strain.name).tag(strain as Strain?)
+                                        }
                                     }
                                 }
+                                .tint(.primary)
+                                .padding(.leading, 8)
+                                .background(.accent.opacity(0.33),
+                                            in: Capsule())
+                                .overlay(
+                                    Capsule()
+                                        .strokeBorder(.accent.opacity(0.5))
+                                )
                             }
-                            .tint(.primary)
-                            .padding(.leading, 8)
-                            .background(.accent.opacity(0.33),
-                                        in: Capsule())
-                            .overlay(
-                                Capsule()
-                                    .strokeBorder(.accent.opacity(0.5))
-                            )
                         }
+                        ItemEditorDetailsView(viewModel: $viewModel, item: item)
+                            .padding(.vertical)
                     }
-                    ItemEditorDetailsView(viewModel: $viewModel, item: item)
-                        .padding(.vertical)
+                    .padding(.horizontal)
+                    Spacer()
                 }
-                .padding(.horizontal)
-                Spacer()
+            }
+            .safeAreaInset(edge: .bottom, alignment: .center) {
+                ZStack {
+                    Color(UIColor.systemBackground).mask(
+                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
+                    )
+                    .allowsHitTesting(false)
+                    VStack {
+                        Button {
+                            parentDismiss()
+                        } label: {
+                            Text("Save")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
+                        .padding()
+                    }
+                }
+                .frame(height: 120)
             }
         }
+        .ignoresSafeArea(edges: .bottom)
+        .interactiveDismissDisabled()
+        .scrollDismissesKeyboard(.immediately)
         .navigationTitle("\(item != nil ? "Edit" : "Add") Item")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -218,12 +247,8 @@ struct ItemEditorDetailsView: View {
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
             }*/
-            DetailSection(header: "Cannabinoids") {
-                CannabinoidInputView(compounds: $viewModel.cannabinoids)
-            }
-            DetailSection(header: "Terpenes") {
-                TerpeneInputView(compounds: $viewModel.terpenes)
-            }
+            CannabinoidInputView(compounds: $viewModel.cannabinoids)
+            TerpeneInputView(compounds: $viewModel.terpenes)
         }
     }
 }

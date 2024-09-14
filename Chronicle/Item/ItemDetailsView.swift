@@ -177,7 +177,7 @@ struct ItemDetailsView: View {
                                 }
                             }
                             .contentMargins(.horizontal, 16)
-                            DetailSection(header: "Top Feelings", headerRight: "Count") {
+                            DetailSection(header: "Top Feelings") {
                                 ForEach(Array(topEmotions.keys), id: \.id) { emotion in
                                     if let count = topEmotions[emotion] {
                                         HStack {
@@ -191,6 +191,10 @@ struct ItemDetailsView: View {
                                         .padding(.vertical, 2)
                                     }
                                 }
+                            } headerRight: {
+                                Text("Count")
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
                             }
                             .padding(.horizontal)
                             .padding(.top, 8)
