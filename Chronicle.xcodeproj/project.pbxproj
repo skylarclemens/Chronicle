@@ -65,6 +65,7 @@
 		7EFCC6112C7E6F040090588D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6102C7E6F040090588D /* Compound.swift */; };
 		7EFCC6132C7E6F420090588D /* Dosage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6122C7E6F420090588D /* Dosage.swift */; };
 		7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */; };
+		7EFEF35A2C967AF600D11929 /* InputSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFEF3592C967AF600D11929 /* InputSectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -127,6 +128,7 @@
 		7EFCC6102C7E6F040090588D /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
 		7EFCC6122C7E6F420090588D /* Dosage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dosage.swift; sourceTree = "<group>"; };
 		7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseInfo.swift; sourceTree = "<group>"; };
+		7EFEF3592C967AF600D11929 /* InputSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 				7E656A262C94CD3A00C6FD6A /* Styles */,
 				7E523C1A2C77E0DE005B6186 /* Images */,
 				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
+				7EFEF3592C967AF600D11929 /* InputSectionView.swift */,
 				7E7349BA2C811BE300262930 /* CalendarView.swift */,
 				7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */,
 			);
@@ -461,6 +464,7 @@
 			files = (
 				7ED747932C8BC67B00F07679 /* CGFloat.swift in Sources */,
 				7ED747912C8BB3F100F07679 /* CustomSliderView.swift in Sources */,
+				7EFEF35A2C967AF600D11929 /* InputSectionView.swift in Sources */,
 				7EF0BB162C6D3A2D0068542D /* ItemDetailsView.swift in Sources */,
 				7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */,
 				7E7DDC192C66A8730057F983 /* ItemEditorView.swift in Sources */,

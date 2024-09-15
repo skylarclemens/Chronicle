@@ -103,7 +103,7 @@ struct ItemTypeSelectionView: View {
 }
 
 struct ItemEditorBasicsView: View {
-    @Environment(\.safeAreaInsets) private var safeAreaInsets
+    @Environment(\.modelContext) var modelContext
     @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
     var item: Item?
@@ -117,46 +117,49 @@ struct ItemEditorBasicsView: View {
                 VStack {
                     HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
                         .frame(height: 180)
-                    VStack(alignment: .leading) {
-                        VStack(alignment: .leading) {
-                            TextField("Item Name", text: $viewModel.name)
-                                .font(.system(size: 24, weight: .medium, design: .rounded))
-                                .padding(.vertical, 8)
-                                .padding(.trailing)
-                                .focused($focusedField, equals: .name)
-                                .submitLabel(.done)
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-                                        Label("Select photos", systemImage: "photo.badge.plus")
-                                    }
-                                    .tint(.primary)
-                                    .buttonStyle(.editorInput)
-                                }
-                                HStack(spacing: -4) {
-                                    Image(systemName: "leaf")
-                                    Picker("Strain", selection: $viewModel.linkedStrain) {
-                                        Text("Strain").tag(nil as Strain?)
-                                        ForEach(strains, id: \.self) { strain in
-                                            Text(strain.name).tag(strain as Strain?)
+                    VStack(spacing: 10) {
+                        Section {
+                            VStack(alignment: .leading) {
+                                VStack(alignment: .leading) {
+                                    TextField("Item Name", text: $viewModel.name)
+                                        .font(.system(size: 24, weight: .medium, design: .rounded))
+                                        .padding(.vertical, 8)
+                                        .padding(.trailing)
+                                        .focused($focusedField, equals: .name)
+                                        .submitLabel(.done)
+                                    HStack {
+                                        HStack(spacing: -4) {
+                                            Image(systemName: "leaf")
+                                            Picker("Strain", selection: $viewModel.linkedStrain) {
+                                                Text("Strain").tag(nil as Strain?)
+                                                ForEach(strains, id: \.self) { strain in
+                                                    Text(strain.name).tag(strain as Strain?)
+                                                }
+                                            }
                                         }
+                                        .tint(.primary)
+                                        .padding(.leading, 8)
+                                        .background(.accent.opacity(0.33),
+                                                    in: Capsule())
+                                        .overlay(
+                                            Capsule()
+                                                .strokeBorder(.accent.opacity(0.5))
+                                        )
+                                        PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
+                                            Label("Select photos", systemImage: "photo.badge.plus")
+                                        }
+                                        .tint(.primary)
+                                        .buttonStyle(.editorInput)
                                     }
                                 }
-                                .tint(.primary)
-                                .padding(.leading, 8)
-                                .background(.accent.opacity(0.33),
-                                            in: Capsule())
-                                .overlay(
-                                    Capsule()
-                                        .strokeBorder(.accent.opacity(0.5))
-                                )
                             }
                         }
+                        .padding(.horizontal)
                         ItemEditorDetailsView(viewModel: $viewModel, item: item)
-                            .padding(.vertical)
+                            .padding(.horizontal)
+                        ItemEditorAdditionalInfoView(viewModel: $viewModel)
+                            .padding(.horizontal)
                     }
-                    .padding(.horizontal)
-                    Spacer()
                 }
             }
             .safeAreaInset(edge: .bottom, alignment: .center) {
@@ -167,6 +170,7 @@ struct ItemEditorBasicsView: View {
                     .allowsHitTesting(false)
                     VStack {
                         Button {
+                            save()
                             parentDismiss()
                         } label: {
                             Text("Save")
@@ -213,104 +217,8 @@ struct ItemEditorBasicsView: View {
             }
         }
     }
-        
-    enum Field {
-        case name
-    }
-}
-
-struct ItemEditorDetailsView: View {
-    @Binding var viewModel: ItemEditorViewModel
-    var item: Item?
     
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("Details")
-                .font(.title2)
-                .fontWeight(.semibold)
-            /*Section("Dosage") {
-                HStack {
-                    TextField("Amount", value: $viewModel.dosageAmount, format: .number)
-                        .keyboardType(.decimalPad)
-                        .textFieldStyle(.plain)
-                        .padding(.horizontal)
-                        .padding(.vertical, 11)
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
-                        .clipShape(.rect(cornerRadius: 10))
-                    TextField("Unit", text: $viewModel.dosageUnit)
-                        .textFieldStyle(.plain)
-                        .padding(.horizontal)
-                        .padding(.vertical, 11)
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
-                        .clipShape(.rect(cornerRadius: 10))
-                }
-                .listRowInsets(EdgeInsets())
-                .listRowBackground(Color.clear)
-            }*/
-            CannabinoidInputView(compounds: $viewModel.cannabinoids)
-            TerpeneInputView(compounds: $viewModel.terpenes)
-        }
-    }
-}
-
-struct ItemEditorAdditionalInfoView: View {
-    @Environment(\.modelContext) var modelContext
-    @Binding var viewModel: ItemEditorViewModel
-    let parentDismiss: DismissAction
-    @Query(sort: \Strain.name) var strains: [Strain]
-    var item: Item?
-    
-    var body: some View {
-        VStack {
-            Form {
-                Section("Ingredients") {
-                    IngredientsInputView(ingredients: $viewModel.ingredients)
-                }
-                Section("Purchase Information") {
-                    TextField("Price", value: $viewModel.purchasePrice, format: .number)
-                        .keyboardType(.decimalPad)
-                    TextField("Location", text: $viewModel.purchaseLocation)
-                    DatePicker("Date", selection: $viewModel.purchaseDate)
-                }
-                if strains.count > 0 {
-                    Picker("Strain", systemImage: "leaf", selection: $viewModel.linkedStrain) {
-                        Text("None").tag(nil as Strain?)
-                        ForEach(strains, id: \.self) { strain in
-                            Text(strain.name).tag(strain as Strain?)
-                        }
-                    }
-                }
-                
-            }
-            Spacer()
-            Button {
-                withAnimation {
-                    save()
-                    parentDismiss()
-                }
-            } label: {
-                Text("Save")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            .tint(.accentColor)
-            .padding()
-        }
-        .navigationTitle("Additional Information")
-        .toolbar {
-            ToolbarItem(placement: .destructiveAction) {
-                Button {
-                    parentDismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
-    
+    @MainActor
     private func save() {
         if let item {
             item.name = viewModel.name
@@ -333,6 +241,100 @@ struct ItemEditorAdditionalInfoView: View {
             newItem.strain = viewModel.linkedStrain
             
             modelContext.insert(newItem)
+        }
+    }
+        
+    enum Field {
+        case name
+    }
+}
+
+struct ItemEditorDetailsView: View {
+    @Binding var viewModel: ItemEditorViewModel
+    var item: Item?
+    
+    var body: some View {
+        Section {
+            VStack(spacing: 12) {
+                CannabinoidInputView(compounds: $viewModel.cannabinoids)
+                TerpeneInputView(compounds: $viewModel.terpenes)
+                IngredientsInputView(ingredients: $viewModel.ingredients)
+            }
+        } header: {
+            Text("Details")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        /*Section("Amount") {
+            HStack {
+                TextField("Amount", value: $viewModel.dosageAmount, format: .number)
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(.plain)
+                    .padding(.horizontal)
+                    .padding(.vertical, 11)
+                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                    .clipShape(.rect(cornerRadius: 10))
+                TextField("Unit", text: $viewModel.dosageUnit)
+                    .textFieldStyle(.plain)
+                    .padding(.horizontal)
+                    .padding(.vertical, 11)
+                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                    .clipShape(.rect(cornerRadius: 10))
+            }
+        }*/
+    }
+}
+
+struct ItemEditorAdditionalInfoView: View {
+    @Binding var viewModel: ItemEditorViewModel
+    
+    var body: some View {
+        Section {
+            VStack(alignment: .leading) {
+                NavigationLink {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Price")
+                            TextField("20.00", value: $viewModel.purchasePrice, format: .number)
+                                .keyboardType(.decimalPad)
+                                .padding(.vertical, 6)
+                                .multilineTextAlignment(.trailing)
+                        }
+                        .padding(.trailing)
+                        Divider()
+                        HStack {
+                            Text("Location")
+                            TextField("Home", text: $viewModel.purchaseLocation)
+                                .padding(.vertical, 6)
+                                .multilineTextAlignment(.trailing)
+                        }
+                        .padding(.trailing)
+                        
+                        Divider()
+                        DatePicker("Date", selection: $viewModel.purchaseDate)
+                            .padding(.trailing)
+                    }
+                    .padding(.leading)
+                    .padding(.vertical, 8)
+                    .background(Color(UIColor.secondarySystemGroupedBackground),
+                                in: RoundedRectangle(cornerRadius: 12))
+                } label: {
+                    Text("Purchase information")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical)
+            .background(Color(UIColor.secondarySystemGroupedBackground),
+                        in: RoundedRectangle(cornerRadius: 12))
+        } header: {
+            Text("Additional Information")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
@@ -359,8 +361,8 @@ class ItemEditorViewModel {
 }
 
 #Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var viewModel = ItemEditorViewModel()
+    @Previewable @Environment(\.dismiss) var dismiss
+    @Previewable @State var viewModel = ItemEditorViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
         ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: dismiss)

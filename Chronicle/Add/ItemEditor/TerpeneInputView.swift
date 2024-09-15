@@ -12,55 +12,56 @@ struct TerpeneInputView: View {
     @State private var openPicker: Bool = false
     
     var body: some View {
-        Group {
-            DetailSection(header: "Terpenes", isScrollView: true) {
-                if !compounds.isEmpty {
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(compounds, id: \.self) { compound in
-                                TerpeneView(compound)
-                            }
+        InputSectionView(isScrollView: true) {
+            if !compounds.isEmpty {
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(compounds, id: \.self) { compound in
+                            TerpeneView(compound)
                         }
                     }
-                    .contentMargins(.horizontal, 16)
-                    .scrollIndicators(.hidden)
                 }
-            } headerRight: {
-                Group {
-                    if !compounds.isEmpty {
-                        Button {
-                            openPicker = true
-                        } label: {
-                            Text("Edit")
-                                .font(.subheadline)
-                        }
-                        .tint(.primary)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 8)
-                        .background(.regularMaterial,
-                                    in: Capsule())
-                        .overlay(
-                            Capsule()
-                                .strokeBorder(.quaternary)
-                        )
-                        .padding(.trailing)
-                    } else {
-                        Button {
-                            openPicker = true
-                        } label: {
-                            HStack {
-                                Text("Add")
-                                Image(systemName: "plus.circle.fill")
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        .tint(.primary)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 16)
-                        .background(.regularMaterial,
-                                    in: RoundedRectangle(cornerRadius: 12))
-                        .padding(.horizontal)
+                .contentMargins(.horizontal, 16)
+                .scrollIndicators(.hidden)
+                .padding(.vertical)
+            } else {
+                Button {
+                    openPicker = true
+                } label: {
+                    HStack {
+                        Text("Add")
+                        Spacer()
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundStyle(.secondary)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .tint(.primary)
+                .padding(.vertical)
+                .padding(.horizontal)
+            }
+        } header: {
+            HStack {
+                Text("Terpenes")
+                    .foregroundStyle(.secondary)
+                Spacer()
+                if !compounds.isEmpty {
+                    Button {
+                        openPicker = true
+                    } label: {
+                        Text("Edit")
+                            .font(.subheadline)
+                    }
+                    .tint(.primary)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 8)
+                    .background(.regularMaterial,
+                                in: Capsule())
+                    .overlay(
+                        Capsule()
+                            .strokeBorder(.quaternary)
+                    )
+                    .padding(.trailing)
                 }
             }
         }
