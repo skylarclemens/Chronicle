@@ -30,10 +30,12 @@
 		7E5301EF2C74F99B00909048 /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EE2C74F99B00909048 /* InventoryView.swift */; };
 		7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301F02C74FD7F00909048 /* ItemRowView.swift */; };
 		7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */; };
+		7E656A2B2C94CED300C6FD6A /* PillStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */; };
+		7E656A2D2C94DB4500C6FD6A /* TerpeneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */; };
 		7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97B2C9214980092ECE7 /* Mood.swift */; };
 		7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97D2C9214BC0092ECE7 /* Flavor.swift */; };
 		7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */; };
-		7E70B9842C92567E0092ECE7 /* SessionInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9832C9256790092ECE7 /* SessionInputButton.swift */; };
+		7E70B9842C92567E0092ECE7 /* EditorInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9832C9256790092ECE7 /* EditorInputButton.swift */; };
 		7E70B9862C925BD10092ECE7 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9852C925BCD0092ECE7 /* Double.swift */; };
 		7E7349B72C80EEC800262930 /* ItemsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349B62C80EEC800262930 /* ItemsListView.swift */; };
 		7E7349B92C81148B00262930 /* SessionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349B82C81148B00262930 /* SessionsListView.swift */; };
@@ -89,10 +91,12 @@
 		7E5301EE2C74F99B00909048 /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
 		7E5301F02C74FD7F00909048 /* ItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowView.swift; sourceTree = "<group>"; };
 		7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAnalyticsView.swift; sourceTree = "<group>"; };
+		7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillStyle.swift; sourceTree = "<group>"; };
+		7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerpeneView.swift; sourceTree = "<group>"; };
 		7E70B97B2C9214980092ECE7 /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
 		7E70B97D2C9214BC0092ECE7 /* Flavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flavor.swift; sourceTree = "<group>"; };
 		7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodButtonStyle.swift; sourceTree = "<group>"; };
-		7E70B9832C9256790092ECE7 /* SessionInputButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionInputButton.swift; sourceTree = "<group>"; };
+		7E70B9832C9256790092ECE7 /* EditorInputButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorInputButton.swift; sourceTree = "<group>"; };
 		7E70B9852C925BCD0092ECE7 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		7E7349B62C80EEC800262930 /* ItemsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsListView.swift; sourceTree = "<group>"; };
 		7E7349B82C81148B00262930 /* SessionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsListView.swift; sourceTree = "<group>"; };
@@ -170,7 +174,7 @@
 		7E2504DB2C768CA900496296 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				7E70B9802C9253450092ECE7 /* Button */,
+				7E656A262C94CD3A00C6FD6A /* Styles */,
 				7E523C1A2C77E0DE005B6186 /* Images */,
 				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
 				7E7349BA2C811BE300262930 /* CalendarView.swift */,
@@ -235,6 +239,16 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
+		7E656A262C94CD3A00C6FD6A /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				7E70B9802C9253450092ECE7 /* Button */,
+				7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */,
+				7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
 		7E70B97F2C9218D50092ECE7 /* Session */ = {
 			isa = PBXGroup;
 			children = (
@@ -246,7 +260,7 @@
 		7E70B9802C9253450092ECE7 /* Button */ = {
 			isa = PBXGroup;
 			children = (
-				7E70B9832C9256790092ECE7 /* SessionInputButton.swift */,
+				7E70B9832C9256790092ECE7 /* EditorInputButton.swift */,
 				7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */,
 			);
 			path = Button;
@@ -455,6 +469,7 @@
 				7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */,
 				7EC009022C5EF1F70093217B /* Strain.swift in Sources */,
 				7EE6261D2C6A948500448F80 /* ItemType.swift in Sources */,
+				7E656A2D2C94DB4500C6FD6A /* TerpeneView.swift in Sources */,
 				7E08D4192C6BD95700F96328 /* StrainEditorView.swift in Sources */,
 				7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */,
 				7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */,
@@ -476,7 +491,7 @@
 				7E5301ED2C74F98200909048 /* JournalView.swift in Sources */,
 				7E3B557C2C8A2EFD00AB0961 /* DurationPickerView.swift in Sources */,
 				7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */,
-				7E70B9842C92567E0092ECE7 /* SessionInputButton.swift in Sources */,
+				7E70B9842C92567E0092ECE7 /* EditorInputButton.swift in Sources */,
 				7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* SessionEditorView.swift in Sources */,
 				7E70B9862C925BD10092ECE7 /* Double.swift in Sources */,
@@ -496,6 +511,7 @@
 				7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */,
 				7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */,
 				7ED7478F2C8BA9A100F07679 /* MoodSelectorView.swift in Sources */,
+				7E656A2B2C94CED300C6FD6A /* PillStyle.swift in Sources */,
 				7E2504DD2C768CDB00496296 /* DetailSection.swift in Sources */,
 				7E2504DF2C7693F200496296 /* ImageCarouselView.swift in Sources */,
 				7EE626222C6ACA4B00448F80 /* TerpeneInputView.swift in Sources */,

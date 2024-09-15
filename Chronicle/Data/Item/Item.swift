@@ -15,7 +15,6 @@ import SwiftUI
     public var strain: Strain?
     public var createdAt: Date
     public var type: ItemType
-    public var brand: String?
     public var subtype: String?
     public var amount: Double
     public var dosage: Dosage?
