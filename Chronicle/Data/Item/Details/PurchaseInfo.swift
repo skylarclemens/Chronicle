@@ -11,4 +11,5 @@ public struct PurchaseInfo: Codable {
     public var price: Double?
     public var date: Date
     public var location: String
+    public var brand: String?
 }

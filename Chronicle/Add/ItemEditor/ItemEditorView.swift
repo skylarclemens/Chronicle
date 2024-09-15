@@ -22,7 +22,6 @@ struct ItemEditorView: View {
             if let item {
                 viewModel.itemType = item.type
                 viewModel.name = item.name
-                viewModel.brand = item.brand ?? ""
                 viewModel.dosageAmount = item.dosage?.amount
                 viewModel.dosageUnit = item.dosage?.unit ?? ""
                 viewModel.subtype = item.subtype ?? ""
@@ -32,6 +31,7 @@ struct ItemEditorView: View {
                 viewModel.purchasePrice = item.purchaseInfo?.price
                 viewModel.purchaseLocation = item.purchaseInfo?.location ?? ""
                 viewModel.purchaseDate = item.purchaseInfo?.date ?? Date()
+                viewModel.brand = item.purchaseInfo?.brand ?? ""
                 viewModel.linkedStrain = item.strain
                 viewModel.selectedImagesData = item.imagesData ?? []
             }
@@ -117,7 +117,7 @@ struct ItemEditorBasicsView: View {
                 VStack {
                     HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
                         .frame(height: 180)
-                    VStack(spacing: 10) {
+                    VStack(spacing: 24) {
                         Section {
                             VStack(alignment: .leading) {
                                 VStack(alignment: .leading) {
@@ -155,9 +155,11 @@ struct ItemEditorBasicsView: View {
                             }
                         }
                         .padding(.horizontal)
-                        ItemEditorDetailsView(viewModel: $viewModel, item: item)
+                        ItemEditorDetailsView(viewModel: $viewModel)
                             .padding(.horizontal)
                         ItemEditorAdditionalInfoView(viewModel: $viewModel)
+                            .padding(.horizontal)
+                        ItemEditorCompositionView(viewModel: $viewModel)
                             .padding(.horizontal)
                     }
                 }
@@ -216,6 +218,9 @@ struct ItemEditorBasicsView: View {
                 viewModel.pickerItems.removeAll()
             }
         }
+        .onAppear {
+            focusedField = .name
+        }
     }
     
     @MainActor
@@ -223,20 +228,18 @@ struct ItemEditorBasicsView: View {
         if let item {
             item.name = viewModel.name
             item.type = viewModel.itemType ?? .other
-            item.brand = viewModel.brand
             item.dosage = Dosage(amount: viewModel.dosageAmount ?? 0, unit: viewModel.dosageUnit)
             item.compounds = viewModel.cannabinoids + viewModel.terpenes
             item.ingredients = viewModel.ingredients
-            item.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation)
+            item.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation, brand: viewModel.brand)
             item.imagesData = viewModel.selectedImagesData
             item.strain = viewModel.linkedStrain
         } else {
             let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
-            newItem.brand = viewModel.brand
             newItem.dosage = Dosage(amount: viewModel.dosageAmount ?? 0, unit: viewModel.dosageUnit)
             newItem.compounds = viewModel.cannabinoids + viewModel.terpenes
             newItem.ingredients = viewModel.ingredients
-            newItem.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation)
+            newItem.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation, brand: viewModel.brand)
             newItem.imagesData = viewModel.selectedImagesData
             newItem.strain = viewModel.linkedStrain
             
@@ -251,38 +254,39 @@ struct ItemEditorBasicsView: View {
 
 struct ItemEditorDetailsView: View {
     @Binding var viewModel: ItemEditorViewModel
-    var item: Item?
     
     var body: some View {
-        Section {
-            VStack(spacing: 12) {
-                CannabinoidInputView(compounds: $viewModel.cannabinoids)
-                TerpeneInputView(compounds: $viewModel.terpenes)
-                IngredientsInputView(ingredients: $viewModel.ingredients)
-            }
-        } header: {
+        VStack(alignment: .leading, spacing: 10) {
             Text("Details")
                 .font(.title3)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        /*Section("Amount") {
-            HStack {
-                TextField("Amount", value: $viewModel.dosageAmount, format: .number)
-                    .keyboardType(.decimalPad)
-                    .textFieldStyle(.plain)
-                    .padding(.horizontal)
-                    .padding(.vertical, 11)
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
-                    .clipShape(.rect(cornerRadius: 10))
-                TextField("Unit", text: $viewModel.dosageUnit)
-                    .textFieldStyle(.plain)
-                    .padding(.horizontal)
-                    .padding(.vertical, 11)
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
-                    .clipShape(.rect(cornerRadius: 10))
+            VStack(spacing: 16) {
+                VStack(alignment: .leading) {
+                    Section {
+                        HStack {
+                            TextField("2.5", value: $viewModel.dosageAmount, format: .number)
+                                .keyboardType(.decimalPad)
+                                .textFieldStyle(.plain)
+                                .padding(.horizontal)
+                                .padding(.vertical, 11)
+                                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                .clipShape(.rect(cornerRadius: 10))
+                            TextField("g", text: $viewModel.dosageUnit)
+                                .textFieldStyle(.plain)
+                                .padding(.horizontal)
+                                .padding(.vertical, 11)
+                                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                .clipShape(.rect(cornerRadius: 10))
+                        }
+                    } header: {
+                        Text("Amount")
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
-        }*/
+        }
     }
 }
 
@@ -292,49 +296,64 @@ struct ItemEditorAdditionalInfoView: View {
     var body: some View {
         Section {
             VStack(alignment: .leading) {
-                NavigationLink {
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text("Price")
-                            TextField("20.00", value: $viewModel.purchasePrice, format: .number)
-                                .keyboardType(.decimalPad)
-                                .padding(.vertical, 6)
-                                .multilineTextAlignment(.trailing)
-                        }
-                        .padding(.trailing)
-                        Divider()
-                        HStack {
-                            Text("Location")
-                            TextField("Home", text: $viewModel.purchaseLocation)
-                                .padding(.vertical, 6)
-                                .multilineTextAlignment(.trailing)
-                        }
-                        .padding(.trailing)
-                        
-                        Divider()
-                        DatePicker("Date", selection: $viewModel.purchaseDate)
-                            .padding(.trailing)
+                Text("Purchase Information")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Price")
+                        TextField("$20.00", value: $viewModel.purchasePrice, format: .currency(code: "USD"))
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
                     }
-                    .padding(.leading)
-                    .padding(.vertical, 8)
-                    .background(Color(UIColor.secondarySystemGroupedBackground),
-                                in: RoundedRectangle(cornerRadius: 12))
-                } label: {
-                    Text("Purchase information")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Spacer()
-                    Image(systemName: "chevron.right")
+                    .padding(.vertical, 6)
+                    .padding(.trailing)
+                    Divider()
+                    HStack {
+                        Text("Location")
+                        TextField("Dispensary", text: $viewModel.purchaseLocation)
+                            .multilineTextAlignment(.trailing)
+                    }
+                    .padding(.vertical, 6)
+                    .padding(.trailing)
+                    Divider()
+                    HStack {
+                        Text("Brand")
+                        TextField("Brand", text: $viewModel.brand)
+                            .multilineTextAlignment(.trailing)
+                    }
+                    .padding(.vertical, 6)
+                    .padding(.trailing)
+                    Divider()
+                    DatePicker("Date", selection: $viewModel.purchaseDate)
+                        .padding(.trailing)
+                }
+                .padding(.leading)
+                .padding(.vertical, 8)
+                .background(Color(UIColor.secondarySystemGroupedBackground),
+                            in: RoundedRectangle(cornerRadius: 12))
+            }
+        }
+    }
+}
+
+struct ItemEditorCompositionView: View {
+    @Binding var viewModel: ItemEditorViewModel
+    
+    var body: some View {
+        Section {
+            VStack(alignment: .leading) {
+                Text("Composition")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(spacing: 12) {
+                    CannabinoidInputView(compounds: $viewModel.cannabinoids)
+                    TerpeneInputView(compounds: $viewModel.terpenes)
+                    IngredientsInputView(ingredients: $viewModel.ingredients)
                 }
             }
-            .padding(.horizontal)
-            .padding(.vertical)
-            .background(Color(UIColor.secondarySystemGroupedBackground),
-                        in: RoundedRectangle(cornerRadius: 12))
-        } header: {
-            Text("Additional Information")
-                .font(.title3)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
@@ -344,7 +363,6 @@ class ItemEditorViewModel {
     var item: Item?
     var itemType: ItemType?
     var name: String = ""
-    var brand: String = ""
     var dosageAmount: Double?
     var dosageUnit: String = ""
     var subtype: String = ""
@@ -354,6 +372,7 @@ class ItemEditorViewModel {
     var purchasePrice: Double?
     var purchaseLocation: String = ""
     var purchaseDate: Date = Date()
+    var brand: String = ""
     var linkedStrain: Strain?
     
     var pickerItems: [PhotosPickerItem] = []

@@ -12,7 +12,7 @@ struct CannabinoidInputView: View {
     @State private var openPicker: Bool = false
     
     var body: some View {
-        InputSectionView(isScrollView: true) {
+        DetailSection(header: "Cannabinoids", isScrollView: true) {
             if !compounds.isEmpty {
                 ScrollView(.horizontal) {
                     HStack {
@@ -25,48 +25,40 @@ struct CannabinoidInputView: View {
                             }
                             .pillStyle()
                         }
+                        Button {
+                            openPicker = true
+                        } label: {
+                            HStack {
+                                Text("Add")
+                                Image(systemName: "plus.circle.fill")
+                            }
+                        }
+                        .tint(.accent)
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 10)
+                        .background(.accent.opacity(0.15),
+                                    in: RoundedRectangle(cornerRadius: 12))
                     }
                 }
                 .contentMargins(.horizontal, 16)
                 .scrollIndicators(.hidden)
-                .padding(.vertical)
-            } else {
-                Button {
-                    openPicker = true
-                } label: {
-                    HStack {
-                        Text("Add")
-                        Spacer()
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundStyle(.secondary)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .tint(.primary)
-                .padding(.vertical)
-                .padding(.horizontal)
             }
-        } header: {
-            HStack {
-                Text("Cannabinoids")
-                    .foregroundStyle(.secondary)
-                Spacer()
-                if !compounds.isEmpty {
+        } headerRight: {
+            Group {
+                if compounds.isEmpty {
                     Button {
                         openPicker = true
                     } label: {
-                        Text("Edit")
-                            .font(.subheadline)
+                        HStack {
+                            Text("Add")
+                            Image(systemName: "plus.circle.fill")
+                        }
                     }
-                    .tint(.primary)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 8)
-                    .background(.regularMaterial,
-                                in: Capsule())
-                    .overlay(
-                        Capsule()
-                            .strokeBorder(.quaternary)
-                    )
+                    .tint(.accent)
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 10)
+                    .background(.accent.opacity(0.15),
+                                in: RoundedRectangle(cornerRadius: 12))
                     .padding(.trailing)
                 }
             }
