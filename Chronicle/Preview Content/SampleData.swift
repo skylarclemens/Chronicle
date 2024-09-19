@@ -54,8 +54,13 @@ class SampleData {
             container.mainContext.insert(strain)
         }
         
+        for purchase in Purchase.sampleData {
+            container.mainContext.insert(purchase)
+        }
+        
         item.strain = strain
         item.sessions.append(session)
+        item.purchases.append(purchase)
         session.item = item
         session.mood = mood
         
@@ -80,5 +85,9 @@ class SampleData {
     
     var mood: Mood {
         Mood.sampleData[0]
+    }
+        
+    var purchase: Purchase {
+        Purchase.sampleData[0]
     }
 }

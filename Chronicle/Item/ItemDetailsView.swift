@@ -199,7 +199,44 @@ struct ItemDetailsView: View {
                             .padding(.horizontal)
                             .padding(.top, 8)
                         }
-                        
+                        if !item.purchases.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Most Recent Purchase")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                VStack(alignment: .leading) {
+                                    PurchaseRowView(purchase: item.purchases.first)
+                                    if item.purchases.count > 1 {
+                                        NavigationLink {
+                                            ScrollView {
+                                                VStack {
+                                                    ForEach(item.purchases) { purchase in
+                                                        PurchaseRowView(purchase: purchase)
+                                                    }
+                                                }
+                                                .padding(.horizontal)
+                                            }
+                                            .padding(.top, 12)
+                                            .navigationTitle("Purchases")
+                                        } label: {
+                                            HStack {
+                                                Text("View all purchases")
+                                                Spacer()
+                                                Image(systemName: "chevron.right")
+                                            }
+                                        }
+                                        .tint(.accent)
+                                        .padding()
+                                        .background(.accent.opacity(0.15),
+                                                    in: RoundedRectangle(cornerRadius: 12))
+                                    }
+                                }
+                                .padding()
+                                .background(Color(UIColor.secondarySystemGroupedBackground),
+                                            in: RoundedRectangle(cornerRadius: 12))
+                            }
+                            .padding(.horizontal)
+                        }
                         VStack(alignment: .leading) {
                             Text("Sessions")
                                 .font(.title2)
@@ -222,6 +259,7 @@ struct ItemDetailsView: View {
                                 .scrollIndicators(.hidden)
                             }
                         }
+                        
                     }
                     
                     Spacer()

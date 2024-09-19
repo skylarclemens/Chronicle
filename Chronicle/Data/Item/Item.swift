@@ -16,14 +16,16 @@ import SwiftUI
     public var createdAt: Date
     public var type: ItemType
     public var subtype: String?
-    public var amount: Double
-    public var dosage: Dosage?
+    public var amount: Amount?
+    public var dosage: Amount?
+    public var brand: String?
     public var compounds: [Compound]
     public var ingredients: [String]
-    public var purchaseInfo: PurchaseInfo?
     public var favorite: Bool
     @Attribute(.externalStorage) public var imagesData: [Data]?
     
+    @Relationship(deleteRule: .cascade, inverse: \Purchase.item)
+    public var purchases: [Purchase]
     @Relationship(deleteRule: .nullify, inverse: \Session.item)
     public var sessions: [Session]
     
@@ -41,10 +43,11 @@ import SwiftUI
         strain: Strain? = nil,
         createdAt: Date = Date(),
         type: ItemType,
-        amount: Double = 0,
+        amount: Amount? = nil,
         compounds: [Compound] = [],
         ingredients: [String] = [],
         favorite: Bool = false,
+        purchases: [Purchase] = [],
         sessions: [Session] = []
     ) {
         self.id = id
@@ -56,6 +59,7 @@ import SwiftUI
         self.compounds = compounds
         self.ingredients = ingredients
         self.favorite = favorite
+        self.purchases = purchases
         self.sessions = sessions
     }
     

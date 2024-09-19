@@ -138,7 +138,7 @@ struct IngredientSelectorView: View {
                 .frame(height: 120)
             }
             .ignoresSafeArea(edges: .bottom)
-            .navigationTitle("Add Cannabinoids")
+            .navigationTitle("Add Ingredients")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

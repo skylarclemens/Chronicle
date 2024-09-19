@@ -65,4 +65,10 @@ import SwiftUI
             return true
         }
     }
+    
+    static var dashboardDescriptor: FetchDescriptor<Session> {
+        var descriptor = FetchDescriptor<Session>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
+        descriptor.fetchLimit = 3
+        return descriptor
+    }
 }
