@@ -18,6 +18,7 @@ import SwiftUI
     public var subtype: String?
     public var amount: Amount?
     public var dosage: Amount?
+    public var unit: String?
     public var brand: String?
     public var compounds: [Compound]
     public var ingredients: [String]
@@ -37,6 +38,16 @@ import SwiftUI
         compounds.filter { $0.type == .terpene }
     }
     
+    var remainingAmount: Double {
+        let totalPurchased = purchases.reduce(0) { $0 + ($1.amount?.value ?? 0) }
+        let totalUsed = sessions.reduce(0) { $0 + ($1.amountConsumed ?? 0) }
+        return max(totalPurchased - totalUsed, 0)
+    }
+    
+    var moods: [Mood] {
+        return sessions.compactMap { $0.mood }
+    }
+    
     init(
         id: UUID = UUID(),
         name: String,
@@ -44,6 +55,7 @@ import SwiftUI
         createdAt: Date = Date(),
         type: ItemType,
         amount: Amount? = nil,
+        unit: String? = nil,
         compounds: [Compound] = [],
         ingredients: [String] = [],
         favorite: Bool = false,
@@ -56,6 +68,7 @@ import SwiftUI
         self.createdAt = createdAt
         self.type = type
         self.amount = amount
+        self.unit = unit
         self.compounds = compounds
         self.ingredients = ingredients
         self.favorite = favorite
@@ -77,5 +90,11 @@ import SwiftUI
         return #Predicate<Item> { item in
             searchText.isEmpty || item.name.localizedStandardContains(searchText)
         }
+    }
+    
+    func updateRemainingAmount(newAmount: Double) {
+        let adjustment = newAmount - remainingAmount
+        let adjustmentRecord = Purchase(date: Date(), amount: Amount(value: adjustment, unit: ""), isAdjustment: true)
+        purchases.append(adjustmentRecord)
     }
 }

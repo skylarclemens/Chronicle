@@ -95,6 +95,25 @@ struct PurchaseInputView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     VStack(alignment: .leading) {
                         HStack {
+                            Text("Amount")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            TextField("2.5", value: $viewModel.amountValue, format: .number)
+                                .keyboardType(.decimalPad)
+                                .textFieldStyle(.plain)
+                                .padding(.horizontal)
+                                .padding(.vertical, 8)
+                                .background(Color(uiColor: .tertiarySystemGroupedBackground))
+                                .clipShape(.rect(cornerRadius: 10))
+                            TextField("g", text: $viewModel.amountUnit)
+                                .textFieldStyle(.plain)
+                                .padding(.horizontal)
+                                .padding(.vertical, 8)
+                                .background(Color(uiColor: .tertiarySystemGroupedBackground))
+                                .clipShape(.rect(cornerRadius: 10))
+                        }
+                        .padding(.trailing)
+                        Divider()
+                        HStack {
                             Text("Price")
                             TextField("$20.00", value: $viewModel.purchasePrice, format: .currency(code: "USD"))
                                 .keyboardType(.decimalPad)
@@ -167,32 +186,25 @@ struct PurchaseEditorView: View {
     
     var body: some View {
         NavigationStack {
-            Section {
-                HStack {
-                    TextField("2.5", value: $viewModel.amount, format: .number)
-                        .keyboardType(.decimalPad)
-                        .textFieldStyle(.plain)
-                        .padding(.horizontal)
-                        .padding(.vertical, 11)
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
-                        .clipShape(.rect(cornerRadius: 10))
-                    TextField("g", text: $viewModel.unit)
-                        .textFieldStyle(.plain)
-                        .padding(.horizontal)
-                        .padding(.vertical, 11)
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
-                        .clipShape(.rect(cornerRadius: 10))
-                }
-            } header: {
-                Text("Amount")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
-            }
-            .padding(.horizontal)
             Form {
                 Section {
+                    HStack {
+                        Text("Amount")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        TextField("2.5", value: $viewModel.amount, format: .number)
+                            .keyboardType(.decimalPad)
+                            .textFieldStyle(.plain)
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
+                            .background(Color(uiColor: .tertiarySystemGroupedBackground))
+                            .clipShape(.rect(cornerRadius: 10))
+                        TextField("g", text: $viewModel.unit)
+                            .textFieldStyle(.plain)
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
+                            .background(Color(uiColor: .tertiarySystemGroupedBackground))
+                            .clipShape(.rect(cornerRadius: 10))
+                    }
                     HStack {
                         Text("Price")
                         TextField("$20.00", value: $viewModel.price, format: .currency(code: "USD"))
@@ -255,10 +267,19 @@ struct PurchaseEditorView: View {
     }
     
     private func save() {
-        if purchase == nil {
+        if let purchase {
+            purchase.date = viewModel.date
+            if let amountValue = viewModel.amount {
+                purchase.amount = Amount(value: amountValue, unit: viewModel.unit)
+            }
+            purchase.price = viewModel.price
+            if !viewModel.location.isEmpty {
+                purchase.location = viewModel.location
+            }
+        } else {
             var newAmount: Amount?
-            if let amount = viewModel.amount {
-                newAmount = Amount(value: amount, unit: viewModel.unit)
+            if let amountValue = viewModel.amount {
+                newAmount = Amount(value: amountValue, unit: viewModel.unit)
             }
                 
             let newPurchase = Purchase(date: viewModel.date, amount: newAmount, price: viewModel.price, location: viewModel.location)
@@ -279,6 +300,6 @@ class PurchaseEditorViewModel {
 #Preview {
     @Previewable @State var viewModel = ItemEditorViewModel()
     
-    PurchaseInputView(viewModel: $viewModel, item: SampleData.shared.item)
+    PurchaseInputView(viewModel: $viewModel)
         .modelContainer(SampleData.shared.container)
 }

@@ -24,148 +24,178 @@ struct SessionEditorView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottom) {
-                ScrollView {
+            ScrollView {
+                VStack(alignment: .leading) {
+                    HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
+                        .frame(height: 180)
                     VStack(alignment: .leading) {
-                        HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
-                            .frame(height: 180)
-                        VStack(alignment: .leading) {
+                        Section {
+                            TextField("Title", text: $viewModel.title)
+                                .font(.system(size: 24, weight: .medium, design: .rounded))
+                                .padding(.vertical, 8)
+                                .padding(.trailing)
+                                .focused($focusedField, equals: .title)
+                                .submitLabel(.done)
+                        }
+                        VStack(alignment: .leading, spacing: 8) {
                             Section {
-                                TextField("Title", text: $viewModel.title)
-                                    .font(.system(size: 24, weight: .medium, design: .rounded))
-                                    .padding(.vertical, 8)
-                                    .padding(.trailing)
-                                    .focused($focusedField, equals: .title)
-                                    .submitLabel(.done)
-                            }
-                            VStack(alignment: .leading, spacing: 8) {
-                                Section {
-                                    HStack(spacing: -4) {
-                                        Image(systemName: "link")
-                                        Picker("Item", selection: $viewModel.item) {
-                                            Text("Item").tag(nil as Item?)
-                                            ForEach(items, id: \.self) { item in
-                                                Text(item.name).tag(item as Item?)
-                                            }
+                                HStack(spacing: -4) {
+                                    Image(systemName: "link")
+                                    Picker("Item", selection: $viewModel.item) {
+                                        Text("Item").tag(nil as Item?)
+                                        ForEach(items, id: \.self) { item in
+                                            Text(item.name).tag(item as Item?)
                                         }
                                     }
-                                    .tint(.primary)
-                                    .padding(.leading, 8)
-                                    .background(.accent.opacity(0.33),
-                                                in: Capsule())
-                                    .overlay(
-                                        Capsule()
-                                            .strokeBorder(.accent.opacity(0.5))
-                                    )
                                 }
-                                Section {
-                                    HStack {
-                                        Button {
-                                            openCalendar = true
-                                        } label: {
-                                            HStack {
-                                                Image(systemName: "calendar")
-                                                Text("\(viewModel.dateString), \(viewModel.date.formatted(date: .omitted, time: .shortened))")
-                                            }
-                                        }
-                                        .buttonStyle(.editorInput)
-                                        Button {} label: {
-                                            HStack {
-                                                Image(systemName: "timer")
-                                                TimePickerWheel(label: "Duration", showBackground: false, timerNumber: $viewModel.duration)
-                                            }
-                                        }
-                                        .buttonStyle(.editorInput)
-                                    }
-                                }
+                                .tint(.primary)
+                                .padding(.leading, 8)
+                                .background(.accent.opacity(0.33),
+                                            in: Capsule())
+                                .overlay(
+                                    Capsule()
+                                        .strokeBorder(.accent.opacity(0.5))
+                                )
                             }
-                            if !viewModel.notes.isEmpty {
-                                Section {
-                                    VStack(alignment: .leading) {
-                                        Text("Notes")
-                                            .font(.title2)
-                                            .fontWeight(.semibold)
-                                        Text(viewModel.notes)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                            .padding(12)
-                                            .background(Color(UIColor.secondarySystemGroupedBackground),
-                                                        in: RoundedRectangle(cornerRadius: 8))
-                                    }
-                                    .padding(.vertical)
-                                }
-                            }
-                            VStack(alignment: .leading) {
+                            Section {
                                 HStack {
-                                    Text("Mood")
-                                        .font(.title2)
-                                        .fontWeight(.semibold)
-                                    if let currentMood = viewModel.mood {
-                                        HStack(alignment: .bottom) {
-                                            Text(currentMood.type.label)
-                                                .padding(.horizontal, 8)
-                                                .padding(.vertical, 4)
-                                                .background(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                        .fill(currentMood.type.color.opacity(0.33))
-                                                )
-                                            Spacer()
-                                            Button {
-                                                openMood = true
-                                            } label: {
-                                                Text("Edit")
-                                            }
-                                            .buttonStyle(.mood)
-                                            .controlSize(.small)
-                                        }
-                                    }
-                                }
-                                if let currentMood = viewModel.mood, !currentMood.emotions.isEmpty {
-                                    DetailSection(header: "Feelings", isScrollView: true) {
-                                        ScrollView(.horizontal) {
-                                            HStack {
-                                                ForEach(currentMood.emotions, id: \.self) { emotion in
-                                                    HStack {
-                                                        Text(emotion.emoji ?? "")
-                                                            .font(.system(size: 12))
-                                                        Text(emotion.name)
-                                                            .font(.subheadline)
-                                                            .fontWeight(.medium)
-                                                    }
-                                                    .padding(8)
-                                                    .background(
-                                                        RoundedRectangle(cornerRadius: 12)
-                                                            .fill(.ultraThinMaterial)
-                                                    )
-                                                }
-                                            }
-                                        }
-                                        .contentMargins(.horizontal, 16)
-                                        .scrollIndicators(.hidden)
-                                    }
-                                } else {
                                     Button {
-                                        openMood = true
+                                        openCalendar = true
                                     } label: {
                                         HStack {
-                                            Text("Log how you're feeling")
-                                            Spacer()
-                                            Image(systemName: "chevron.right")
-                                                .foregroundStyle(.secondary)
+                                            Image(systemName: "calendar")
+                                            Text("\(viewModel.dateString), \(viewModel.date.formatted(date: .omitted, time: .shortened))")
                                         }
                                     }
-                                    .buttonStyle(.mood)
-                                    .controlSize(.large)
+                                    .buttonStyle(.editorInput)
+                                    Button {} label: {
+                                        HStack {
+                                            Image(systemName: "timer")
+                                            TimePickerWheel(label: "Duration", showBackground: false, timerNumber: $viewModel.duration)
+                                        }
+                                    }
+                                    .buttonStyle(.editorInput)
                                 }
                             }
-                            .padding(.vertical)
                         }
-                        .padding(.horizontal)
+                        if let item = viewModel.item {
+                            Section {
+                                VStack(alignment: .leading) {
+                                    Text("Amount")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                    HStack {
+                                        TextField("2.5", value: $viewModel.amountConsumed, format: .number)
+                                            .keyboardType(.decimalPad)
+                                            .textFieldStyle(.plain)
+                                            .padding(.horizontal)
+                                            .padding(.vertical, 11)
+                                            .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                            .clipShape(.rect(cornerRadius: 10))
+                                        Text(item.unit ?? "")
+                                            .padding(.horizontal)
+                                            .padding(.vertical, 11)
+                                            .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                            .clipShape(.rect(cornerRadius: 10))
+                                    }
+                                    
+                                }
+                                .padding(.top)
+                            }
+                        }
+                        if !viewModel.notes.isEmpty {
+                            Section {
+                                VStack(alignment: .leading) {
+                                    Text("Notes")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                    Text(viewModel.notes)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(12)
+                                        .background(Color(UIColor.secondarySystemGroupedBackground),
+                                                    in: RoundedRectangle(cornerRadius: 8))
+                                }
+                                .padding(.vertical)
+                            }
+                        }
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text("Mood")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                if let currentMood = viewModel.mood {
+                                    HStack(alignment: .bottom) {
+                                        Text(currentMood.type.label)
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 4)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .fill(currentMood.type.color.opacity(0.33))
+                                            )
+                                        Spacer()
+                                        Button {
+                                            openMood = true
+                                        } label: {
+                                            Text("Edit")
+                                        }
+                                        .buttonStyle(.mood)
+                                        .controlSize(.small)
+                                    }
+                                }
+                            }
+                            if let currentMood = viewModel.mood, !currentMood.emotions.isEmpty {
+                                DetailSection(header: "Feelings", isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(currentMood.emotions, id: \.self) { emotion in
+                                                HStack {
+                                                    Text(emotion.emoji ?? "")
+                                                        .font(.system(size: 12))
+                                                    Text(emotion.name)
+                                                        .font(.subheadline)
+                                                        .fontWeight(.medium)
+                                                }
+                                                .padding(8)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .fill(.ultraThinMaterial)
+                                                )
+                                            }
+                                        }
+                                    }
+                                    .contentMargins(.horizontal, 16)
+                                    .scrollIndicators(.hidden)
+                                }
+                            } else {
+                                Button {
+                                    openMood = true
+                                } label: {
+                                    HStack {
+                                        Text("Log how you're feeling")
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                                .buttonStyle(.mood)
+                                .controlSize(.large)
+                            }
+                        }
+                        .padding(.vertical)
                     }
-                    .padding(.bottom, 120)
-                    .frame(maxHeight: .infinity)
+                    .padding(.horizontal)
                 }
+                .padding(.bottom, 120)
+                .frame(maxHeight: .infinity)
+            }
+            .safeAreaInset(edge: .bottom, alignment: .center) {
                 /// Save Session button
-                VStack {
+                ZStack {
+                    Color(UIColor.systemBackground).mask(
+                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
+                            .opacity(0.9)
+                    )
+                    .allowsHitTesting(false)
                     Button {
                         do {
                             try save()
@@ -183,11 +213,6 @@ struct SessionEditorView: View {
                     .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
                     .padding()
                 }
-                .background(
-                    Color(UIColor.systemBackground).mask(
-                        LinearGradient(gradient: Gradient(colors: [.black, .clear]), startPoint: .bottom, endPoint: .top)
-                    )
-                )
                 .frame(height: 120)
             }
             .navigationTitle("\(session == nil ? "New" : "Edit") Session")
@@ -241,7 +266,7 @@ struct SessionEditorView: View {
             }
             .toolbarBackground(.visible, for: .bottomBar)
             .interactiveDismissDisabled()
-            .scrollDismissesKeyboard(.interactively)
+            .scrollDismissesKeyboard(.immediately)
             .onChange(of: viewModel.pickerItems) { oldValues, newValues in
                 Task {
                     if viewModel.pickerItems.count == 0 { return }
@@ -289,13 +314,14 @@ struct SessionEditorView: View {
                 viewModel.location = session.location ?? ""
                 viewModel.notes = session.notes ?? ""
                 viewModel.selectedImagesData = session.imagesData ?? []
+                viewModel.amountConsumed = session.amountConsumed
                 
                 if let mood = session.mood {
                     viewModel.mood = mood
                 }
+            } else {
+                focusedField = .title
             }
-            
-            focusedField = .title
         }
     }
     
@@ -311,6 +337,9 @@ struct SessionEditorView: View {
             session.location = viewModel.location
             session.imagesData = viewModel.selectedImagesData
             session.mood = viewModel.mood
+            if let amountConsumed = viewModel.amountConsumed {
+                session.amountConsumed = amountConsumed
+            }
             
             if self.session == nil {
                 modelContext.insert(session)
@@ -334,6 +363,7 @@ class SessionEditorViewModel {
     var mood: Mood?
     var notes: String = ""
     var location: String = ""
+    var amountConsumed: Double? = nil
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []

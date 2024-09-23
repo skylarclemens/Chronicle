@@ -34,6 +34,7 @@ struct SessionDetailsView: View {
                                 .foregroundStyle(.accent)
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     if let item = session.item {
                         HStack {
                             VStack {
@@ -72,7 +73,15 @@ struct SessionDetailsView: View {
                                     )
                             }
                         }
-                        
+                    }
+                    if let amountConsumed = session.amountConsumed {
+                        DetailSection(header: "Amount") {} headerRight: {
+                            HStack(spacing: 0) {
+                                Text(amountConsumed, format: .number)
+                                Text(" \(session.item?.unit ?? "")")
+                            }
+                        }
+                        .padding(.top)
                     }
                     if let notes = session.notes, !notes.isEmpty {
                         VStack(alignment: .leading) {

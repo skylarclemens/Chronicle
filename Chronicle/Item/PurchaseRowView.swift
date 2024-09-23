@@ -29,17 +29,17 @@ struct PurchaseRowView: View {
                         Spacer()
                         Text(purchase.price ?? 0, format: .currency(code: "USD"))
                     }
-                    Divider()
                     if let location = purchase.location {
+                        Divider()
                         HStack {
                             Label("Location", systemImage: "location")
                                 .fontWeight(.semibold)
                             Spacer()
                             Text(location)
                         }
-                        Divider()
                     }
                     if let amount = purchase.amount {
+                        Divider()
                         HStack {
                             Label("Amount", systemImage: "scalemass")
                                 .fontWeight(.semibold)
@@ -59,5 +59,6 @@ struct PurchaseRowView: View {
 }
 
 #Preview {
-    PurchaseRowView()
+    PurchaseRowView(purchase: SampleData.shared.purchase)
+        .modelContainer(SampleData.shared.container)
 }

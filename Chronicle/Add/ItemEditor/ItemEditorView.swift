@@ -31,9 +31,6 @@ struct ItemEditorView: View {
                 viewModel.terpenes = item.compounds.filter { $0.type == .terpene }
                 viewModel.ingredients = item.ingredients
                 viewModel.purchases = item.purchases
-                //viewModel.purchasePrice = item.purchaseInfo?.price
-                //viewModel.purchaseLocation = item.purchaseInfo?.location ?? ""
-                //viewModel.purchaseDate = item.purchaseInfo?.date ?? Date()
                 viewModel.brand = item.brand ?? ""
                 viewModel.linkedStrain = item.strain
                 viewModel.selectedImagesData = item.imagesData ?? []
@@ -67,7 +64,7 @@ struct ItemTypeSelectionView: View {
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100, maxHeight: .infinity)
                     .foregroundStyle(.primary)
-                    .background(.ultraThinMaterial)
+                    .background(.ultraThinMaterial.opacity(viewModel.itemType == type ? 0 : 1))
                     .background(.accent.opacity(viewModel.itemType == type ? 0.33 : 0))
                     .clipShape(.rect(cornerRadius: 10))
                     .overlay(
@@ -171,25 +168,24 @@ struct ItemEditorBasicsView: View {
                 ZStack {
                     Color(UIColor.systemBackground).mask(
                         LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
+                            .opacity(0.9)
                     )
                     .allowsHitTesting(false)
-                    VStack {
-                        Button {
-                            do {
-                                try save()
-                            } catch {
-                                print("New/edited item could not be saved.")
-                            }
-                            parentDismiss()
-                        } label: {
-                            Text("Save")
-                                .frame(maxWidth: .infinity)
+                    Button {
+                        do {
+                            try save()
+                        } catch {
+                            print("New/edited item could not be saved.")
                         }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
-                        .padding()
+                        parentDismiss()
+                    } label: {
+                        Text("Save")
+                            .frame(maxWidth: .infinity)
                     }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
+                    .padding()
                 }
                 .frame(height: 120)
             }
@@ -226,7 +222,9 @@ struct ItemEditorBasicsView: View {
             }
         }
         .onAppear {
-            focusedField = .name
+            if item == nil {
+                focusedField = .name
+            }
         }
     }
     
@@ -251,6 +249,7 @@ struct ItemEditorBasicsView: View {
             var newAmount: Amount?
             if let amountValue = viewModel.amountValue {
                 newAmount = Amount(value: amountValue, unit: viewModel.amountUnit)
+                newItem.unit = viewModel.amountUnit
             }
             let newPurchase = Purchase(date: viewModel.purchaseDate, amount: newAmount, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
             modelContext.insert(newPurchase)
@@ -269,33 +268,35 @@ struct ItemEditorDetailsView: View {
     @Binding var viewModel: ItemEditorViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Details")
-                .font(.title3)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            VStack(spacing: 16) {
-                VStack(alignment: .leading) {
-                    Section {
-                        HStack {
-                            TextField("2.5", value: $viewModel.dosageValue, format: .number)
-                                .keyboardType(.decimalPad)
-                                .textFieldStyle(.plain)
-                                .padding(.horizontal)
-                                .padding(.vertical, 11)
-                                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                .clipShape(.rect(cornerRadius: 10))
-                            TextField("g", text: $viewModel.dosageUnit)
-                                .textFieldStyle(.plain)
-                                .padding(.horizontal)
-                                .padding(.vertical, 11)
-                                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                .clipShape(.rect(cornerRadius: 10))
+        if viewModel.itemType == .edible || viewModel.itemType == .pill {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Details")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(spacing: 16) {
+                    VStack(alignment: .leading) {
+                        Section {
+                            HStack {
+                                TextField("2.5", value: $viewModel.dosageValue, format: .number)
+                                    .keyboardType(.decimalPad)
+                                    .textFieldStyle(.plain)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 11)
+                                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                    .clipShape(.rect(cornerRadius: 10))
+                                TextField("g", text: $viewModel.dosageUnit)
+                                    .textFieldStyle(.plain)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 11)
+                                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                    .clipShape(.rect(cornerRadius: 10))
+                            }
+                        } header: {
+                            Text("Dosage")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
                         }
-                    } header: {
-                        Text("Dosage")
-                            .font(.headline)
-                            .foregroundStyle(.secondary)
                     }
                 }
             }
