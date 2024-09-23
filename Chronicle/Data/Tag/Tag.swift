@@ -10,12 +10,16 @@ import SwiftData
 @Model
 public class Tag {
     var name: String
-    var items: [Item]?
-    var sessions: [Session]?
+    @Relationship var items: [Item]?
+    @Relationship var sessions: [Session]?
     
     init(name: String, items: [Item]? = nil, sessions: [Session]? = nil) {
         self.name = name
         self.items = items
         self.sessions = sessions
+    }
+    
+    public enum TagContext {
+        case item, session, all
     }
 }

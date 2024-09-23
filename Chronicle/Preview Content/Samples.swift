@@ -54,3 +54,11 @@ extension Purchase {
         Purchase(date: Date(), amount: Amount(value: 3.5, unit: "g"), price: 20.0, location: "Dispensary")
     ]
 }
+
+extension Tag {
+    static let sampleData: [Tag] = [
+        Tag(name: "Top Shelf"),
+        Tag(name: "With Friends"),
+        Tag(name: "Outdoors"),
+    ]
+}

@@ -21,7 +21,7 @@ import SwiftUI
     public var location: String?
     public var favorite: Bool
     @Attribute(.externalStorage) public var imagesData: [Data]?
-    @Relationship(deleteRule: .noAction, inverse: \Tag.items)
+    @Relationship(deleteRule: .noAction, inverse: \Tag.sessions)
     public var tags: [Tag]
     @Relationship(deleteRule: .cascade, inverse: \Mood.session)
     public var mood: Mood?

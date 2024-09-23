@@ -33,6 +33,7 @@ struct ItemEditorView: View {
                 viewModel.purchases = item.purchases
                 viewModel.brand = item.brand ?? ""
                 viewModel.linkedStrain = item.strain
+                viewModel.tags = item.tags
                 viewModel.selectedImagesData = item.imagesData ?? []
             }
         }
@@ -107,7 +108,7 @@ struct ItemEditorBasicsView: View {
     @Binding var viewModel: ItemEditorViewModel
     let parentDismiss: DismissAction
     var item: Item?
-    @FocusState var focusedField: Field?
+    @FocusState var focusedField: ItemEditorField?
     
     @Query(sort: \Strain.name) var strains: [Strain]
     
@@ -154,14 +155,12 @@ struct ItemEditorBasicsView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal)
                         ItemEditorDetailsView(viewModel: $viewModel)
-                            .padding(.horizontal)
                         PurchaseInputView(viewModel: $viewModel, item: item)
-                            .padding(.horizontal)
                         ItemEditorCompositionView(viewModel: $viewModel)
-                            .padding(.horizontal)
+                        ItemEditorAdditionalView(viewModel: $viewModel, focusedField: $focusedField)
                     }
+                    .padding(.horizontal)
                 }
             }
             .safeAreaInset(edge: .bottom, alignment: .center) {
@@ -239,6 +238,7 @@ struct ItemEditorBasicsView: View {
             item.purchases = viewModel.purchases
             item.imagesData = viewModel.selectedImagesData
             item.strain = viewModel.linkedStrain
+            item.tags = viewModel.tags
         } else {
             let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
             newItem.dosage = Amount(value: viewModel.dosageValue ?? 0, unit: viewModel.dosageUnit)
@@ -246,6 +246,7 @@ struct ItemEditorBasicsView: View {
             newItem.ingredients = viewModel.ingredients
             newItem.imagesData = viewModel.selectedImagesData
             newItem.strain = viewModel.linkedStrain
+            newItem.tags = viewModel.tags
             var newAmount: Amount?
             if let amountValue = viewModel.amountValue {
                 newAmount = Amount(value: amountValue, unit: viewModel.amountUnit)
@@ -257,10 +258,6 @@ struct ItemEditorBasicsView: View {
             modelContext.insert(newItem)
         }
         try modelContext.save()
-    }
-        
-    enum Field {
-        case name
     }
 }
 
@@ -283,13 +280,13 @@ struct ItemEditorDetailsView: View {
                                     .textFieldStyle(.plain)
                                     .padding(.horizontal)
                                     .padding(.vertical, 11)
-                                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                    .background(Color(UIColor.secondarySystemGroupedBackground))
                                     .clipShape(.rect(cornerRadius: 10))
                                 TextField("g", text: $viewModel.dosageUnit)
                                     .textFieldStyle(.plain)
                                     .padding(.horizontal)
                                     .padding(.vertical, 11)
-                                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                    .background(Color(UIColor.secondarySystemGroupedBackground))
                                     .clipShape(.rect(cornerRadius: 10))
                             }
                         } header: {
@@ -324,6 +321,51 @@ struct ItemEditorCompositionView: View {
     }
 }
 
+struct ItemEditorAdditionalView: View {
+    @Binding var viewModel: ItemEditorViewModel
+    @State var openTags: Bool = false
+    @FocusState.Binding var focusedField: ItemEditorField?
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Additional")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Button {
+                openTags = true
+                focusedField = nil
+            } label: {
+                HStack {
+                    Text("Tags")
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    HStack {
+                        if !viewModel.tags.isEmpty {
+                            Text("\(viewModel.tags.count)") +
+                            Text(" selected")
+                        }
+                        Image(systemName: "chevron.right")
+                    }
+                    .foregroundStyle(.secondary)
+                }
+                .padding()
+                .background(Color(UIColor.secondarySystemGroupedBackground),
+                            in: RoundedRectangle(cornerRadius: 12))
+            }
+            .buttonStyle(.plain)
+        }
+        .sheet(isPresented: $openTags) {
+            TagEditorView(tags: $viewModel.tags, context: .item)
+                .presentationDragIndicator(.hidden)
+        }
+    }
+}
+
+public enum ItemEditorField {
+    case name
+}
+
 @Observable
 class ItemEditorViewModel {
     var item: Item?
@@ -343,6 +385,7 @@ class ItemEditorViewModel {
     var purchaseDate: Date = Date()
     var brand: String = ""
     var linkedStrain: Strain?
+    var tags: [Tag] = []
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
@@ -350,16 +393,17 @@ class ItemEditorViewModel {
     
 }
 
-/*#Preview {
+#Preview {
     @Previewable @Environment(\.dismiss) var dismiss
     @Previewable @State var viewModel = ItemEditorViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
         ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: dismiss)
+            .modelContainer(SampleData.shared.container)
     }
-}*/
+}
 
-#Preview {
+/*#Preview {
     ItemEditorView(item: SampleData.shared.item)
         .modelContainer(SampleData.shared.container)
-}
+}*/
