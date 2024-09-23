@@ -32,11 +32,9 @@ struct ItemDetailsView: View {
     var topEmotions: [Emotion: Int] {
         var counts: [Emotion: Int] = [:]
         if let item {
-            for session in item.sessions {
-                if let emotions = session.mood?.emotions {
-                    for emotion in emotions {
-                        counts[emotion, default: 0] += 1
-                    }
+            for mood in item.moods {
+                for emotion in mood.emotions {
+                    counts[emotion, default: 0] += 1
                 }
             }
         }
@@ -48,7 +46,7 @@ struct ItemDetailsView: View {
     var body: some View {
         if let item {
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: 24) {
                     VStack(alignment: .leading) {
                         HStack(alignment: .center) {
                             Text(item.type.label())
@@ -97,14 +95,20 @@ struct ItemDetailsView: View {
                         }
                         .frame(height: 24)
                         ImageCarouselView(imagesData: item.imagesData)
-                            .padding(.vertical)
+                            .padding(.top)
                     }
                     .padding(.horizontal)
-                    if !item.compounds.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Details")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                    VStack(alignment: .leading) {
+                        Text("Details")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        DetailSection(header: "Amount") {} headerRight: {
+                            HStack(spacing: 0) {
+                                Text(item.remainingAmount, format: .number)
+                                Text(" \(item.unit ?? "")")
+                            }
+                        }
+                        if !item.compounds.isEmpty {
                             if !item.cannabinoids.isEmpty {
                                 DetailSection(header: "Cannabinoids", isScrollView: true) {
                                     ScrollView(.horizontal) {
@@ -141,65 +145,64 @@ struct ItemDetailsView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal)
                     }
-                    
+                    .padding(.horizontal)
                     if !item.sessions.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Moods")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                                .padding(.horizontal)
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(MoodType.allCases, id: \.self) { moodType in
-                                        if let count = moodTypes[moodType] {
+                        if !item.moods.isEmpty {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Moods")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                    .padding(.horizontal)
+                                ScrollView(.horizontal) {
+                                    HStack {
+                                        ForEach(MoodType.allCases, id: \.self) { moodType in
+                                            if let count = moodTypes[moodType] {
+                                                HStack {
+                                                    RoundedRectangle(cornerRadius: 8)
+                                                        .frame(maxWidth: 3, maxHeight: 14)
+                                                        .foregroundStyle(moodType.color)
+                                                    Text(moodType.label)
+                                                    Text(count, format: .number)
+                                                        .font(.footnote)
+                                                        .fontWeight(.semibold)
+                                                        .fontDesign(.rounded)
+                                                        .padding(.horizontal, 8)
+                                                        .padding(.vertical, 4)
+                                                        .background(.background.opacity(0.33),
+                                                                    in: RoundedRectangle(cornerRadius: 8))
+                                                }
+                                                .padding(.vertical, 6)
+                                                .padding(.horizontal, 10)
+                                                .background(moodType.color.opacity(0.33),
+                                                            in: RoundedRectangle(cornerRadius: 12))
+                                            }
+                                        }
+                                    }
+                                }
+                                .contentMargins(.horizontal, 16)
+                                DetailSection(header: "Top Feelings") {
+                                    ForEach(Array(topEmotions.keys), id: \.id) { emotion in
+                                        if let count = topEmotions[emotion] {
                                             HStack {
-                                                RoundedRectangle(cornerRadius: 8)
-                                                    .frame(maxWidth: 3, maxHeight: 14)
-                                                    .foregroundStyle(moodType.color)
-                                                Text(moodType.label)
+                                                if let emoji = emotion.emoji {
+                                                    Text(emoji)
+                                                }
+                                                Text(emotion.name)
+                                                Spacer()
                                                 Text(count, format: .number)
-                                                    .font(.footnote)
-                                                    .fontWeight(.semibold)
-                                                    .fontDesign(.rounded)
-                                                    .padding(.horizontal, 8)
-                                                    .padding(.vertical, 4)
-                                                    .background(.background.opacity(0.33),
-                                                                in: RoundedRectangle(cornerRadius: 8))
                                             }
-                                            .padding(.vertical, 6)
-                                            .padding(.horizontal, 10)
-                                            .background(moodType.color.opacity(0.33),
-                                                        in: RoundedRectangle(cornerRadius: 12))
+                                            .padding(.vertical, 2)
                                         }
                                     }
+                                } headerRight: {
+                                    Text("Count")
+                                        .font(.footnote)
+                                        .foregroundStyle(.secondary)
                                 }
+                                .padding(.horizontal)
                             }
-                            .contentMargins(.horizontal, 16)
-                            DetailSection(header: "Top Feelings") {
-                                ForEach(Array(topEmotions.keys), id: \.id) { emotion in
-                                    if let count = topEmotions[emotion] {
-                                        HStack {
-                                            if let emoji = emotion.emoji {
-                                                Text(emoji)
-                                            }
-                                            Text(emotion.name)
-                                            Spacer()
-                                            Text(count, format: .number)
-                                        }
-                                        .padding(.vertical, 2)
-                                    }
-                                }
-                            } headerRight: {
-                                Text("Count")
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                            }
-                            .padding(.horizontal)
-                            .padding(.top, 8)
                         }
-                        
                         VStack(alignment: .leading) {
                             Text("Sessions")
                                 .font(.title2)
@@ -223,7 +226,45 @@ struct ItemDetailsView: View {
                             }
                         }
                     }
-                    
+                    if !item.purchases.isEmpty {
+                        
+                        VStack(alignment: .leading) {
+                            Text("Purchases")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            VStack(alignment: .leading) {
+                                PurchaseRowView(purchase: item.purchases.first)
+                                if item.purchases.count > 1 {
+                                    NavigationLink {
+                                        ScrollView {
+                                            VStack {
+                                                ForEach(item.purchases) { purchase in
+                                                    PurchaseRowView(purchase: purchase)
+                                                }
+                                            }
+                                            .padding(.horizontal)
+                                        }
+                                        .padding(.top, 12)
+                                        .navigationTitle("Purchases")
+                                    } label: {
+                                        HStack {
+                                            Text("View all purchases")
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                        }
+                                    }
+                                    .tint(.accent)
+                                    .padding()
+                                    .background(.accent.opacity(0.15),
+                                                in: RoundedRectangle(cornerRadius: 12))
+                                }
+                            }
+                            .padding()
+                            .background(Color(UIColor.secondarySystemGroupedBackground),
+                                        in: RoundedRectangle(cornerRadius: 12))
+                        }
+                        .padding(.horizontal)
+                    }
                     Spacer()
                 }
             }

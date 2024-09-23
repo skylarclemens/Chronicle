@@ -22,16 +22,16 @@ struct ItemEditorView: View {
             if let item {
                 viewModel.itemType = item.type
                 viewModel.name = item.name
-                viewModel.dosageAmount = item.dosage?.amount
+                viewModel.amountValue = item.amount?.value
+                viewModel.amountUnit = item.amount?.unit ?? ""
+                viewModel.dosageValue = item.dosage?.value
                 viewModel.dosageUnit = item.dosage?.unit ?? ""
                 viewModel.subtype = item.subtype ?? ""
                 viewModel.cannabinoids = item.compounds.filter { $0.type == .cannabinoid }
                 viewModel.terpenes = item.compounds.filter { $0.type == .terpene }
                 viewModel.ingredients = item.ingredients
-                viewModel.purchasePrice = item.purchaseInfo?.price
-                viewModel.purchaseLocation = item.purchaseInfo?.location ?? ""
-                viewModel.purchaseDate = item.purchaseInfo?.date ?? Date()
-                viewModel.brand = item.purchaseInfo?.brand ?? ""
+                viewModel.purchases = item.purchases
+                viewModel.brand = item.brand ?? ""
                 viewModel.linkedStrain = item.strain
                 viewModel.selectedImagesData = item.imagesData ?? []
             }
@@ -64,7 +64,7 @@ struct ItemTypeSelectionView: View {
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100, maxHeight: .infinity)
                     .foregroundStyle(.primary)
-                    .background(.ultraThinMaterial)
+                    .background(.ultraThinMaterial.opacity(viewModel.itemType == type ? 0 : 1))
                     .background(.accent.opacity(viewModel.itemType == type ? 0.33 : 0))
                     .clipShape(.rect(cornerRadius: 10))
                     .overlay(
@@ -157,7 +157,7 @@ struct ItemEditorBasicsView: View {
                         .padding(.horizontal)
                         ItemEditorDetailsView(viewModel: $viewModel)
                             .padding(.horizontal)
-                        ItemEditorAdditionalInfoView(viewModel: $viewModel)
+                        PurchaseInputView(viewModel: $viewModel, item: item)
                             .padding(.horizontal)
                         ItemEditorCompositionView(viewModel: $viewModel)
                             .padding(.horizontal)
@@ -168,21 +168,24 @@ struct ItemEditorBasicsView: View {
                 ZStack {
                     Color(UIColor.systemBackground).mask(
                         LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
+                            .opacity(0.9)
                     )
                     .allowsHitTesting(false)
-                    VStack {
-                        Button {
-                            save()
-                            parentDismiss()
-                        } label: {
-                            Text("Save")
-                                .frame(maxWidth: .infinity)
+                    Button {
+                        do {
+                            try save()
+                        } catch {
+                            print("New/edited item could not be saved.")
                         }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
-                        .padding()
+                        parentDismiss()
+                    } label: {
+                        Text("Save")
+                            .frame(maxWidth: .infinity)
                     }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
+                    .padding()
                 }
                 .frame(height: 120)
             }
@@ -219,32 +222,41 @@ struct ItemEditorBasicsView: View {
             }
         }
         .onAppear {
-            focusedField = .name
+            if item == nil {
+                focusedField = .name
+            }
         }
     }
     
     @MainActor
-    private func save() {
+    private func save() throws {
         if let item {
             item.name = viewModel.name
             item.type = viewModel.itemType ?? .other
-            item.dosage = Dosage(amount: viewModel.dosageAmount ?? 0, unit: viewModel.dosageUnit)
+            item.dosage = Amount(value: viewModel.dosageValue ?? 0, unit: viewModel.dosageUnit)
             item.compounds = viewModel.cannabinoids + viewModel.terpenes
             item.ingredients = viewModel.ingredients
-            item.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation, brand: viewModel.brand)
+            item.purchases = viewModel.purchases
             item.imagesData = viewModel.selectedImagesData
             item.strain = viewModel.linkedStrain
         } else {
             let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
-            newItem.dosage = Dosage(amount: viewModel.dosageAmount ?? 0, unit: viewModel.dosageUnit)
+            newItem.dosage = Amount(value: viewModel.dosageValue ?? 0, unit: viewModel.dosageUnit)
             newItem.compounds = viewModel.cannabinoids + viewModel.terpenes
             newItem.ingredients = viewModel.ingredients
-            newItem.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation, brand: viewModel.brand)
             newItem.imagesData = viewModel.selectedImagesData
             newItem.strain = viewModel.linkedStrain
-            
+            var newAmount: Amount?
+            if let amountValue = viewModel.amountValue {
+                newAmount = Amount(value: amountValue, unit: viewModel.amountUnit)
+                newItem.unit = viewModel.amountUnit
+            }
+            let newPurchase = Purchase(date: viewModel.purchaseDate, amount: newAmount, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
+            modelContext.insert(newPurchase)
+            newItem.purchases.append(newPurchase)
             modelContext.insert(newItem)
         }
+        try modelContext.save()
     }
         
     enum Field {
@@ -256,83 +268,37 @@ struct ItemEditorDetailsView: View {
     @Binding var viewModel: ItemEditorViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Details")
-                .font(.title3)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            VStack(spacing: 16) {
-                VStack(alignment: .leading) {
-                    Section {
-                        HStack {
-                            TextField("2.5", value: $viewModel.dosageAmount, format: .number)
-                                .keyboardType(.decimalPad)
-                                .textFieldStyle(.plain)
-                                .padding(.horizontal)
-                                .padding(.vertical, 11)
-                                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                .clipShape(.rect(cornerRadius: 10))
-                            TextField("g", text: $viewModel.dosageUnit)
-                                .textFieldStyle(.plain)
-                                .padding(.horizontal)
-                                .padding(.vertical, 11)
-                                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                .clipShape(.rect(cornerRadius: 10))
-                        }
-                    } header: {
-                        Text("Amount")
-                            .font(.headline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            }
-        }
-    }
-}
-
-struct ItemEditorAdditionalInfoView: View {
-    @Binding var viewModel: ItemEditorViewModel
-    
-    var body: some View {
-        Section {
-            VStack(alignment: .leading) {
-                Text("Purchase Information")
+        if viewModel.itemType == .edible || viewModel.itemType == .pill {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Details")
                     .font(.title3)
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("Price")
-                        TextField("$20.00", value: $viewModel.purchasePrice, format: .currency(code: "USD"))
-                            .keyboardType(.decimalPad)
-                            .multilineTextAlignment(.trailing)
+                VStack(spacing: 16) {
+                    VStack(alignment: .leading) {
+                        Section {
+                            HStack {
+                                TextField("2.5", value: $viewModel.dosageValue, format: .number)
+                                    .keyboardType(.decimalPad)
+                                    .textFieldStyle(.plain)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 11)
+                                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                    .clipShape(.rect(cornerRadius: 10))
+                                TextField("g", text: $viewModel.dosageUnit)
+                                    .textFieldStyle(.plain)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 11)
+                                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                                    .clipShape(.rect(cornerRadius: 10))
+                            }
+                        } header: {
+                            Text("Dosage")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                        }
                     }
-                    .padding(.vertical, 6)
-                    .padding(.trailing)
-                    Divider()
-                    HStack {
-                        Text("Location")
-                        TextField("Dispensary", text: $viewModel.purchaseLocation)
-                            .multilineTextAlignment(.trailing)
-                    }
-                    .padding(.vertical, 6)
-                    .padding(.trailing)
-                    Divider()
-                    HStack {
-                        Text("Brand")
-                        TextField("Brand", text: $viewModel.brand)
-                            .multilineTextAlignment(.trailing)
-                    }
-                    .padding(.vertical, 6)
-                    .padding(.trailing)
-                    Divider()
-                    DatePicker("Date", selection: $viewModel.purchaseDate)
-                        .padding(.trailing)
                 }
-                .padding(.leading)
-                .padding(.vertical, 8)
-                .background(Color(UIColor.secondarySystemGroupedBackground),
-                            in: RoundedRectangle(cornerRadius: 12))
             }
         }
     }
@@ -363,12 +329,15 @@ class ItemEditorViewModel {
     var item: Item?
     var itemType: ItemType?
     var name: String = ""
-    var dosageAmount: Double?
+    var amountValue: Double?
+    var amountUnit: String = ""
+    var dosageValue: Double?
     var dosageUnit: String = ""
     var subtype: String = ""
     var cannabinoids: [Compound] = []
     var terpenes: [Compound] = []
     var ingredients: [String] = []
+    var purchases: [Purchase] = []
     var purchasePrice: Double?
     var purchaseLocation: String = ""
     var purchaseDate: Date = Date()
@@ -377,16 +346,18 @@ class ItemEditorViewModel {
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
+    
+    
 }
 
-#Preview {
+/*#Preview {
     @Previewable @Environment(\.dismiss) var dismiss
     @Previewable @State var viewModel = ItemEditorViewModel()
     viewModel.itemType = .edible
     return NavigationStack {
         ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: dismiss)
     }
-}
+}*/
 
 #Preview {
     ItemEditorView(item: SampleData.shared.item)

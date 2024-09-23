@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Dosage: Codable {
-    public var amount: Double
+public struct Amount: Codable {
+    public var value: Double
     public var unit: String
 }

@@ -12,7 +12,7 @@ struct DashboardView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Item.name) private var items: [Item]
     @Query(sort: \Strain.name) private var strains: [Strain]
-    @Query(sort: \Session.createdAt) private var sessions: [Session]
+    @Query(Session.dashboardDescriptor) private var sessions: [Session]
     @State private var openAddItem: Bool = false
     @State private var openAddStrain: Bool = false
     @State private var openAddSession: Bool = false

@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct SessionsListView: View {
-    @Query(sort: \Session.createdAt) private var sessions: [Session]
+    @Query private var sessions: [Session]
     
     var body: some View {
         List {
@@ -29,7 +29,7 @@ struct SessionsListView: View {
     }
     
     init(date: Date?) {
-        _sessions = Query(filter: Session.predicate(date: date), sort: \Session.createdAt)
+        _sessions = Query(filter: Session.predicate(date: date), sort: \Session.createdAt, order: .reverse)
     }
 }
 

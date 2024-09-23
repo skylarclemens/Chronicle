@@ -16,6 +16,7 @@ import SwiftUI
     public var date: Date
     public var item: Item?
     public var duration: TimeInterval?
+    public var amountConsumed: Double?
     public var notes: String?
     public var location: String?
     public var favorite: Bool
@@ -30,6 +31,7 @@ import SwiftUI
         date: Date = Date(),
         item: Item? = nil,
         duration: TimeInterval? = nil,
+        amountConsumed: Double? = nil,
         notes: String? = nil,
         location: String? = nil,
         favorite: Bool = false,
@@ -41,6 +43,7 @@ import SwiftUI
         self.date = date
         self.item = item
         self.duration = duration
+        self.amountConsumed = amountConsumed
         self.notes = notes
         self.location = location
         self.favorite = favorite
@@ -64,5 +67,11 @@ import SwiftUI
         return #Predicate<Session> { session in
             return true
         }
+    }
+    
+    static var dashboardDescriptor: FetchDescriptor<Session> {
+        var descriptor = FetchDescriptor<Session>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
+        descriptor.fetchLimit = 3
+        return descriptor
     }
 }
