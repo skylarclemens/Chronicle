@@ -21,6 +21,8 @@ import SwiftUI
     public var location: String?
     public var favorite: Bool
     @Attribute(.externalStorage) public var imagesData: [Data]?
+    @Relationship(deleteRule: .noAction, inverse: \Tag.items)
+    public var tags: [Tag]
     @Relationship(deleteRule: .cascade, inverse: \Mood.session)
     public var mood: Mood?
     
@@ -35,7 +37,8 @@ import SwiftUI
         notes: String? = nil,
         location: String? = nil,
         favorite: Bool = false,
-        moods: Mood? = nil
+        tags: [Tag] = [],
+        mood: Mood? = nil
     ) {
         self.id = id
         self.createdAt = createdAt
@@ -47,6 +50,7 @@ import SwiftUI
         self.notes = notes
         self.location = location
         self.favorite = favorite
+        self.tags = tags
         self.mood = mood
     }
     

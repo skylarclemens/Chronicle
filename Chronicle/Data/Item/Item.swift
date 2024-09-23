@@ -27,6 +27,8 @@ import SwiftUI
     
     @Relationship(deleteRule: .cascade, inverse: \Purchase.item)
     public var purchases: [Purchase]
+    @Relationship(deleteRule: .noAction, inverse: \Tag.items)
+    public var tags: [Tag]
     @Relationship(deleteRule: .nullify, inverse: \Session.item)
     public var sessions: [Session]
     
@@ -60,6 +62,7 @@ import SwiftUI
         ingredients: [String] = [],
         favorite: Bool = false,
         purchases: [Purchase] = [],
+        tags: [Tag] = [],
         sessions: [Session] = []
     ) {
         self.id = id
@@ -73,6 +76,7 @@ import SwiftUI
         self.ingredients = ingredients
         self.favorite = favorite
         self.purchases = purchases
+        self.tags = tags
         self.sessions = sessions
     }
     

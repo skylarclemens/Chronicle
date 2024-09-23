@@ -58,6 +58,7 @@
 		7ED7478F2C8BA9A100F07679 /* MoodSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */; };
 		7ED747912C8BB3F100F07679 /* CustomSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED747902C8BB3F100F07679 /* CustomSliderView.swift */; };
 		7ED747932C8BC67B00F07679 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED747922C8BC67B00F07679 /* CGFloat.swift */; };
+		7EDFFA532CA1EB650033163E /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFFA522CA1EB640033163E /* Tag.swift */; };
 		7EE6261D2C6A948500448F80 /* ItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE6261C2C6A948500448F80 /* ItemType.swift */; };
 		7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE6261F2C6AC40D00448F80 /* CannabinoidInputView.swift */; };
 		7EE626222C6ACA4B00448F80 /* TerpeneInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE626212C6ACA4B00448F80 /* TerpeneInputView.swift */; };
@@ -123,6 +124,7 @@
 		7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodSelectorView.swift; sourceTree = "<group>"; };
 		7ED747902C8BB3F100F07679 /* CustomSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSliderView.swift; sourceTree = "<group>"; };
 		7ED747922C8BC67B00F07679 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
+		7EDFFA522CA1EB640033163E /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		7EE6261C2C6A948500448F80 /* ItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemType.swift; sourceTree = "<group>"; };
 		7EE6261F2C6AC40D00448F80 /* CannabinoidInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannabinoidInputView.swift; sourceTree = "<group>"; };
 		7EE626212C6ACA4B00448F80 /* TerpeneInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerpeneInputView.swift; sourceTree = "<group>"; };
@@ -358,13 +360,22 @@
 			children = (
 				7E3B557F2C8A4D0900AB0961 /* Extensions */,
 				7E309D9A2C7936DD0004A25A /* Managers */,
-				7EFCC6092C7E6DA20090588D /* Traits */,
 				7EE6261B2C6A947700448F80 /* Item */,
 				7E70B97F2C9218D50092ECE7 /* Session */,
 				7E08D41A2C6BD99100F96328 /* Strain */,
+				7EDFFA512CA1EB4D0033163E /* Tag */,
+				7EFCC6092C7E6DA20090588D /* Traits */,
 				7E2504D92C76838500496296 /* ColorData.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		7EDFFA512CA1EB4D0033163E /* Tag */ = {
+			isa = PBXGroup;
+			children = (
+				7EDFFA522CA1EB640033163E /* Tag.swift */,
+			);
+			path = Tag;
 			sourceTree = "<group>";
 		};
 		7EE6261B2C6A947700448F80 /* Item */ = {
@@ -480,6 +491,7 @@
 				7EE6261D2C6A948500448F80 /* ItemType.swift in Sources */,
 				7E656A2D2C94DB4500C6FD6A /* TerpeneView.swift in Sources */,
 				7E08D4192C6BD95700F96328 /* StrainEditorView.swift in Sources */,
+				7EDFFA532CA1EB650033163E /* Tag.swift in Sources */,
 				7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */,
 				7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */,
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
