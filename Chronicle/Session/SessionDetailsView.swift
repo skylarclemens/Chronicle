@@ -137,6 +137,26 @@ struct SessionDetailsView: View {
                         }
                         .padding(.top)
                     }
+                    if !session.tags.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Tags")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(session.tags) { tag in
+                                        Text(tag.name)
+                                            .tagStyle()
+                                    }
+                                }
+                            }
+                            .contentMargins(.horizontal, 16)
+                            .padding(.vertical, 12)
+                            .background(Color(UIColor.secondarySystemGroupedBackground),
+                                        in: RoundedRectangle(cornerRadius: 12))
+                        }
+                        .padding(.top)
+                    }
                     Spacer()
                 }
                 .padding(.horizontal)

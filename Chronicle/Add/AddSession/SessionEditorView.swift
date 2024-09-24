@@ -16,6 +16,7 @@ struct SessionEditorView: View {
     @State private var openCalendar: Bool = false
     @State private var openNotes: Bool = false
     @State private var openMood: Bool = false
+    @State private var openTags: Bool = false
     @FocusState var focusedField: Field?
     
     var session: Session?
@@ -115,7 +116,7 @@ struct SessionEditorView: View {
                                         .background(Color(UIColor.secondarySystemGroupedBackground),
                                                     in: RoundedRectangle(cornerRadius: 8))
                                 }
-                                .padding(.vertical)
+                                .padding(.top)
                             }
                         }
                         VStack(alignment: .leading) {
@@ -181,7 +182,11 @@ struct SessionEditorView: View {
                                 .controlSize(.large)
                             }
                         }
-                        .padding(.vertical)
+                        .padding(.top)
+                        Section {
+                            SessionEditorAdditionalView(viewModel: $viewModel, openTags: $openTags)
+                        }
+                        .padding(.top)
                     }
                     .padding(.horizontal)
                 }
@@ -304,6 +309,9 @@ struct SessionEditorView: View {
                 .presentationDetents([.large])
                 .presentationBackground(.thickMaterial)
             }
+            .sheet(isPresented: $openTags) {
+                TagEditorView(tags: $viewModel.tags, context: .session)
+            }
         }
         .onAppear {
             if let session {
@@ -315,6 +323,7 @@ struct SessionEditorView: View {
                 viewModel.notes = session.notes ?? ""
                 viewModel.selectedImagesData = session.imagesData ?? []
                 viewModel.amountConsumed = session.amountConsumed
+                viewModel.tags = session.tags
                 
                 if let mood = session.mood {
                     viewModel.mood = mood
@@ -337,6 +346,7 @@ struct SessionEditorView: View {
             session.location = viewModel.location
             session.imagesData = viewModel.selectedImagesData
             session.mood = viewModel.mood
+            session.tags = viewModel.tags
             if let amountConsumed = viewModel.amountConsumed {
                 session.amountConsumed = amountConsumed
             }
@@ -354,6 +364,41 @@ struct SessionEditorView: View {
     }
 }
 
+struct SessionEditorAdditionalView: View {
+    @Binding var viewModel: SessionEditorViewModel
+    @Binding var openTags: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Additional")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Button {
+                openTags = true
+            } label: {
+                HStack {
+                    Text("Tags")
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    HStack {
+                        if !viewModel.tags.isEmpty {
+                            Text("\(viewModel.tags.count)") +
+                            Text(" selected")
+                        }
+                        Image(systemName: "chevron.right")
+                    }
+                    .foregroundStyle(.secondary)
+                }
+                .padding()
+                .background(Color(UIColor.secondarySystemGroupedBackground),
+                            in: RoundedRectangle(cornerRadius: 12))
+            }
+            .buttonStyle(.plain)
+        }
+    }
+}
+
 @Observable
 class SessionEditorViewModel {
     var date: Date = Date()
@@ -364,6 +409,7 @@ class SessionEditorViewModel {
     var notes: String = ""
     var location: String = ""
     var amountConsumed: Double? = nil
+    var tags: [Tag] = []
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []

@@ -58,11 +58,18 @@ class SampleData {
             container.mainContext.insert(purchase)
         }
         
+        for tag in Tag.sampleData {
+            container.mainContext.insert(tag)
+        }
+        
         item.strain = strain
         item.sessions.append(session)
         item.purchases.append(purchase)
+        item.tags.append(tag)
+        item.tags.append(allTags[2])
         session.item = item
         session.mood = mood
+        session.tags.append(tag2)
         
         do {
             try context.save()
@@ -89,5 +96,17 @@ class SampleData {
         
     var purchase: Purchase {
         Purchase.sampleData[0]
+    }
+    
+    var tag: Tag {
+        Tag.sampleData[0]
+    }
+    
+    var tag2: Tag {
+        Tag.sampleData[1]
+    }
+    
+    var allTags: [Tag] {
+        Tag.sampleData
     }
 }
