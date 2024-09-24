@@ -265,6 +265,26 @@ struct ItemDetailsView: View {
                         }
                         .padding(.horizontal)
                     }
+                    if !item.tags.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Tags")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(item.tags) { tag in
+                                        Text(tag.name)
+                                            .tagStyle()
+                                    }
+                                }
+                            }
+                            .contentMargins(.horizontal, 16)
+                            .padding(.vertical, 12)
+                            .background(Color(UIColor.secondarySystemGroupedBackground),
+                                        in: RoundedRectangle(cornerRadius: 12))
+                        }
+                        .padding(.horizontal)
+                    }
                     Spacer()
                 }
             }

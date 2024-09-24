@@ -58,16 +58,26 @@ struct TagEditorView: View {
                 }
                 HStack {
                     TextField("Add New Tag", text: $viewModel.newTagName)
-                        .submitLabel(.return)
+                        .submitLabel(.done)
                         .onSubmit {
+                            withAnimation {
+                                viewModel.addNewTag()
+                            }
+                        }
+                        .padding(.vertical, 12)
+                        .padding(.horizontal)
+                        .background(.regularMaterial,
+                                    in: RoundedRectangle(cornerRadius: 12))
+                    Button("Add", systemImage: "plus.circle.fill") {
+                        withAnimation {
                             viewModel.addNewTag()
                         }
+                    }
                     .labelStyle(.iconOnly)
+                    .disabled(viewModel.newTagName.isEmpty)
                 }
-                .padding(.vertical, 12)
-                .padding(.horizontal)
-                .background(.regularMaterial,
-                            in: RoundedRectangle(cornerRadius: 12))
+                .padding(.vertical)
+                
                 Spacer()
             }
             .navigationTitle("Edit Tags")
@@ -95,27 +105,31 @@ struct TagEditorView: View {
             .padding()
             .onAppear {
                 viewModel.tags = Set(tags)
-                viewModel.allTags = Set(allTags)
+                viewModel.allTags = Set(allTags).union(viewModel.tags)
                 
                 switch context {
                 case .item:
-                    viewModel.suggestedTags = Set(allTags.filter {
-                        if let items = $0.items {
-                            return !items.isEmpty
+                    viewModel.suggestedTags = viewModel.allTags.filter {
+                        if $0.hasNoItemsOrSessions {
+                            return true
+                        } else if !$0.items.isEmpty {
+                            return true
                         } else {
                             return false
                         }
-                    })
+                    }
                 case .session:
-                    viewModel.suggestedTags = Set(allTags.filter {
-                        if let sessions = $0.sessions {
-                            return !sessions.isEmpty
+                    viewModel.suggestedTags = viewModel.allTags.filter {
+                        if $0.hasNoItemsOrSessions {
+                            return true
+                        } else if !$0.sessions.isEmpty {
+                            return true
                         } else {
                             return false
                         }
-                    })
+                    }
                 case .all:
-                    viewModel.suggestedTags = Set(allTags)
+                    viewModel.suggestedTags = viewModel.allTags
                 }
             }
         }
@@ -164,5 +178,5 @@ class TagEditorViewModel {
 #Preview {
     @Previewable @State var tags: [Tag] = []
     TagEditorView(tags: $tags, context: .item)
-        //.modelContainer(SampleData.shared.container)
+        .modelContainer(SampleData.shared.container)
 }
