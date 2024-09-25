@@ -47,6 +47,7 @@
 		7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951CFF2C73D10E0023922C /* ItemCardView.swift */; };
 		7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951D042C73E7E20023922C /* CompactSessionCardView.swift */; };
 		7E9ACB522CA1F67700CFF92D /* TagStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9ACB512CA1F67400CFF92D /* TagStyle.swift */; };
+		7EB685542CA48DCD002C1759 /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB685532CA48DCD002C1759 /* CameraPicker.swift */; };
 		7EC008ED2C5EEDE80093217B /* ChronicleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */; };
 		7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC008EE2C5EEDE80093217B /* ContentView.swift */; };
 		7EC008F12C5EEDE80093217B /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC008F02C5EEDE80093217B /* Item.swift */; };
@@ -114,6 +115,7 @@
 		7E951CFF2C73D10E0023922C /* ItemCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCardView.swift; sourceTree = "<group>"; };
 		7E951D042C73E7E20023922C /* CompactSessionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactSessionCardView.swift; sourceTree = "<group>"; };
 		7E9ACB512CA1F67400CFF92D /* TagStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStyle.swift; sourceTree = "<group>"; };
+		7EB685532CA48DCD002C1759 /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
 		7EC008E92C5EEDE80093217B /* Chronicle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chronicle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChronicleApp.swift; sourceTree = "<group>"; };
 		7EC008EE2C5EEDE80093217B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -313,6 +315,14 @@
 			path = Session;
 			sourceTree = "<group>";
 		};
+		7EB685522CA48DB9002C1759 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				7EB685532CA48DCD002C1759 /* CameraPicker.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		7EC008E02C5EEDE80093217B = {
 			isa = PBXGroup;
 			children = (
@@ -334,6 +344,7 @@
 			children = (
 				7E5581362C823CD700F461EB /* Analytics */,
 				7E2504DB2C768CA900496296 /* UI */,
+				7EB685522CA48DB9002C1759 /* Utility */,
 				7E951D022C73D1260023922C /* Add */,
 				7E951D012C73D1140023922C /* Item */,
 				7E951D032C73E7C70023922C /* Session */,
@@ -496,6 +507,7 @@
 				7ED747932C8BC67B00F07679 /* CGFloat.swift in Sources */,
 				7ED747912C8BB3F100F07679 /* CustomSliderView.swift in Sources */,
 				7EF0BB162C6D3A2D0068542D /* ItemDetailsView.swift in Sources */,
+				7EB685542CA48DCD002C1759 /* CameraPicker.swift in Sources */,
 				7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */,
 				7E7DDC192C66A8730057F983 /* ItemEditorView.swift in Sources */,
 				7EF0BB182C6D3CDD0068542D /* Samples.swift in Sources */,
@@ -691,6 +703,7 @@
 				DEVELOPMENT_TEAM = 2798XB6UZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "To use camera to take pictures";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -720,6 +733,7 @@
 				DEVELOPMENT_TEAM = 2798XB6UZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "To use camera to take pictures";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
