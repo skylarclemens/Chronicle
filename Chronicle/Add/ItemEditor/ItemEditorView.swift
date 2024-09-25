@@ -146,11 +146,13 @@ struct ItemEditorBasicsView: View {
                                             Capsule()
                                                 .strokeBorder(.accent.opacity(0.5))
                                         )
-                                        PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-                                            Label("Select photos", systemImage: "photo.badge.plus")
-                                        }
-                                        .tint(.primary)
-                                        .buttonStyle(.editorInput)
+//                                        PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
+//                                            Label("Select photos", systemImage: "photo.badge.plus")
+//                                        }
+//                                        .tint(.primary)
+//                                        .buttonStyle(.editorInput)
+                                        ImagePicker(pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
+                                            .buttonStyle(.editorInput)
                                     }
                                 }
                             }
@@ -205,7 +207,7 @@ struct ItemEditorBasicsView: View {
                 .buttonStyle(.plain)
             }
         }
-        .onChange(of: viewModel.pickerItems) { oldValues, newValues in
+        /*.onChange(of: viewModel.pickerItems) { oldValues, newValues in
             Task {
                 if viewModel.pickerItems.count == 0 { return }
                 
@@ -219,7 +221,7 @@ struct ItemEditorBasicsView: View {
                 
                 viewModel.pickerItems.removeAll()
             }
-        }
+        }*/
         .onAppear {
             if item == nil {
                 focusedField = .name

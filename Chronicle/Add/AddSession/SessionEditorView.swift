@@ -17,9 +17,7 @@ struct SessionEditorView: View {
     @State private var openNotes: Bool = false
     @State private var openMood: Bool = false
     @State private var openTags: Bool = false
-    @State private var showingCamera: Bool = false
-    @State private var showingPhotosPicker: Bool = false
-    @State private var showingPhotosConfirmationDialog: Bool = false
+    
     @FocusState var focusedField: Field?
     
     var session: Session?
@@ -238,15 +236,7 @@ struct SessionEditorView: View {
                 }
                 /// Toolbar to add items to session
                 ToolbarItemGroup(placement: .bottomBar) {
-                    /*PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-                        Label("Select photos", systemImage: "photo.fill")
-                    }
-                    .tint(.primary)*/
-                    Button("Open camera", systemImage: "photo.fill") {
-                        showingPhotosConfirmationDialog = true
-                    }
-                    .labelStyle(.iconOnly)
-                    .tint(.primary)
+                    ImagePicker(pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
                     Spacer()
                     Button("Open notes", systemImage: "note.text") {
                         openNotes = true
@@ -257,15 +247,6 @@ struct SessionEditorView: View {
                 }
                 /// Show same toolbar when keyboard opens
                 ToolbarItemGroup(placement: .keyboard) {
-                    /*PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-                        Label("Select photos", systemImage: "photo.fill")
-                    }
-                    .tint(.primary)*/
-                    Button("Open camera", systemImage: "photo.fill") {
-                        showingPhotosConfirmationDialog = true
-                    }
-                    .labelStyle(.iconOnly)
-                    .tint(.primary)
                     Spacer()
                     Button("Open notes", systemImage: "note.text") {
                         openNotes = true
@@ -285,21 +266,6 @@ struct SessionEditorView: View {
             .toolbarBackground(.visible, for: .bottomBar)
             .interactiveDismissDisabled()
             .scrollDismissesKeyboard(.immediately)
-            .onChange(of: viewModel.pickerItems) { oldValues, newValues in
-                Task {
-                    if viewModel.pickerItems.count == 0 { return }
-                    
-                    for value in newValues {
-                        if let imageData = try? await value.loadTransferable(type: Data.self) {
-                            withAnimation {
-                                viewModel.selectedImagesData.append(imageData)
-                            }
-                        }
-                    }
-                    
-                    viewModel.pickerItems.removeAll()
-                }
-            }
             .sheet(isPresented: $openCalendar) {
                 NavigationStack {
                     CalendarView(date: $viewModel.date, displayedComponents: [.date, .hourAndMinute])
@@ -324,20 +290,6 @@ struct SessionEditorView: View {
             }
             .sheet(isPresented: $openTags) {
                 TagEditorView(tags: $viewModel.tags, context: .session)
-            }
-            .confirmationDialog("Choose an option", isPresented: $showingPhotosConfirmationDialog) {
-                Button("Camera") {
-                    showingCamera = true
-                }
-                .tint(.accent)
-                Button("Select photos") {
-                    showingPhotosPicker = true
-                }
-                .tint(.accent)
-            }
-            .photosPicker(isPresented: $showingPhotosPicker, selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)]))
-            .fullScreenCover(isPresented: $showingCamera) {
-                CameraPicker(isPresented: $showingCamera, image: $viewModel.cameraSelection)
             }
         }
         .onAppear {
