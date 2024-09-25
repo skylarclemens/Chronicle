@@ -1,5 +1,5 @@
 //
-//  ImagePicker.swift
+//  ImagesPicker.swift
 //  Chronicle
 //
 //  Created by Skylar Clemens on 9/25/24.
@@ -10,24 +10,18 @@ import UIKit
 import SwiftUI
 import PhotosUI
 
-struct ImagePicker: View {
+struct ImagesPicker: ViewModifier {
+    @Binding var isPresented: Bool
     @Binding var pickerItems: [PhotosPickerItem]
     @Binding var imagesData: [Data]
     
     @State private var showingCamera: Bool = false
     @State private var showingPhotosPicker: Bool = false
-    @State private var showingPhotosConfirmationDialog: Bool = false
     @State private var cameraSelection: UIImage?
     
-    var body: some View {
-        VStack {
-            Button("Add photos", systemImage: "photo.fill") {
-                showingPhotosConfirmationDialog = true
-            }
-            .labelStyle(.iconOnly)
-            .tint(.primary)
-        }
-        .confirmationDialog("Choose an option", isPresented: $showingPhotosConfirmationDialog) {
+    public func body(content: Content) -> some View {
+        content
+        .confirmationDialog("Choose an option", isPresented: $isPresented) {
             Button("Camera") {
                 showingCamera = true
             }
@@ -65,6 +59,12 @@ struct ImagePicker: View {
                 cameraSelection = nil
             }
         }
+    }
+}
+
+extension View {
+    public func imagesPicker(isPresented: Binding<Bool>, pickerItems: Binding<[PhotosPickerItem]>, imagesData: Binding<[Data]>) -> some View {
+        modifier(ImagesPicker(isPresented: isPresented, pickerItems: pickerItems, imagesData: imagesData))
     }
 }
 
@@ -113,5 +113,8 @@ struct CameraPicker: UIViewControllerRepresentable {
 #Preview {
     @Previewable @State var pickerItems: [PhotosPickerItem] = []
     @Previewable @State var imagesData: [Data] = []
-    ImagePicker(pickerItems: $pickerItems, imagesData: $imagesData)
+    @Previewable @State var showingImagePicker: Bool = false
+    
+    VStack {}
+        .imagesPicker(isPresented: $showingImagePicker, pickerItems: $pickerItems, imagesData: $imagesData)
 }

@@ -17,6 +17,7 @@ struct SessionEditorView: View {
     @State private var openNotes: Bool = false
     @State private var openMood: Bool = false
     @State private var openTags: Bool = false
+    @State private var showingImagesPicker: Bool = false
     
     @FocusState var focusedField: Field?
     
@@ -190,6 +191,7 @@ struct SessionEditorView: View {
                         .padding(.top)
                     }
                     .padding(.horizontal)
+                    //ImagePicker(pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData, showingPhotosConfirmationDialog: $showingImagesPicker)
                 }
                 .padding(.bottom, 120)
                 .frame(maxHeight: .infinity)
@@ -236,7 +238,11 @@ struct SessionEditorView: View {
                 }
                 /// Toolbar to add items to session
                 ToolbarItemGroup(placement: .bottomBar) {
-                    ImagePicker(pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
+                    Button("Select photos", systemImage: "photo.fill") {
+                        showingImagesPicker = true
+                    }
+                    .labelStyle(.iconOnly)
+                    .tint(.primary)
                     Spacer()
                     Button("Open notes", systemImage: "note.text") {
                         openNotes = true
@@ -247,6 +253,11 @@ struct SessionEditorView: View {
                 }
                 /// Show same toolbar when keyboard opens
                 ToolbarItemGroup(placement: .keyboard) {
+                    Button("Select photos", systemImage: "photo.fill") {
+                        showingImagesPicker = true
+                    }
+                    .labelStyle(.iconOnly)
+                    .tint(.primary)
                     Spacer()
                     Button("Open notes", systemImage: "note.text") {
                         openNotes = true
@@ -266,6 +277,7 @@ struct SessionEditorView: View {
             .toolbarBackground(.visible, for: .bottomBar)
             .interactiveDismissDisabled()
             .scrollDismissesKeyboard(.immediately)
+            .imagesPicker(isPresented: $showingImagesPicker, pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
             .sheet(isPresented: $openCalendar) {
                 NavigationStack {
                     CalendarView(date: $viewModel.date, displayedComponents: [.date, .hourAndMinute])

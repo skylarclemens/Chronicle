@@ -109,6 +109,7 @@ struct ItemEditorBasicsView: View {
     let parentDismiss: DismissAction
     var item: Item?
     @FocusState var focusedField: ItemEditorField?
+    @State private var showingImagesPicker: Bool = false
     
     @Query(sort: \Strain.name) var strains: [Strain]
     
@@ -146,13 +147,11 @@ struct ItemEditorBasicsView: View {
                                             Capsule()
                                                 .strokeBorder(.accent.opacity(0.5))
                                         )
-//                                        PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-//                                            Label("Select photos", systemImage: "photo.badge.plus")
-//                                        }
-//                                        .tint(.primary)
-//                                        .buttonStyle(.editorInput)
-                                        ImagePicker(pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
-                                            .buttonStyle(.editorInput)
+                                        Button("Select photos", systemImage: "photo.badge.plus") {
+                                            showingImagesPicker = true
+                                        }
+                                        .tint(.primary)
+                                        .buttonStyle(.editorInput)
                                     }
                                 }
                             }
@@ -196,6 +195,7 @@ struct ItemEditorBasicsView: View {
         .scrollDismissesKeyboard(.immediately)
         .navigationTitle("\(item != nil ? "Edit" : "Add") Item")
         .navigationBarTitleDisplayMode(.inline)
+        .imagesPicker(isPresented: $showingImagesPicker, pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
         .toolbar {
             ToolbarItem(placement: .destructiveAction) {
                 Button {
@@ -207,21 +207,6 @@ struct ItemEditorBasicsView: View {
                 .buttonStyle(.plain)
             }
         }
-        /*.onChange(of: viewModel.pickerItems) { oldValues, newValues in
-            Task {
-                if viewModel.pickerItems.count == 0 { return }
-                
-                for value in newValues {
-                    if let imageData = try? await value.loadTransferable(type: Data.self) {
-                        withAnimation {
-                            viewModel.selectedImagesData.append(imageData)
-                        }
-                    }
-                }
-                
-                viewModel.pickerItems.removeAll()
-            }
-        }*/
         .onAppear {
             if item == nil {
                 focusedField = .name
