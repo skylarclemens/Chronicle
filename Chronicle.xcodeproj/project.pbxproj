@@ -703,7 +703,7 @@
 				DEVELOPMENT_TEAM = 2798XB6UZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "To use camera to take pictures";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app allows the user to capture a photo with their camera in order to add it to a selection of images for an item or a session.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -733,7 +733,7 @@
 				DEVELOPMENT_TEAM = 2798XB6UZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "To use camera to take pictures";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app allows the user to capture a photo with their camera in order to add it to a selection of images for an item or a session.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
