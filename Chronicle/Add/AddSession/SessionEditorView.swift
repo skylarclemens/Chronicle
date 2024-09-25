@@ -17,6 +17,8 @@ struct SessionEditorView: View {
     @State private var openNotes: Bool = false
     @State private var openMood: Bool = false
     @State private var openTags: Bool = false
+    @State private var showingImagesPicker: Bool = false
+    
     @FocusState var focusedField: Field?
     
     var session: Session?
@@ -189,6 +191,7 @@ struct SessionEditorView: View {
                         .padding(.top)
                     }
                     .padding(.horizontal)
+                    //ImagePicker(pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData, showingPhotosConfirmationDialog: $showingImagesPicker)
                 }
                 .padding(.bottom, 120)
                 .frame(maxHeight: .infinity)
@@ -235,9 +238,10 @@ struct SessionEditorView: View {
                 }
                 /// Toolbar to add items to session
                 ToolbarItemGroup(placement: .bottomBar) {
-                    PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-                        Label("Select photos", systemImage: "photo.fill")
+                    Button("Select photos", systemImage: "photo.fill") {
+                        showingImagesPicker = true
                     }
+                    .labelStyle(.iconOnly)
                     .tint(.primary)
                     Spacer()
                     Button("Open notes", systemImage: "note.text") {
@@ -249,9 +253,10 @@ struct SessionEditorView: View {
                 }
                 /// Show same toolbar when keyboard opens
                 ToolbarItemGroup(placement: .keyboard) {
-                    PhotosPicker(selection: $viewModel.pickerItems, maxSelectionCount: 4, matching: .any(of: [.images, .not(.panoramas), .not(.videos)])) {
-                        Label("Select photos", systemImage: "photo.fill")
+                    Button("Select photos", systemImage: "photo.fill") {
+                        showingImagesPicker = true
                     }
+                    .labelStyle(.iconOnly)
                     .tint(.primary)
                     Spacer()
                     Button("Open notes", systemImage: "note.text") {
@@ -272,21 +277,7 @@ struct SessionEditorView: View {
             .toolbarBackground(.visible, for: .bottomBar)
             .interactiveDismissDisabled()
             .scrollDismissesKeyboard(.immediately)
-            .onChange(of: viewModel.pickerItems) { oldValues, newValues in
-                Task {
-                    if viewModel.pickerItems.count == 0 { return }
-                    
-                    for value in newValues {
-                        if let imageData = try? await value.loadTransferable(type: Data.self) {
-                            withAnimation {
-                                viewModel.selectedImagesData.append(imageData)
-                            }
-                        }
-                    }
-                    
-                    viewModel.pickerItems.removeAll()
-                }
-            }
+            .imagesPicker(isPresented: $showingImagesPicker, pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
             .sheet(isPresented: $openCalendar) {
                 NavigationStack {
                     CalendarView(date: $viewModel.date, displayedComponents: [.date, .hourAndMinute])
@@ -413,6 +404,8 @@ class SessionEditorViewModel {
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
+    
+    var cameraSelection: UIImage?
     
     var dateString: String {
         let calendar = Calendar.current

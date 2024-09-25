@@ -63,7 +63,7 @@ struct InventoryView: View {
     }
 }
 
-extension Bool: Comparable {
+extension Bool: @retroactive Comparable {
     public static func <(lhs: Self, rhs: Self) -> Bool {
         !lhs && rhs
     }
