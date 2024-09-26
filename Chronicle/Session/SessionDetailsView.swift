@@ -208,6 +208,7 @@ struct SessionDetailsView: View {
             .sheet(isPresented: $isEditing) {
                 SessionEditorView(session: session)
             }
+            .background(Color(.systemGroupedBackground))
         } else {
             ContentUnavailableView("Session unavailable", systemImage: "tray")
         }

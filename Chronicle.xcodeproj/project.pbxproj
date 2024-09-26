@@ -13,6 +13,11 @@
 		7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */; };
 		7E08D4212C6BF6DB00F96328 /* SessionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4202C6BF6DB00F96328 /* SessionEditorView.swift */; };
 		7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */; };
+		7E0DE5242CA5CDF8003C0642 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0DE5232CA5CDF8003C0642 /* AnalyticsView.swift */; };
+		7E0DE5262CA5D5A7003C0642 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0DE5252CA5D5A6003C0642 /* Date.swift */; };
+		7E0DE5282CA5EFA2003C0642 /* AnalyticsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */; };
+		7E164A602CA4C565008996F1 /* UsagePatternsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */; };
+		7E164A622CA4C710008996F1 /* DateFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E164A612CA4C70C008996F1 /* DateFilter.swift */; };
 		7E1D086E2C977D17004B39D5 /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1D086D2C977D15004B39D5 /* Purchase.swift */; };
 		7E1D08702C9782F3004B39D5 /* PurchaseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1D086F2C9782F3004B39D5 /* PurchaseInputView.swift */; };
 		7E1D08742C979CD5004B39D5 /* PurchaseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1D08732C979CD5004B39D5 /* PurchaseRowView.swift */; };
@@ -81,6 +86,11 @@
 		7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		7E08D4202C6BF6DB00F96328 /* SessionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEditorView.swift; sourceTree = "<group>"; };
 		7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerWheel.swift; sourceTree = "<group>"; };
+		7E0DE5232CA5CDF8003C0642 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
+		7E0DE5252CA5D5A6003C0642 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsListView.swift; sourceTree = "<group>"; };
+		7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsagePatternsView.swift; sourceTree = "<group>"; };
+		7E164A612CA4C70C008996F1 /* DateFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilter.swift; sourceTree = "<group>"; };
 		7E1D086D2C977D15004B39D5 /* Purchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
 		7E1D086F2C9782F3004B39D5 /* PurchaseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseInputView.swift; sourceTree = "<group>"; };
 		7E1D08732C979CD5004B39D5 /* PurchaseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseRowView.swift; sourceTree = "<group>"; };
@@ -221,6 +231,7 @@
 		7E3B557F2C8A4D0900AB0961 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				7E0DE5252CA5D5A6003C0642 /* Date.swift */,
 				7E70B9852C925BCD0092ECE7 /* Double.swift */,
 				7E3B55822C8A524D00AB0961 /* Binding.swift */,
 				7ED747922C8BC67B00F07679 /* CGFloat.swift */,
@@ -251,6 +262,8 @@
 			isa = PBXGroup;
 			children = (
 				7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */,
+				7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */,
+				7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -354,6 +367,7 @@
 				7EC008EE2C5EEDE80093217B /* ContentView.swift */,
 				7E5301EA2C74F97500909048 /* DashboardView.swift */,
 				7E5301EC2C74F98200909048 /* JournalView.swift */,
+				7E0DE5232CA5CDF8003C0642 /* AnalyticsView.swift */,
 				7E5301EE2C74F99B00909048 /* InventoryView.swift */,
 				7EC008F22C5EEDEA0093217B /* Assets.xcassets */,
 				7EC008FC2C5EF1A00093217B /* Data */,
@@ -383,6 +397,7 @@
 				7EDFFA512CA1EB4D0033163E /* Tag */,
 				7EFCC6092C7E6DA20090588D /* Traits */,
 				7E2504D92C76838500496296 /* ColorData.swift */,
+				7E164A612CA4C70C008996F1 /* DateFilter.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -511,6 +526,7 @@
 				7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */,
 				7E7DDC192C66A8730057F983 /* ItemEditorView.swift in Sources */,
 				7EF0BB182C6D3CDD0068542D /* Samples.swift in Sources */,
+				7E0DE5262CA5D5A7003C0642 /* Date.swift in Sources */,
 				7E3B557E2C8A3AEF00AB0961 /* HorizontalImagesView.swift in Sources */,
 				7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */,
 				7EDFFA562CA1ED430033163E /* TagEditorView.swift in Sources */,
@@ -523,6 +539,7 @@
 				7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */,
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
+				7E164A602CA4C565008996F1 /* UsagePatternsView.swift in Sources */,
 				7E7349B92C81148B00262930 /* SessionsListView.swift in Sources */,
 				7EFCC6112C7E6F040090588D /* Compound.swift in Sources */,
 				7E08D41C2C6BD9A400F96328 /* StrainType.swift in Sources */,
@@ -530,7 +547,9 @@
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
 				7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */,
 				7E9ACB522CA1F67700CFF92D /* TagStyle.swift in Sources */,
+				7E0DE5242CA5CDF8003C0642 /* AnalyticsView.swift in Sources */,
 				7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */,
+				7E0DE5282CA5EFA2003C0642 /* AnalyticsListView.swift in Sources */,
 				7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */,
 				7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */,
 				7ED7478D2C8A909E00F07679 /* NotesEditorView.swift in Sources */,
@@ -544,6 +563,7 @@
 				7E70B9842C92567E0092ECE7 /* EditorInputButton.swift in Sources */,
 				7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* SessionEditorView.swift in Sources */,
+				7E164A622CA4C710008996F1 /* DateFilter.swift in Sources */,
 				7E70B9862C925BD10092ECE7 /* Double.swift in Sources */,
 				7E1D08742C979CD5004B39D5 /* PurchaseRowView.swift in Sources */,
 				7EFCC6132C7E6F420090588D /* Amount.swift in Sources */,

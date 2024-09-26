@@ -327,6 +327,7 @@ struct ItemDetailsView: View {
                 ItemEditorView(item: item)
             }
             .scrollIndicators(.hidden)
+            .background(Color(.systemGroupedBackground))
         } else {
             ContentUnavailableView("Item unavailable", systemImage: "tray")
         }

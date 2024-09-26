@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model public class Strain {
-    @Attribute(.unique) public var name: String
+    public var name: String
     public var type: StrainType
     public var subtype: StrainSubType?
     public var createdAt: Date

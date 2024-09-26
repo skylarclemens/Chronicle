@@ -191,7 +191,6 @@ struct SessionEditorView: View {
                         .padding(.top)
                     }
                     .padding(.horizontal)
-                    //ImagePicker(pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData, showingPhotosConfirmationDialog: $showingImagesPicker)
                 }
                 .padding(.bottom, 120)
                 .frame(maxHeight: .infinity)
