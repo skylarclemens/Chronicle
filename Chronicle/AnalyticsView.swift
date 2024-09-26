@@ -40,6 +40,9 @@ struct AnalyticsView: View {
                 .padding(.horizontal)
             }
             .navigationTitle("Analytics")
+            .background(
+                BackgroundView()
+            )
         }
     }
     

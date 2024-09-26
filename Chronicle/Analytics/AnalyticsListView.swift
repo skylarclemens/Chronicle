@@ -21,14 +21,16 @@ struct AnalyticsListView: View {
 
 #Preview {
     @Previewable @State var filter: DateFilter = .week
-    VStack {
-        Picker("Date Range", selection: $filter) {
-            ForEach(DateFilter.allCases, id: \.self) { filterSelection in
-                Text(filterSelection.rawValue.localizedCapitalized).tag(filterSelection)
+    NavigationStack {
+        VStack {
+            Picker("Date Range", selection: $filter) {
+                ForEach(DateFilter.allCases, id: \.self) { filterSelection in
+                    Text(filterSelection.rawValue.localizedCapitalized).tag(filterSelection)
+                }
             }
+            .pickerStyle(SegmentedPickerStyle())
+            AnalyticsListView(filter: $filter)
         }
-        .pickerStyle(SegmentedPickerStyle())
-        AnalyticsListView(filter: $filter)
     }
     .modelContext(SampleData.shared.context)
 }

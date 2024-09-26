@@ -14,74 +14,131 @@ struct UsagePatternsView: View {
     @Binding private var filter: DateFilter
     
     var body: some View {
-        VStack(alignment: .leading) {
-            VStack(alignment: .leading) {
-                Text("Sessions Logged")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                chart
-                    .frame(height: 250)
-            }
-            VStack(alignment: .leading) {
-                HStack {
-                    if !sessions.isEmpty {
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack {
-                                Image(systemName: "rectangle.stack.fill")
-                                    .foregroundStyle(.primary.opacity(0.5))
-                                Text(sessions.count, format: .number)
-                                    .contentTransition(.numericText(value: Double(sessions.count)))
+        NavigationLink {
+            ScrollView {
+                VStack(alignment: .leading) {
+                    Picker("Date Range", selection: $filter.animation()) {
+                        ForEach(DateFilter.allCases, id: \.self) { filterSelection in
+                            Text(filterSelection.rawValue.localizedCapitalized).tag(filterSelection)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    VStack(alignment: .leading) {
+                        VStack(alignment: .leading) {
+                            Text("Sessions Logged")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                            dateLabel
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .fontDesign(.rounded)
+                                .foregroundStyle(.secondary)
+                        }
+                        chart
+                            .frame(height: 250)
+                    }
+                    VStack(alignment: .leading) {
+                        HStack {
+                            if !sessions.isEmpty {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack {
+                                        Image(systemName: "rectangle.stack.fill")
+                                            .foregroundStyle(.primary.opacity(0.5))
+                                        Text(sessions.count, format: .number)
+                                            .contentTransition(.numericText(value: Double(sessions.count)))
+                                    }
+                                    Text("TOTAL SESSIONS")
+                                        .font(.caption2)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .fontDesign(.rounded)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color(.secondarySystemGroupedBackground),
+                                            in: RoundedRectangle(cornerRadius: 12))
                             }
-                            Text("TOTAL SESSIONS")
-                                .font(.caption2)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.secondary)
                         }
-                        .fontDesign(.rounded)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 12)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color(.secondarySystemGroupedBackground),
-                                    in: RoundedRectangle(cornerRadius: 12))
+                        HStack {
+                            if let mostUsedItem = mostUsedItem() {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(mostUsedItem.name)
+                                        .contentTransition(.interpolate)
+                                    Text("MOST USED ITEM")
+                                        .font(.caption2)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .fontDesign(.rounded)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color(.secondarySystemGroupedBackground),
+                                            in: RoundedRectangle(cornerRadius: 12))
+                            }
+                            if let mostUsedStrain = mostUsedStrain() {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(mostUsedStrain)
+                                        .contentTransition(.interpolate)
+                                    Text("MOST USED STRAIN")
+                                        .font(.caption2)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .fontDesign(.rounded)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color(.secondarySystemGroupedBackground),
+                                            in: RoundedRectangle(cornerRadius: 12))
+                            }
+                        }
                     }
+                    .padding(.vertical)
                 }
+                .padding(.horizontal)
+            }
+            .background(Color(.systemGroupedBackground))
+        } label: {
+            VStack(alignment: .leading) {
                 HStack {
-                    if let mostUsedItem = mostUsedItem() {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(mostUsedItem.name)
-                                .contentTransition(.interpolate)
-                            Text("MOST USED ITEM")
-                                .font(.caption2)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.secondary)
-                        }
+                    Image(systemName: "rectangle.stack.fill")
+                        .foregroundStyle(.primary.opacity(0.5))
+                    Text("Sessions Logged")
+                        .fontWeight(.semibold)
                         .fontDesign(.rounded)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 12)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color(.secondarySystemGroupedBackground),
-                                    in: RoundedRectangle(cornerRadius: 12))
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.tertiary)
+                }
+                HStack(alignment: .bottom) {
+                    HStack(spacing: 0) {
+                        Text(sessions.count, format: .number)
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .fontDesign(.rounded)
+                            .contentTransition(.numericText(value: Double(sessions.count)))
+                        Text(" sessions")
+                            .fontDesign(.rounded)
+                            .foregroundStyle(.secondary)
                     }
-                    if let mostUsedStrain = mostUsedStrain() {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(mostUsedStrain)
-                                .contentTransition(.interpolate)
-                            Text("MOST USED STRAIN")
-                                .font(.caption2)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.secondary)
-                        }
-                        .fontDesign(.rounded)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 12)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color(.secondarySystemGroupedBackground),
-                                    in: RoundedRectangle(cornerRadius: 12))
-                    }
+                    .padding(.bottom)
+                    Spacer()
+                    chart
+                        .frame(width: 80, height: 60)
+                        .chartXAxis(.hidden)
+                        .chartYAxis(.hidden)
+                        .opacity(0.5)
                 }
             }
-            .padding(.vertical)
+            .padding(.horizontal)
+            .padding(.top)
+            .background(Color(.secondarySystemGroupedBackground),
+                        in: RoundedRectangle(cornerRadius: 12))
         }
+        .tint(.primary)
     }
     
     @ViewBuilder
@@ -114,13 +171,11 @@ struct UsagePatternsView: View {
     }
     
     var monthChart: some View {
-        Chart {
-            ForEach(groupSessionsByDay(), id: \.date) { data in
-                BarMark(
-                    x: .value("Date", data.date, unit: .day),
-                    y: .value("Sessions", data.count)
-                )
-            }
+        Chart(groupSessionsByDay()) {
+            BarMark(
+                x: .value("Date", $0.date, unit: .day),
+                y: .value("Sessions", $0.count)
+            )
         }
         .chartXAxis {
             AxisMarks(values: .stride(by: .day)) { _ in
@@ -132,13 +187,11 @@ struct UsagePatternsView: View {
     }
     
     var yearChart: some View {
-        Chart {
-            ForEach(groupSessionsByMonth(), id: \.date) { data in
-                BarMark(
-                    x: .value("Date", data.date, unit: .month),
-                    y: .value("Sessions", data.count)
-                )
-            }
+        Chart(groupSessionsByMonth()) {
+            BarMark(
+                x: .value("Date", $0.date, unit: .month),
+                y: .value("Sessions", $0.count)
+            )
         }
         .chartXAxis {
             AxisMarks(values: .stride(by: .month)) { _ in
@@ -196,6 +249,22 @@ struct UsagePatternsView: View {
         return mostUsedItems.min(by: { $0.createdAt < $1.createdAt })
     }
     
+    @ViewBuilder
+    var dateLabel: some View {
+        switch filter {
+        case .week:
+            HStack(spacing: 0){
+                Text(filter.dateRange().0.formatted(date: .abbreviated, time: .omitted))
+                Text("-")
+                Text(filter.dateRange().1.formatted(date: .abbreviated, time: .omitted))
+            }
+        case .month:
+            Text(filter.dateRange().0, format: .dateTime.month(.wide).year())
+        case .year:
+            Text(filter.dateRange().0, format: .dateTime.year())
+        }
+    }
+    
     init(filter: Binding<DateFilter>) {
         self._filter = filter
         let (startDate, endDate) = filter.wrappedValue.dateRange()
@@ -211,15 +280,10 @@ struct UsagePatternsView: View {
 
 #Preview {
     @Previewable @State var filter: DateFilter = .week
-    VStack {
-        Picker("Date Range", selection: $filter) {
-            ForEach(DateFilter.allCases, id: \.self) { filterSelection in
-                Text(filterSelection.rawValue.localizedCapitalized).tag(filterSelection)
-            }
+    NavigationStack {
+        VStack {
+            UsagePatternsView(filter: $filter)
         }
-        .pickerStyle(SegmentedPickerStyle())
-        UsagePatternsView(filter: $filter)
     }
-    .padding()
     .modelContext(SampleData.shared.context)
 }
