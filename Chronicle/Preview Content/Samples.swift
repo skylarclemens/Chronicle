@@ -33,6 +33,37 @@ extension Session {
         Session(title: "Test sesh", notes: "Hi :)", favorite: true),
         Session(title: "2nd test sesh")
     ]
+    
+    static var randomDatesSampleData: [Session] {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        let threeMonthsAgo = calendar.date(byAdding: .month, value: -3, to: currentDate)!
+        
+        let strains = ["Blue Dream", "OG Kush", "Sour Diesel", "Girl Scout Cookies", "Purple Haze"]
+        let locations = ["Home", "Park", "Friend's House", "Beach", "Concert"]
+        
+        return (0..<50).map { index in
+            let randomDate = Date.random(in: threeMonthsAgo...currentDate)
+            let randomLocation = locations.randomElement()
+            
+            return Session(
+                id: UUID(),
+                createdAt: randomDate,
+                title: "Session \(index + 1)",
+                date: randomDate,
+                duration: TimeInterval.random(in: 600...3600),  // 10 minutes to 1 hour
+                amountConsumed: Double.random(in: 0.1...1.0),
+                notes: "Sample session notes for session \(index + 1)",
+                location: randomLocation,
+                favorite: Bool.random(),
+                mood: Mood(
+                    type: MoodType.allCases.randomElement()!,
+                    valence: Double.random(in: -1.0...1.0),
+                    emotions: Array(Emotion.initialEmotions.shuffled().prefix(3))
+                )
+            )
+        }.sorted { $0.date < $1.date }
+    }
 }
 
 extension Strain {

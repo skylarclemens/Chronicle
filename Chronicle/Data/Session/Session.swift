@@ -73,6 +73,19 @@ import SwiftUI
         }
     }
     
+    static func dateRangePredicate(
+        startDate: Date?, endDate: Date?
+    ) -> Predicate<Session> {
+        if let startDate, let endDate {
+            return #Predicate<Session> { session in
+                return session.date >= startDate && session.date <= endDate
+            }
+        }
+        return #Predicate<Session> { session in
+            return true
+        }
+    }
+    
     static var dashboardDescriptor: FetchDescriptor<Session> {
         var descriptor = FetchDescriptor<Session>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
         descriptor.fetchLimit = 3

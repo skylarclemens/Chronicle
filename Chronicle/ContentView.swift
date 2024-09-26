@@ -16,15 +16,23 @@ struct ContentView: View {
         TabView {
             DashboardView()
                 .tabItem {
-                    Image(systemName: "square.grid.2x2")
+                    Label("Dashboard", systemImage: "square.grid.2x2")
+                        .labelStyle(.iconOnly)
                 }
             JournalView()
                 .tabItem {
-                    Image(systemName: "book")
+                    Label("Journal", systemImage: "book")
+                        .labelStyle(.iconOnly)
                 }
             InventoryView()
                 .tabItem {
-                    Image(systemName: "tray")
+                    Label("Stash", systemImage: "tray")
+                        .labelStyle(.iconOnly)
+                }
+            AnalyticsView()
+                .tabItem {
+                    Label("Analytics", systemImage: "chart.bar.xaxis")
+                        .labelStyle(.iconOnly)
                 }
         }
         .preferredColorScheme(.dark)

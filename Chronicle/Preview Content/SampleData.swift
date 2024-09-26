@@ -62,6 +62,11 @@ class SampleData {
             container.mainContext.insert(tag)
         }
         
+        for randomDateSession in Session.randomDatesSampleData {
+            randomDateSession.item = item
+            container.mainContext.insert(session)
+        }
+        
         item.strain = strain
         item.sessions.append(session)
         item.purchases.append(purchase)
@@ -84,6 +89,10 @@ class SampleData {
     
     var session: Session {
         Session.sampleData[0]
+    }
+    
+    var randomDatesSessions: [Session] {
+        Session.randomDatesSampleData
     }
     
     var strain: Strain {
