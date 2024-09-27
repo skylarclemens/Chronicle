@@ -35,7 +35,7 @@ struct ContentView: View {
                         .labelStyle(.iconOnly)
                 }
         }
-        .preferredColorScheme(.dark)
+        .colorSchemeStyle()
         .overlay {
             if imageViewManager.showImageViewer {
                 ImageViewerView()

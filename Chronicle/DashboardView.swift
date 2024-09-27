@@ -136,18 +136,24 @@ struct DashboardView: View {
                     .scrollIndicators(.hidden)
                 }
                 .toolbar {
-                    Menu("Add", systemImage: "plus") {
-                        Button("Add Session") {
-                            self.openAddSession = true
-                        }
-                        Button("Add Item") {
-                            self.openAddItem = true
-                        }
-                        Button("Add Strain") {
-                            self.openAddStrain = true
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Settings", systemImage: "person.crop.circle") {
+                            
                         }
                     }
-                    
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu("Add", systemImage: "plus") {
+                            Button("Add Session") {
+                                self.openAddSession = true
+                            }
+                            Button("Add Item") {
+                                self.openAddItem = true
+                            }
+                            Button("Add Strain") {
+                                self.openAddStrain = true
+                            }
+                        }
+                    }
                 }
                 .navigationTitle("Dashboard")
                 .sheet(isPresented: $openAddItem) {
