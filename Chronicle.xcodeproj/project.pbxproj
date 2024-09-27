@@ -30,6 +30,10 @@
 		7E3B557E2C8A3AEF00AB0961 /* HorizontalImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3B557D2C8A3AEF00AB0961 /* HorizontalImagesView.swift */; };
 		7E3B55832C8A524D00AB0961 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3B55822C8A524D00AB0961 /* Binding.swift */; };
 		7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */; };
+		7E45402D2CA7536A00ADB083 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E45402C2CA7536A00ADB083 /* SettingsView.swift */; };
+		7E45402F2CA753AF00ADB083 /* AppearanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E45402E2CA753AF00ADB083 /* AppearanceView.swift */; };
+		7E4540322CA7560300ADB083 /* DisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4540312CA755F900ADB083 /* DisplayMode.swift */; };
+		7E4540342CA7572300ADB083 /* ColorSchemeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4540332CA7572300ADB083 /* ColorSchemeViewModifier.swift */; };
 		7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E523C162C77990D005B6186 /* SessionDetailsView.swift */; };
 		7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E523C182C77BFD6005B6186 /* ImageGridView.swift */; };
 		7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301E72C74F44000909048 /* StrainDetailsView.swift */; };
@@ -103,6 +107,10 @@
 		7E3B557D2C8A3AEF00AB0961 /* HorizontalImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalImagesView.swift; sourceTree = "<group>"; };
 		7E3B55822C8A524D00AB0961 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModelContainer.swift; sourceTree = "<group>"; };
+		7E45402C2CA7536A00ADB083 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7E45402E2CA753AF00ADB083 /* AppearanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceView.swift; sourceTree = "<group>"; };
+		7E4540312CA755F900ADB083 /* DisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMode.swift; sourceTree = "<group>"; };
+		7E4540332CA7572300ADB083 /* ColorSchemeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewModifier.swift; sourceTree = "<group>"; };
 		7E523C162C77990D005B6186 /* SessionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailsView.swift; sourceTree = "<group>"; };
 		7E523C182C77BFD6005B6186 /* ImageGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridView.swift; sourceTree = "<group>"; };
 		7E5301E72C74F44000909048 /* StrainDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailsView.swift; sourceTree = "<group>"; };
@@ -239,6 +247,25 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		7E45402B2CA7535D00ADB083 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				7E45402C2CA7536A00ADB083 /* SettingsView.swift */,
+				7E45402E2CA753AF00ADB083 /* AppearanceView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		7E4540302CA755DB00ADB083 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				7E4540312CA755F900ADB083 /* DisplayMode.swift */,
+				7E2504D92C76838500496296 /* ColorData.swift */,
+				7E164A612CA4C70C008996F1 /* DateFilter.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		7E523C1A2C77E0DE005B6186 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -332,6 +359,7 @@
 			isa = PBXGroup;
 			children = (
 				7EB685532CA48DCD002C1759 /* ImagesPicker.swift */,
+				7E4540332CA7572300ADB083 /* ColorSchemeViewModifier.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -355,6 +383,7 @@
 		7EC008EB2C5EEDE80093217B /* Chronicle */ = {
 			isa = PBXGroup;
 			children = (
+				7E45402B2CA7535D00ADB083 /* Settings */,
 				7E5581362C823CD700F461EB /* Analytics */,
 				7E2504DB2C768CA900496296 /* UI */,
 				7EB685522CA48DB9002C1759 /* Utility */,
@@ -389,6 +418,7 @@
 		7EC008FC2C5EF1A00093217B /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				7E4540302CA755DB00ADB083 /* Utility */,
 				7E3B557F2C8A4D0900AB0961 /* Extensions */,
 				7E309D9A2C7936DD0004A25A /* Managers */,
 				7EE6261B2C6A947700448F80 /* Item */,
@@ -396,8 +426,6 @@
 				7E08D41A2C6BD99100F96328 /* Strain */,
 				7EDFFA512CA1EB4D0033163E /* Tag */,
 				7EFCC6092C7E6DA20090588D /* Traits */,
-				7E2504D92C76838500496296 /* ColorData.swift */,
-				7E164A612CA4C70C008996F1 /* DateFilter.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -525,6 +553,7 @@
 				7EB685542CA48DCD002C1759 /* ImagesPicker.swift in Sources */,
 				7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */,
 				7E7DDC192C66A8730057F983 /* ItemEditorView.swift in Sources */,
+				7E4540342CA7572300ADB083 /* ColorSchemeViewModifier.swift in Sources */,
 				7EF0BB182C6D3CDD0068542D /* Samples.swift in Sources */,
 				7E0DE5262CA5D5A7003C0642 /* Date.swift in Sources */,
 				7E3B557E2C8A3AEF00AB0961 /* HorizontalImagesView.swift in Sources */,
@@ -543,6 +572,8 @@
 				7E7349B92C81148B00262930 /* SessionsListView.swift in Sources */,
 				7EFCC6112C7E6F040090588D /* Compound.swift in Sources */,
 				7E08D41C2C6BD9A400F96328 /* StrainType.swift in Sources */,
+				7E45402F2CA753AF00ADB083 /* AppearanceView.swift in Sources */,
+				7E45402D2CA7536A00ADB083 /* SettingsView.swift in Sources */,
 				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
 				7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */,
@@ -582,6 +613,7 @@
 				7EC008ED2C5EEDE80093217B /* ChronicleApp.swift in Sources */,
 				7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */,
 				7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */,
+				7E4540322CA7560300ADB083 /* DisplayMode.swift in Sources */,
 				7ED7478F2C8BA9A100F07679 /* MoodSelectorView.swift in Sources */,
 				7E656A2B2C94CED300C6FD6A /* PillStyle.swift in Sources */,
 				7E2504DD2C768CDB00496296 /* DetailSection.swift in Sources */,
