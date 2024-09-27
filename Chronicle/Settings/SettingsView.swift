@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         NavigationStack {
             List {
@@ -20,6 +22,14 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Close", systemImage: "xmark.circle.fill") {
+                        dismiss()
+                    }
+                    .tint(.secondary)
+                }
+            }
         }
     }
 }

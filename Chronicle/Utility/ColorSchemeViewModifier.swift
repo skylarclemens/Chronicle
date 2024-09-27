@@ -12,7 +12,12 @@ struct ColorSchemeViewModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .preferredColorScheme(selectedAppearance.colorScheme)
+            .onChange(of: selectedAppearance) {
+                selectedAppearance.displayOverride()
+            }
+            .onAppear {
+                selectedAppearance.displayOverride()
+            }
     }
 }
 

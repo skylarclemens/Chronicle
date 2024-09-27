@@ -11,14 +11,16 @@ import SwiftUI
 enum DisplayMode: Int {
     case system, light, dark
     
-    var colorScheme: ColorScheme? {
+    func displayOverride() {
+        var uiStyle: UIUserInterfaceStyle
+        
         switch self {
-        case .system:
-            .none
-        case .light:
-            .light
-        case .dark:
-            .dark
+        case .system: uiStyle = .unspecified
+        case .light: uiStyle = .light
+        case .dark: uiStyle = .dark
         }
+        
+        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        scene?.keyWindow?.overrideUserInterfaceStyle = uiStyle
     }
 }

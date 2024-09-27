@@ -16,6 +16,7 @@ struct DashboardView: View {
     @State private var openAddItem: Bool = false
     @State private var openAddStrain: Bool = false
     @State private var openAddSession: Bool = false
+    @State private var openSettings: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -138,7 +139,7 @@ struct DashboardView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button("Settings", systemImage: "person.crop.circle") {
-                            
+                            self.openSettings = true
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
@@ -164,6 +165,9 @@ struct DashboardView: View {
                 }
                 .sheet(isPresented: $openAddSession) {
                     SessionEditorView()
+                }
+                .sheet(isPresented: $openSettings) {
+                    SettingsView()
                 }
             }
             .scrollContentBackground(.hidden)
