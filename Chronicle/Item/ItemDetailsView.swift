@@ -51,25 +51,11 @@ struct ItemDetailsView: View {
                         HStack(alignment: .center) {
                             Text(item.type.label())
                                 .font(.footnote)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(.ultraThickMaterial,
-                                            in: RoundedRectangle(cornerRadius: 24))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 24)
-                                        .stroke(.tertiary, lineWidth: 1)
-                                )
+                                .infoPillStyle()
                             if let strain = item.strain {
                                 Text(strain.type.rawValue.localizedCapitalized)
                                     .font(.footnote)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(.ultraThickMaterial,
-                                                in: RoundedRectangle(cornerRadius: 24))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 24)
-                                            .stroke(.tertiary, lineWidth: 1)
-                                    )
+                                    .infoPillStyle()
                                 HStack {
                                     Image(systemName: "leaf")
                                         .font(.system(size: 12))
@@ -77,14 +63,7 @@ struct ItemDetailsView: View {
                                     Text(strain.name)
                                 }
                                     .font(.footnote)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(.accent.opacity(0.2),
-                                                in: RoundedRectangle(cornerRadius: 24))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 24)
-                                            .stroke(.tertiary, lineWidth: 1)
-                                    )
+                                    .infoPillStyle(.accent)
                             }
                             Spacer()
                             if item.favorite {

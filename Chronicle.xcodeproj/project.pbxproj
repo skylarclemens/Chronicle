@@ -68,8 +68,16 @@
 		7EC009022C5EF1F70093217B /* Strain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC009012C5EF1F70093217B /* Strain.swift */; };
 		7ECAE68B2CA86A0B00ECEFD9 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE68A2CA86A0B00ECEFD9 /* AudioPlayerView.swift */; };
 		7ECAE68D2CA86A9D00ECEFD9 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE68C2CA86A9D00ECEFD9 /* Format.swift */; };
+		7ECAE6922CA87B9800ECEFD9 /* Accessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE6912CA87B9400ECEFD9 /* Accessory.swift */; };
+		7ECAE6952CA8805600ECEFD9 /* AccessoryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE6942CA8805600ECEFD9 /* AccessoryEditorView.swift */; };
+		7ECAE6982CA8934700ECEFD9 /* AccessoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE6972CA8934700ECEFD9 /* AccessoryListView.swift */; };
+		7ECAE69A2CA8936D00ECEFD9 /* AccessoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE6992CA8936D00ECEFD9 /* AccessoryRowView.swift */; };
+		7ECAE69C2CA8937400ECEFD9 /* AccessoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */; };
 		7ECAFC272C6410340056A44E /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC262C6410340056A44E /* Session.swift */; };
 		7ECAFC2A2C6421310056A44E /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC292C6421310056A44E /* SampleData.swift */; };
+		7ED0D8002CA8ABFF00FF8D8A /* InfoPillStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0D7FF2CA8ABFF00FF8D8A /* InfoPillStyle.swift */; };
+		7ED0D8022CA8C05D00FF8D8A /* SessionRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0D8012CA8C05D00FF8D8A /* SessionRowView.swift */; };
+		7ED0D8062CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0D8052CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift */; };
 		7ED7478D2C8A909E00F07679 /* NotesEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED7478C2C8A909E00F07679 /* NotesEditorView.swift */; };
 		7ED7478F2C8BA9A100F07679 /* MoodSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */; };
 		7ED747912C8BB3F100F07679 /* CustomSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED747902C8BB3F100F07679 /* CustomSliderView.swift */; };
@@ -85,7 +93,6 @@
 		7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60E2C7E6DC90090588D /* Emotion.swift */; };
 		7EFCC6112C7E6F040090588D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6102C7E6F040090588D /* Compound.swift */; };
 		7EFCC6132C7E6F420090588D /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6122C7E6F420090588D /* Amount.swift */; };
-		7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -151,8 +158,16 @@
 		7EC009012C5EF1F70093217B /* Strain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strain.swift; sourceTree = "<group>"; };
 		7ECAE68A2CA86A0B00ECEFD9 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		7ECAE68C2CA86A9D00ECEFD9 /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
+		7ECAE6912CA87B9400ECEFD9 /* Accessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessory.swift; sourceTree = "<group>"; };
+		7ECAE6942CA8805600ECEFD9 /* AccessoryEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryEditorView.swift; sourceTree = "<group>"; };
+		7ECAE6972CA8934700ECEFD9 /* AccessoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryListView.swift; sourceTree = "<group>"; };
+		7ECAE6992CA8936D00ECEFD9 /* AccessoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryRowView.swift; sourceTree = "<group>"; };
+		7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryDetailsView.swift; sourceTree = "<group>"; };
 		7ECAFC262C6410340056A44E /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		7ECAFC292C6421310056A44E /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
+		7ED0D7FF2CA8ABFF00FF8D8A /* InfoPillStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPillStyle.swift; sourceTree = "<group>"; };
+		7ED0D8012CA8C05D00FF8D8A /* SessionRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRowView.swift; sourceTree = "<group>"; };
+		7ED0D8052CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoriesSelectorView.swift; sourceTree = "<group>"; };
 		7ED7478C2C8A909E00F07679 /* NotesEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesEditorView.swift; sourceTree = "<group>"; };
 		7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodSelectorView.swift; sourceTree = "<group>"; };
 		7ED747902C8BB3F100F07679 /* CustomSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSliderView.swift; sourceTree = "<group>"; };
@@ -168,7 +183,6 @@
 		7EFCC60E2C7E6DC90090588D /* Emotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
 		7EFCC6102C7E6F040090588D /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
 		7EFCC6122C7E6F420090588D /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
-		7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +223,7 @@
 				7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */,
 				7E079F872C8CFE4E009391D0 /* MoodDescriptorSelectView.swift */,
 				7ED747902C8BB3F100F07679 /* CustomSliderView.swift */,
+				7ED0D8052CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift */,
 			);
 			path = AddSession;
 			sourceTree = "<group>";
@@ -232,7 +247,6 @@
 				7E1D086D2C977D15004B39D5 /* Purchase.swift */,
 				7EFCC6102C7E6F040090588D /* Compound.swift */,
 				7EFCC6122C7E6F420090588D /* Amount.swift */,
-				7EFCC6142C7E6F4F0090588D /* PurchaseInfo.swift */,
 				7EE6261C2C6A948500448F80 /* ItemType.swift */,
 			);
 			path = Details;
@@ -314,6 +328,7 @@
 				7E70B9802C9253450092ECE7 /* Button */,
 				7E9ACB512CA1F67400CFF92D /* TagStyle.swift */,
 				7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */,
+				7ED0D7FF2CA8ABFF00FF8D8A /* InfoPillStyle.swift */,
 				7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */,
 			);
 			path = Styles;
@@ -354,6 +369,7 @@
 				7EE6261E2C6AC3F300448F80 /* ItemEditor */,
 				7E08D4172C6BD80600F96328 /* StrainEditor */,
 				7E08D41F2C6BF6C000F96328 /* AddSession */,
+				7ECAE6932CA8803D00ECEFD9 /* AccessoryEditor */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -364,6 +380,7 @@
 				7E951D042C73E7E20023922C /* CompactSessionCardView.swift */,
 				7E523C162C77990D005B6186 /* SessionDetailsView.swift */,
 				7E7349B82C81148B00262930 /* SessionsListView.swift */,
+				7ED0D8012CA8C05D00FF8D8A /* SessionRowView.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -402,6 +419,7 @@
 				7E2504DB2C768CA900496296 /* UI */,
 				7EB685522CA48DB9002C1759 /* Utility */,
 				7E951D022C73D1260023922C /* Add */,
+				7ECAE6962CA8933400ECEFD9 /* Accessory */,
 				7E951D012C73D1140023922C /* Item */,
 				7E951D032C73E7C70023922C /* Session */,
 				7E5301E42C74490300909048 /* Strain */,
@@ -432,6 +450,7 @@
 		7EC008FC2C5EF1A00093217B /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				7ECAE6902CA87B8D00ECEFD9 /* Accessory */,
 				7E4540302CA755DB00ADB083 /* Utility */,
 				7E3B557F2C8A4D0900AB0961 /* Extensions */,
 				7E309D9A2C7936DD0004A25A /* Managers */,
@@ -451,6 +470,32 @@
 				7ECAE68A2CA86A0B00ECEFD9 /* AudioPlayerView.swift */,
 			);
 			path = Audio;
+			sourceTree = "<group>";
+		};
+		7ECAE6902CA87B8D00ECEFD9 /* Accessory */ = {
+			isa = PBXGroup;
+			children = (
+				7ECAE6912CA87B9400ECEFD9 /* Accessory.swift */,
+			);
+			path = Accessory;
+			sourceTree = "<group>";
+		};
+		7ECAE6932CA8803D00ECEFD9 /* AccessoryEditor */ = {
+			isa = PBXGroup;
+			children = (
+				7ECAE6942CA8805600ECEFD9 /* AccessoryEditorView.swift */,
+			);
+			path = AccessoryEditor;
+			sourceTree = "<group>";
+		};
+		7ECAE6962CA8933400ECEFD9 /* Accessory */ = {
+			isa = PBXGroup;
+			children = (
+				7ECAE6972CA8934700ECEFD9 /* AccessoryListView.swift */,
+				7ECAE6992CA8936D00ECEFD9 /* AccessoryRowView.swift */,
+				7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */,
+			);
+			path = Accessory;
 			sourceTree = "<group>";
 		};
 		7EDFFA512CA1EB4D0033163E /* Tag */ = {
@@ -570,6 +615,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ED0D8062CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift in Sources */,
 				7ED747932C8BC67B00F07679 /* CGFloat.swift in Sources */,
 				7ED747912C8BB3F100F07679 /* CustomSliderView.swift in Sources */,
 				7EF0BB162C6D3A2D0068542D /* ItemDetailsView.swift in Sources */,
@@ -580,6 +626,7 @@
 				7EF0BB182C6D3CDD0068542D /* Samples.swift in Sources */,
 				7E0DE5262CA5D5A7003C0642 /* Date.swift in Sources */,
 				7E3B557E2C8A3AEF00AB0961 /* HorizontalImagesView.swift in Sources */,
+				7ED0D8022CA8C05D00FF8D8A /* SessionRowView.swift in Sources */,
 				7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */,
 				7EDFFA562CA1ED430033163E /* TagEditorView.swift in Sources */,
 				7EC009022C5EF1F70093217B /* Strain.swift in Sources */,
@@ -589,9 +636,9 @@
 				7EDFFA532CA1EB650033163E /* Tag.swift in Sources */,
 				7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */,
 				7E45403A2CA7776B00ADB083 /* VoiceRecordingView.swift in Sources */,
-				7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */,
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
+				7ECAE69C2CA8937400ECEFD9 /* AccessoryDetailsView.swift in Sources */,
 				7E164A602CA4C565008996F1 /* UsagePatternsView.swift in Sources */,
 				7E7349B92C81148B00262930 /* SessionsListView.swift in Sources */,
 				7EFCC6112C7E6F040090588D /* Compound.swift in Sources */,
@@ -600,9 +647,11 @@
 				7E45402D2CA7536A00ADB083 /* SettingsView.swift in Sources */,
 				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
+				7ECAE6922CA87B9800ECEFD9 /* Accessory.swift in Sources */,
 				7ECAE68B2CA86A0B00ECEFD9 /* AudioPlayerView.swift in Sources */,
 				7E4540362CA76DD500ADB083 /* AudioRecorder.swift in Sources */,
 				7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */,
+				7ECAE6952CA8805600ECEFD9 /* AccessoryEditorView.swift in Sources */,
 				7E9ACB522CA1F67700CFF92D /* TagStyle.swift in Sources */,
 				7E0DE5242CA5CDF8003C0642 /* AnalyticsView.swift in Sources */,
 				7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */,
@@ -632,11 +681,14 @@
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
 				7E079F882C8CFE4E009391D0 /* MoodDescriptorSelectView.swift in Sources */,
+				7ECAE69A2CA8936D00ECEFD9 /* AccessoryRowView.swift in Sources */,
 				7E3B55832C8A524D00AB0961 /* Binding.swift in Sources */,
 				7E7349B72C80EEC800262930 /* ItemsListView.swift in Sources */,
 				7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */,
+				7ED0D8002CA8ABFF00FF8D8A /* InfoPillStyle.swift in Sources */,
 				7EC008F12C5EEDE80093217B /* Item.swift in Sources */,
 				7E309D992C792DF40004A25A /* ImageViewerView.swift in Sources */,
+				7ECAE6982CA8934700ECEFD9 /* AccessoryListView.swift in Sources */,
 				7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */,
 				7EC008ED2C5EEDE80093217B /* ChronicleApp.swift in Sources */,
 				7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */,

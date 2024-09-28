@@ -66,6 +66,13 @@ extension Session {
     }
 }
 
+extension Accessory {
+    static let sampleData: [Accessory] = [
+        Accessory(name: "My Bong", type: .bong, purchase: Purchase(date: Date(), price: 100, location: "Online"), brand: "Brand", favorite: true),
+        Accessory(name: "Pipe", type: .pipe, purchase: Purchase(date: Date(), price: 20, location: "Upstate"), brand: "Brand")
+    ]
+}
+
 extension Strain {
     static let sampleData: [Strain] = [
         Strain(name: "Blue Dream", type: .hybrid, desc: "test"),

@@ -17,6 +17,7 @@ struct SessionEditorView: View {
     @State private var openNotes: Bool = false
     @State private var openMood: Bool = false
     @State private var openTags: Bool = false
+    @State private var openAccessories: Bool = false
     @State private var openRecorder: Bool = false
     @State private var showRecording: Bool = false
     @State private var showingImagesPicker: Bool = false
@@ -201,7 +202,7 @@ struct SessionEditorView: View {
                         }
                         .padding(.top)
                         Section {
-                            SessionEditorAdditionalView(viewModel: $viewModel, openTags: $openTags)
+                            SessionEditorAdditionalView(viewModel: $viewModel, openTags: $openTags, openAccessories: $openAccessories)
                         }
                         .padding(.top)
                     }
@@ -347,6 +348,9 @@ struct SessionEditorView: View {
             .sheet(isPresented: $openTags) {
                 TagEditorView(tags: $viewModel.tags, context: .session)
             }
+            .sheet(isPresented: $openAccessories) {
+                AccessoriesSelectorView(accessories: $viewModel.accessories)
+            }
         }
         .onAppear {
             if let session {
@@ -359,6 +363,7 @@ struct SessionEditorView: View {
                 viewModel.selectedImagesData = session.imagesData ?? []
                 viewModel.amountConsumed = session.amountConsumed
                 viewModel.tags = session.tags
+                viewModel.accessories = session.accessories
                 viewModel.audioData = session.audioData
                 
                 if let mood = session.mood {
@@ -383,6 +388,7 @@ struct SessionEditorView: View {
             session.imagesData = viewModel.selectedImagesData
             session.mood = viewModel.mood
             session.tags = viewModel.tags
+            session.accessories = viewModel.accessories
             session.audioData = viewModel.audioData
             if let amountConsumed = viewModel.amountConsumed {
                 session.amountConsumed = amountConsumed
@@ -404,6 +410,7 @@ struct SessionEditorView: View {
 struct SessionEditorAdditionalView: View {
     @Binding var viewModel: SessionEditorViewModel
     @Binding var openTags: Bool
+    @Binding var openAccessories: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -411,27 +418,54 @@ struct SessionEditorAdditionalView: View {
                 .font(.title3)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Button {
-                openTags = true
-            } label: {
-                HStack {
-                    Text("Tags")
-                        .foregroundStyle(.primary)
-                    Spacer()
+            VStack {
+                Button {
+                    openAccessories = true
+                } label: {
                     HStack {
-                        if !viewModel.tags.isEmpty {
-                            Text("\(viewModel.tags.count)") +
-                            Text(" selected")
+                        Image(systemName: "wrench.and.screwdriver.fill")
+                            .foregroundStyle(.secondary)
+                        Text("Accessories")
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        HStack {
+                            if !viewModel.accessories.isEmpty {
+                                Text("\(viewModel.accessories.count)") +
+                                Text(" selected")
+                            }
+                            Image(systemName: "chevron.right")
                         }
-                        Image(systemName: "chevron.right")
+                        .foregroundStyle(.secondary)
                     }
-                    .foregroundStyle(.secondary)
+                    .padding()
+                    .background(Color(UIColor.secondarySystemGroupedBackground),
+                                in: RoundedRectangle(cornerRadius: 12))
                 }
-                .padding()
-                .background(Color(UIColor.secondarySystemGroupedBackground),
-                            in: RoundedRectangle(cornerRadius: 12))
+                .buttonStyle(.plain)
+                Button {
+                    openTags = true
+                } label: {
+                    HStack {
+                        Image(systemName: "tag.fill")
+                            .foregroundStyle(.secondary)
+                        Text("Tags")
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        HStack {
+                            if !viewModel.tags.isEmpty {
+                                Text("\(viewModel.tags.count)") +
+                                Text(" selected")
+                            }
+                            Image(systemName: "chevron.right")
+                        }
+                        .foregroundStyle(.secondary)
+                    }
+                    .padding()
+                    .background(Color(UIColor.secondarySystemGroupedBackground),
+                                in: RoundedRectangle(cornerRadius: 12))
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
     }
 }
@@ -447,6 +481,7 @@ class SessionEditorViewModel {
     var location: String = ""
     var amountConsumed: Double? = nil
     var tags: [Tag] = []
+    var accessories: [Accessory] = []
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []

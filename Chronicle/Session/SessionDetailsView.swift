@@ -51,38 +51,52 @@ struct SessionDetailsView: View {
                                         .foregroundStyle(.accent)
                                 }
                             }
-                            .padding(.vertical, 6)
-                            .padding(.horizontal, 8)
-                            .frame(maxHeight: 24)
-                            .background(.accent.opacity(0.2),
-                                        in: RoundedRectangle(cornerRadius: 24))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 24)
-                                    .stroke(.tertiary, lineWidth: 1)
-                            )
+                            .infoPillStyle(.accent)
                             if let strain = item.strain {
                                 Text(strain.type.rawValue.localizedCapitalized)
                                     .font(.footnote)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(.ultraThickMaterial,
-                                                in: RoundedRectangle(cornerRadius: 24))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 24)
-                                            .stroke(.tertiary, lineWidth: 1)
-                                    )
+                                    .infoPillStyle()
                             }
                         }
                     }
-                    if let amountConsumed = session.amountConsumed {
-                        DetailSection(header: "Amount") {} headerRight: {
-                            HStack(spacing: 0) {
-                                Text(amountConsumed, format: .number)
-                                Text(" \(session.item?.unit ?? "")")
+                    
+                    if session.amountConsumed != nil || !session.accessories.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Details")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            if let amountConsumed = session.amountConsumed {
+                                DetailSection(header: "Amount") {} headerRight: {
+                                    HStack(spacing: 0) {
+                                        Text(amountConsumed, format: .number)
+                                        Text(" \(session.item?.unit ?? "")")
+                                    }
+                                }
+                                
+                            }
+                            if !session.accessories.isEmpty {
+                                DetailSection(header: "Accessories", isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(session.accessories) { accessory in
+                                                NavigationLink {
+                                                    AccessoryDetailsView(accessory: accessory)
+                                                } label: {
+                                                    Label(accessory.name, systemImage: accessory.type?.symbol() ?? "wrench.and.screwdriver")
+                                                }
+                                                .foregroundStyle(.primary)
+                                                .pillStyle()
+                                            }
+                                        }
+                                    }
+                                    .contentMargins(.horizontal, 16)
+                                    .scrollIndicators(.hidden)
+                                }
                             }
                         }
                         .padding(.top)
                     }
+                    
                     if let notes = session.notes, !notes.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Notes")

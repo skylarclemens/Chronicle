@@ -15,7 +15,7 @@ struct PurchaseRowView: View {
             VStack(alignment: .leading) {
                 HStack {
                     HStack(spacing: 0) {
-                        Text("Purchase from ")
+                        Text("Purchased on ")
                             .foregroundStyle(.secondary)
                         Text(purchase.date.formatted(date: .abbreviated, time: .omitted))
                             .fontWeight(.semibold)

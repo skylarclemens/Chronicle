@@ -285,5 +285,5 @@ struct UsagePatternsView: View {
             UsagePatternsView(filter: $filter)
         }
     }
-    .modelContext(SampleData.shared.context)
+    .modelContainer(SampleData.shared.container)
 }

@@ -46,6 +46,10 @@ class SampleData {
             container.mainContext.insert(session)
         }
         
+        for accessory in Accessory.sampleData {
+            container.mainContext.insert(accessory)
+        }
+        
         for mood in Mood.sampleData {
             container.mainContext.insert(mood)
         }
@@ -78,6 +82,8 @@ class SampleData {
             session.audioData = sampleAudio
         }
         session.tags.append(tag2)
+        session.accessories.append(accessory)
+        accessory.sessions.append(session)
         
         do {
             try context.save()
@@ -92,6 +98,10 @@ class SampleData {
     
     var session: Session {
         Session.sampleData[0]
+    }
+    
+    var accessory: Accessory {
+        Accessory.sampleData[0]
     }
     
     var randomDatesSessions: [Session] {

@@ -188,6 +188,7 @@ struct ItemEditorBasicsView: View {
                     .padding()
                 }
                 .frame(height: 120)
+                .ignoresSafeArea(.keyboard)
             }
         }
         .ignoresSafeArea(edges: .bottom)
