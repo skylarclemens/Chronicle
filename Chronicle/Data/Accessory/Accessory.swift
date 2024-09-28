@@ -12,6 +12,7 @@ import SwiftData
 public class Accessory {
     public var id: UUID
     public var name: String
+    public var createdAt: Date
     public var type: AccessoryType?
     public var purchaseInfo: PurchaseInfo?
     public var lastCleanedDate: Date?
@@ -22,6 +23,7 @@ public class Accessory {
     
     init(id: UUID = UUID(),
          name: String = "",
+         createdAt: Date = Date(),
          type: AccessoryType? = nil,
          purchaseInfo: PurchaseInfo? = nil,
          lastCleanedDate: Date? = nil,
@@ -30,6 +32,7 @@ public class Accessory {
          sessions: [Session] = []) {
         self.id = id
         self.name = name
+        self.createdAt = createdAt
         self.type = type
         self.purchaseInfo = purchaseInfo
         self.lastCleanedDate = lastCleanedDate
@@ -84,5 +87,21 @@ public class Accessory {
         }
         
         public var id: String { return self.rawValue }
+    }
+    
+    static func predicate(
+        filter: InventoryFilter = .all,
+        searchText: String
+    ) -> Predicate<Accessory> {
+        if filter == .favorites {
+            return #Predicate<Accessory> { accessory in
+                (searchText.isEmpty || accessory.name.localizedStandardContains(searchText))
+                &&
+                accessory.favorite
+            }
+        }
+        return #Predicate<Accessory> { accessory in
+            searchText.isEmpty || accessory.name.localizedStandardContains(searchText)
+        }
     }
 }

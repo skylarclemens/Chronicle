@@ -46,6 +46,10 @@ class SampleData {
             container.mainContext.insert(session)
         }
         
+        for accessory in Accessory.sampleData {
+            container.mainContext.insert(accessory)
+        }
+        
         for mood in Mood.sampleData {
             container.mainContext.insert(mood)
         }
@@ -92,6 +96,10 @@ class SampleData {
     
     var session: Session {
         Session.sampleData[0]
+    }
+    
+    var accessory: Accessory {
+        Accessory.sampleData[0]
     }
     
     var randomDatesSessions: [Session] {

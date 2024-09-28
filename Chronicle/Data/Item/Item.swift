@@ -81,7 +81,7 @@ import SwiftUI
     }
     
     static func predicate(
-        filter: ItemFilter = .all,
+        filter: InventoryFilter = .all,
         searchText: String
     ) -> Predicate<Item> {
         if filter == .favorites {

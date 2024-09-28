@@ -70,6 +70,9 @@
 		7ECAE68D2CA86A9D00ECEFD9 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE68C2CA86A9D00ECEFD9 /* Format.swift */; };
 		7ECAE6922CA87B9800ECEFD9 /* Accessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE6912CA87B9400ECEFD9 /* Accessory.swift */; };
 		7ECAE6952CA8805600ECEFD9 /* AccessoryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE6942CA8805600ECEFD9 /* AccessoryEditorView.swift */; };
+		7ECAE6982CA8934700ECEFD9 /* AccessoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE6972CA8934700ECEFD9 /* AccessoryListView.swift */; };
+		7ECAE69A2CA8936D00ECEFD9 /* AccessoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE6992CA8936D00ECEFD9 /* AccessoryRowView.swift */; };
+		7ECAE69C2CA8937400ECEFD9 /* AccessoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */; };
 		7ECAFC272C6410340056A44E /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC262C6410340056A44E /* Session.swift */; };
 		7ECAFC2A2C6421310056A44E /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC292C6421310056A44E /* SampleData.swift */; };
 		7ED7478D2C8A909E00F07679 /* NotesEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED7478C2C8A909E00F07679 /* NotesEditorView.swift */; };
@@ -155,6 +158,9 @@
 		7ECAE68C2CA86A9D00ECEFD9 /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
 		7ECAE6912CA87B9400ECEFD9 /* Accessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessory.swift; sourceTree = "<group>"; };
 		7ECAE6942CA8805600ECEFD9 /* AccessoryEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryEditorView.swift; sourceTree = "<group>"; };
+		7ECAE6972CA8934700ECEFD9 /* AccessoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryListView.swift; sourceTree = "<group>"; };
+		7ECAE6992CA8936D00ECEFD9 /* AccessoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryRowView.swift; sourceTree = "<group>"; };
+		7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryDetailsView.swift; sourceTree = "<group>"; };
 		7ECAFC262C6410340056A44E /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		7ECAFC292C6421310056A44E /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		7ED7478C2C8A909E00F07679 /* NotesEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesEditorView.swift; sourceTree = "<group>"; };
@@ -407,6 +413,7 @@
 				7E2504DB2C768CA900496296 /* UI */,
 				7EB685522CA48DB9002C1759 /* Utility */,
 				7E951D022C73D1260023922C /* Add */,
+				7ECAE6962CA8933400ECEFD9 /* Accessory */,
 				7E951D012C73D1140023922C /* Item */,
 				7E951D032C73E7C70023922C /* Session */,
 				7E5301E42C74490300909048 /* Strain */,
@@ -473,6 +480,16 @@
 				7ECAE6942CA8805600ECEFD9 /* AccessoryEditorView.swift */,
 			);
 			path = AccessoryEditor;
+			sourceTree = "<group>";
+		};
+		7ECAE6962CA8933400ECEFD9 /* Accessory */ = {
+			isa = PBXGroup;
+			children = (
+				7ECAE6972CA8934700ECEFD9 /* AccessoryListView.swift */,
+				7ECAE6992CA8936D00ECEFD9 /* AccessoryRowView.swift */,
+				7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */,
+			);
+			path = Accessory;
 			sourceTree = "<group>";
 		};
 		7EDFFA512CA1EB4D0033163E /* Tag */ = {
@@ -614,6 +631,7 @@
 				7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */,
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
+				7ECAE69C2CA8937400ECEFD9 /* AccessoryDetailsView.swift in Sources */,
 				7E164A602CA4C565008996F1 /* UsagePatternsView.swift in Sources */,
 				7E7349B92C81148B00262930 /* SessionsListView.swift in Sources */,
 				7EFCC6112C7E6F040090588D /* Compound.swift in Sources */,
@@ -656,11 +674,13 @@
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
 				7E079F882C8CFE4E009391D0 /* MoodDescriptorSelectView.swift in Sources */,
+				7ECAE69A2CA8936D00ECEFD9 /* AccessoryRowView.swift in Sources */,
 				7E3B55832C8A524D00AB0961 /* Binding.swift in Sources */,
 				7E7349B72C80EEC800262930 /* ItemsListView.swift in Sources */,
 				7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */,
 				7EC008F12C5EEDE80093217B /* Item.swift in Sources */,
 				7E309D992C792DF40004A25A /* ImageViewerView.swift in Sources */,
+				7ECAE6982CA8934700ECEFD9 /* AccessoryListView.swift in Sources */,
 				7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */,
 				7EC008ED2C5EEDE80093217B /* ChronicleApp.swift in Sources */,
 				7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */,
