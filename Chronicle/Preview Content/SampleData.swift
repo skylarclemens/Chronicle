@@ -82,6 +82,8 @@ class SampleData {
             session.audioData = sampleAudio
         }
         session.tags.append(tag2)
+        session.accessories.append(accessory)
+        accessory.sessions.append(session)
         
         do {
             try context.save()

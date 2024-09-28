@@ -51,26 +51,11 @@ struct SessionDetailsView: View {
                                         .foregroundStyle(.accent)
                                 }
                             }
-                            .padding(.vertical, 6)
-                            .padding(.horizontal, 8)
-                            .frame(maxHeight: 24)
-                            .background(.accent.opacity(0.2),
-                                        in: RoundedRectangle(cornerRadius: 24))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 24)
-                                    .stroke(.tertiary, lineWidth: 1)
-                            )
+                            .infoPillStyle(.accent)
                             if let strain = item.strain {
                                 Text(strain.type.rawValue.localizedCapitalized)
                                     .font(.footnote)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(.ultraThickMaterial,
-                                                in: RoundedRectangle(cornerRadius: 24))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 24)
-                                            .stroke(.tertiary, lineWidth: 1)
-                                    )
+                                    .infoPillStyle()
                             }
                         }
                     }

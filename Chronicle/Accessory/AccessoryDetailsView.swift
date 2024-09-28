@@ -46,11 +46,37 @@ struct AccessoryDetailsView: View {
                         ImageCarouselView(imagesData: accessory.imagesData)
                             .padding(.top)
                     }
+                    .padding(.horizontal)
                     if let purchase = accessory.purchase {
                         PurchaseRowView(purchase: purchase)
+                            .padding(.horizontal)
+                    }
+                    if !accessory.sessions.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Sessions")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal)
+                            VStack(alignment: .leading) {
+                                ScrollView(.horizontal) {
+                                    HStack {
+                                        ForEach(accessory.sessions) { session in
+                                            NavigationLink {
+                                                SessionDetailsView(session: session)
+                                            } label: {
+                                                CompactSessionCardView(session: session)
+                                            }
+                                            .tint(.primary)
+                                        }
+                                    }
+                                }
+                                .scrollIndicators(.hidden)
+                                .contentMargins(.horizontal, 16)
+                            }
+                        }
                     }
                 }
-                .padding(.horizontal)
+                
             }
             .navigationTitle(accessory.name)
             .toolbar {
@@ -103,4 +129,5 @@ struct AccessoryDetailsView: View {
         AccessoryDetailsView(accessory: SampleData.shared.accessory)
     }
     .modelContext(SampleData.shared.context)
+    .environment(ImageViewManager())
 }

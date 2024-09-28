@@ -15,7 +15,7 @@ struct SessionsListView: View {
         List {
             ForEach(sessions) { session in
                 ZStack {
-                    CompactSessionCardView(session: session)
+                    SessionRowView(session: session)
                     NavigationLink(destination: SessionDetailsView(session:session)) {
                         EmptyView()
                     }
