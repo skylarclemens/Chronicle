@@ -82,7 +82,7 @@ struct SessionEditorView: View {
                                     .buttonStyle(.editorInput)
                                 }
                             }
-                            if let recording = viewModel.audioData {
+                            if viewModel.audioData != nil {
                                 Button {
                                     withAnimation {
                                         openRecorder.toggle()

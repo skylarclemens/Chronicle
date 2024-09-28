@@ -68,6 +68,5 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         stopAudio()
         self.currentTime = self.duration
-        print("ended")
     }
 }
