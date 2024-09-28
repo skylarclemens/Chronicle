@@ -22,7 +22,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd, HH:mm:ss"
         do {
-            try audioSession.setCategory(.playAndRecord, mode: .default)
+            try audioSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetoothA2DP])
             try audioSession.setActive(true)
         } catch {
             print("Cannot set up recording: \(error)")

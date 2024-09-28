@@ -18,6 +18,7 @@ struct SessionEditorView: View {
     @State private var openMood: Bool = false
     @State private var openTags: Bool = false
     @State private var openRecorder: Bool = false
+    @State private var showRecording: Bool = false
     @State private var showingImagesPicker: Bool = false
     
     @FocusState var focusedField: Field?
@@ -80,6 +81,19 @@ struct SessionEditorView: View {
                                     }
                                     .buttonStyle(.editorInput)
                                 }
+                            }
+                            if let recording = viewModel.audioData {
+                                Button {
+                                    withAnimation {
+                                        openRecorder.toggle()
+                                    }
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "waveform")
+                                        Text("Audio recording")
+                                    }
+                                }
+                                .buttonStyle(.editorInput)
                             }
                         }
                         if let item = viewModel.item {
@@ -224,11 +238,14 @@ struct SessionEditorView: View {
                     }
                     .ignoresSafeArea(.keyboard)
                     if openRecorder {
-                        Color(UIColor.systemBackground).mask(
-                            LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
-                        )
-                        .allowsHitTesting(false)
-                        VoiceRecordingView(sessionViewModel: $viewModel, openRecorder: $openRecorder)
+                        if showRecording {
+                            Color(UIColor.systemBackground).mask(
+                                LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
+                            )
+                            .allowsHitTesting(false)
+                            .transition(.opacity)
+                        }
+                        VoiceRecordingView(sessionViewModel: $viewModel, openRecorder: $openRecorder, showRecording: $showRecording)
                             .zIndex(1)
                             .transition(.blurReplace)
                     }
@@ -366,6 +383,7 @@ struct SessionEditorView: View {
             session.imagesData = viewModel.selectedImagesData
             session.mood = viewModel.mood
             session.tags = viewModel.tags
+            session.audioData = viewModel.audioData
             if let amountConsumed = viewModel.amountConsumed {
                 session.amountConsumed = amountConsumed
             }
