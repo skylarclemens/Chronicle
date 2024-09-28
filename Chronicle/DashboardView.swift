@@ -170,6 +170,9 @@ struct DashboardView: View {
                 .sheet(isPresented: $openAddSession) {
                     SessionEditorView()
                 }
+                .sheet(isPresented: $openAddAccessory) {
+                    AccessoryEditorView()
+                }
                 .sheet(isPresented: $openSettings) {
                     SettingsView()
                 }

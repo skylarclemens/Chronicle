@@ -38,10 +38,10 @@ public class Accessory {
         self.sessions = sessions
     }
     
-    public enum AccessoryType: String, Codable, CaseIterable {
+    public enum AccessoryType: String, Codable, CaseIterable, Identifiable {
         case bong, pipe, vaporizer, dabRig, grinder, rollingTray, papers, other
         
-        func symbol() -> String {
+        public func symbol() -> String {
             switch self {
             case .bong:
                 "flask"
@@ -61,5 +61,28 @@ public class Accessory {
                 "wrench.and.screwdriver"
             }
         }
+        
+        public func label() -> String {
+            switch self {
+            case .bong:
+                "bong"
+            case .pipe:
+                "pipe"
+            case .vaporizer:
+                "vaporizer"
+            case .dabRig:
+                "dab rig"
+            case .grinder:
+                "grinder"
+            case .rollingTray:
+                "rolling tray"
+            case .papers:
+                "papers"
+            case .other:
+                "other"
+            }
+        }
+        
+        public var id: String { return self.rawValue }
     }
 }
