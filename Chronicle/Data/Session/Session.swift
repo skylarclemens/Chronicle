@@ -22,6 +22,8 @@ import SwiftUI
     public var favorite: Bool
     @Attribute(.externalStorage) public var imagesData: [Data]?
     @Attribute(.externalStorage) public var audioData: Data?
+    @Relationship(inverse: \Accessory.sessions)
+    public var accessories: [Accessory]
     @Relationship(deleteRule: .noAction, inverse: \Tag.sessions)
     public var tags: [Tag]
     @Relationship(deleteRule: .cascade, inverse: \Mood.session)
@@ -38,6 +40,7 @@ import SwiftUI
         notes: String? = nil,
         location: String? = nil,
         favorite: Bool = false,
+        accessories: [Accessory] = [],
         tags: [Tag] = [],
         mood: Mood? = nil
     ) {
@@ -51,6 +54,7 @@ import SwiftUI
         self.notes = notes
         self.location = location
         self.favorite = favorite
+        self.accessories = accessories
         self.tags = tags
         self.mood = mood
     }

@@ -16,6 +16,7 @@ struct DashboardView: View {
     @State private var openAddItem: Bool = false
     @State private var openAddStrain: Bool = false
     @State private var openAddSession: Bool = false
+    @State private var openAddAccessory: Bool = false
     @State private var openSettings: Bool = false
     
     var body: some View {
@@ -149,6 +150,9 @@ struct DashboardView: View {
                             }
                             Button("Add Item") {
                                 self.openAddItem = true
+                            }
+                            Button("Add Accessory") {
+                                self.openAddAccessory = true
                             }
                             Button("Add Strain") {
                                 self.openAddStrain = true
