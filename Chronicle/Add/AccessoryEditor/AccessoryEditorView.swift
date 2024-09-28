@@ -94,8 +94,8 @@ struct AccessoryEditorView: View {
                 }
                 .frame(height: 120)
                 .ignoresSafeArea(.keyboard)
+                .ignoresSafeArea(edges: .bottom)
             }
-            .ignoresSafeArea(edges: .bottom)
             .interactiveDismissDisabled()
             .scrollDismissesKeyboard(.immediately)
             .navigationTitle("\(accessory != nil ? "Edit" : "Add") Accessory")
@@ -121,10 +121,10 @@ struct AccessoryEditorView: View {
             if let accessory {
                 viewModel.name = accessory.name
                 viewModel.type = accessory.type
-                viewModel.purchasePrice = accessory.purchaseInfo?.price
-                viewModel.purchaseBrand = accessory.purchaseInfo?.brand ?? ""
-                viewModel.purchaseLocation = accessory.purchaseInfo?.location ?? ""
-                viewModel.purchaseDate = accessory.purchaseInfo?.date ?? Date()
+                viewModel.purchasePrice = accessory.purchase?.price
+                viewModel.purchaseBrand = accessory.brand ?? ""
+                viewModel.purchaseLocation = accessory.purchase?.location ?? ""
+                viewModel.purchaseDate = accessory.purchase?.date ?? Date()
                 viewModel.lastCleanedDate = accessory.lastCleanedDate
                 viewModel.favorite = accessory.favorite
                 viewModel.sessions = accessory.sessions
@@ -140,7 +140,8 @@ struct AccessoryEditorView: View {
         let newAccessory = accessory ?? Accessory()
         newAccessory.name = viewModel.name
         newAccessory.type = viewModel.type
-        newAccessory.purchaseInfo = PurchaseInfo(price: viewModel.purchasePrice, date: viewModel.purchaseDate, location: viewModel.purchaseLocation, brand: viewModel.purchaseBrand)
+        newAccessory.purchase = Purchase(date: viewModel.purchaseDate, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
+        newAccessory.brand = viewModel.purchaseBrand
         newAccessory.lastCleanedDate = viewModel.lastCleanedDate
         newAccessory.favorite = viewModel.favorite
         newAccessory.sessions = viewModel.sessions

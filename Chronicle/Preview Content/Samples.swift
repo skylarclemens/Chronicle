@@ -68,8 +68,8 @@ extension Session {
 
 extension Accessory {
     static let sampleData: [Accessory] = [
-        Accessory(name: "My Bong", type: .bong, purchaseInfo: PurchaseInfo(price: 100, date: Date(), location: "Online", brand: "Brand"), favorite: true),
-        Accessory(name: "Pipe", type: .pipe, purchaseInfo: PurchaseInfo(price: 20, date: Date(), location: "Upstate", brand: "Brand"))
+        Accessory(name: "My Bong", type: .bong, purchase: Purchase(date: Date(), price: 100, location: "Online"), brand: "Brand", favorite: true),
+        Accessory(name: "Pipe", type: .pipe, purchase: Purchase(date: Date(), price: 20, location: "Upstate"), brand: "Brand")
     ]
 }
 

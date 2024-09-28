@@ -14,7 +14,8 @@ public class Accessory {
     public var name: String
     public var createdAt: Date
     public var type: AccessoryType?
-    public var purchaseInfo: PurchaseInfo?
+    public var purchase: Purchase?
+    public var brand: String?
     public var lastCleanedDate: Date?
     public var favorite: Bool
     @Attribute(.externalStorage) public var imagesData: [Data]?
@@ -25,7 +26,8 @@ public class Accessory {
          name: String = "",
          createdAt: Date = Date(),
          type: AccessoryType? = nil,
-         purchaseInfo: PurchaseInfo? = nil,
+         purchase: Purchase? = nil,
+         brand: String? = nil,
          lastCleanedDate: Date? = nil,
          favorite: Bool = false,
          imagesData: [Data]? = nil,
@@ -34,7 +36,8 @@ public class Accessory {
         self.name = name
         self.createdAt = createdAt
         self.type = type
-        self.purchaseInfo = purchaseInfo
+        self.purchase = purchase
+        self.brand = brand
         self.lastCleanedDate = lastCleanedDate
         self.favorite = favorite
         self.imagesData = imagesData
