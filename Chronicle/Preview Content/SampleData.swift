@@ -74,6 +74,9 @@ class SampleData {
         item.tags.append(allTags[2])
         session.item = item
         session.mood = mood
+        if let sampleAudio = NSDataAsset(name: "sample")?.data {
+            session.audioData = sampleAudio
+        }
         session.tags.append(tag2)
         
         do {

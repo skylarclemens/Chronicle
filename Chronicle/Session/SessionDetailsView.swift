@@ -137,6 +137,17 @@ struct SessionDetailsView: View {
                         }
                         .padding(.top)
                     }
+                    if let audioData = session.audioData {
+                        VStack(alignment: .leading) {
+                            Text("Audio")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            DetailSection {
+                                AudioPlayerView(audioData: audioData)
+                            }
+                        }
+                        .padding(.top)
+                    }
                     if !session.tags.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Tags")

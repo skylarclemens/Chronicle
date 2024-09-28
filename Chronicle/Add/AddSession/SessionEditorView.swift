@@ -17,6 +17,8 @@ struct SessionEditorView: View {
     @State private var openNotes: Bool = false
     @State private var openMood: Bool = false
     @State private var openTags: Bool = false
+    @State private var openRecorder: Bool = false
+    @State private var showRecording: Bool = false
     @State private var showingImagesPicker: Bool = false
     
     @FocusState var focusedField: Field?
@@ -79,6 +81,19 @@ struct SessionEditorView: View {
                                     }
                                     .buttonStyle(.editorInput)
                                 }
+                            }
+                            if viewModel.audioData != nil {
+                                Button {
+                                    withAnimation {
+                                        openRecorder.toggle()
+                                    }
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "waveform")
+                                        Text("Audio recording")
+                                    }
+                                }
+                                .buttonStyle(.editorInput)
                             }
                         }
                         if let item = viewModel.item {
@@ -198,27 +213,42 @@ struct SessionEditorView: View {
             .safeAreaInset(edge: .bottom, alignment: .center) {
                 /// Save Session button
                 ZStack {
-                    Color(UIColor.systemBackground).mask(
-                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
-                            .opacity(0.9)
-                    )
-                    .allowsHitTesting(false)
-                    Button {
-                        do {
-                            try save()
-                        } catch {
-                            print("New/edited session could not be saved.")
+                    ZStack {
+                        Color(UIColor.systemBackground).mask(
+                            LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
+                                .opacity(0.9)
+                        )
+                        .allowsHitTesting(false)
+                        Button {
+                            do {
+                                try save()
+                            } catch {
+                                print("New/edited session could not be saved.")
+                            }
+                            dismiss()
+                        } label: {
+                            Text("Save")
+                                .frame(maxWidth: .infinity)
                         }
-                        dismiss()
-                    } label: {
-                        Text("Save")
-                            .frame(maxWidth: .infinity)
+                        .disabled(viewModel.item == nil || viewModel.title.isEmpty)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
+                        .padding()
                     }
-                    .disabled(viewModel.item == nil || viewModel.title.isEmpty)
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
-                    .padding()
+                    .ignoresSafeArea(.keyboard)
+                    if openRecorder {
+                        if showRecording {
+                            Color(UIColor.systemBackground).mask(
+                                LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
+                            )
+                            .allowsHitTesting(false)
+                            .transition(.opacity)
+                        }
+                        VoiceRecordingView(sessionViewModel: $viewModel, openRecorder: $openRecorder, showRecording: $showRecording)
+                            .zIndex(1)
+                            .transition(.blurReplace)
+                    }
                 }
                 .frame(height: 120)
             }
@@ -249,6 +279,13 @@ struct SessionEditorView: View {
                     .labelStyle(.iconOnly)
                     .tint(.primary)
                     Spacer()
+                    Button("Open voice recorder", systemImage: "waveform") {
+                        withAnimation {
+                            openRecorder.toggle()
+                        }
+                    }
+                    .labelStyle(.iconOnly)
+                    .tint(.primary)
                 }
                 /// Show same toolbar when keyboard opens
                 ToolbarItemGroup(placement: .keyboard) {
@@ -264,6 +301,14 @@ struct SessionEditorView: View {
                     .labelStyle(.iconOnly)
                     .tint(.primary)
                     .padding(.horizontal)
+                    Spacer()
+                    Button("Open voice recorder", systemImage: "waveform") {
+                        withAnimation {
+                            openRecorder.toggle()
+                        }
+                    }
+                    .labelStyle(.iconOnly)
+                    .tint(.primary)
                     Spacer()
                     Button {
                         focusedField = nil
@@ -314,6 +359,7 @@ struct SessionEditorView: View {
                 viewModel.selectedImagesData = session.imagesData ?? []
                 viewModel.amountConsumed = session.amountConsumed
                 viewModel.tags = session.tags
+                viewModel.audioData = session.audioData
                 
                 if let mood = session.mood {
                     viewModel.mood = mood
@@ -337,6 +383,7 @@ struct SessionEditorView: View {
             session.imagesData = viewModel.selectedImagesData
             session.mood = viewModel.mood
             session.tags = viewModel.tags
+            session.audioData = viewModel.audioData
             if let amountConsumed = viewModel.amountConsumed {
                 session.amountConsumed = amountConsumed
             }
@@ -403,6 +450,8 @@ class SessionEditorViewModel {
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
+    
+    var audioData: Data?
     
     var cameraSelection: UIImage?
     
