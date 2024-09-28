@@ -37,5 +37,5 @@ struct AccessoryListView: View {
             AccessoryListView(filter: .all, sort: InventorySort.name, searchText: "")
         }
     }
-    .modelContext(SampleData.shared.context)
+    .modelContainer(SampleData.shared.container)
 }

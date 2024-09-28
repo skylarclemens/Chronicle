@@ -12,8 +12,8 @@ struct InfoPillStyle: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(.horizontal, 10)
             .padding(.vertical, 6)
+            .padding(.horizontal, 10)
             .background(
                 Group {
                     if let color {

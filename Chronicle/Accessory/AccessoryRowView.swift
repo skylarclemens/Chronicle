@@ -42,5 +42,5 @@ struct AccessoryRowView: View {
     List {
         AccessoryRowView(accessory: SampleData.shared.accessory)
     }
-    .modelContext(SampleData.shared.context)
+    .modelContainer(SampleData.shared.container)
 }

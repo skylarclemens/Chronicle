@@ -65,5 +65,5 @@ struct AnalyticsView: View {
 
 #Preview {
     AnalyticsView()
-        .modelContext(SampleData.shared.context)
+        .modelContainer(SampleData.shared.container)
 }

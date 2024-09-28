@@ -32,5 +32,5 @@ struct AnalyticsListView: View {
             AnalyticsListView(filter: $filter)
         }
     }
-    .modelContext(SampleData.shared.context)
+    .modelContainer(SampleData.shared.container)
 }
