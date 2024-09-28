@@ -34,6 +34,9 @@
 		7E45402F2CA753AF00ADB083 /* AppearanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E45402E2CA753AF00ADB083 /* AppearanceView.swift */; };
 		7E4540322CA7560300ADB083 /* DisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4540312CA755F900ADB083 /* DisplayMode.swift */; };
 		7E4540342CA7572300ADB083 /* ColorSchemeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4540332CA7572300ADB083 /* ColorSchemeViewModifier.swift */; };
+		7E4540362CA76DD500ADB083 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4540352CA76DD200ADB083 /* AudioRecorder.swift */; };
+		7E4540382CA7766900ADB083 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4540372CA7766600ADB083 /* AudioPlayer.swift */; };
+		7E45403A2CA7776B00ADB083 /* VoiceRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4540392CA7776B00ADB083 /* VoiceRecordingView.swift */; };
 		7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E523C162C77990D005B6186 /* SessionDetailsView.swift */; };
 		7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E523C182C77BFD6005B6186 /* ImageGridView.swift */; };
 		7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301E72C74F44000909048 /* StrainDetailsView.swift */; };
@@ -111,6 +114,9 @@
 		7E45402E2CA753AF00ADB083 /* AppearanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceView.swift; sourceTree = "<group>"; };
 		7E4540312CA755F900ADB083 /* DisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMode.swift; sourceTree = "<group>"; };
 		7E4540332CA7572300ADB083 /* ColorSchemeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewModifier.swift; sourceTree = "<group>"; };
+		7E4540352CA76DD200ADB083 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		7E4540372CA7766600ADB083 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		7E4540392CA7776B00ADB083 /* VoiceRecordingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecordingView.swift; sourceTree = "<group>"; };
 		7E523C162C77990D005B6186 /* SessionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailsView.swift; sourceTree = "<group>"; };
 		7E523C182C77BFD6005B6186 /* ImageGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridView.swift; sourceTree = "<group>"; };
 		7E5301E72C74F44000909048 /* StrainDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrainDetailsView.swift; sourceTree = "<group>"; };
@@ -199,6 +205,7 @@
 				7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */,
 				7E079F872C8CFE4E009391D0 /* MoodDescriptorSelectView.swift */,
 				7ED747902C8BB3F100F07679 /* CustomSliderView.swift */,
+				7E4540392CA7776B00ADB083 /* VoiceRecordingView.swift */,
 			);
 			path = AddSession;
 			sourceTree = "<group>";
@@ -231,6 +238,8 @@
 		7E309D9A2C7936DD0004A25A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				7E4540372CA7766600ADB083 /* AudioPlayer.swift */,
+				7E4540352CA76DD200ADB083 /* AudioRecorder.swift */,
 				7E309D9B2C7936EC0004A25A /* ImageViewManager.swift */,
 			);
 			path = Managers;
@@ -565,6 +574,7 @@
 				7E08D4192C6BD95700F96328 /* StrainEditorView.swift in Sources */,
 				7EDFFA532CA1EB650033163E /* Tag.swift in Sources */,
 				7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */,
+				7E45403A2CA7776B00ADB083 /* VoiceRecordingView.swift in Sources */,
 				7EFCC6152C7E6F4F0090588D /* PurchaseInfo.swift in Sources */,
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
@@ -576,6 +586,7 @@
 				7E45402D2CA7536A00ADB083 /* SettingsView.swift in Sources */,
 				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
+				7E4540362CA76DD500ADB083 /* AudioRecorder.swift in Sources */,
 				7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */,
 				7E9ACB522CA1F67700CFF92D /* TagStyle.swift in Sources */,
 				7E0DE5242CA5CDF8003C0642 /* AnalyticsView.swift in Sources */,
@@ -599,6 +610,7 @@
 				7E1D08742C979CD5004B39D5 /* PurchaseRowView.swift in Sources */,
 				7EFCC6132C7E6F420090588D /* Amount.swift in Sources */,
 				7E1D08702C9782F3004B39D5 /* PurchaseInputView.swift in Sources */,
+				7E4540382CA7766900ADB083 /* AudioPlayer.swift in Sources */,
 				7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */,
 				7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
@@ -756,6 +768,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app allows the user to capture a photo with their camera in order to add it to a selection of images for an item or a session.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app allows the user to record a voice note with their microphone";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -786,6 +799,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app allows the user to capture a photo with their camera in order to add it to a selection of images for an item or a session.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app allows the user to record a voice note with their microphone";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
