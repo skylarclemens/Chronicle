@@ -32,7 +32,7 @@ struct SessionEditorView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
-                    HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
+                    EditableHorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
                         .frame(height: 180)
                     VStack(alignment: .leading) {
                         Section {

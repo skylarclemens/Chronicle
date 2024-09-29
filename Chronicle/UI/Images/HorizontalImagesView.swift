@@ -8,43 +8,68 @@
 import SwiftUI
 
 struct HorizontalImagesView: View {
-    @Binding var selectedImagesData: [Data]
+    @Environment(ImageViewManager.self) var imageViewManager
+    var imagesData: [Data]
     var rotateImages: Bool = false
+    var showAllImages: Bool = false
+    var maxImageAmount: Int = 4
+    var allowImageViewer: Bool = true
+    
+    var imagesToShow: [Data] {
+        if showAllImages {
+            return imagesData
+        }
+        return Array(imagesData.prefix(maxImageAmount))
+    }
     
     var body: some View {
-        if selectedImagesData.count > 0 {
+        if !imagesToShow.isEmpty {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: rotateImages ? -18 : 8) {
-                    ForEach(Array(selectedImagesData.enumerated()), id: \.offset) { (index, imageData) in
+                    Spacer()
+                    ForEach(Array(imagesToShow.enumerated()), id: \.offset) { (index, imageData) in
+                        let isLastImage = index == imagesToShow.count - 1 && !showAllImages && index < imagesData.count - 1
                         if let uiImage = UIImage(data: imageData) {
                             let firstRotate: Double = index % 2 == 0 ? -6 : 2
                             let secondRotate: Double = index % 2 == 0 ? -2 : 6
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: 120, height: 150, alignment: .leading)
-                                .clipShape(.rect(cornerRadius: 10))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .strokeBorder(.ultraThinMaterial)
-                                )
-                                .overlay(alignment: .topTrailing) {
-                                    Button {
-                                        selectedImagesData.remove(at: selectedImagesData.firstIndex(of: imageData)!)
-                                    } label: {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .padding(4)
-                                            .font(.title2)
-                                            .foregroundStyle(.primary, Color(UIColor.systemFill))
-                                    }
-                                    .buttonStyle(.plain)
-                                }
+                                .frame(maxWidth: 110, maxHeight: 140, alignment: .topLeading)
+                                .blur(radius: isLastImage ? 2 : 0, opaque: true)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .clipped()
+                                
                                 .shadow(color: .black.opacity(0.25), radius: 14, x: 0, y: 2)
+                                .overlay {
+                                    if isLastImage {
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(.black.opacity(0.33))
+                                    }
+                                }
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .strokeBorder(.primary.opacity(0.15))
+                                )
                                 .offset(x: 0, y: secondRotate/2)
-                                .rotationEffect(rotateImages ? .degrees(Double.random(in: firstRotate...secondRotate)) : .zero)
                                 .zIndex(Double(-index))
+                                .overlay {
+                                    if isLastImage {
+                                        Text("+\(imagesData.count - imagesToShow.count)")
+                                            .font(.system(.title2, design: .rounded, weight: .semibold))
+                                    }
+                                }
+                                .contentShape(RoundedRectangle(cornerRadius: 12))
+                                .rotationEffect(rotateImages ? .degrees(Double.random(in: firstRotate...secondRotate)) : .zero)
+                                .onTapGestureIf(allowImageViewer) {
+                                    imageViewManager.imagesToShow = imagesData
+                                    imageViewManager.selectedImage = index
+                                    imageViewManager.showImageViewer = true
+                                    print("clicked \(index)")
+                                }
                         }
                     }
+                    Spacer()
                 }
             }
             .contentMargins(.horizontal, 16)
@@ -54,5 +79,6 @@ struct HorizontalImagesView: View {
 }
 
 #Preview {
-    HorizontalImagesView(selectedImagesData: .constant(Item.sampleImages), rotateImages: true)
+    HorizontalImagesView(imagesData: Item.sampleImages + Item.sampleImages + Item.sampleImages, rotateImages: true)
+        .environment(ImageViewManager())
 }

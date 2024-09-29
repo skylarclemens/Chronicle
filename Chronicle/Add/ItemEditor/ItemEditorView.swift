@@ -117,7 +117,7 @@ struct ItemEditorBasicsView: View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack {
-                    HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
+                    EditableHorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
                         .frame(height: 180)
                     VStack(spacing: 24) {
                         Section {

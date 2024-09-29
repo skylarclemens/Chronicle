@@ -14,27 +14,22 @@ struct ItemCardView: View {
     var body: some View {
         VStack {
             Spacer()
-            VStack(alignment: .leading, spacing: 6) {
-                Text(item.name)
-                    .font(.headline)
-                    .bold()
-                Text(item.type.label())
-                    .font(.footnote)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(
-                        .ultraThinMaterial,
-                        in: RoundedRectangle(cornerRadius: 24)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 24)
-                            .stroke(.bar ,lineWidth: 1)
-                    )
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 4) {
+                    Text(item.name)
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    Spacer()
+                    if item.favorite {
+                        Image(systemName: "star.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.accent)
+                    }
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(12)
+            .padding(8)
         }
-        .frame(width: 220, height: 120)
+        .frame(width: 180, height: 80)
         .background {
             if let imagesData = item.imagesData, !imagesData.isEmpty,
                let uiImage = UIImage(data: imagesData[0]) {
@@ -49,7 +44,7 @@ struct ItemCardView: View {
         .clipShape(.rect(cornerRadius: 10))
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(.bar, lineWidth: 1)
+                .strokeBorder(.white.opacity(0.15))
         )
     }
 }

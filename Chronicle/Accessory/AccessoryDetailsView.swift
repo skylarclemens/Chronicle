@@ -21,15 +21,13 @@ struct AccessoryDetailsView: View {
                 VStack(spacing: 24) {
                     VStack(alignment: .leading) {
                         HStack(alignment: .center) {
-                            if let type = accessory.type {
-                                HStack {
-                                    Image(systemName: type.symbol())
-                                        .foregroundStyle(.accent)
-                                    Text(type.label().localizedCapitalized)
-                                }
-                                .font(.footnote)
-                                .infoPillStyle(.accent)
+                            HStack {
+                                Image(systemName: accessory.type.symbol())
+                                    .foregroundStyle(.accent)
+                                Text(accessory.type.label().localizedCapitalized)
                             }
+                            .font(.footnote)
+                            .infoPillStyle(.accent)
                             if let brand = accessory.brand {
                                 Label(brand.localizedCapitalized, systemImage: "cart")
                                     .font(.footnote)
@@ -64,7 +62,7 @@ struct AccessoryDetailsView: View {
                                             NavigationLink {
                                                 SessionDetailsView(session: session)
                                             } label: {
-                                                CompactSessionCardView(session: session)
+                                                CompactSessionCardView(session: session, showTime: false)
                                             }
                                             .tint(.primary)
                                         }

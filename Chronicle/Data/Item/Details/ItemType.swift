@@ -53,4 +53,25 @@ public enum ItemType: String, Identifiable, CaseIterable, Codable {
             "Other"
         }
     }
+    
+    func sectionLabel() -> String {
+        switch (self) {
+        case .edible:
+            "Edibles"
+        case .flower:
+            "Flower"
+        case .preroll:
+            "Pre-rolls"
+        case .tincture:
+            "Tinctures"
+        case .concentrate:
+            "Concentrates"
+        case .topical:
+            "Topicals"
+        case .pill:
+            "Pills"
+        case .other:
+            "Other"
+        }
+    }
 }

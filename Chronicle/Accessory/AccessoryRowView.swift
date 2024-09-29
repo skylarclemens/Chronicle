@@ -18,21 +18,21 @@ struct AccessoryRowView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(width: 45, height: 45)
-                        .clipShape(.rect(cornerRadius: 4))
+                        .clipShape(.rect(cornerRadius: 8))
                 } else {
-                    Image(systemName: accessory.type?.symbol() ?? "wrench.and.screwdriver")
+                    Image(systemName: accessory.type.symbol())
                         .frame(width: 45, height: 45)
                         .foregroundStyle(.accent)
                         .background(.accent.opacity(0.15),
-                                    in: RoundedRectangle(cornerRadius: 4))
+                                    in: RoundedRectangle(cornerRadius: 8))
                 }
                 Text(accessory.name)
-                Spacer()
                 if accessory.favorite {
                     Image(systemName: "star.fill")
                         .font(.caption)
                         .foregroundStyle(.accent)
                 }
+                Spacer()
             }
         }
     }

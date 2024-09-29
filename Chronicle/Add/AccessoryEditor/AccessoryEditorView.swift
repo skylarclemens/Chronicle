@@ -23,7 +23,7 @@ struct AccessoryEditorView: View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    HorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
+                    EditableHorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
                         .frame(height: 180)
                     VStack(spacing: 24) {
                         VStack(alignment: .leading) {
@@ -139,7 +139,7 @@ struct AccessoryEditorView: View {
     private func save() throws {
         let newAccessory = accessory ?? Accessory()
         newAccessory.name = viewModel.name
-        newAccessory.type = viewModel.type
+        newAccessory.type = viewModel.type ?? .other
         newAccessory.purchase = Purchase(date: viewModel.purchaseDate, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
         newAccessory.brand = viewModel.purchaseBrand
         newAccessory.lastCleanedDate = viewModel.lastCleanedDate

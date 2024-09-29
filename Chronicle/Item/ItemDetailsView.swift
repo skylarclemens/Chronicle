@@ -73,7 +73,7 @@ struct ItemDetailsView: View {
                             }
                         }
                         .frame(height: 24)
-                        ImageCarouselView(imagesData: item.imagesData)
+                        ImageGridView(imagesData: item.imagesData)
                             .padding(.top)
                     }
                     .padding(.horizontal)
@@ -194,7 +194,7 @@ struct ItemDetailsView: View {
                                             NavigationLink {
                                                 SessionDetailsView(session: session, fromItem: true)
                                             } label: {
-                                                CompactSessionCardView(session: session)
+                                                CompactSessionCardView(session: session, showTime: false)
                                             }
                                             .tint(.primary)
                                         }

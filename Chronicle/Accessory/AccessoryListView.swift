@@ -11,14 +11,23 @@ import SwiftData
 struct AccessoryListView: View {
     @Query(sort: \Accessory.name) private var accessories: [Accessory]
     
+    var accessoriesByType: [Accessory.AccessoryType: [Accessory]] {
+        Dictionary(grouping: accessories, by: \.type)
+    }
+    
     var body: some View {
         if !accessories.isEmpty {
-            Section("Accessories") {
-                ForEach(accessories) { accessory in
-                    NavigationLink {
-                        AccessoryDetailsView(accessory: accessory)
-                    } label: {
-                        AccessoryRowView(accessory: accessory)
+            ForEach(Accessory.AccessoryType.allCases) { accessoryType in
+                if let typeAccessories = accessoriesByType[accessoryType],
+                   !typeAccessories.isEmpty {
+                    Section(accessoryType.sectionLabel()) {
+                        ForEach(typeAccessories) { accessory in
+                            NavigationLink {
+                                AccessoryDetailsView(accessory: accessory)
+                            } label: {
+                                AccessoryRowView(accessory: accessory)
+                            }
+                        }
                     }
                 }
             }
