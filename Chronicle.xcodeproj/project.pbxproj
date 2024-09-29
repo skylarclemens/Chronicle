@@ -57,6 +57,7 @@
 		7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349BA2C811BE300262930 /* CalendarView.swift */; };
 		7E7DDC192C66A8730057F983 /* ItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7DDC182C66A8730057F983 /* ItemEditorView.swift */; };
 		7E80B7FB2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80B7FA2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift */; };
+		7E81C3462CAA17C7006E9DD3 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E81C3452CAA17C7006E9DD3 /* AddView.swift */; };
 		7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951CFF2C73D10E0023922C /* ItemCardView.swift */; };
 		7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951D042C73E7E20023922C /* CompactSessionCardView.swift */; };
 		7E9ACB522CA1F67700CFF92D /* TagStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9ACB512CA1F67400CFF92D /* TagStyle.swift */; };
@@ -147,6 +148,7 @@
 		7E7349BA2C811BE300262930 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		7E7DDC182C66A8730057F983 /* ItemEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorView.swift; sourceTree = "<group>"; };
 		7E80B7FA2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHorizontalImagesView.swift; sourceTree = "<group>"; };
+		7E81C3452CAA17C7006E9DD3 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
 		7E951CFF2C73D10E0023922C /* ItemCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCardView.swift; sourceTree = "<group>"; };
 		7E951D042C73E7E20023922C /* CompactSessionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactSessionCardView.swift; sourceTree = "<group>"; };
 		7E9ACB512CA1F67400CFF92D /* TagStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStyle.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
 				7E7349BA2C811BE300262930 /* CalendarView.swift */,
 				7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */,
+				7E81C3452CAA17C7006E9DD3 /* AddView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -638,6 +641,7 @@
 				7E08D4192C6BD95700F96328 /* StrainEditorView.swift in Sources */,
 				7EDFFA532CA1EB650033163E /* Tag.swift in Sources */,
 				7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */,
+				7E81C3462CAA17C7006E9DD3 /* AddView.swift in Sources */,
 				7E45403A2CA7776B00ADB083 /* VoiceRecordingView.swift in Sources */,
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,

@@ -13,6 +13,7 @@ struct DashboardView: View {
     @Query(sort: \Item.name) private var items: [Item]
     @Query(sort: \Strain.name) private var strains: [Strain]
     @Query(Session.dashboardDescriptor) private var sessions: [Session]
+    @State private var openAddSelector: Bool = false
     @State private var openAddItem: Bool = false
     @State private var openAddStrain: Bool = false
     @State private var openAddSession: Bool = false
@@ -144,19 +145,8 @@ struct DashboardView: View {
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        Menu("Add", systemImage: "plus") {
-                            Button("Add Session") {
-                                self.openAddSession = true
-                            }
-                            Button("Add Item") {
-                                self.openAddItem = true
-                            }
-                            Button("Add Accessory") {
-                                self.openAddAccessory = true
-                            }
-                            Button("Add Strain") {
-                                self.openAddStrain = true
-                            }
+                        Button("Add", systemImage: "plus") {
+                            self.openAddSelector = true
                         }
                     }
                 }
@@ -175,6 +165,10 @@ struct DashboardView: View {
                 }
                 .sheet(isPresented: $openSettings) {
                     SettingsView()
+                }
+                .sheet(isPresented: $openAddSelector) {
+                    AddView(openAddItem: $openAddItem, openAddSession: $openAddSession, openAddAccessory: $openAddAccessory, openAddStrain: $openAddStrain)
+                        .presentationDetents([.height(200)])
                 }
             }
             .scrollContentBackground(.hidden)
