@@ -183,14 +183,14 @@ struct ItemDetailsView: View {
                             }
                         }
                         VStack(alignment: .leading) {
-                            Text("Sessions")
+                            Text("Recent Sessions")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .padding(.horizontal)
                             VStack(alignment: .leading) {
                                 ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach(item.sessions) { session in
+                                    LazyHStack {
+                                        ForEach(item.mostRecentSessions()) { session in
                                             NavigationLink {
                                                 SessionDetailsView(session: session, fromItem: true)
                                             } label: {

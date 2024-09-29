@@ -39,7 +39,6 @@ struct HorizontalImagesView: View {
                                 .blur(radius: isLastImage ? 2 : 0, opaque: true)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .clipped()
-                                
                                 .shadow(color: .black.opacity(0.25), radius: 14, x: 0, y: 2)
                                 .overlay {
                                     if isLastImage {

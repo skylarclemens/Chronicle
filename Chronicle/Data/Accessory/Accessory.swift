@@ -128,4 +128,8 @@ public class Accessory {
             searchText.isEmpty || accessory.name.localizedStandardContains(searchText)
         }
     }
+    
+    func mostRecentSessions(_ num: Int = 5) -> [Session] {
+        Array(sessions.sorted(by: { $0.date.compare($1.date) == .orderedDescending }).prefix(num))
+    }
 }

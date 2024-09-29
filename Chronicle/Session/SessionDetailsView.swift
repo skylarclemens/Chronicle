@@ -44,13 +44,25 @@ struct SessionDetailsView: View {
                                     NavigationLink {
                                         ItemDetailsView(item: item)
                                     } label: {
-                                        Label(item.name, systemImage: "link")
-                                            .font(.footnote)
-                                    }
-                                } else {
-                                    Label(item.name, systemImage: "link")
+                                        Label {
+                                            Text(item.name)
+                                                .foregroundStyle(.primary)
+                                        } icon: {
+                                            Image(systemName: "link")
+                                                .foregroundStyle(.accent)
+                                        }
                                         .font(.footnote)
-                                        .foregroundStyle(.accent)
+                                    }
+                                    .buttonStyle(.plain)
+                                } else {
+                                    Label {
+                                        Text(item.name)
+                                            .foregroundStyle(.primary)
+                                    } icon: {
+                                        Image(systemName: "link")
+                                            .foregroundStyle(.accent)
+                                    }
+                                    .font(.footnote)
                                 }
                             }
                             .infoPillStyle(.accent)
