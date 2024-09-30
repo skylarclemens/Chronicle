@@ -13,7 +13,7 @@ public class Accessory {
     public var id: UUID
     public var name: String
     public var createdAt: Date
-    public var type: AccessoryType?
+    public var type: AccessoryType
     public var purchase: Purchase?
     public var brand: String?
     public var lastCleanedDate: Date?
@@ -25,7 +25,7 @@ public class Accessory {
     init(id: UUID = UUID(),
          name: String = "",
          createdAt: Date = Date(),
-         type: AccessoryType? = nil,
+         type: AccessoryType = .other,
          purchase: Purchase? = nil,
          brand: String? = nil,
          lastCleanedDate: Date? = nil,
@@ -89,6 +89,27 @@ public class Accessory {
             }
         }
         
+        public func sectionLabel() -> String {
+            switch self {
+            case .bong:
+                "Bongs"
+            case .pipe:
+                "Pipes"
+            case .vaporizer:
+                "Vaporizers"
+            case .dabRig:
+                "Dab Rigs"
+            case .grinder:
+                "Grinders"
+            case .rollingTray:
+                "Rolling Trays"
+            case .papers:
+                "papers"
+            case .other:
+                "other"
+            }
+        }
+        
         public var id: String { return self.rawValue }
     }
     
@@ -106,5 +127,9 @@ public class Accessory {
         return #Predicate<Accessory> { accessory in
             searchText.isEmpty || accessory.name.localizedStandardContains(searchText)
         }
+    }
+    
+    func mostRecentSessions(_ num: Int = 5) -> [Session] {
+        Array(sessions.sorted(by: { $0.date.compare($1.date) == .orderedDescending }).prefix(num))
     }
 }

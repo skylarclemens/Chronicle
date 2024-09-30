@@ -12,13 +12,25 @@ struct InventoryView: View {
     @State private var filter: InventoryFilter = .all
     @State private var sortOrder: InventorySort = .name
     @State private var searchText = ""
+    @State private var listSelection: InventoryType = .items
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            VStack {
+                Picker("Select which list to view", selection: $listSelection.animation()) {
+                    Text(InventoryType.items.rawValue.localizedCapitalized)
+                        .tag(InventoryType.items)
+                    Text(InventoryType.accessories.rawValue.localizedCapitalized)
+                        .tag(InventoryType.accessories)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
                 List {
-                    ItemsListView(filter: filter, sort: sortOrder, searchText: searchText)
-                    AccessoryListView(filter: filter, sort: sortOrder, searchText: searchText)
+                    if listSelection == .items {
+                        ItemsListView(filter: filter, sort: sortOrder, searchText: searchText)
+                    } else {
+                        AccessoryListView(filter: filter, sort: sortOrder, searchText: searchText)
+                    }
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             }
@@ -62,7 +74,12 @@ struct InventoryView: View {
                     }
                 }
             }
+            .addContentSheets()
         }
+    }
+    
+    private enum InventoryType: String {
+        case items, accessories
     }
 }
 

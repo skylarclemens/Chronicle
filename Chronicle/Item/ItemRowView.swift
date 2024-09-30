@@ -19,14 +19,21 @@ struct ItemRowView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(width: 45, height: 45)
-                        .clipShape(.rect(cornerRadius: 4))
+                        .clipShape(.rect(cornerRadius: 8))
                 }
                 Text(item.name)
-                Spacer()
                 if item.favorite {
                     Image(systemName: "star.fill")
                         .font(.caption)
                         .foregroundStyle(.accent)
+                }
+                Spacer()
+                if let amount = item.amount {
+                    HStack(spacing: 0) {
+                        Text(amount.value, format: .number)
+                        Text(" \(amount.unit)")
+                    }
+                    .font(.subheadline)
                 }
             }
         }

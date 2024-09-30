@@ -101,4 +101,8 @@ import SwiftUI
         let adjustmentRecord = Purchase(date: Date(), amount: Amount(value: adjustment, unit: ""), isAdjustment: true)
         purchases.append(adjustmentRecord)
     }
+    
+    func mostRecentSessions(_ num: Int = 5) -> [Session] {
+        Array(sessions.sorted(by: { $0.date.compare($1.date) == .orderedDescending }).prefix(num))
+    }
 }

@@ -49,6 +49,7 @@ struct JournalView: View {
                     )
                 }
             }
+            .addContentSheets()
             .sheet(isPresented: $openCalendar) {
                 NavigationStack {
                     CalendarView(date: $date.safeBinding(defaultValue: Date()), clearFunction: {

@@ -21,8 +21,10 @@ struct SessionDetailsView: View {
         if let session {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ImageGridView(imagesData: session.imagesData, cornerRadius: 4)
-                        .padding(.vertical)
+                    if let imagesData = session.imagesData {
+                        HorizontalImagesView(imagesData: imagesData, rotateImages: true, showAllImages: false, allowImageViewer: true)
+                            .frame(height: 180)
+                    }
                     HStack {
                         Text(session.title)
                             .font(.system(.title, design: .rounded))
@@ -42,13 +44,25 @@ struct SessionDetailsView: View {
                                     NavigationLink {
                                         ItemDetailsView(item: item)
                                     } label: {
-                                        Label(item.name, systemImage: "link")
-                                            .font(.footnote)
-                                    }
-                                } else {
-                                    Label(item.name, systemImage: "link")
+                                        Label {
+                                            Text(item.name)
+                                                .foregroundStyle(.primary)
+                                        } icon: {
+                                            Image(systemName: "link")
+                                                .foregroundStyle(.accent)
+                                        }
                                         .font(.footnote)
-                                        .foregroundStyle(.accent)
+                                    }
+                                    .buttonStyle(.plain)
+                                } else {
+                                    Label {
+                                        Text(item.name)
+                                            .foregroundStyle(.primary)
+                                    } icon: {
+                                        Image(systemName: "link")
+                                            .foregroundStyle(.accent)
+                                    }
+                                    .font(.footnote)
                                 }
                             }
                             .infoPillStyle(.accent)
@@ -82,7 +96,7 @@ struct SessionDetailsView: View {
                                                 NavigationLink {
                                                     AccessoryDetailsView(accessory: accessory)
                                                 } label: {
-                                                    Label(accessory.name, systemImage: accessory.type?.symbol() ?? "wrench.and.screwdriver")
+                                                    Label(accessory.name, systemImage: accessory.type.symbol())
                                                 }
                                                 .foregroundStyle(.primary)
                                                 .pillStyle()

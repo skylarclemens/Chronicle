@@ -21,15 +21,9 @@ struct AccessoryDetailsView: View {
                 VStack(spacing: 24) {
                     VStack(alignment: .leading) {
                         HStack(alignment: .center) {
-                            if let type = accessory.type {
-                                HStack {
-                                    Image(systemName: type.symbol())
-                                        .foregroundStyle(.accent)
-                                    Text(type.label().localizedCapitalized)
-                                }
+                                Label(accessory.type.label().localizedCapitalized, systemImage: accessory.type.symbol())
                                 .font(.footnote)
-                                .infoPillStyle(.accent)
-                            }
+                                .infoPillStyle()
                             if let brand = accessory.brand {
                                 Label(brand.localizedCapitalized, systemImage: "cart")
                                     .font(.footnote)
@@ -53,18 +47,18 @@ struct AccessoryDetailsView: View {
                     }
                     if !accessory.sessions.isEmpty {
                         VStack(alignment: .leading) {
-                            Text("Sessions")
+                            Text("Recent Sessions")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .padding(.horizontal)
                             VStack(alignment: .leading) {
                                 ScrollView(.horizontal) {
                                     HStack {
-                                        ForEach(accessory.sessions) { session in
+                                        ForEach(accessory.mostRecentSessions()) { session in
                                             NavigationLink {
                                                 SessionDetailsView(session: session)
                                             } label: {
-                                                CompactSessionCardView(session: session)
+                                                CompactSessionCardView(session: session, showTime: false)
                                             }
                                             .tint(.primary)
                                         }

@@ -56,6 +56,8 @@
 		7E7349B92C81148B00262930 /* SessionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349B82C81148B00262930 /* SessionsListView.swift */; };
 		7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349BA2C811BE300262930 /* CalendarView.swift */; };
 		7E7DDC192C66A8730057F983 /* ItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7DDC182C66A8730057F983 /* ItemEditorView.swift */; };
+		7E80B7FB2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80B7FA2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift */; };
+		7E81C3462CAA17C7006E9DD3 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E81C3452CAA17C7006E9DD3 /* AddView.swift */; };
 		7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951CFF2C73D10E0023922C /* ItemCardView.swift */; };
 		7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951D042C73E7E20023922C /* CompactSessionCardView.swift */; };
 		7E9ACB522CA1F67700CFF92D /* TagStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9ACB512CA1F67400CFF92D /* TagStyle.swift */; };
@@ -90,6 +92,7 @@
 		7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */; };
 		7EF0BB162C6D3A2D0068542D /* ItemDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0BB152C6D3A2D0068542D /* ItemDetailsView.swift */; };
 		7EF0BB182C6D3CDD0068542D /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0BB172C6D3CDD0068542D /* Samples.swift */; };
+		7EFA15382CAA51DF00F54CE5 /* AddContentSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFA15372CAA51DF00F54CE5 /* AddContentSheets.swift */; };
 		7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60E2C7E6DC90090588D /* Emotion.swift */; };
 		7EFCC6112C7E6F040090588D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6102C7E6F040090588D /* Compound.swift */; };
 		7EFCC6132C7E6F420090588D /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6122C7E6F420090588D /* Amount.swift */; };
@@ -145,6 +148,8 @@
 		7E7349B82C81148B00262930 /* SessionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsListView.swift; sourceTree = "<group>"; };
 		7E7349BA2C811BE300262930 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		7E7DDC182C66A8730057F983 /* ItemEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorView.swift; sourceTree = "<group>"; };
+		7E80B7FA2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHorizontalImagesView.swift; sourceTree = "<group>"; };
+		7E81C3452CAA17C7006E9DD3 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
 		7E951CFF2C73D10E0023922C /* ItemCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCardView.swift; sourceTree = "<group>"; };
 		7E951D042C73E7E20023922C /* CompactSessionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactSessionCardView.swift; sourceTree = "<group>"; };
 		7E9ACB512CA1F67400CFF92D /* TagStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStyle.swift; sourceTree = "<group>"; };
@@ -180,6 +185,7 @@
 		7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsInputView.swift; sourceTree = "<group>"; };
 		7EF0BB152C6D3A2D0068542D /* ItemDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsView.swift; sourceTree = "<group>"; };
 		7EF0BB172C6D3CDD0068542D /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
+		7EFA15372CAA51DF00F54CE5 /* AddContentSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContentSheets.swift; sourceTree = "<group>"; };
 		7EFCC60E2C7E6DC90090588D /* Emotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
 		7EFCC6102C7E6F040090588D /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
 		7EFCC6122C7E6F420090588D /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
@@ -237,6 +243,8 @@
 				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
 				7E7349BA2C811BE300262930 /* CalendarView.swift */,
 				7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */,
+				7E81C3452CAA17C7006E9DD3 /* AddView.swift */,
+				7EFA15372CAA51DF00F54CE5 /* AddContentSheets.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -300,6 +308,7 @@
 				7E523C182C77BFD6005B6186 /* ImageGridView.swift */,
 				7E309D982C792DF40004A25A /* ImageViewerView.swift */,
 				7E3B557D2C8A3AEF00AB0961 /* HorizontalImagesView.swift */,
+				7E80B7FA2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -635,6 +644,7 @@
 				7E08D4192C6BD95700F96328 /* StrainEditorView.swift in Sources */,
 				7EDFFA532CA1EB650033163E /* Tag.swift in Sources */,
 				7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */,
+				7E81C3462CAA17C7006E9DD3 /* AddView.swift in Sources */,
 				7E45403A2CA7776B00ADB083 /* VoiceRecordingView.swift in Sources */,
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
@@ -674,6 +684,7 @@
 				7E70B9862C925BD10092ECE7 /* Double.swift in Sources */,
 				7E1D08742C979CD5004B39D5 /* PurchaseRowView.swift in Sources */,
 				7EFCC6132C7E6F420090588D /* Amount.swift in Sources */,
+				7E80B7FB2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift in Sources */,
 				7E1D08702C9782F3004B39D5 /* PurchaseInputView.swift in Sources */,
 				7E4540382CA7766900ADB083 /* AudioPlayer.swift in Sources */,
 				7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */,
@@ -681,6 +692,7 @@
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
 				7E079F882C8CFE4E009391D0 /* MoodDescriptorSelectView.swift in Sources */,
+				7EFA15382CAA51DF00F54CE5 /* AddContentSheets.swift in Sources */,
 				7ECAE69A2CA8936D00ECEFD9 /* AccessoryRowView.swift in Sources */,
 				7E3B55832C8A524D00AB0961 /* Binding.swift in Sources */,
 				7E7349B72C80EEC800262930 /* ItemsListView.swift in Sources */,

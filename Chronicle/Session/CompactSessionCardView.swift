@@ -13,6 +13,7 @@ struct CompactSessionCardView: View {
     var session: Session?
     var imageHeight: CGFloat = 65
     var imageWidth: CGFloat = 65
+    var showTime: Bool = true
     
     var body: some View {
         if let session {
@@ -53,8 +54,10 @@ struct CompactSessionCardView: View {
                         .padding(.bottom, 4)
                     HStack(spacing: 4) {
                         Text(session.date, style: .date)
-                        Text("•")
-                        Text(session.date, style: .time)
+                        if showTime {
+                            Text("•")
+                            Text(session.date, style: .time)
+                        }
                         Spacer()
                     }
                     .font(.footnote)
