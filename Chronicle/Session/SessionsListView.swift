@@ -11,6 +11,7 @@ import SwiftData
 struct SessionsListView: View {
     @Query private var sessions: [Session]
     @Binding var date: Date
+    @Binding var openCalendar: Bool
     
     var body: some View {
         if !sessions.isEmpty {
@@ -26,6 +27,9 @@ struct SessionsListView: View {
                 .listRowSeparator(.hidden)
             }
             .animation(.default, value: sessions)
+            .sheet(isPresented: $openCalendar) {
+                ContinuousCalendarView(selectedDate: $date)
+            }
         } else {
             ContentUnavailableView {
                 Label {
@@ -40,20 +44,24 @@ struct SessionsListView: View {
                     Text(".")
                 }
             }
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
         }
     }
     
-    init(date: Binding<Date>, searchText: String) {
+    init(date: Binding<Date>, searchText: String, openCalendar: Binding<Bool>) {
         _sessions = Query(filter: Session.predicate(date: date.wrappedValue, searchText: searchText), sort: \Session.createdAt, order: .reverse)
         self._date = date
+        self._openCalendar = openCalendar
     }
 }
 
 #Preview {
     @Previewable @State var date = Date()
+    @Previewable @State var openCalendar = false
     
     NavigationStack {
-        SessionsListView(date: $date, searchText: "")
+        SessionsListView(date: $date, searchText: "", openCalendar: $openCalendar)
     }
     .modelContainer(SampleData.shared.container)
     .environment(ImageViewManager())

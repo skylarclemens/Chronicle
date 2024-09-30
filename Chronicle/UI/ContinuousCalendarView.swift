@@ -7,18 +7,23 @@
 
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct ContinuousCalendarView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     @Query(sort: \Session.date) private var sessions: [Session]
     @Binding var selectedDate: Date
-    
-    private let calendar = Calendar.autoupdatingCurrent
-    private let monthsToShow = 13
-    private let dateFormatter = DateFormatter()
+
+    @State private var currentMonth: Date = Date()
+    @State private var monthFrames: [Date: CGRect] = [:]
     @State private var startDate: Date
     @State private var endDate: Date = Date()
+    
+    @State private var currentScrollDate: Date?
+    
+    private let calendar = Calendar.autoupdatingCurrent
+    private let dateFormatter = DateFormatter()
     
     init(selectedDate: Binding<Date>) {
         self._selectedDate = selectedDate
@@ -38,7 +43,9 @@ struct ContinuousCalendarView: View {
                         }
                     }
                     .padding()
+                    .scrollTargetLayout()
                 }
+                .scrollPosition(id: $currentScrollDate, anchor: .center)
                 .onAppear {
                     calculateStartDate()
                     DispatchQueue.main.async {
@@ -46,6 +53,8 @@ struct ContinuousCalendarView: View {
                     }
                 }
             }
+            .navigationTitle(Text(currentScrollDate ?? Date(), format: .dateTime.month(.wide).year()))
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -116,7 +125,7 @@ struct MonthView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(date, format: .dateTime.month(.wide).year())
+            Text(date, format: .dateTime.month(.wide))
                 .font(.system(.headline, design: .rounded))
                 .frame(maxWidth: .infinity, alignment: .center)
             
@@ -202,5 +211,5 @@ struct DayView: View {
             ContinuousCalendarView(selectedDate: $selectedDate)
         }
     }
-    //.modelContainer(SampleData.shared.container)
+    .modelContainer(SampleData.shared.container)
 }

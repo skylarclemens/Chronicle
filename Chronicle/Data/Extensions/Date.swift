@@ -18,6 +18,10 @@ extension Date {
         Calendar.autoupdatingCurrent.startOfDay(for: self)
     }
     
+    var startOfWeek: Date {
+        Calendar.autoupdatingCurrent.dateComponents([.calendar, .yearForWeekOfYear, .weekOfYear], from: self).date!
+    }
+    
     var startOfMonth: Date {
         Calendar.autoupdatingCurrent.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
     }

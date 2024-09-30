@@ -9,33 +9,50 @@ import SwiftUI
 import SwiftData
 
 struct JournalView: View {
-    @State private var openCalendar: Bool = false
     @State private var date: Date = Date()
+    @State private var openCalendar: Bool = false
     @State private var searchText = ""
     
     var body: some View {
         NavigationStack {
             VStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(checkCloseDate().uppercased())
-                        .font(.system(.subheadline, design: .rounded, weight: .medium))
-                        .frame(height: 16)
-                        .foregroundStyle(.secondary)
-                    Text(date, format: .dateTime.month().day())
-                        .font(.system(.title, design: .rounded, weight: .semibold))
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(checkCloseDate().uppercased())
+                            .font(.system(.subheadline, design: .rounded, weight: .medium))
+                            .frame(height: 16)
+                            .foregroundStyle(.secondary)
+                        Text(date, format: .dateTime.month().day())
+                            .font(.system(.title, design: .rounded, weight: .semibold))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .onTapGesture {
+                        date = Date()
+                    }
+                    .animation(.spring(), value: date)
+                    Spacer()
+                    Button {
+                        openCalendar = true
+                    } label: {
+                        Image(systemName:"calendar")
+                            .font(.headline)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 8)
+                    .background(.quaternary,
+                                in: Circle())
+                    .overlay(
+                        Circle()
+                            .strokeBorder(.quaternary)
+                    )
                 }
                 .padding(.horizontal)
-                .onTapGesture {
-                    date = Date()
+                WeekScrollerView(selectedDate: $date)
+                    .frame(height: 80)
+                List {
+                    SessionsListView(date: $date, searchText: searchText, openCalendar: $openCalendar)
                 }
-                .animation(.spring(), value: date)
-                ScrollView {
-                    LazyVStack(spacing: 16) {
-                        SessionsListView(date: $date, searchText: searchText)
-                    }
-                }
-                .contentMargins(.horizontal, 16)
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
@@ -46,27 +63,10 @@ struct JournalView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        openCalendar = true
-                    } label: {
-                        Image(systemName:"calendar")
-                            .font(.subheadline)
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.vertical, 6)
-                    .padding(.horizontal, 6)
-                    .background(.quaternary,
-                                in: Circle())
-                    .overlay(
-                        Circle()
-                            .strokeBorder(.quaternary)
-                    )
+                    
                 }
             }
             .addContentSheets()
-            .sheet(isPresented: $openCalendar) {
-                ContinuousCalendarView(selectedDate: $date)
-            }
         }
     }
     
