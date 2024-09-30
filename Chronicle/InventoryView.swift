@@ -74,6 +74,7 @@ struct InventoryView: View {
                     }
                 }
             }
+            .addContentSheets()
         }
     }
     
