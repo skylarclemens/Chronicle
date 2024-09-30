@@ -12,30 +12,28 @@ struct SessionsListView: View {
     @Query private var sessions: [Session]
     
     var body: some View {
-        List {
-            ForEach(sessions) { session in
-                ZStack {
-                    SessionRowView(session: session)
-                    NavigationLink(destination: SessionDetailsView(session:session)) {
-                        EmptyView()
-                    }
-                    .opacity(0)
+        ForEach(sessions) { session in
+            ZStack {
+                SessionRowView(session: session)
+                NavigationLink(destination: SessionDetailsView(session:session)) {
+                    EmptyView()
                 }
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
+                .opacity(0)
             }
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
         }
         .animation(.default, value: sessions)
     }
     
-    init(date: Date?) {
-        _sessions = Query(filter: Session.predicate(date: date), sort: \Session.createdAt, order: .reverse)
+    init(date: Date?, searchText: String) {
+        _sessions = Query(filter: Session.predicate(date: date, searchText: searchText), sort: \Session.createdAt, order: .reverse)
     }
 }
 
 #Preview {
     NavigationStack {
-        SessionsListView(date: Date())
+        SessionsListView(date: Date(), searchText: "")
     }
     .modelContainer(SampleData.shared.container)
     .environment(ImageViewManager())

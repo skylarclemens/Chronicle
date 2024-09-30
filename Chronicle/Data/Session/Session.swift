@@ -60,7 +60,8 @@ import SwiftUI
     }
     
     static func predicate(
-        date: Date?
+        date: Date?,
+        searchText: String
     ) -> Predicate<Session> {
         let calendar = Calendar.current
         if let date {
@@ -74,7 +75,7 @@ import SwiftUI
             }
         }
         return #Predicate<Session> { session in
-            return true
+            searchText.isEmpty || session.title.localizedStandardContains(searchText)
         }
     }
     
