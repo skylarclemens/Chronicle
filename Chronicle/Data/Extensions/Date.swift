@@ -13,4 +13,12 @@ extension Date {
         let randomValue = Double.random(in: 0..<diff)
         return range.lowerBound.addingTimeInterval(randomValue)
     }
+    
+    var startOfDay: Date {
+        Calendar.autoupdatingCurrent.startOfDay(for: self)
+    }
+    
+    var startOfMonth: Date {
+        Calendar.autoupdatingCurrent.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
+    }
 }

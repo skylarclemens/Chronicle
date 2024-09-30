@@ -60,7 +60,8 @@ struct DashboardView: View {
                                 } label: {
                                     Label("Add Item", systemImage: "plus")
                                 }
-                                .buttonStyle(.borderedProminent)
+                                .buttonStyle(.bordered)
+                                .tint(.accent)
                             }
                         }
                     }
@@ -94,7 +95,8 @@ struct DashboardView: View {
                                 } label: {
                                     Label("Add Session", systemImage: "plus")
                                 }
-                                .buttonStyle(.borderedProminent)
+                                .buttonStyle(.bordered)
+                                .tint(.accent)
                             }
                         }
                     }
@@ -161,6 +163,6 @@ struct DashboardView: View {
 
 #Preview {
     return DashboardView()
-        .modelContainer(SampleData.shared.container)
+        //.modelContainer(SampleData.shared.container)
         .environment(ImageViewManager())
 }
