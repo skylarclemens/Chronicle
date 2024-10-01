@@ -73,6 +73,7 @@ struct AccessoryDetailsView: View {
                 
             }
             .navigationTitle(accessory.name)
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu("Options", systemImage: "ellipsis") {

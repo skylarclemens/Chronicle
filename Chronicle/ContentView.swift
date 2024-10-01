@@ -11,28 +11,26 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(ImageViewManager.self) var imageViewManager
+    
+    @State var selectedDate: Date = Date()
 
     var body: some View {
         TabView {
             DashboardView()
                 .tabItem {
                     Label("Dashboard", systemImage: "square.grid.2x2")
-                        .labelStyle(.iconOnly)
                 }
-            JournalView()
+            JournalView(selectedDate: $selectedDate)
                 .tabItem {
                     Label("Journal", systemImage: "book")
-                        .labelStyle(.iconOnly)
                 }
             InventoryView()
                 .tabItem {
                     Label("Stash", systemImage: "tray")
-                        .labelStyle(.iconOnly)
                 }
             AnalyticsView()
                 .tabItem {
                     Label("Analytics", systemImage: "chart.bar.xaxis")
-                        .labelStyle(.iconOnly)
                 }
         }
         .colorSchemeStyle()

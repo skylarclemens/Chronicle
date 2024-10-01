@@ -77,6 +77,9 @@
 		7ECAE69C2CA8937400ECEFD9 /* AccessoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */; };
 		7ECAFC272C6410340056A44E /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC262C6410340056A44E /* Session.swift */; };
 		7ECAFC2A2C6421310056A44E /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC292C6421310056A44E /* SampleData.swift */; };
+		7ECFA5352CAB053F00BC5E54 /* ContinuousCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */; };
+		7ECFA53B2CAB279C00BC5E54 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA53A2CAB279C00BC5E54 /* Calendar.swift */; };
+		7ECFA53D2CAB475C00BC5E54 /* WeekScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */; };
 		7ED0D8002CA8ABFF00FF8D8A /* InfoPillStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0D7FF2CA8ABFF00FF8D8A /* InfoPillStyle.swift */; };
 		7ED0D8022CA8C05D00FF8D8A /* SessionRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0D8012CA8C05D00FF8D8A /* SessionRowView.swift */; };
 		7ED0D8062CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0D8052CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift */; };
@@ -170,6 +173,9 @@
 		7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryDetailsView.swift; sourceTree = "<group>"; };
 		7ECAFC262C6410340056A44E /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		7ECAFC292C6421310056A44E /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
+		7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuousCalendarView.swift; sourceTree = "<group>"; };
+		7ECFA53A2CAB279C00BC5E54 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
+		7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekScrollerView.swift; sourceTree = "<group>"; };
 		7ED0D7FF2CA8ABFF00FF8D8A /* InfoPillStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPillStyle.swift; sourceTree = "<group>"; };
 		7ED0D8012CA8C05D00FF8D8A /* SessionRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRowView.swift; sourceTree = "<group>"; };
 		7ED0D8052CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoriesSelectorView.swift; sourceTree = "<group>"; };
@@ -245,6 +251,8 @@
 				7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */,
 				7E81C3452CAA17C7006E9DD3 /* AddView.swift */,
 				7EFA15372CAA51DF00F54CE5 /* AddContentSheets.swift */,
+				7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */,
+				7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -277,6 +285,7 @@
 				7E70B9852C925BCD0092ECE7 /* Double.swift */,
 				7E3B55822C8A524D00AB0961 /* Binding.swift */,
 				7ED747922C8BC67B00F07679 /* CGFloat.swift */,
+				7ECFA53A2CAB279C00BC5E54 /* Calendar.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -695,10 +704,12 @@
 				7EFA15382CAA51DF00F54CE5 /* AddContentSheets.swift in Sources */,
 				7ECAE69A2CA8936D00ECEFD9 /* AccessoryRowView.swift in Sources */,
 				7E3B55832C8A524D00AB0961 /* Binding.swift in Sources */,
+				7ECFA5352CAB053F00BC5E54 /* ContinuousCalendarView.swift in Sources */,
 				7E7349B72C80EEC800262930 /* ItemsListView.swift in Sources */,
 				7E5301EB2C74F97500909048 /* DashboardView.swift in Sources */,
 				7ED0D8002CA8ABFF00FF8D8A /* InfoPillStyle.swift in Sources */,
 				7EC008F12C5EEDE80093217B /* Item.swift in Sources */,
+				7ECFA53D2CAB475C00BC5E54 /* WeekScrollerView.swift in Sources */,
 				7E309D992C792DF40004A25A /* ImageViewerView.swift in Sources */,
 				7ECAE6982CA8934700ECEFD9 /* AccessoryListView.swift in Sources */,
 				7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */,
@@ -706,6 +717,7 @@
 				7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */,
 				7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */,
 				7E4540322CA7560300ADB083 /* DisplayMode.swift in Sources */,
+				7ECFA53B2CAB279C00BC5E54 /* Calendar.swift in Sources */,
 				7ED7478F2C8BA9A100F07679 /* MoodSelectorView.swift in Sources */,
 				7E656A2B2C94CED300C6FD6A /* PillStyle.swift in Sources */,
 				7E2504DD2C768CDB00496296 /* DetailSection.swift in Sources */,

@@ -27,7 +27,7 @@ struct AddContentSheets: ViewModifier {
                 }
                 .buttonStyle(.plain)
                 .labelStyle(.iconOnly)
-                .frame(width: 60, height: 60)
+                .frame(width: 55, height: 55)
                 .background(.accent.opacity(0.33),
                     in: Circle())
                 .background(.black,
