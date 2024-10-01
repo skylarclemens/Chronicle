@@ -158,16 +158,6 @@ struct MonthView: View {
         .frame(height: 350)
     }
     
-//    private func getDaysInMonth() -> [Date] {
-//        guard let monthRange = calendar.range(of: .day, in: .month, for: date) else { return [] }
-//        let month = calendar.component(.month, from: date)
-//        let year = calendar.component(.year, from: date)
-//        
-//        return monthRange.compactMap {
-//            DateComponents(calendar: calendar, year: year, month: month, day: $0, hour: 0).date
-//        }
-//    }
-    
     private func sessionsForDate(_ date: Date) -> [Session] {
         sessions.filter { calendar.isDate($0.date, inSameDayAs: date) }
     }
