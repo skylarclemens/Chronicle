@@ -11,6 +11,8 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(ImageViewManager.self) var imageViewManager
+    
+    @State var selectedDate: Date = Date()
 
     var body: some View {
         TabView {
@@ -18,7 +20,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Dashboard", systemImage: "square.grid.2x2")
                 }
-            JournalView()
+            JournalView(selectedDate: $selectedDate)
                 .tabItem {
                     Label("Journal", systemImage: "book")
                 }

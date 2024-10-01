@@ -10,14 +10,14 @@ import SwiftData
 
 struct JournalView: View {
     @Query private var sessions: [Session]
-    @State private var date: Date = Date()
+    @Binding var selectedDate: Date
     @State private var openCalendar: Bool = false
     @State private var searchText = ""
     
     var body: some View {
         NavigationStack {
             List {
-                SessionsListView(date: $date, searchText: searchText)
+                SessionsListView(date: $selectedDate, searchText: searchText)
             }
             .safeAreaInset(edge: .top) {
                 VStack(spacing: 12) {
@@ -27,14 +27,14 @@ struct JournalView: View {
                                 .font(.system(.subheadline, design: .rounded, weight: .medium))
                                 .frame(height: 16)
                                 .foregroundStyle(.secondary)
-                            Text(date, format: .dateTime.month().day())
+                            Text(selectedDate, format: .dateTime.month().day())
                                 .font(.system(.title, design: .rounded, weight: .semibold))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .onTapGesture {
-                            date = Date()
+                            selectedDate = Date()
                         }
-                        .animation(.spring(), value: date)
+                        .animation(.spring(), value: selectedDate)
                         Spacer()
                         Button {
                             openCalendar = true
@@ -53,7 +53,7 @@ struct JournalView: View {
                         )
                     }
                     .padding(.horizontal)
-                    WeekScrollerView(sessions: sessions, selectedDate: $date)
+                    WeekScrollerView(sessions: sessions, selectedDate: $selectedDate)
                         .padding(.vertical, 12)
                         .overlay(
                             Rectangle().frame(width: nil, height: 0.75,  alignment: .bottom).foregroundColor(.primary.opacity(0.1)),
@@ -81,29 +81,31 @@ struct JournalView: View {
                 }
             }
             .sheet(isPresented: $openCalendar) {
-                ContinuousCalendarView(sessions: sessions, selectedDate: $date)
+                ContinuousCalendarView(sessions: sessions, selectedDate: $selectedDate)
             }
             .addContentSheets()
         }
     }
     
     func checkCloseDate() -> String {
-        if Calendar.current.isDateInToday(date) {
+        if Calendar.current.isDateInToday(selectedDate) {
             return "Today"
-        } else if Calendar.current.isDateInYesterday(date) {
+        } else if Calendar.current.isDateInYesterday(selectedDate) {
             return "Yesterday"
-        } else if Calendar.current.isDateInTomorrow(date) {
+        } else if Calendar.current.isDateInTomorrow(selectedDate) {
             return "Tomorrow"
         } else {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "EEEE"
-            return dateFormatter.string(from: date)
+            return dateFormatter.string(from: selectedDate)
         }
     }
 }
 
 #Preview {
-    return JournalView()
+    @Previewable @State var selectedDate: Date = Date()
+    
+    JournalView(selectedDate: $selectedDate)
         .modelContainer(SampleData.shared.container)
         .environment(ImageViewManager())
 }

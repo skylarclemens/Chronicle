@@ -19,6 +19,15 @@ struct WeekScrollerView: View {
     private let dateFormatter = DateFormatter()
     
     var body: some View {
+        let weekOffsetBinding = Binding<Int?>(get: {
+            return self.weekOffset
+        }, set: {
+            self.weekOffset = $0
+            if let newOffset = $0 {
+                updateSelectedDateForNewWeek(weekIndex: newOffset)
+            }
+        })
+        
         GeometryReader { proxy in
             VStack {
                 weekdaysView
@@ -33,14 +42,9 @@ struct WeekScrollerView: View {
                     .scrollTargetLayout()
                 }
                 .scrollTargetBehavior(.viewAligned)
-                .scrollPosition(id: $weekOffset)
+                .scrollPosition(id: weekOffsetBinding)
                 .onAppear {
                     initializeWeeks()
-                }
-                .onChange(of: weekOffset) { oldValue, newValue in
-                    if let newValue {
-                        updateSelectedDateForNewWeek(weekIndex: newValue)
-                    }
                 }
                 .onChange(of: selectedDate) { oldValue, newValue in
                     if let weekOffset,
@@ -58,11 +62,16 @@ struct WeekScrollerView: View {
     
     private func initializeWeeks() {
         let currentWeek = Date().startOfWeek
-        let numOfWeeks = calculateNumOfWeeks()
+        let numOfWeeks = calculateNumOfWeeks(for: Date())
         weeks = (-numOfWeeks...0).compactMap { offset in
             calendar.date(byAdding: .weekOfYear, value: offset, to: currentWeek)
         }
-        weekOffset = numOfWeeks
+        let selectedWeekStart = selectedDate.startOfWeek
+        if let selectedWeekIndex = weeks.firstIndex(of: selectedWeekStart) {
+            weekOffset = selectedWeekIndex
+        } else {
+            weekOffset = numOfWeeks
+        }
     }
     
     private func sessionsForDate(_ date: Date) -> [Session] {
@@ -70,11 +79,11 @@ struct WeekScrollerView: View {
     }
     
     /// Gets start date based on earliest session logged
-    private func calculateNumOfWeeks() -> Int {
+    private func calculateNumOfWeeks(for date: Date) -> Int {
         if let earliestSession = sessions.min(by: { $0.date < $1.date }),
             let earliestDate = calendar.date(from: calendar.dateComponents([.year, .month], from: earliestSession.date)) {
-            let numOfWeeks = calendar.dateComponents([.weekOfYear], from: earliestDate, to: Date()).weekOfYear ?? 0
-            return numOfWeeks
+                let numOfWeeks = calendar.dateComponents([.weekOfYear], from: earliestDate, to: date).weekOfYear ?? 0
+                return numOfWeeks
         } else {
             return 2
         }
