@@ -101,6 +101,7 @@ struct AccessoryEditorView: View {
             .navigationTitle("\(accessory != nil ? "Edit" : "Add") Accessory")
             .navigationBarTitleDisplayMode(.inline)
             .imagesPicker(isPresented: $showingImagesPicker, pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
+            .background(Color(.systemGroupedBackground))
             .toolbar {
                 ToolbarItem(placement: .destructiveAction) {
                     Button {
@@ -194,6 +195,7 @@ struct AccessoryTypeSelectionView: View {
             .buttonStyle(.plain)
             .navigationTitle("Select Type")
             .navigationBarTitleDisplayMode(.inline)
+            .background(Color(.systemGroupedBackground))
             .toolbar {
                 ToolbarItem(placement: .destructiveAction) {
                     Button {

@@ -30,7 +30,7 @@ struct AddContentSheets: ViewModifier {
                 .frame(width: 55, height: 55)
                 .background(.accent.opacity(0.33),
                     in: Circle())
-                .background(.black,
+                .background(.background,
                             in: Circle())
                 .shadow(color: .black.opacity(0.15), radius: 10)
                 .contentShape(Circle())

@@ -28,6 +28,7 @@ struct InventoryView: View {
                 List {
                     if listSelection == .items {
                         ItemsListView(filter: filter, sort: sortOrder, searchText: searchText)
+                        
                     } else {
                         AccessoryListView(filter: filter, sort: sortOrder, searchText: searchText)
                     }

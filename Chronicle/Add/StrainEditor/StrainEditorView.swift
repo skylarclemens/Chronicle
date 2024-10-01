@@ -30,21 +30,32 @@ struct StrainEditorView: View {
                         TextField("Description of the strain", text: $viewModel.desc, axis: .vertical)
                     }
                 }
-                Spacer()
-                Button {
-                    save()
-                    dismiss()
-                } label: {
-                    Text("Save")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
-                .tint(.accentColor)
-                .disabled(viewModel.name.isEmpty)
-                .padding()
             }
             .navigationTitle("\(strain != nil ? "Editing" : "New") Strain")
+            .safeAreaInset(edge: .bottom) {
+                ZStack {
+                    Color(UIColor.systemBackground).mask(
+                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
+                            .opacity(0.9)
+                    )
+                    .allowsHitTesting(false)
+                    Button {
+                        save()
+                        dismiss()
+                    } label: {
+                        Text("Save")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+                    .tint(.accent)
+                    .disabled(viewModel.name.isEmpty)
+                    .padding()
+                }
+                .frame(height: 120)
+                .ignoresSafeArea(.keyboard)
+                .ignoresSafeArea(edges: .bottom)
+            }
             .toolbar {
                 ToolbarItem(placement: .destructiveAction) {
                     Button {

@@ -72,8 +72,6 @@ struct JournalView: View {
             .background(
                 BackgroundView()
             )
-            .navigationTitle("Journal")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

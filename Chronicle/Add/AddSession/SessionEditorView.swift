@@ -323,6 +323,7 @@ struct SessionEditorView: View {
             .interactiveDismissDisabled()
             .scrollDismissesKeyboard(.immediately)
             .imagesPicker(isPresented: $showingImagesPicker, pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
+            .background(Color(.systemGroupedBackground))
             .sheet(isPresented: $openCalendar) {
                 NavigationStack {
                     CalendarView(date: $viewModel.date, displayedComponents: [.date, .hourAndMinute])

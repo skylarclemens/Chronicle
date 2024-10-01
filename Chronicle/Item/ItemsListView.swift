@@ -27,6 +27,8 @@ struct ItemsListView: View {
                             } label: {
                                 ItemRowView(item: item)
                             }
+                            .buttonStyle(.plain)
+                            .listRowBackground(Color.clear.background(.thickMaterial))
                         }
                     }
                 }

@@ -101,7 +101,7 @@ struct ItemDetailsView: View {
                                                 }
                                                 .padding(.vertical, 6)
                                                 .padding(.horizontal, 12)
-                                                .background(.tertiary,
+                                                .background(Color(.systemGroupedBackground),
                                                             in: RoundedRectangle(cornerRadius: 12))
                                             }
                                         }
