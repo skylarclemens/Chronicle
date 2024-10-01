@@ -36,7 +36,7 @@ struct EditableHorizontalImagesView: View {
                                             .padding(4)
                                             .imageScale(.large)
                                             .symbolRenderingMode(.palette)
-                                            .foregroundStyle(.white, .regularMaterial)
+                                            .foregroundStyle(.secondary, .regularMaterial)
                                     }
                                     .buttonStyle(.plain)
                                 }

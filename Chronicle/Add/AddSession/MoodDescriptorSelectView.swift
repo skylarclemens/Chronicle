@@ -18,7 +18,10 @@ struct MoodDescriptorSelectView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             Rectangle()
-                .fill(Color(red: 15 / 255, green: 7 / 255, blue: 19 / 255))
+                .fill(Color(.systemGroupedBackground))
+                .ignoresSafeArea()
+            Rectangle()
+                .fill(.purple.opacity(0.125))
                 .ignoresSafeArea()
             VStack {
                 Text("What best describes how you’re feeling?")
@@ -40,15 +43,15 @@ struct MoodDescriptorSelectView: View {
                 } label: {
                     Text("Done")
                         .frame(maxWidth: .infinity)
-                        .contentShape(RoundedRectangle(cornerRadius: 8))
+                        .contentShape(RoundedRectangle(cornerRadius: 12))
                 }
                 .buttonStyle(.plain)
                 .padding()
                 .background(.regularMaterial,
-                            in: RoundedRectangle(cornerRadius: 8))
+                            in: RoundedRectangle(cornerRadius: 12))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .strokeBorder(.ultraThinMaterial)
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(.primary.opacity(0.1))
                 )
                 .padding()
             }
@@ -74,9 +77,8 @@ struct MoodDescriptorSelectView: View {
                     parentDismiss()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.close)
             }
         }
     }

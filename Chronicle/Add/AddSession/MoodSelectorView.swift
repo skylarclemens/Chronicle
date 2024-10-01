@@ -14,7 +14,7 @@ struct MoodSelectorView: View {
     @State private var viewModel = MoodSelectorViewModel()
     @State private var selectedMoodIndex: Double = 0.0
     
-    @State private var gradientColors: [Color] = [.white.opacity(0.2), .black.opacity(0)]
+    @State private var gradientColors: [Color] = [.primary.opacity(0.2), Color(.systemBackground).opacity(0)]
     
     
     var moodColors: [Color] {
@@ -29,7 +29,10 @@ struct MoodSelectorView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             Rectangle()
-                .fill(Color(red: 15 / 255, green: 7 / 255, blue: 19 / 255))
+                .fill(Color(.systemGroupedBackground))
+                .ignoresSafeArea()
+            Rectangle()
+                .fill(.purple.opacity(0.125))
                 .ignoresSafeArea()
             EllipticalGradient(colors: gradientColors, center: .center, startRadiusFraction: 0, endRadiusFraction: 0.5)
                 .rotationEffect(.degrees(90))
@@ -44,8 +47,10 @@ struct MoodSelectorView: View {
                     .font(.system(size: 38, weight: .medium, design: .rounded))
                     .padding(.horizontal)
                     .padding(.vertical, 4)
-                    .background(.white.opacity(0.1),
-                                in: RoundedRectangle(cornerRadius: 10))
+                    .background(.regularMaterial,
+                                in: RoundedRectangle(cornerRadius: 12))
+                    .frame(maxWidth: .infinity)
+                    .animation(.default, value: selectedMood.label)
                 CustomSliderView(value: $selectedMoodIndex, range: -1...1)
                     .frame(height: 42)
                     .padding(.horizontal)
@@ -56,15 +61,15 @@ struct MoodSelectorView: View {
             } label: {
                 Text("Next")
                     .frame(maxWidth: .infinity)
-                    .contentShape(RoundedRectangle(cornerRadius: 8))
+                    .contentShape(RoundedRectangle(cornerRadius: 12))
             }
             .buttonStyle(.plain)
             .padding()
             .background(.regularMaterial,
-                        in: RoundedRectangle(cornerRadius: 8))
+                        in: RoundedRectangle(cornerRadius: 12))
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .strokeBorder(.ultraThinMaterial)
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(.primary.opacity(0.1))
             )
             .padding()
         }
@@ -88,9 +93,8 @@ struct MoodSelectorView: View {
                     dismiss()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.close)
             }
         }
     }
@@ -108,7 +112,7 @@ struct MoodSelectorView: View {
         
         let interpolatedColor = interpolateColor(from: lowerColor, to: upperColor, with: interpolation)
         
-        gradientColors = [interpolatedColor.opacity(0.3), .black.opacity(0)]
+        gradientColors = [interpolatedColor.opacity(0.5), .black.opacity(0)]
     }
     
     private func interpolateColor(from: Color, to: Color, with fraction: Double) -> Color {

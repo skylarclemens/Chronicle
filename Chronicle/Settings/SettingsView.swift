@@ -27,7 +27,7 @@ struct SettingsView: View {
                     Button("Close", systemImage: "xmark.circle.fill") {
                         dismiss()
                     }
-                    .tint(.secondary)
+                    .buttonStyle(.close)
                 }
             }
         }

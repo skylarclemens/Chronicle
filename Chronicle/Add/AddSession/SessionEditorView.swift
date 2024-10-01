@@ -262,9 +262,8 @@ struct SessionEditorView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.close)
                 }
                 /// Toolbar to add items to session
                 ToolbarItemGroup(placement: .bottomBar) {

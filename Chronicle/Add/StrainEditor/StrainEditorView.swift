@@ -62,9 +62,8 @@ struct StrainEditorView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.close)
                 }
             }
             .onAppear {

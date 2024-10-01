@@ -108,9 +108,8 @@ struct AccessoryEditorView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.close)
                 }
             }
             .sheet(isPresented: $openTypeSelector) {
@@ -202,9 +201,8 @@ struct AccessoryTypeSelectionView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.close)
                 }
             }
         }

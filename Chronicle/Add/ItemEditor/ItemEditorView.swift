@@ -96,9 +96,8 @@ struct ItemTypeSelectionView: View {
                     parentDismiss()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.close)
             }
         }
     }
@@ -205,9 +204,8 @@ struct ItemEditorBasicsView: View {
                     parentDismiss()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.close)
             }
         }
         .onAppear {
