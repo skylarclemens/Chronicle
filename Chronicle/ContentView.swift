@@ -17,22 +17,18 @@ struct ContentView: View {
             DashboardView()
                 .tabItem {
                     Label("Dashboard", systemImage: "square.grid.2x2")
-                        .labelStyle(.iconOnly)
                 }
             JournalView()
                 .tabItem {
                     Label("Journal", systemImage: "book")
-                        .labelStyle(.iconOnly)
                 }
             InventoryView()
                 .tabItem {
                     Label("Stash", systemImage: "tray")
-                        .labelStyle(.iconOnly)
                 }
             AnalyticsView()
                 .tabItem {
                     Label("Analytics", systemImage: "chart.bar.xaxis")
-                        .labelStyle(.iconOnly)
                 }
         }
         .colorSchemeStyle()

@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct WeekScrollerView: View {
+    var sessions: [Session] = []
+    
     @Binding var selectedDate: Date
-    @State private var currentDate: Date = Date()
     @State private var weekOffset: Int?
-    @State private var currentWeek: Date?
     @State private var weeks: [Date] = []
     
     private let calendar = Calendar.autoupdatingCurrent
@@ -19,74 +20,93 @@ struct WeekScrollerView: View {
     
     var body: some View {
         GeometryReader { proxy in
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 0) {
-                    ForEach(0..<weeks.count, id: \.self) { index in
-                        weekView(for: weeks[index])
-                            .padding(.horizontal)
-                            .frame(minWidth: proxy.size.width)
-                            //.border(.accent, width: 1)
+            VStack {
+                weekdaysView
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack(spacing: 0) {
+                        ForEach(0..<weeks.count, id: \.self) { index in
+                            weekView(for: weeks[index])
+                                .padding(.horizontal)
+                                .frame(minWidth: proxy.size.width)
+                        }
+                    }
+                    .scrollTargetLayout()
+                }
+                .scrollTargetBehavior(.viewAligned)
+                .scrollPosition(id: $weekOffset)
+                .onAppear {
+                    initializeWeeks()
+                }
+                .onChange(of: weekOffset) { oldValue, newValue in
+                    if let newValue {
+                        updateSelectedDateForNewWeek(weekIndex: newValue)
                     }
                 }
-                .scrollTargetLayout()
-            }
-            .scrollTargetBehavior(.viewAligned)
-            .scrollPosition(id: $weekOffset)
-            .frame(height: 80)
-            .onAppear {
-                initializeWeeks()
-            }
-            .onChange(of: weekOffset) { oldValue, newValue in
-                self.weekOffset = updateWeeks()
-                print(weeks)
+                .onChange(of: selectedDate) { oldValue, newValue in
+                    if let weekOffset,
+                       newValue.startOfWeek != weeks[weekOffset],
+                       let newWeekOffset = weeks.firstIndex(of: newValue.startOfWeek) {
+                        withAnimation {
+                            self.weekOffset = newWeekOffset
+                        }
+                    }
+                }
             }
         }
+        .frame(height: 65)
     }
     
     private func initializeWeeks() {
-        let currentWeek = currentDate.startOfWeek
-        weeks = (-2...2).compactMap { offset in
+        let currentWeek = Date().startOfWeek
+        let numOfWeeks = calculateNumOfWeeks()
+        weeks = (-numOfWeeks...0).compactMap { offset in
             calendar.date(byAdding: .weekOfYear, value: offset, to: currentWeek)
         }
-        weekOffset = 2
-        self.currentWeek = currentWeek
+        weekOffset = numOfWeeks
     }
     
-    private func updateWeeks() -> Int {
-        if let weekOffset {
-            var newWeekOffset = weekOffset
-            let visibleWeeks = Set(weeks)
-            let currentWeek = weeks[weekOffset]
-            
-            if weekOffset <= 1 {
-                let newWeeks = (-2...(-1)).compactMap { offset in
-                    calendar.date(byAdding: .weekOfYear, value: offset, to: currentWeek)
-                }.filter { !visibleWeeks.contains($0) }
-                weeks.insert(contentsOf: newWeeks, at: 0)
-                newWeekOffset += newWeeks.count
-            }
-            
-            if weekOffset >= weeks.count - 2 {
-                let newWeeks = (1...2).compactMap { offset in
-                    let potentialWeek = calendar.date(byAdding: .weekOfYear, value: offset, to: currentWeek)!
-                    return potentialWeek <= Date().startOfWeek ? potentialWeek : nil
-                }.filter { !visibleWeeks.contains($0) }
-                weeks.append(contentsOf: newWeeks)
-            }
-            
-            // Remove excess weeks
-            if weeks.count > 5 {
-                if weekOffset > 2 {
-                    weeks.removeFirst(weeks.count - 5)
-                    newWeekOffset = 2
+    private func sessionsForDate(_ date: Date) -> [Session] {
+        sessions.filter { calendar.isDate($0.date, inSameDayAs: date) }
+    }
+    
+    /// Gets start date based on earliest session logged
+    private func calculateNumOfWeeks() -> Int {
+        if let earliestSession = sessions.min(by: { $0.date < $1.date }),
+            let earliestDate = calendar.date(from: calendar.dateComponents([.year, .month], from: earliestSession.date)) {
+            let numOfWeeks = calendar.dateComponents([.weekOfYear], from: earliestDate, to: Date()).weekOfYear ?? 0
+            return numOfWeeks
+        } else {
+            return 2
+        }
+    }
+    
+    private func updateSelectedDateForNewWeek(weekIndex: Int) {
+        let newWeekStart = weeks[weekIndex]
+        let currentWeekday = calendar.component(.weekday, from: selectedDate)
+        if let newDate = calendar.date(bySetting: .weekday, value: currentWeekday, of: newWeekStart) {
+            withAnimation {
+                if newDate.startOfDay > Date().startOfDay {
+                    selectedDate = Date()
                 } else {
-                    weeks.removeLast(weeks.count - 5)
+                    selectedDate = newDate
                 }
             }
-            
-            return newWeekOffset
         }
-        return 0
+    }
+    
+    @ViewBuilder var weekdaysView: some View {
+        if let weekdays = dateFormatter.veryShortWeekdaySymbols {
+            HStack {
+                ForEach(0..<weekdays.count, id: \.self) { index in
+                    Text(weekdays[index])
+                        .font(.system(.footnote, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+            }
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
     }
     
     private func weekView(for date: Date) -> some View {
@@ -104,17 +124,20 @@ struct WeekScrollerView: View {
         let isToday = calendar.isDateInToday(date)
         let isAfterToday = Date().startOfDay < date.startOfDay
         
-        return VStack {
-            Text(dateFormatter.veryShortStandaloneWeekdaySymbols[calendar.component(.weekday, from: date) - 1])
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Text(date, format: .dateTime.day())
-                .font(.headline)
-                .foregroundStyle(isAfterToday ? .tertiary : .primary)
+        return ZStack {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(isSelected ? .accent.opacity(0.25) : (isToday ? .primary.opacity(0.1) : .clear))
+                .padding(.horizontal, 4)
+            VStack(spacing: 2) {
+                Text(date, format: .dateTime.day())
+                    .font(.headline)
+                    .foregroundStyle(isAfterToday ? .tertiary : .primary)
+                Circle()
+                    .fill(!sessionsForDate(date).isEmpty ? .accent : .clear)
+                    .frame(width: 6, height: 6)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .center)
-        .background(isSelected ? .accent.opacity(0.25) : (isToday ? .primary.opacity(0.1) : .clear),
-                    in: RoundedRectangle(cornerRadius: 8))
         .onTapGestureIf(!isAfterToday, closure: {
             withAnimation {
                 selectedDate = date
@@ -125,5 +148,6 @@ struct WeekScrollerView: View {
 
 #Preview {
     @Previewable @State var selectedDate: Date = Date()
-    WeekScrollerView(selectedDate: $selectedDate)
+    WeekScrollerView(sessions: SampleData.shared.randomDatesSessions, selectedDate: $selectedDate)
+        .modelContainer(SampleData.shared.container)
 }

@@ -12,7 +12,7 @@ import UIKit
 struct ContinuousCalendarView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
-    @Query(sort: \Session.date) private var sessions: [Session]
+    var sessions: [Session]
     @Binding var selectedDate: Date
 
     @State private var currentMonth: Date = Date()
@@ -25,9 +25,9 @@ struct ContinuousCalendarView: View {
     private let calendar = Calendar.autoupdatingCurrent
     private let dateFormatter = DateFormatter()
     
-    init(selectedDate: Binding<Date>) {
+    init(sessions: [Session] = [], selectedDate: Binding<Date>) {
         self._selectedDate = selectedDate
-        self._sessions = Query(sort: [SortDescriptor(\Session.date)])
+        self.sessions = sessions
         let start = calendar.date(from: calendar.dateComponents([.year], from: Date())) ?? Date()
         self._startDate = State(initialValue: start)
     }
@@ -37,9 +37,9 @@ struct ContinuousCalendarView: View {
             ScrollViewReader { proxy in
                 ScrollView(.vertical, showsIndicators: false) {
                     LazyVStack(spacing: 42) {
-                        ForEach(getMonths(), id: \.self) { month in
-                            MonthView(date: month, selectedDate: $selectedDate, sessions: sessions)
-                                .id(month)
+                        ForEach(getMonths()) { month in
+                            MonthView(month: month, selectedDate: $selectedDate, sessions: sessions)
+                                .id(month.date)
                         }
                     }
                     .padding()
@@ -49,13 +49,23 @@ struct ContinuousCalendarView: View {
                 .onAppear {
                     calculateStartDate()
                     DispatchQueue.main.async {
-                        proxy.scrollTo(selectedDate.startOfMonth, anchor: .center)
+                        currentScrollDate = selectedDate.startOfMonth
                     }
                 }
             }
             .navigationTitle(Text(currentScrollDate ?? Date(), format: .dateTime.month(.wide).year()))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Today") {
+                        selectedDate = Date()
+                        dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.accent)
+                    .buttonBorderShape(.capsule)
+                    .controlSize(.mini)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -75,8 +85,8 @@ struct ContinuousCalendarView: View {
     @ViewBuilder var weekdaysView: some View {
         if let weekdays = dateFormatter.veryShortWeekdaySymbols {
             HStack(spacing: 24) {
-                ForEach(weekdays, id: \.self) { weekday in
-                    Text(weekday)
+                ForEach(0..<weekdays.count, id: \.self) { index in
+                    Text(weekdays[index])
                         .font(.system(.footnote, design: .rounded))
                         .foregroundStyle(.secondary)
                         .frame(width: 30)
@@ -93,12 +103,12 @@ struct ContinuousCalendarView: View {
     }
     
     /// Returns all of the months within the date range
-    private func getMonths() -> [Date] {
+    private func getMonths() -> [CalendarMonth] {
         guard startDate < endDate else { return [] }
         var date = startDate
-        var dates: [Date] = []
-        while date <= endDate {
-            dates.append(date.startOfMonth)
+        var dates: [CalendarMonth] = []
+        while date.startOfMonth <= endDate.startOfMonth {
+            dates.append(CalendarMonth(date: date.startOfMonth))
             guard let newDate = calendar.date(byAdding: .month, value: 1, to: date) else { break }
             date = newDate
         }
@@ -117,7 +127,7 @@ struct ContinuousCalendarView: View {
 }
 
 struct MonthView: View {
-    let date: Date
+    let month: CalendarMonth
     @Binding var selectedDate: Date
     let sessions: [Session]
     
@@ -125,16 +135,16 @@ struct MonthView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(date, format: .dateTime.month(.wide))
+            Text(month.date, format: .dateTime.month(.wide))
                 .font(.system(.headline, design: .rounded))
                 .frame(maxWidth: .infinity, alignment: .center)
             
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 28) {
-                ForEach(1..<calendar.firstWeekday(for: date), id: \.self) { _ in
+                ForEach(1..<calendar.firstWeekday(for: month.date), id: \.self) { _ in
                     Rectangle()
                         .fill(.clear)
                 }
-                ForEach(getDaysInMonth(), id: \.self) { date in
+                ForEach(month.days, id: \.self) { date in
                     if let date {
                         DayView(date: date, isSelected: Binding(get: {
                             calendar.isDate(date, inSameDayAs: selectedDate)
@@ -148,15 +158,15 @@ struct MonthView: View {
         .frame(height: 350)
     }
     
-    private func getDaysInMonth() -> [Date?] {
-        guard let monthRange = calendar.range(of: .day, in: .month, for: date) else { return [] }
-        let month = calendar.component(.month, from: date)
-        let year = calendar.component(.year, from: date)
-        
-        return monthRange.compactMap {
-            DateComponents(calendar: calendar, year: year, month: month, day: $0, hour: 0).date
-        }
-    }
+//    private func getDaysInMonth() -> [Date] {
+//        guard let monthRange = calendar.range(of: .day, in: .month, for: date) else { return [] }
+//        let month = calendar.component(.month, from: date)
+//        let year = calendar.component(.year, from: date)
+//        
+//        return monthRange.compactMap {
+//            DateComponents(calendar: calendar, year: year, month: month, day: $0, hour: 0).date
+//        }
+//    }
     
     private func sessionsForDate(_ date: Date) -> [Session] {
         sessions.filter { calendar.isDate($0.date, inSameDayAs: date) }
@@ -199,6 +209,22 @@ struct DayView: View {
     }
 }
 
+struct CalendarMonth: Identifiable, Hashable {
+    let id = UUID()
+    let date: Date
+    
+    var days: [Date?] {
+        let calendar = Calendar.autoupdatingCurrent
+        guard let monthRange = calendar.range(of: .day, in: .month, for: date) else { return [] }
+        let month = calendar.component(.month, from: date)
+        let year = calendar.component(.year, from: date)
+        
+        return monthRange.compactMap {
+            DateComponents(calendar: calendar, year: year, month: month, day: $0, hour: 0).date
+        }
+    }
+}
+
 #Preview {
     @Previewable @State var selectedDate: Date = Date()
     let calendar = Calendar.autoupdatingCurrent
@@ -208,7 +234,7 @@ struct DayView: View {
             
         }
         .sheet(isPresented: .constant(true)) {
-            ContinuousCalendarView(selectedDate: $selectedDate)
+            ContinuousCalendarView(sessions: SampleData.shared.randomDatesSessions, selectedDate: $selectedDate)
         }
     }
     .modelContainer(SampleData.shared.container)
