@@ -135,7 +135,7 @@ struct UsagePatternsView: View {
             }
             .padding(.horizontal)
             .padding(.top)
-            .background(Color(.secondarySystemGroupedBackground),
+            .background(.thickMaterial,
                         in: RoundedRectangle(cornerRadius: 12))
         }
         .tint(.primary)

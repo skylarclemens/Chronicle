@@ -27,6 +27,7 @@ struct AccessoryListView: View {
                             } label: {
                                 AccessoryRowView(accessory: accessory)
                             }
+                            .listRowBackground(Color.clear.background(.thickMaterial))
                         }
                     }
                 }

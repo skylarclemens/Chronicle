@@ -35,7 +35,7 @@ struct HorizontalImagesView: View {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(maxWidth: 110, maxHeight: 140, alignment: .topLeading)
+                                .frame(width: 110, height: 140, alignment: .topLeading)
                                 .blur(radius: isLastImage ? 2 : 0, opaque: true)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .clipped()
@@ -51,7 +51,6 @@ struct HorizontalImagesView: View {
                                         .strokeBorder(.primary.opacity(0.15))
                                 )
                                 .offset(x: 0, y: secondRotate/2)
-                                .zIndex(Double(-index))
                                 .overlay {
                                     if isLastImage {
                                         Text("+\(imagesData.count - imagesToShow.count)")
@@ -66,6 +65,7 @@ struct HorizontalImagesView: View {
                                     imageViewManager.showImageViewer = true
                                     print("clicked \(index)")
                                 }
+                                .zIndex(Double(-index))
                         }
                     }
                     Spacer()

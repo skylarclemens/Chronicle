@@ -30,7 +30,7 @@ struct CustomSliderView: View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: geometry.size.height * 0.5)
-                    .fill(.ultraThinMaterial)
+                    .fill(.regularMaterial)
                     .frame(width: geometry.size.width , height: geometry.size.height)
                     .overlay(
                         RoundedRectangle(cornerRadius: geometry.size.height * 0.5)

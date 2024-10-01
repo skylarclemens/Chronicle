@@ -87,9 +87,7 @@ struct TagEditorView: View {
                     Button("Close", systemImage: "xmark.circle.fill") {
                         dismiss()
                     }
-                    .buttonStyle(.plain)
-                    .labelStyle(.iconOnly)
-                    .foregroundStyle(.secondary)
+                    .buttonStyle(.close)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {

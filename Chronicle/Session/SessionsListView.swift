@@ -12,6 +12,8 @@ struct SessionsListView: View {
     @Query private var sessions: [Session]
     @Binding var date: Date
     
+    @State private var openAddSession: Bool = false
+    
     var body: some View {
         Section {
             if !sessions.isEmpty {
@@ -40,10 +42,25 @@ struct SessionsListView: View {
                         Text(date, format: .dateTime.month().day()) +
                         Text(".")
                     }
+                } actions: {
+                    Button {
+                        openAddSession = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus")
+                            Text("Add Session")
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.accent)
+                    .controlSize(.small)
                 }
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
             }
+        }
+        .sheet(isPresented: $openAddSession) {
+            SessionEditorView()
         }
     }
     

@@ -262,9 +262,8 @@ struct SessionEditorView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.close)
                 }
                 /// Toolbar to add items to session
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -323,6 +322,7 @@ struct SessionEditorView: View {
             .interactiveDismissDisabled()
             .scrollDismissesKeyboard(.immediately)
             .imagesPicker(isPresented: $showingImagesPicker, pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
+            .background(Color(.systemGroupedBackground))
             .sheet(isPresented: $openCalendar) {
                 NavigationStack {
                     CalendarView(date: $viewModel.date, displayedComponents: [.date, .hourAndMinute])

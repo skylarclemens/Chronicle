@@ -19,6 +19,8 @@ struct JournalView: View {
             List {
                 SessionsListView(date: $selectedDate, searchText: searchText)
             }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
             .safeAreaInset(edge: .top) {
                 VStack(spacing: 12) {
                     HStack {
@@ -51,10 +53,14 @@ struct JournalView: View {
                             Circle()
                                 .strokeBorder(.quaternary)
                         )
+                        .transaction { transaction in
+                            transaction.animation = nil
+                        }
                     }
                     .padding(.horizontal)
                     WeekScrollerView(sessions: sessions, selectedDate: $selectedDate)
                         .padding(.vertical, 12)
+                        .frame(maxWidth: .infinity)
                         .overlay(
                             Rectangle().frame(width: nil, height: 0.75,  alignment: .bottom).foregroundColor(.primary.opacity(0.1)),
                             alignment: .bottom
@@ -67,23 +73,13 @@ struct JournalView: View {
                 .safeAreaPadding(.top)
                 .background(.bar)
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
+            .addContentSheets()
             .background(
                 BackgroundView()
             )
-            .navigationTitle("Journal")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar(.hidden, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    
-                }
-            }
             .sheet(isPresented: $openCalendar) {
                 ContinuousCalendarView(sessions: sessions, selectedDate: $selectedDate)
             }
-            .addContentSheets()
         }
     }
     

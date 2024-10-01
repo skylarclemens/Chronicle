@@ -60,9 +60,7 @@ struct ImageViewerView: View {
                         imageViewManager.showImageViewer = false
                     }
                 }
-                .font(.title)
-                .foregroundStyle(.primary, .tertiary)
-                .padding(4)
+                .buttonStyle(.close)
             }
         }
     }

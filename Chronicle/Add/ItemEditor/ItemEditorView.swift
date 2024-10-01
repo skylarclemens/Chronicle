@@ -65,7 +65,7 @@ struct ItemTypeSelectionView: View {
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100, maxHeight: .infinity)
                     .foregroundStyle(.primary)
-                    .background(.ultraThinMaterial.opacity(viewModel.itemType == type ? 0 : 1))
+                    .background(Color(.secondarySystemGroupedBackground).opacity(viewModel.itemType == type ? 0 : 1))
                     .background(.accent.opacity(viewModel.itemType == type ? 0.33 : 0))
                     .clipShape(.rect(cornerRadius: 10))
                     .overlay(
@@ -89,15 +89,15 @@ struct ItemTypeSelectionView: View {
         }
         .padding()
         .navigationTitle(item == nil ? "What are you adding?" : "What type of item?")
+        .background(Color(.systemGroupedBackground))
         .toolbar {
             ToolbarItem(placement: .destructiveAction) {
                 Button {
                     parentDismiss()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.close)
             }
         }
     }
@@ -197,15 +197,15 @@ struct ItemEditorBasicsView: View {
         .navigationTitle("\(item != nil ? "Edit" : "Add") Item")
         .navigationBarTitleDisplayMode(.inline)
         .imagesPicker(isPresented: $showingImagesPicker, pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
+        .background(Color(.systemGroupedBackground))
         .toolbar {
             ToolbarItem(placement: .destructiveAction) {
                 Button {
                     parentDismiss()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.close)
             }
         }
         .onAppear {

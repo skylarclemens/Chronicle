@@ -101,15 +101,15 @@ struct AccessoryEditorView: View {
             .navigationTitle("\(accessory != nil ? "Edit" : "Add") Accessory")
             .navigationBarTitleDisplayMode(.inline)
             .imagesPicker(isPresented: $showingImagesPicker, pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
+            .background(Color(.systemGroupedBackground))
             .toolbar {
                 ToolbarItem(placement: .destructiveAction) {
                     Button {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.close)
                 }
             }
             .sheet(isPresented: $openTypeSelector) {
@@ -194,15 +194,15 @@ struct AccessoryTypeSelectionView: View {
             .buttonStyle(.plain)
             .navigationTitle("Select Type")
             .navigationBarTitleDisplayMode(.inline)
+            .background(Color(.systemGroupedBackground))
             .toolbar {
                 ToolbarItem(placement: .destructiveAction) {
                     Button {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.close)
                 }
             }
         }
