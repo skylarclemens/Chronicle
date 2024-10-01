@@ -85,6 +85,7 @@ struct MoodSelectorView: View {
         .onChange(of: selectedMoodIndex) { oldValue, newValue in
             updateGradientColors(for: newValue)
             viewModel.mood?.type = selectedMood
+            viewModel.mood?.valence = selectedMoodIndex
         }
         .tint(.primary)
         .toolbar {

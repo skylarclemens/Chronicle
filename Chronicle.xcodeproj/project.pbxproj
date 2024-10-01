@@ -49,6 +49,7 @@
 		7E656A2D2C94DB4500C6FD6A /* TerpeneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */; };
 		7E6BC8AD2CAC6E35007AC9AF /* GradientButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */; };
 		7E6BC8B12CAC8BC7007AC9AF /* CloseButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BC8B02CAC8BC7007AC9AF /* CloseButtonStyle.swift */; };
+		7E6BC8B32CAC99D5007AC9AF /* MoodAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */; };
 		7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97B2C9214980092ECE7 /* Mood.swift */; };
 		7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97D2C9214BC0092ECE7 /* Flavor.swift */; };
 		7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */; };
@@ -146,6 +147,7 @@
 		7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerpeneView.swift; sourceTree = "<group>"; };
 		7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButtonStyle.swift; sourceTree = "<group>"; };
 		7E6BC8B02CAC8BC7007AC9AF /* CloseButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonStyle.swift; sourceTree = "<group>"; };
+		7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodAnalyticsView.swift; sourceTree = "<group>"; };
 		7E70B97B2C9214980092ECE7 /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
 		7E70B97D2C9214BC0092ECE7 /* Flavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flavor.swift; sourceTree = "<group>"; };
 		7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodButtonStyle.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */,
 				7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */,
 				7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */,
+				7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -652,6 +655,7 @@
 				7E3B557E2C8A3AEF00AB0961 /* HorizontalImagesView.swift in Sources */,
 				7ED0D8022CA8C05D00FF8D8A /* SessionRowView.swift in Sources */,
 				7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */,
+				7E6BC8B32CAC99D5007AC9AF /* MoodAnalyticsView.swift in Sources */,
 				7EDFFA562CA1ED430033163E /* TagEditorView.swift in Sources */,
 				7EC009022C5EF1F70093217B /* Strain.swift in Sources */,
 				7EE6261D2C6A948500448F80 /* ItemType.swift in Sources */,

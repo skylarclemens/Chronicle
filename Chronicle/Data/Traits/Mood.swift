@@ -66,5 +66,20 @@ public enum MoodType: Double, Codable, CaseIterable {
                 .green
         }
     }
+    
+    var emoji: String {
+        switch self {
+        case .veryNegative:
+            "😢"
+        case .negative:
+            "😟"
+        case .neutral:
+            "😐"
+        case .positive:
+            "🙂"
+        case .veryPositive:
+            "😄"
+        }
+    }
 }
 

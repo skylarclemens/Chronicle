@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 enum DateFilter: String, CaseIterable {
     case week = "week"
@@ -31,6 +32,19 @@ enum DateFilter: String, CaseIterable {
             let yearStart = calendar.date(from: calendar.dateComponents([.year], from: startOfDay))!
             let yearEnd = calendar.date(byAdding: .year, value: 1, to: yearStart)!
             return (yearStart, yearEnd)
+        }
+    }
+    
+    var dateLabel: some View {
+        switch self {
+        case .week:
+            Text(self.dateRange().0.formatted(date: .abbreviated, time: .omitted)) +
+            Text("-") +
+            Text(self.dateRange().1.formatted(date: .abbreviated, time: .omitted))
+        case .month:
+            Text(self.dateRange().0, format: .dateTime.month(.wide).year())
+        case .year:
+            Text(self.dateRange().0, format: .dateTime.year())
         }
     }
 }
