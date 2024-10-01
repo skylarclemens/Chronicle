@@ -72,9 +72,10 @@ struct CompactSessionCardView: View {
             .clipShape(.rect(cornerRadius: 12))
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(.bar, lineWidth: 1)
+                    .strokeBorder(.primary.opacity(0.1), lineWidth: 1)
                     .allowsHitTesting(false)
             )
+            .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
         }
     }
 }

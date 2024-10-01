@@ -8,22 +8,37 @@
 import SwiftUI
 
 struct BackgroundView: View {
+    @Environment(\.colorScheme) var colorScheme
     @State private var isAnimating = false
     
     var body: some View {
         ZStack {
             if #available(iOS 18.0, *) {
-                MeshGradient(width: 3, height: 3, points: [
-                    .init(0, 0), .init(0.5, 0), .init(1, 0),
-                    .init(0, 0.5), .init(isAnimating ? 0.4 : 0.6,  isAnimating ? 0.4 : 0.6), .init(1, 0.5),
-                    .init(0, 1), .init(0.5, 1), .init(1, 1)
-                ], colors: [
-                    .indigo, .purple, .purple,
-                    .purple, Color(.systemBackground).opacity(isAnimating ? 0.5 : 1.0), .green,
-                    .green, .green, .mint
-                ],
-                             smoothsColors: true,
-                             colorSpace: .perceptual)
+                if colorScheme == .dark {
+                    MeshGradient(width: 3, height: 3, points: [
+                        .init(0, 0), .init(0.5, 0), .init(1, 0),
+                        .init(0, 0.5), .init(isAnimating ? 0.4 : 0.6,  isAnimating ? 0.4 : 0.6), .init(1, 0.5),
+                        .init(0, 1), .init(0.5, 1), .init(1, 1)
+                    ], colors: [
+                        .indigo, .purple, .purple,
+                        .purple, Color(.systemBackground).opacity(isAnimating ? 0.5 : 1.0), .green,
+                        .green, .green, .mint
+                    ],
+                                 smoothsColors: true,
+                                 colorSpace: .perceptual)
+                } else {
+                    MeshGradient(width: 3, height: 3, points: [
+                        .init(0, 0), .init(0.5, 0), .init(1, 0),
+                        .init(0, 0.5), .init(isAnimating ? 0.4 : 0.6,  isAnimating ? 0.4 : 0.6), .init(1, 0.5),
+                        .init(0, 1), .init(0.5, 1), .init(1, 1)
+                    ], colors: [
+                        .indigo.opacity(0.25), .purple.opacity(0.25), .purple.opacity(0.25),
+                        .purple.opacity(0.25), Color(.systemBackground).opacity(isAnimating ? 0.5 : 1.0), .green.opacity(0.25),
+                        .green.opacity(0.25), .green.opacity(0.25), .mint.opacity(0.25)
+                    ],
+                                 smoothsColors: true,
+                                 colorSpace: .perceptual)
+                }
             } else {
                 // Fallback on earlier versions
                 VStack {
@@ -52,15 +67,15 @@ struct BackgroundView: View {
         .overlay(
             Rectangle()
                 .fill(Color(.systemGroupedBackground))
-                .opacity(0.75)
+                .opacity(colorScheme == .dark ? 0.75 : 0.9)
         )
         .ignoresSafeArea()
         .onAppear {
-            if #available(iOS 18.0, *) {
+            /*if #available(iOS 18.0, *) {
                 withAnimation(.easeInOut(duration: 5).repeatForever(autoreverses: true)) {
                     isAnimating.toggle()
                 }
-            }
+            }*/
         }
     }
 }

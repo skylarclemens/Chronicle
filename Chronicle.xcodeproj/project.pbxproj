@@ -47,6 +47,7 @@
 		7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */; };
 		7E656A2B2C94CED300C6FD6A /* PillStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */; };
 		7E656A2D2C94DB4500C6FD6A /* TerpeneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */; };
+		7E6BC8AD2CAC6E35007AC9AF /* GradientButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */; };
 		7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97B2C9214980092ECE7 /* Mood.swift */; };
 		7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97D2C9214BC0092ECE7 /* Flavor.swift */; };
 		7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */; };
@@ -142,6 +143,7 @@
 		7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAnalyticsView.swift; sourceTree = "<group>"; };
 		7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillStyle.swift; sourceTree = "<group>"; };
 		7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerpeneView.swift; sourceTree = "<group>"; };
+		7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButtonStyle.swift; sourceTree = "<group>"; };
 		7E70B97B2C9214980092ECE7 /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
 		7E70B97D2C9214BC0092ECE7 /* Flavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flavor.swift; sourceTree = "<group>"; };
 		7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodButtonStyle.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 			children = (
 				7E70B9832C9256790092ECE7 /* EditorInputButton.swift */,
 				7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */,
+				7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -441,13 +444,13 @@
 				7E951D012C73D1140023922C /* Item */,
 				7E951D032C73E7C70023922C /* Session */,
 				7E5301E42C74490300909048 /* Strain */,
-				7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */,
 				7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */,
 				7EC008EE2C5EEDE80093217B /* ContentView.swift */,
 				7E5301EA2C74F97500909048 /* DashboardView.swift */,
 				7E5301EC2C74F98200909048 /* JournalView.swift */,
 				7E0DE5232CA5CDF8003C0642 /* AnalyticsView.swift */,
 				7E5301EE2C74F99B00909048 /* InventoryView.swift */,
+				7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */,
 				7EC008F22C5EEDEA0093217B /* Assets.xcassets */,
 				7EC008FC2C5EF1A00093217B /* Data */,
 				7EC008F42C5EEDEA0093217B /* Preview Content */,
@@ -651,6 +654,7 @@
 				7EE6261D2C6A948500448F80 /* ItemType.swift in Sources */,
 				7E656A2D2C94DB4500C6FD6A /* TerpeneView.swift in Sources */,
 				7E08D4192C6BD95700F96328 /* StrainEditorView.swift in Sources */,
+				7E6BC8AD2CAC6E35007AC9AF /* GradientButtonStyle.swift in Sources */,
 				7EDFFA532CA1EB650033163E /* Tag.swift in Sources */,
 				7E7349BB2C811BE300262930 /* CalendarView.swift in Sources */,
 				7E81C3462CAA17C7006E9DD3 /* AddView.swift in Sources */,

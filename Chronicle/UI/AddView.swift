@@ -63,7 +63,7 @@ struct AddView: View {
     }
     
     private enum AddOption: CaseIterable {
-        case item, session, accessory, strain
+        case item, accessory, strain, session
         
         func symbol() -> String {
             switch self {

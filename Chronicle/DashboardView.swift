@@ -13,11 +13,8 @@ struct DashboardView: View {
     @Query(sort: \Item.name) private var items: [Item]
     @Query(sort: \Strain.name) private var strains: [Strain]
     @Query(Session.dashboardDescriptor) private var sessions: [Session]
-    @State private var openAddSelector: Bool = false
-    @State private var openAddItem: Bool = false
-    @State private var openAddStrain: Bool = false
+    @Binding var activeTab: AppTab
     @State private var openAddSession: Bool = false
-    @State private var openAddAccessory: Bool = false
     @State private var openSettings: Bool = false
     
     var body: some View {
@@ -25,48 +22,28 @@ struct DashboardView: View {
             ScrollView {
                 VStack {
                     VStack(alignment: .leading) {
-                        SimpleAnalyticsView()
+                        SimpleAnalyticsView(activeTab: $activeTab)
                     }
                     .padding(.horizontal)
                     VStack(alignment: .leading) {
-                        Text("Stash")
-                            .font(.title2)
-                            .padding(.horizontal)
-                            .bold()
-                            .accessibilityAddTraits(.isHeader)
-                        if !items.isEmpty {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                LazyHStack {
-                                    ForEach(items) { item in
-                                        NavigationLink {
-                                            ItemDetailsView(item: item)
-                                        } label: {
-                                            ItemCardView(item: item)
-                                        }
-                                    }
-                                }
-                                .tint(.primary)
-                                .frame(maxHeight: 120)
-                                .padding(.horizontal)
-                            }
-                        } else {
-                            ContentUnavailableView {
-                                Label("Nothing in your stash", systemImage: "tray")
-                            } description: {
-                                Text("You don't have any saved items.")
-                            } actions: {
-                                Button {
-                                    openAddItem = true
-                                } label: {
-                                    Label("Add Item", systemImage: "plus")
-                                }
-                                .buttonStyle(.bordered)
-                                .tint(.accent)
-                            }
+                        Button {
+                            openAddSession = true
+                        } label: {
+                            Label("Add a new session", systemImage: "plus")
+                                .fontWeight(.medium)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
+                        .buttonStyle(.bordered)
+                        .tint(.accent)
+                        .controlSize(.large)
+                        .buttonBorderShape(.roundedRectangle(radius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .strokeBorder(.accent.opacity(0.33))
+                        )
                     }
-                    .padding(.vertical)
-                    
+                    .padding(.horizontal)
+                    .padding(.top)
                     VStack(alignment: .leading) {
                         Text("Recent Sessions")
                             .font(.title2)
@@ -100,6 +77,7 @@ struct DashboardView: View {
                             }
                         }
                     }
+                    .padding(.top)
                     .padding(.horizontal)
                     if !strains.isEmpty {
                         VStack(alignment: .leading) {
@@ -122,24 +100,29 @@ struct DashboardView: View {
                                                 }
                                                 .tint(.primary)
                                                 .padding(8)
-                                                .background(RoundedRectangle(cornerRadius: 8).fill(.regularMaterial))
+                                                .background(.thickMaterial,
+                                                            in: RoundedRectangle(cornerRadius: 8))
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 8)
+                                                        .strokeBorder(.primary.opacity(0.1))
+                                                )
+                                                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 2)
                                             }
                                         }
+                                        .buttonStyle(.plain)
                                     }
                                 }
-                                .padding(.horizontal)
                             }
+                            .contentMargins(.horizontal, 16)
+                            .scrollClipDisabled()
                         }
                         .padding(.vertical)
-                        .containerRelativeFrame(
-                            [.horizontal],
-                            alignment: .topLeading
-                        )
                     }
                 }
                 .frame(maxHeight: .infinity)
             }
             .scrollIndicators(.hidden)
+            .navigationTitle("Dashboard")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Settings", systemImage: "person.crop.circle") {
@@ -148,8 +131,10 @@ struct DashboardView: View {
                     .tint(.primary)
                 }
             }
-            .navigationTitle("Dashboard")
             .addContentSheets()
+            .sheet(isPresented: $openAddSession) {
+                SessionEditorView()
+            }
             .sheet(isPresented: $openSettings) {
                 SettingsView()
             }
@@ -158,11 +143,13 @@ struct DashboardView: View {
                 BackgroundView()
             )
         }
+
     }
 }
 
 #Preview {
-    return DashboardView()
-        //.modelContainer(SampleData.shared.container)
+    @Previewable @State var activeTab: AppTab = .dashboard
+    DashboardView(activeTab: $activeTab)
+        .modelContainer(SampleData.shared.container)
         .environment(ImageViewManager())
 }

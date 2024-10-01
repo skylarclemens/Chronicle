@@ -11,29 +11,45 @@ import SwiftData
 struct SimpleAnalyticsView: View {
     @Environment(\.modelContext) private var modelContext
     
+    @Binding var activeTab: AppTab
     @Query var items: [Item]
     @Query var sessions: [Session]
     @Query var strains: [Strain]
     
     var body: some View {
         HStack(spacing: 12) {
-            SimpleAnalyticsDataView(
-                iconName: "rectangle.stack.fill",
-                iconColor: .primary,
-                analyticsDetails: "Total Sessions",
-                numberData: totalSessions)
+            Button {
+                activeTab = AppTab.journal
+            } label: {
+                SimpleAnalyticsDataView(
+                    iconName: "rectangle.stack.fill",
+                    iconColor: .primary,
+                    analyticsDetails: "Total Sessions",
+                    numberData: totalSessions)
+            }
+            .buttonStyle(.plain)
             Divider()
-            SimpleAnalyticsDataView(
-                iconName: "theatermasks.fill",
-                iconColor: .purple,
-                analyticsDetails: "Most Common Mood",
-                stringData: mostCommonMood)
+            Button {
+                activeTab = AppTab.analytics
+            } label: {
+                SimpleAnalyticsDataView(
+                    iconName: "theatermasks.fill",
+                    iconColor: .purple,
+                    analyticsDetails: "Most Common Mood",
+                    stringData: mostCommonMood)
+            }
+            .buttonStyle(.plain)
             Divider()
-            SimpleAnalyticsDataView(
-                iconName: "leaf.fill",
-                iconColor: .green,
-                analyticsDetails: "Most Used Item",
-                stringData: mostUsedItem)
+            Button {
+                activeTab = AppTab.inventory
+            } label: {
+                SimpleAnalyticsDataView(
+                    iconName: "leaf.fill",
+                    iconColor: .green,
+                    analyticsDetails: "Most Used Item",
+                    stringData: mostUsedItem)
+            }
+            .buttonStyle(.plain)
             Spacer()
         }
         .frame(maxHeight: 60)
@@ -82,7 +98,7 @@ struct SimpleAnalyticsDataView: View {
                 } else if let stringData {
                     Text(stringData)
                         .font(.system(size: 15, weight: .semibold, design: .rounded))
-                        .minimumScaleFactor(0.8)
+                        .minimumScaleFactor(0.75)
                         .lineLimit(1)
                 }
             }
@@ -93,12 +109,14 @@ struct SimpleAnalyticsDataView: View {
                 .foregroundStyle(.secondary)
                 
         }
-        .frame(minWidth: .zero, maxWidth: 110, alignment: .leading)
+        .frame(minWidth: .zero, maxWidth: 115, alignment: .leading)
         .fixedSize(horizontal: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    SimpleAnalyticsView()
+    @Previewable @State var activeTab: AppTab = .dashboard
+    
+    SimpleAnalyticsView(activeTab: $activeTab)
         .modelContainer(SampleData.shared.container)
 }

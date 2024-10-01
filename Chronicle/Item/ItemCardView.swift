@@ -41,10 +41,11 @@ struct ItemCardView: View {
                     )
             }
         }
-        .clipShape(.rect(cornerRadius: 10))
+        .background(.primary.opacity(0.25))
+        .clipShape(.rect(cornerRadius: 12))
         .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(.white.opacity(0.15))
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(.primary.opacity(0.1))
         )
     }
 }

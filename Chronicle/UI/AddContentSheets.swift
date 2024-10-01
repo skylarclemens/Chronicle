@@ -28,14 +28,17 @@ struct AddContentSheets: ViewModifier {
                 .buttonStyle(.plain)
                 .labelStyle(.iconOnly)
                 .frame(width: 55, height: 55)
-                .background(.accent.opacity(0.33),
+                .background(.accent.opacity(0.4),
                     in: Circle())
                 .background(.background,
                             in: Circle())
-                .shadow(color: .black.opacity(0.15), radius: 10)
+                .shadow(color: .black.opacity(0.1), radius: 10)
                 .contentShape(Circle())
                 .padding(.trailing)
                 .padding(.bottom)
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
             }
             .sheet(isPresented: $openAddItem) {
                 ItemEditorView()
@@ -53,6 +56,7 @@ struct AddContentSheets: ViewModifier {
                 AddView(openAddItem: $openAddItem, openAddSession: $openAddSession, openAddAccessory: $openAddAccessory, openAddStrain: $openAddStrain)
                     .presentationDetents([.height(200)])
                     .presentationDragIndicator(.visible)
+                    .presentationBackground(.thickMaterial)
             }
     }
 }
