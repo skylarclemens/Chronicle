@@ -103,6 +103,8 @@
 		7EFCC6112C7E6F040090588D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6102C7E6F040090588D /* Compound.swift */; };
 		7EFCC6132C7E6F420090588D /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6122C7E6F420090588D /* Amount.swift */; };
 		7EFCDE342CADDDEF002D68AC /* MoodPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */; };
+		7EFCDE362CADFB7A002D68AC /* ItemAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE352CADFB7A002D68AC /* ItemAnalyticsView.swift */; };
+		7EFCDE382CAE0681002D68AC /* ItemTypeDistributionChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE372CAE0681002D68AC /* ItemTypeDistributionChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -203,6 +205,8 @@
 		7EFCC6102C7E6F040090588D /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
 		7EFCC6122C7E6F420090588D /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodPieChartView.swift; sourceTree = "<group>"; };
+		7EFCDE352CADFB7A002D68AC /* ItemAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemAnalyticsView.swift; sourceTree = "<group>"; };
+		7EFCDE372CAE0681002D68AC /* ItemTypeDistributionChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeDistributionChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -346,6 +350,7 @@
 				7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */,
 				7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */,
 				7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */,
+				7EFCDE352CADFB7A002D68AC /* ItemAnalyticsView.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -587,6 +592,7 @@
 			isa = PBXGroup;
 			children = (
 				7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */,
+				7EFCDE372CAE0681002D68AC /* ItemTypeDistributionChartView.swift */,
 			);
 			path = Mood;
 			sourceTree = "<group>";
@@ -664,6 +670,7 @@
 				7ED0D8062CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift in Sources */,
 				7ED747932C8BC67B00F07679 /* CGFloat.swift in Sources */,
 				7ED747912C8BB3F100F07679 /* CustomSliderView.swift in Sources */,
+				7EFCDE362CADFB7A002D68AC /* ItemAnalyticsView.swift in Sources */,
 				7EF0BB162C6D3A2D0068542D /* ItemDetailsView.swift in Sources */,
 				7EB685542CA48DCD002C1759 /* ImagesPicker.swift in Sources */,
 				7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */,
@@ -697,6 +704,7 @@
 				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
 				7ECAE6922CA87B9800ECEFD9 /* Accessory.swift in Sources */,
+				7EFCDE382CAE0681002D68AC /* ItemTypeDistributionChartView.swift in Sources */,
 				7ECAE68B2CA86A0B00ECEFD9 /* AudioPlayerView.swift in Sources */,
 				7E4540362CA76DD500ADB083 /* AudioRecorder.swift in Sources */,
 				7E523C172C77990D005B6186 /* SessionDetailsView.swift in Sources */,
