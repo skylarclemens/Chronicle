@@ -102,6 +102,7 @@
 		7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60E2C7E6DC90090588D /* Emotion.swift */; };
 		7EFCC6112C7E6F040090588D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6102C7E6F040090588D /* Compound.swift */; };
 		7EFCC6132C7E6F420090588D /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6122C7E6F420090588D /* Amount.swift */; };
+		7EFCDE342CADDDEF002D68AC /* MoodPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -201,6 +202,7 @@
 		7EFCC60E2C7E6DC90090588D /* Emotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
 		7EFCC6102C7E6F040090588D /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
 		7EFCC6122C7E6F420090588D /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
+		7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodPieChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,6 +341,7 @@
 		7E5581362C823CD700F461EB /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				7EFCDE312CADDDD1002D68AC /* Charts */,
 				7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */,
 				7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */,
 				7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */,
@@ -572,6 +575,22 @@
 			path = Traits;
 			sourceTree = "<group>";
 		};
+		7EFCDE312CADDDD1002D68AC /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				7EFCDE322CADDDD8002D68AC /* Mood */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
+		7EFCDE322CADDDD8002D68AC /* Mood */ = {
+			isa = PBXGroup;
+			children = (
+				7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */,
+			);
+			path = Mood;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -699,6 +718,7 @@
 				7E1D086E2C977D17004B39D5 /* Purchase.swift in Sources */,
 				7E70B9842C92567E0092ECE7 /* EditorInputButton.swift in Sources */,
 				7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */,
+				7EFCDE342CADDDEF002D68AC /* MoodPieChartView.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* SessionEditorView.swift in Sources */,
 				7E164A622CA4C710008996F1 /* DateFilter.swift in Sources */,
 				7E70B9862C925BD10092ECE7 /* Double.swift in Sources */,

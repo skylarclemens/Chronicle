@@ -14,43 +14,7 @@ struct MoodAnalyticsView: View {
     
     var body: some View {
         NavigationLink {
-            ScrollView {
-                VStack(alignment: .leading) {
-                    Picker("Date Range", selection: $filter.animation()) {
-                        ForEach(DateFilter.allCases, id: \.self) { filterSelection in
-                            Text(filterSelection.rawValue.localizedCapitalized).tag(filterSelection)
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    
-                    VStack(alignment: .leading) {
-                        Text("Moods")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                        filter.dateLabel
-                            .font(.caption)
-                            .fontWeight(.medium)
-                            .fontDesign(.rounded)
-                            .foregroundStyle(.secondary)
-                    }
-                    VStack(alignment: .leading, spacing: 20) {
-                        GroupBox("Average Weekday Mood") {
-                            moodTrendChart
-                        }
-                        .frame(height: 200)
-                        GroupBox("Moods Logged") {
-                            MoodsPieChartView(sessions: sessions)
-                                .frame(height: 300)
-                        }
-                        GroupBox("Top Emotions") {
-                            topEmotionsChart
-                                .frame(height: 200)
-                        }
-                    }
-                }
-                .animation(.default, value: sessions)
-                .padding(.horizontal)
-            }
+            MoodsAnalyticsDetailsView(sessions: sessions, filter: $filter)
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -84,7 +48,7 @@ struct MoodAnalyticsView: View {
             .background(.thickMaterial,
                         in: RoundedRectangle(cornerRadius: 12))
             .overlay(alignment: .bottomTrailing) {
-                moodPieChart
+                MoodPieChartView(sessions: sessions)
                     .frame(width: 100, height: 100)
                     .chartXAxis(.hidden)
                     .chartYAxis(.hidden)
@@ -96,6 +60,55 @@ struct MoodAnalyticsView: View {
             
         }
         .tint(.primary)
+    }
+    
+    private func sessionsWithMoods() -> [Session] {
+        sessions.filter { $0.mood != nil }
+    }
+}
+
+struct MoodsAnalyticsDetailsView: View {
+    var sessions: [Session]
+    @Binding var filter: DateFilter
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading) {
+                Picker("Date Range", selection: $filter.animation()) {
+                    ForEach(DateFilter.allCases, id: \.self) { filterSelection in
+                        Text(filterSelection.rawValue.localizedCapitalized).tag(filterSelection)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                
+                VStack(alignment: .leading) {
+                    Text("Moods")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    filter.dateLabel
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .fontDesign(.rounded)
+                        .foregroundStyle(.secondary)
+                }
+                VStack(alignment: .leading, spacing: 20) {
+                    GroupBox("Average Weekday Mood") {
+                        moodTrendChart
+                    }
+                    .frame(height: 200)
+                    GroupBox("Moods Logged") {
+                        MoodPieChartView(sessions: sessions)
+                            .frame(height: 300)
+                    }
+                    GroupBox("Top Emotions") {
+                        topEmotionsChart
+                            .frame(height: 200)
+                    }
+                }
+            }
+            .animation(.default, value: sessions)
+            .padding(.horizontal)
+        }
     }
     
     private var moodTrendChart: some View {
@@ -138,43 +151,10 @@ struct MoodAnalyticsView: View {
                 x: .value("Emotion", emotion.name),
                 y: .value("Count", emotion.count)
             )
-        }
-        .chartXAxis {
-            AxisMarks { value in
-                if let emotionName = value.as(String.self) {
-                    AxisValueLabel {
-                        HStack {
-                            Text(emotionName)
-                        }
-                        .font(.caption2)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.6)
-                    }
-                }
-            }
-        }
-    }
-    
-    private var moodPieChart: some View {
-        Chart(MoodType.allCases, id: \.self) { moodType in
-            SectorMark(
-                angle: .value("Count", moodCount(for: moodType)),
-                innerRadius: .ratio(0.5),
-                angularInset: 3.0
-            )
             .cornerRadius(8.0)
-            .foregroundStyle(by: .value("Mood", moodType.label))
+            .foregroundStyle(by: .value("Emotion", emotion.name))
         }
-        .chartForegroundStyleScale(domain: MoodType.allCases.map { $0.label },
-                                   range: MoodType.allCases.map { $0.color })
-    }
-    
-    private func sessionsWithMoods() -> [Session] {
-        sessions.filter { $0.mood != nil }
-    }
-    
-    private func moodCount(for moodType: MoodType) -> Int {
-        sessions.filter { $0.mood?.type == moodType }.count
+        .chartLegend(.hidden)
     }
     
     private func averageWeekdayMoods() -> [(weekday: String, averageMood: Double)] {
@@ -198,71 +178,36 @@ struct MoodAnalyticsView: View {
         }
         return counts.sorted {
             $0.value > $1.value
-        }.prefix(5).map { ($0.key, $0.value) }
-    }
-}
-
-struct MoodsPieChartView: View {
-    var sessions: [Session]
-    @State private var selectedMoodLabel: String?
-    
-    var selectedMood: MoodType? {
-        if let selectedMoodLabel {
-            return MoodType.allCases.first(where: { $0.label == selectedMoodLabel })
-        }
-        return nil
+        }.prefix(4).map { ($0.key, $0.value) }
+            .sorted { $0.name < $1.name }
     }
     
-    var body: some View {
-        Chart(MoodType.allCases, id: \.self) { moodType in
-            let count = moodCount(for: moodType)
-            SectorMark(
-                angle: .value("Count", count),
-                innerRadius: .ratio(0.55),
-                angularInset: 3.0
-            )
-            .cornerRadius(8.0)
-            .foregroundStyle(by: .value("Mood", moodType.label))
-            .annotation(position: .overlay) {
-                if count > 0 {
-                    Text(count.formatted())
-                        .font(.headline)
-                        .shadow(color: .black.opacity(0.25), radius: 2)
-                        .shadow(color: .black.opacity(0.5), radius: 1)
-                }
-            }
-        }
-        .chartForegroundStyleScale(domain: MoodType.allCases.map { $0.label },
-                                   range: MoodType.allCases.map { $0.color })
-        .chartAngleSelection(value: $selectedMoodLabel)
-        /*.chartLegend {
-            HStack {
-                ForEach(MoodType.allCases, id: \.self) { type in
-                    HStack {
-                        Circle()
-                            .fill(type.color)
-                            .frame(width: 4, height: 4)
-                        Text(type.label)
-                            .font(.caption2)
-                            .foregroundStyle(.primary)
-                    }
-                }
-            }
-        }*/
-        .chartLegend(position: .top, alignment: .leading)
-    }
-    
-    private func moodCounts() -> [MoodType: Int] {
-        sessions.reduce(into: [:]) { counts, session in
-            if let mood = session.mood {
-                counts[mood.type, default: 0] += 1
-            }
-        }
+    private func sessionsWithMoods() -> [Session] {
+        sessions.filter { $0.mood != nil }
     }
     
     private func moodCount(for moodType: MoodType) -> Int {
         sessions.filter { $0.mood?.type == moodType }.count
     }
+}
+
+
+
+#Preview {
+    @Previewable @State var filter: DateFilter = .week
+    var filteredSessions: [Session] {
+        let (startDate, endDate) = filter.dateRange()
+        return SampleData.shared.randomDatesSessions.filter {
+            $0.date >= startDate && $0.date <= endDate
+        }
+    }
+    
+    NavigationStack {
+        VStack {
+            MoodsAnalyticsDetailsView(sessions: filteredSessions, filter: $filter)
+        }
+    }
+    .modelContainer(SampleData.shared.container)
 }
 
 #Preview {
