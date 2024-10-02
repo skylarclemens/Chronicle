@@ -10,8 +10,8 @@ import Charts
 import SwiftData
 
 struct UsagePatternsView: View {
-    @Query private var sessions: [Session]
-    @Binding private var filter: DateFilter
+    var sessions: [Session]
+    @Binding var filter: DateFilter
     
     var body: some View {
         NavigationLink {
@@ -25,18 +25,21 @@ struct UsagePatternsView: View {
                     .pickerStyle(SegmentedPickerStyle())
                     VStack(alignment: .leading) {
                         VStack(alignment: .leading) {
-                            Text("Sessions Logged")
+                            Text("Sessions")
                                 .font(.title3)
                                 .fontWeight(.semibold)
-                            dateLabel
+                            filter.dateLabel
                                 .font(.caption)
                                 .fontWeight(.medium)
                                 .fontDesign(.rounded)
                                 .foregroundStyle(.secondary)
                         }
-                        chart
-                            .frame(height: 250)
+                        GroupBox("Sessions Logged") {
+                            chart
+                                .frame(height: 250)
+                        }
                     }
+                    .animation(.default, value: filter)
                     VStack(alignment: .leading) {
                         HStack {
                             if !sessions.isEmpty {
@@ -47,7 +50,7 @@ struct UsagePatternsView: View {
                                         Text(sessions.count, format: .number)
                                             .contentTransition(.numericText(value: Double(sessions.count)))
                                     }
-                                    Text("TOTAL SESSIONS")
+                                    Text("Total Sessions".localizedUppercase)
                                         .font(.caption2)
                                         .fontWeight(.semibold)
                                         .foregroundStyle(.secondary)
@@ -60,40 +63,7 @@ struct UsagePatternsView: View {
                                             in: RoundedRectangle(cornerRadius: 12))
                             }
                         }
-                        HStack {
-                            if let mostUsedItem = mostUsedItem() {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(mostUsedItem.name)
-                                        .contentTransition(.interpolate)
-                                    Text("MOST USED ITEM")
-                                        .font(.caption2)
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.secondary)
-                                }
-                                .fontDesign(.rounded)
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 12)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color(.secondarySystemGroupedBackground),
-                                            in: RoundedRectangle(cornerRadius: 12))
-                            }
-                            if let mostUsedStrain = mostUsedStrain() {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(mostUsedStrain)
-                                        .contentTransition(.interpolate)
-                                    Text("MOST USED STRAIN")
-                                        .font(.caption2)
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.secondary)
-                                }
-                                .fontDesign(.rounded)
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 12)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color(.secondarySystemGroupedBackground),
-                                            in: RoundedRectangle(cornerRadius: 12))
-                            }
-                        }
+                        
                     }
                     .padding(.vertical)
                 }
@@ -105,7 +75,7 @@ struct UsagePatternsView: View {
                 HStack {
                     Image(systemName: "rectangle.stack.fill")
                         .foregroundStyle(.primary.opacity(0.5))
-                    Text("Sessions Logged")
+                    Text("Sessions")
                         .fontWeight(.semibold)
                         .fontDesign(.rounded)
                     Spacer()
@@ -120,7 +90,7 @@ struct UsagePatternsView: View {
                             .fontWeight(.semibold)
                             .fontDesign(.rounded)
                             .contentTransition(.numericText(value: Double(sessions.count)))
-                        Text(" sessions")
+                        Text(" \(sessions.count == 1 ? "session" : "sessions") logged")
                             .fontDesign(.rounded)
                             .foregroundStyle(.secondary)
                     }
@@ -222,55 +192,6 @@ struct UsagePatternsView: View {
         }.sorted { $0.date < $1.date }
     }
     
-    private func mostUsedStrain() -> String? {
-        let strainCounts = sessions.compactMap {
-            $0.item?.strain?.name
-        }.reduce(into: [:]) { counts, strain in
-            counts[strain, default: 0] += 1
-        }
-        
-        guard !strainCounts.isEmpty else { return nil }
-        
-        let maxCount = strainCounts.values.max()!
-        let mostUsedStrains = strainCounts.filter { $0.value == maxCount }.keys
-        
-        return mostUsedStrains.min(by: { $0.lowercased() < $1.lowercased() })
-    }
-    
-    private func mostUsedItem() -> Item? {
-        let itemCounts = sessions.compactMap(\.item).reduce(into: [:]) { counts, item in
-            counts[item, default: 0] += 1
-        }
-        guard !itemCounts.isEmpty else { return nil }
-        
-        let maxCount = itemCounts.values.max()!
-        let mostUsedItems = itemCounts.filter { $0.value == maxCount }.keys
-        
-        return mostUsedItems.min(by: { $0.createdAt < $1.createdAt })
-    }
-    
-    @ViewBuilder
-    var dateLabel: some View {
-        switch filter {
-        case .week:
-            HStack(spacing: 0){
-                Text(filter.dateRange().0.formatted(date: .abbreviated, time: .omitted))
-                Text("-")
-                Text(filter.dateRange().1.formatted(date: .abbreviated, time: .omitted))
-            }
-        case .month:
-            Text(filter.dateRange().0, format: .dateTime.month(.wide).year())
-        case .year:
-            Text(filter.dateRange().0, format: .dateTime.year())
-        }
-    }
-    
-    init(filter: Binding<DateFilter>) {
-        self._filter = filter
-        let (startDate, endDate) = filter.wrappedValue.dateRange()
-        _sessions = Query(filter: Session.dateRangePredicate(startDate: startDate, endDate: endDate), sort: \Session.createdAt, order: .reverse)
-    }
-    
     private struct SessionCount: Identifiable {
         let id: UUID = UUID()
         let date: Date
@@ -282,7 +203,7 @@ struct UsagePatternsView: View {
     @Previewable @State var filter: DateFilter = .week
     NavigationStack {
         VStack {
-            UsagePatternsView(filter: $filter)
+            UsagePatternsView(sessions: SampleData.shared.randomDatesSessions, filter: $filter)
         }
     }
     .modelContainer(SampleData.shared.container)

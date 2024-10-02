@@ -49,6 +49,7 @@
 		7E656A2D2C94DB4500C6FD6A /* TerpeneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */; };
 		7E6BC8AD2CAC6E35007AC9AF /* GradientButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */; };
 		7E6BC8B12CAC8BC7007AC9AF /* CloseButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BC8B02CAC8BC7007AC9AF /* CloseButtonStyle.swift */; };
+		7E6BC8B32CAC99D5007AC9AF /* MoodAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */; };
 		7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97B2C9214980092ECE7 /* Mood.swift */; };
 		7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97D2C9214BC0092ECE7 /* Flavor.swift */; };
 		7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */; };
@@ -101,6 +102,7 @@
 		7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60E2C7E6DC90090588D /* Emotion.swift */; };
 		7EFCC6112C7E6F040090588D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6102C7E6F040090588D /* Compound.swift */; };
 		7EFCC6132C7E6F420090588D /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6122C7E6F420090588D /* Amount.swift */; };
+		7EFCDE342CADDDEF002D68AC /* MoodPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,6 +148,7 @@
 		7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerpeneView.swift; sourceTree = "<group>"; };
 		7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButtonStyle.swift; sourceTree = "<group>"; };
 		7E6BC8B02CAC8BC7007AC9AF /* CloseButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonStyle.swift; sourceTree = "<group>"; };
+		7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodAnalyticsView.swift; sourceTree = "<group>"; };
 		7E70B97B2C9214980092ECE7 /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
 		7E70B97D2C9214BC0092ECE7 /* Flavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flavor.swift; sourceTree = "<group>"; };
 		7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodButtonStyle.swift; sourceTree = "<group>"; };
@@ -199,6 +202,7 @@
 		7EFCC60E2C7E6DC90090588D /* Emotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
 		7EFCC6102C7E6F040090588D /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
 		7EFCC6122C7E6F420090588D /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
+		7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodPieChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -337,9 +341,11 @@
 		7E5581362C823CD700F461EB /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				7EFCDE312CADDDD1002D68AC /* Charts */,
 				7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */,
 				7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */,
 				7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */,
+				7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -569,6 +575,22 @@
 			path = Traits;
 			sourceTree = "<group>";
 		};
+		7EFCDE312CADDDD1002D68AC /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				7EFCDE322CADDDD8002D68AC /* Mood */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
+		7EFCDE322CADDDD8002D68AC /* Mood */ = {
+			isa = PBXGroup;
+			children = (
+				7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */,
+			);
+			path = Mood;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -652,6 +674,7 @@
 				7E3B557E2C8A3AEF00AB0961 /* HorizontalImagesView.swift in Sources */,
 				7ED0D8022CA8C05D00FF8D8A /* SessionRowView.swift in Sources */,
 				7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */,
+				7E6BC8B32CAC99D5007AC9AF /* MoodAnalyticsView.swift in Sources */,
 				7EDFFA562CA1ED430033163E /* TagEditorView.swift in Sources */,
 				7EC009022C5EF1F70093217B /* Strain.swift in Sources */,
 				7EE6261D2C6A948500448F80 /* ItemType.swift in Sources */,
@@ -695,6 +718,7 @@
 				7E1D086E2C977D17004B39D5 /* Purchase.swift in Sources */,
 				7E70B9842C92567E0092ECE7 /* EditorInputButton.swift in Sources */,
 				7E3C63702C76CD1B009A3AF9 /* SharedModelContainer.swift in Sources */,
+				7EFCDE342CADDDEF002D68AC /* MoodPieChartView.swift in Sources */,
 				7E08D4212C6BF6DB00F96328 /* SessionEditorView.swift in Sources */,
 				7E164A622CA4C710008996F1 /* DateFilter.swift in Sources */,
 				7E70B9862C925BD10092ECE7 /* Double.swift in Sources */,

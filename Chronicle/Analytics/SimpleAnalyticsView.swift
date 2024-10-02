@@ -12,14 +12,23 @@ struct SimpleAnalyticsView: View {
     @Environment(\.modelContext) private var modelContext
     
     @Binding var activeTab: AppTab
+    var allowNavigation: Bool
+    
     @Query var items: [Item]
     @Query var sessions: [Session]
     @Query var strains: [Strain]
     
+    init(activeTab: Binding<AppTab>? = nil, allowNavigation: Bool = true) {
+        self._activeTab = activeTab ?? .constant(.dashboard)
+        self.allowNavigation = allowNavigation
+    }
+    
     var body: some View {
         HStack(spacing: 12) {
             Button {
-                activeTab = AppTab.journal
+                if allowNavigation {
+                    activeTab = AppTab.journal
+                }
             } label: {
                 SimpleAnalyticsDataView(
                     iconName: "rectangle.stack.fill",
@@ -30,7 +39,9 @@ struct SimpleAnalyticsView: View {
             .buttonStyle(.plain)
             Divider()
             Button {
-                activeTab = AppTab.analytics
+                if allowNavigation {
+                    activeTab = AppTab.analytics
+                }
             } label: {
                 SimpleAnalyticsDataView(
                     iconName: "theatermasks.fill",
@@ -41,7 +52,9 @@ struct SimpleAnalyticsView: View {
             .buttonStyle(.plain)
             Divider()
             Button {
-                activeTab = AppTab.inventory
+                if allowNavigation {
+                    activeTab = AppTab.inventory
+                }
             } label: {
                 SimpleAnalyticsDataView(
                     iconName: "leaf.fill",

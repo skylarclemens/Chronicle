@@ -6,8 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AnalyticsView: View {
+    @Query var sessions: [Session]
+    @Query var items: [Item]
+    @Query var strains: [Strain]
+    
     @State private var filter: DateFilter = .week
     
     var startDate: Date {
@@ -35,7 +40,7 @@ struct AnalyticsView: View {
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, 4)
-                    AnalyticsListView(filter: $filter)
+                    AnalyticsListView(items: items, sessions: sessions, strains: strains, filter: $filter)
                 }
                 .padding(.horizontal)
             }
