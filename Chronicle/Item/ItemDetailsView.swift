@@ -73,43 +73,6 @@ struct ItemDetailsView: View {
                                 Text(" \(item.unit ?? "")")
                             }
                         }
-                        if !item.compounds.isEmpty {
-                            if !item.cannabinoids.isEmpty {
-                                DetailSection(header: "Cannabinoids", isScrollView: true) {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(item.cannabinoids) { cannabinoid in
-                                                HStack(spacing: 12) {
-                                                    Text(cannabinoid.name)
-                                                        .bold()
-                                                    Text(cannabinoid.value, format: .percent)
-                                                        .foregroundStyle(.secondary)
-                                                }
-                                                .padding(.vertical, 6)
-                                                .padding(.horizontal, 12)
-                                                .background(Color(.systemGroupedBackground),
-                                                            in: RoundedRectangle(cornerRadius: 12))
-                                            }
-                                        }
-                                        .padding(.horizontal)
-                                    }
-                                    .scrollIndicators(.hidden)
-                                }
-                            }
-                            if !item.terpenes.isEmpty {
-                                DetailSection(header: "Terpenes", isScrollView: true) {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(item.terpenes) { terpene in
-                                                TerpeneView(terpene)
-                                            }
-                                        }
-                                        .padding(.horizontal)
-                                    }
-                                    .scrollIndicators(.hidden)
-                                }
-                            }
-                        }
                     }
                     .padding(.horizontal)
                     if !item.sessions.isEmpty {
@@ -134,6 +97,7 @@ struct ItemDetailsView: View {
                                     .padding(.horizontal)
                                 }
                                 .scrollIndicators(.hidden)
+                                .scrollClipDisabled()
                             }
                         }
                     }
@@ -173,6 +137,48 @@ struct ItemDetailsView: View {
                             .padding()
                             .background(Color(UIColor.secondarySystemGroupedBackground),
                                         in: RoundedRectangle(cornerRadius: 12))
+                        }
+                        .padding(.horizontal)
+                    }
+                   
+                        
+                    if !item.compounds.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Composition")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            if !item.cannabinoids.isEmpty {
+                                DetailSection(header: "Cannabinoids", isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(item.cannabinoids) { cannabinoid in
+                                                HStack(spacing: 12) {
+                                                    Text(cannabinoid.name)
+                                                        .bold()
+                                                    Text(cannabinoid.value, format: .percent)
+                                                        .foregroundStyle(.secondary)
+                                                }
+                                                .pillStyle()
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                    .scrollIndicators(.hidden)
+                                }
+                            }
+                            if !item.terpenes.isEmpty {
+                                DetailSection(header: "Terpenes", isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(item.terpenes) { terpene in
+                                                TerpeneView(terpene)
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                    .scrollIndicators(.hidden)
+                                }
+                            }
                         }
                         .padding(.horizontal)
                     }

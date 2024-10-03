@@ -38,6 +38,7 @@ struct UsagePatternsView: View {
                             chart
                                 .frame(height: 250)
                         }
+                        .backgroundStyle(Color(.secondarySystemGroupedBackground))
                     }
                     .animation(.default, value: filter)
                     VStack(alignment: .leading) {

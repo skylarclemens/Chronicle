@@ -9,17 +9,18 @@ import SwiftUI
 import Charts
 
 struct TopEmotionsChartView: View {
-    var topEmotions: [(emotion: Emotion, count: Int)]
+    var allTopEmotions: [(emotion: Emotion, count: Int)]
+    var topEmotions: [Emotion]
     var showAnnotation: Bool = false
     
     var body: some View {
-        Chart(topEmotions, id: \.emotion) { emotionCount in
+        Chart(allTopEmotions, id: \.emotion) { emotionCount in
             BarMark(
                 x: .value("Count", emotionCount.count),
                 y: .value("Emotion", emotionCount.emotion.name)
             )
             .clipShape(Capsule())
-            .foregroundStyle(emotionCount.emotion == topEmotions.first?.emotion ? .blue : .secondary.opacity(0.5))
+            .foregroundStyle(topEmotions.contains { $0.name == emotionCount.emotion.name } ? .blue : .secondary.opacity(0.5))
             .annotation(position: .trailing) {
                 if showAnnotation {
                     Text(emotionCount.count, format: .number)
@@ -45,13 +46,11 @@ struct TopEmotionsChartView: View {
 
 struct TopEmotionsChartExpandedView: View {
     var item: Item
-    var topEmotions: [(emotion: Emotion, count: Int)]
+    var allTopEmotions: [(emotion: Emotion, count: Int)]
+    var topEmotions: [Emotion]
     
-    var topTopEmotions: [String] {
-        guard !topEmotions.isEmpty else { return [] }
-        let highestCount = topEmotions.first!.count
-        let topEmotions = topEmotions.filter { $0.count == highestCount }
-        return topEmotions.map { $0.emotion.name }
+    var topEmotionsStrings: [String] {
+        topEmotions.map { $0.name }
     }
     
     var body: some View {
@@ -60,27 +59,23 @@ struct TopEmotionsChartExpandedView: View {
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
                         VStack(alignment: .leading) {
-                            Text("Top Emotion\(topTopEmotions.count == 1 ? "" : "s")")
+                            Text("Top Emotion\(topEmotions.count == 1 ? "" : "s")")
                                 .font(.title3)
                                 .fontWeight(.semibold)
                                 .fontDesign(.rounded)
                                 .foregroundStyle(.secondary)
-//                            Text("All time")
-//                                .font(.caption)
-//                                .fontWeight(.medium)
-//                                .fontDesign(.rounded)
-//                                .foregroundStyle(.tertiary)
                         }
-                        if !topTopEmotions.isEmpty {
-                            Text(topTopEmotions.joined(separator: ", "))
+                        if !topEmotionsStrings.isEmpty {
+                            Text(topEmotionsStrings.joined(separator: ", "))
                                 .font(.title2.weight(.medium))
                                 .fontDesign(.rounded)
                                 .lineLimit(2)
                                 .fixedSize(horizontal: false, vertical: true)
+                                .multilineTextAlignment(.leading)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    Chart(topEmotions, id: \.emotion) { emotionCount in
+                    Chart(allTopEmotions, id: \.emotion) { emotionCount in
                         BarMark(
                             x: .value("Count", emotionCount.count),
                             y: .value("Emotion", emotionCount.emotion)
@@ -101,7 +96,6 @@ struct TopEmotionsChartExpandedView: View {
                                 if let nameValue = value.as(String.self) {
                                     Text(nameValue)
                                         .fontDesign(.rounded)
-                                        .foregroundStyle(.white)
                                 }
                             }
                         }
@@ -142,7 +136,7 @@ struct TopEmotionsChartExpandedView: View {
 }
 
 #Preview {
-    var topEmotions: [(emotion: Emotion, count: Int)] {
+    var allTopEmotions: [(emotion: Emotion, count: Int)] {
         let emotions = SampleData.shared.randomDatesSessions.flatMap { $0.mood?.emotions ?? [] }
         let counts = emotions.reduce(into: [:]) { counts, emotion in
             counts[emotion, default: 0] += 1
@@ -153,14 +147,21 @@ struct TopEmotionsChartExpandedView: View {
             .sorted { $0.count > $1.count }
     }
     
+    var topEmotions: [Emotion] {
+        guard !allTopEmotions.isEmpty else { return [] }
+        let highestCount = allTopEmotions.first!.count
+        let topEmotions = allTopEmotions.filter { $0.count == highestCount }
+        return topEmotions.map { $0.emotion }
+    }
+    
     NavigationStack {
-        TopEmotionsChartExpandedView(item: SampleData.shared.item, topEmotions: topEmotions)
+        TopEmotionsChartExpandedView(item: SampleData.shared.item, allTopEmotions: allTopEmotions, topEmotions: topEmotions)
     }
     .modelContainer(SampleData.shared.container)
 }
 
 #Preview {
-    var topEmotions: [(emotion: Emotion, count: Int)] {
+    var allTopEmotions: [(emotion: Emotion, count: Int)] {
         let emotions = SampleData.shared.randomDatesSessions.flatMap { $0.mood?.emotions ?? [] }
         let counts = emotions.reduce(into: [:]) { counts, emotion in
             counts[emotion, default: 0] += 1
@@ -171,6 +172,13 @@ struct TopEmotionsChartExpandedView: View {
             .sorted { $0.count > $1.count }
     }
     
-    TopEmotionsChartView(topEmotions: topEmotions)
+    var topEmotions: [Emotion] {
+        guard !allTopEmotions.isEmpty else { return [] }
+        let highestCount = allTopEmotions.first!.count
+        let topEmotions = allTopEmotions.filter { $0.count == highestCount }
+        return topEmotions.map { $0.emotion }
+    }
+    
+    TopEmotionsChartView(allTopEmotions: allTopEmotions, topEmotions: topEmotions)
         .modelContainer(SampleData.shared.container)
 }

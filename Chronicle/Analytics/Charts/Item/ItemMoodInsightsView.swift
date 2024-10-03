@@ -39,11 +39,15 @@ struct ItemMoodInsightsView: View {
             }
     }
     
-    var topEmotions: [String] {
+    var topEmotions: [Emotion] {
         guard !allTopEmotions.isEmpty else { return [] }
         let highestCount = allTopEmotions.first!.count
         let topEmotions = allTopEmotions.filter { $0.count == highestCount }
-        return topEmotions.map { $0.emotion.name }
+        return topEmotions.map { $0.emotion }
+    }
+    
+    var topEmotionsStrings: [String] {
+        topEmotions.map { $0.name }
     }
     
     var body: some View {
@@ -55,42 +59,48 @@ struct ItemMoodInsightsView: View {
                     .padding(.horizontal)
                 ScrollView(.horizontal) {
                     HStack {
-                        ForEach(MoodType.allCases, id: \.self) { moodType in
-                            if let count = moodTypes[moodType] {
-                                HStack {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .frame(maxWidth: 3, maxHeight: 14)
-                                        .foregroundStyle(moodType.color)
-                                    Text(moodType.label)
-                                    Text(count, format: .number)
-                                        .font(.footnote)
-                                        .fontWeight(.semibold)
-                                        .fontDesign(.rounded)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 4)
-                                        .background(.background.opacity(0.33),
-                                                    in: RoundedRectangle(cornerRadius: 8))
-                                }
-                                .padding(.vertical, 6)
-                                .padding(.horizontal, 10)
-                                .background(moodType.color.opacity(0.33),
-                                            in: RoundedRectangle(cornerRadius: 12))
+                        ForEach(moodTypes.sorted { $0.value > $1.value }, id: \.key) { moodType, count in
+                            HStack {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .frame(maxWidth: 3, maxHeight: 14)
+                                    .foregroundStyle(moodType.color)
+                                Text(moodType.label)
+                                Text(count, format: .number)
+                                    .font(.footnote)
+                                    .fontWeight(.semibold)
+                                    .fontDesign(.rounded)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(.primary.opacity(0.075),
+                                                in: RoundedRectangle(cornerRadius: 8))
                             }
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 10)
+                            .background(RoundedRectangle(cornerRadius: 12)
+                                .fill(moodType.color.opacity(0.33))
+                                .shadow(color: .black.opacity(0.25), radius: 10, x: 0, y: 2))
+                            .overlay(RoundedRectangle(cornerRadius: 12)
+                                .strokeBorder(.primary.opacity(0.05)))
+                            
                         }
                     }
                 }
                 .contentMargins(.horizontal, 16)
+                .scrollIndicators(.hidden)
+                .scrollClipDisabled()
                 NavigationLink {
-                    TopEmotionsChartExpandedView(item: item, topEmotions: allTopEmotions)
+                    TopEmotionsChartExpandedView(item: item, allTopEmotions: allTopEmotions, topEmotions: topEmotions)
                 } label: {
-                    DetailSection(header: "Top Emotion\(topEmotions.count == 1 ? "" : "s")") {
-                        if !topEmotions.isEmpty {
-                            Text(topEmotions.joined(separator: ", "))
+                    DetailSection(header: "Top Emotion\(topEmotionsStrings.count == 1 ? "" : "s")") {
+                        if !topEmotionsStrings.isEmpty {
+                            Text(topEmotionsStrings.joined(separator: ", "))
                                 .font(.title2.weight(.medium))
                                 .fontDesign(.rounded)
                                 .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .multilineTextAlignment(.leading)
                         }
-                        TopEmotionsChartView(topEmotions: allTopEmotions)
+                        TopEmotionsChartView(allTopEmotions: allTopEmotions, topEmotions: topEmotions)
                             .frame(height: 75)
                             .chartXAxis(.hidden)
                             .chartYAxis(.hidden)

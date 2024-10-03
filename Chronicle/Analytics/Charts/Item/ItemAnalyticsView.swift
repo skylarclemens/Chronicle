@@ -107,7 +107,7 @@ struct ItemAnalyticsDetailsView: View {
                         .padding(.vertical, 10)
                         .padding(.horizontal, 12)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(.thickMaterial,
+                        .background(Color(.secondarySystemGroupedBackground),
                                     in: RoundedRectangle(cornerRadius: 12))
                         VStack(alignment: .leading, spacing: 4) {
                             Text(mostUsedStrain() ?? "None")
@@ -121,7 +121,7 @@ struct ItemAnalyticsDetailsView: View {
                         .padding(.vertical, 10)
                         .padding(.horizontal, 12)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(.thickMaterial,
+                        .background(Color(.secondarySystemGroupedBackground),
                                     in: RoundedRectangle(cornerRadius: 12))
                     }
                     .animation(.default, value: sessions)
@@ -130,20 +130,24 @@ struct ItemAnalyticsDetailsView: View {
                             .frame(height: 250)
                             .animation(.default, value: items)
                     }
+                    .backgroundStyle(Color(.secondarySystemGroupedBackground))
                     GroupBox("Average Mood by Item") {
                         averageMoodByItemChart
                             .frame(height: 200)
                             .animation(.default, value: sessions)
                     }
+                    .backgroundStyle(Color(.secondarySystemGroupedBackground))
                     GroupBox("Number of Sessions per Item") {
                         sessionCountsPerItem
                             .frame(height: 200)
                             .animation(.default, value: sessions)
                     }
+                    .backgroundStyle(Color(.secondarySystemGroupedBackground))
                 }
             }
             .padding(.horizontal)
         }
+        .background(Color(.systemGroupedBackground))
     }
     
     private var averageMoodByItemChart: some View {

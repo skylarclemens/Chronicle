@@ -38,7 +38,7 @@ struct ItemEmotionsView: View {
                 }
             }
         }
-        .navigationTitle("All Emotions")
+        .navigationTitle("Emotions")
         .navigationBarTitleDisplayMode(.large)
     }
 }

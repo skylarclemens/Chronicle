@@ -40,7 +40,7 @@ struct SimpleAnalyticsView: View {
             Divider()
             Button {
                 if allowNavigation {
-                    activeTab = AppTab.analytics
+                    activeTab = AppTab.trends
                 }
             } label: {
                 SimpleAnalyticsDataView(

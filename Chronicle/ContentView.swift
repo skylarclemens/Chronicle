@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(ImageViewManager.self) var imageViewManager
     
-    @State var activeTab: AppTab = .dashboard
+    @State var activeTab: AppTab = .trends
     @State var selectedDate: Date = Date()
 
     var body: some View {
@@ -34,9 +34,9 @@ struct ContentView: View {
                 .tag(AppTab.inventory)
             AnalyticsView()
                 .tabItem {
-                    Label("Analytics", systemImage: "chart.bar.xaxis")
+                    Label("Trends", systemImage: "chart.bar.xaxis")
                 }
-                .tag(AppTab.analytics)
+                .tag(AppTab.trends)
         }
         .colorSchemeStyle()
         .overlay {
@@ -54,7 +54,7 @@ struct ContentView: View {
 }
 
 public enum AppTab {
-    case dashboard, journal, inventory, analytics
+    case dashboard, journal, inventory, trends
 }
 
 #Preview {
