@@ -105,7 +105,6 @@
 		7EFCDE342CADDDEF002D68AC /* MoodPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */; };
 		7EFCDE362CADFB7A002D68AC /* ItemAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE352CADFB7A002D68AC /* ItemAnalyticsView.swift */; };
 		7EFCDE382CAE0681002D68AC /* ItemTypeDistributionChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE372CAE0681002D68AC /* ItemTypeDistributionChartView.swift */; };
-		7EFCDE3A2CAE0C27002D68AC /* ItemInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE392CAE0C27002D68AC /* ItemInsightsView.swift */; };
 		7EFCDE3D2CAE0D16002D68AC /* ItemMoodInsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE3C2CAE0D16002D68AC /* ItemMoodInsightsView.swift */; };
 		7EFCDE3F2CAE12CC002D68AC /* TopEmotionsChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE3E2CAE12CC002D68AC /* TopEmotionsChartView.swift */; };
 		7EFCDE412CAE210D002D68AC /* ItemEmotionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCDE402CAE210D002D68AC /* ItemEmotionsView.swift */; };
@@ -211,7 +210,6 @@
 		7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodPieChartView.swift; sourceTree = "<group>"; };
 		7EFCDE352CADFB7A002D68AC /* ItemAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemAnalyticsView.swift; sourceTree = "<group>"; };
 		7EFCDE372CAE0681002D68AC /* ItemTypeDistributionChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeDistributionChartView.swift; sourceTree = "<group>"; };
-		7EFCDE392CAE0C27002D68AC /* ItemInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInsightsView.swift; sourceTree = "<group>"; };
 		7EFCDE3C2CAE0D16002D68AC /* ItemMoodInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemMoodInsightsView.swift; sourceTree = "<group>"; };
 		7EFCDE3E2CAE12CC002D68AC /* TopEmotionsChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopEmotionsChartView.swift; sourceTree = "<group>"; };
 		7EFCDE402CAE210D002D68AC /* ItemEmotionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEmotionsView.swift; sourceTree = "<group>"; };
@@ -610,7 +608,6 @@
 			isa = PBXGroup;
 			children = (
 				7EFCDE352CADFB7A002D68AC /* ItemAnalyticsView.swift */,
-				7EFCDE392CAE0C27002D68AC /* ItemInsightsView.swift */,
 				7EFCDE3C2CAE0D16002D68AC /* ItemMoodInsightsView.swift */,
 				7EFCDE3E2CAE12CC002D68AC /* TopEmotionsChartView.swift */,
 			);
@@ -726,7 +723,6 @@
 				7E45402D2CA7536A00ADB083 /* SettingsView.swift in Sources */,
 				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
-				7EFCDE3A2CAE0C27002D68AC /* ItemInsightsView.swift in Sources */,
 				7ECAE6922CA87B9800ECEFD9 /* Accessory.swift in Sources */,
 				7EFCDE382CAE0681002D68AC /* ItemTypeDistributionChartView.swift in Sources */,
 				7ECAE68B2CA86A0B00ECEFD9 /* AudioPlayerView.swift in Sources */,
