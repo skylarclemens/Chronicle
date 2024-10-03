@@ -26,6 +26,8 @@ struct SearchView: View {
     @State private var openTagFilter: Bool = false
     @State private var selectedTags = Set<Tag>()
     
+    @State private var isPresented: Bool = true
+    
     var filteredSessions: [Session] {
         return sessions.filter { session in
             let matchesSearch = searchText.isEmpty || session.title.localizedStandardContains(searchText)
@@ -109,10 +111,11 @@ struct SearchView: View {
                 }
                 .contentMargins(.all, 16)
                 .scrollIndicators(.hidden)
+                .scrollDismissesKeyboard(.immediately)
             }
             .navigationTitle("Search Journal")
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "Search sessions")
+            .searchable(text: $searchText, isPresented: $isPresented, prompt: "Search sessions")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Close", systemImage: "xmark.circle.fill") {
