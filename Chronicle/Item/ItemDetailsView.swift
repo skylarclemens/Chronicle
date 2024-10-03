@@ -29,20 +29,6 @@ struct ItemDetailsView: View {
         return counts
     }
     
-    var topEmotions: [Emotion: Int] {
-        var counts: [Emotion: Int] = [:]
-        if let item {
-            for mood in item.moods {
-                for emotion in mood.emotions {
-                    counts[emotion, default: 0] += 1
-                }
-            }
-        }
-        return counts.sorted { $0.value > $1.value }.prefix(5).reduce(into: [:]) {
-            $0[$1.key] = $1.value
-        }
-    }
-    
     var body: some View {
         if let item {
             ScrollView {
@@ -127,61 +113,7 @@ struct ItemDetailsView: View {
                     }
                     .padding(.horizontal)
                     if !item.sessions.isEmpty {
-                        if !item.moods.isEmpty {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Moods")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                                    .padding(.horizontal)
-                                ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach(MoodType.allCases, id: \.self) { moodType in
-                                            if let count = moodTypes[moodType] {
-                                                HStack {
-                                                    RoundedRectangle(cornerRadius: 8)
-                                                        .frame(maxWidth: 3, maxHeight: 14)
-                                                        .foregroundStyle(moodType.color)
-                                                    Text(moodType.label)
-                                                    Text(count, format: .number)
-                                                        .font(.footnote)
-                                                        .fontWeight(.semibold)
-                                                        .fontDesign(.rounded)
-                                                        .padding(.horizontal, 8)
-                                                        .padding(.vertical, 4)
-                                                        .background(.background.opacity(0.33),
-                                                                    in: RoundedRectangle(cornerRadius: 8))
-                                                }
-                                                .padding(.vertical, 6)
-                                                .padding(.horizontal, 10)
-                                                .background(moodType.color.opacity(0.33),
-                                                            in: RoundedRectangle(cornerRadius: 12))
-                                            }
-                                        }
-                                    }
-                                }
-                                .contentMargins(.horizontal, 16)
-                                DetailSection(header: "Top Feelings") {
-                                    ForEach(Array(topEmotions.keys), id: \.id) { emotion in
-                                        if let count = topEmotions[emotion] {
-                                            HStack {
-                                                if let emoji = emotion.emoji {
-                                                    Text(emoji)
-                                                }
-                                                Text(emotion.name)
-                                                Spacer()
-                                                Text(count, format: .number)
-                                            }
-                                            .padding(.vertical, 2)
-                                        }
-                                    }
-                                } headerRight: {
-                                    Text("Count")
-                                        .font(.footnote)
-                                        .foregroundStyle(.secondary)
-                                }
-                                .padding(.horizontal)
-                            }
-                        }
+                        ItemMoodInsightsView(item: item, moods: item.moods, sessions: item.sessions)
                         VStack(alignment: .leading) {
                             Text("Recent Sessions")
                                 .font(.title2)
