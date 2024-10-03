@@ -247,7 +247,7 @@
 			path = Strain;
 			sourceTree = "<group>";
 		};
-		7E08D41F2C6BF6C000F96328 /* AddSession */ = {
+		7E08D41F2C6BF6C000F96328 /* SessionEditor */ = {
 			isa = PBXGroup;
 			children = (
 				7E08D4202C6BF6DB00F96328 /* SessionEditorView.swift */,
@@ -259,12 +259,13 @@
 				7ED747902C8BB3F100F07679 /* CustomSliderView.swift */,
 				7ED0D8052CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift */,
 			);
-			path = AddSession;
+			path = SessionEditor;
 			sourceTree = "<group>";
 		};
 		7E2504DB2C768CA900496296 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				7E26DF7D2CAF352300F54E00 /* Editors */,
 				7E656A262C94CD3A00C6FD6A /* Styles */,
 				7EDFFA542CA1ED2F0033163E /* Tags */,
 				7E523C1A2C77E0DE005B6186 /* Images */,
@@ -288,6 +289,65 @@
 				7EE6261C2C6A948500448F80 /* ItemType.swift */,
 			);
 			path = Details;
+			sourceTree = "<group>";
+		};
+		7E26DF762CAF342400F54E00 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */,
+				7EC008EE2C5EEDE80093217B /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		7E26DF782CAF343B00F54E00 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				7E5301EA2C74F97500909048 /* DashboardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		7E26DF792CAF345100F54E00 /* Journal */ = {
+			isa = PBXGroup;
+			children = (
+				7E951D032C73E7C70023922C /* Session */,
+				7E5301EC2C74F98200909048 /* JournalView.swift */,
+			);
+			path = Journal;
+			sourceTree = "<group>";
+		};
+		7E26DF7A2CAF345700F54E00 /* Inventory */ = {
+			isa = PBXGroup;
+			children = (
+				7E951D012C73D1140023922C /* Item */,
+				7ECAE6962CA8933400ECEFD9 /* Accessory */,
+				7E5301E42C74490300909048 /* Strain */,
+				7E26DF7C2CAF34AB00F54E00 /* Lists */,
+				7E5301EE2C74F99B00909048 /* InventoryView.swift */,
+			);
+			path = Inventory;
+			sourceTree = "<group>";
+		};
+		7E26DF7C2CAF34AB00F54E00 /* Lists */ = {
+			isa = PBXGroup;
+			children = (
+				7E26DF722CAF1E5300F54E00 /* StrainListView.swift */,
+				7E7349B62C80EEC800262930 /* ItemsListView.swift */,
+				7ECAE6972CA8934700ECEFD9 /* AccessoryListView.swift */,
+			);
+			path = Lists;
+			sourceTree = "<group>";
+		};
+		7E26DF7D2CAF352300F54E00 /* Editors */ = {
+			isa = PBXGroup;
+			children = (
+				7EE6261E2C6AC3F300448F80 /* ItemEditor */,
+				7E08D4172C6BD80600F96328 /* StrainEditor */,
+				7E08D41F2C6BF6C000F96328 /* SessionEditor */,
+				7ECAE6932CA8803D00ECEFD9 /* AccessoryEditor */,
+			);
+			path = Editors;
 			sourceTree = "<group>";
 		};
 		7E309D9A2C7936DD0004A25A /* Managers */ = {
@@ -348,7 +408,6 @@
 			isa = PBXGroup;
 			children = (
 				7E5301E72C74F44000909048 /* StrainDetailsView.swift */,
-				7E26DF722CAF1E5300F54E00 /* StrainListView.swift */,
 				7E26DF742CAF219A00F54E00 /* StrainRowView.swift */,
 			);
 			path = Strain;
@@ -357,10 +416,11 @@
 		7E5581362C823CD700F461EB /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				7EFCDE312CADDDD1002D68AC /* Charts */,
+				7E0DE5232CA5CDF8003C0642 /* AnalyticsView.swift */,
 				7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */,
 				7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */,
 				7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */,
+				7EFCDE312CADDDD1002D68AC /* Charts */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -402,22 +462,10 @@
 				7E951CFF2C73D10E0023922C /* ItemCardView.swift */,
 				7EF0BB152C6D3A2D0068542D /* ItemDetailsView.swift */,
 				7E5301F02C74FD7F00909048 /* ItemRowView.swift */,
-				7E7349B62C80EEC800262930 /* ItemsListView.swift */,
 				7E1D08732C979CD5004B39D5 /* PurchaseRowView.swift */,
 				7EFCDE402CAE210D002D68AC /* ItemEmotionsView.swift */,
 			);
 			path = Item;
-			sourceTree = "<group>";
-		};
-		7E951D022C73D1260023922C /* Add */ = {
-			isa = PBXGroup;
-			children = (
-				7EE6261E2C6AC3F300448F80 /* ItemEditor */,
-				7E08D4172C6BD80600F96328 /* StrainEditor */,
-				7E08D41F2C6BF6C000F96328 /* AddSession */,
-				7ECAE6932CA8803D00ECEFD9 /* AccessoryEditor */,
-			);
-			path = Add;
 			sourceTree = "<group>";
 		};
 		7E951D032C73E7C70023922C /* Session */ = {
@@ -460,21 +508,14 @@
 		7EC008EB2C5EEDE80093217B /* Chronicle */ = {
 			isa = PBXGroup;
 			children = (
-				7E45402B2CA7535D00ADB083 /* Settings */,
+				7E26DF7A2CAF345700F54E00 /* Inventory */,
+				7E26DF792CAF345100F54E00 /* Journal */,
+				7E26DF762CAF342400F54E00 /* App */,
+				7E26DF782CAF343B00F54E00 /* Dashboard */,
 				7E5581362C823CD700F461EB /* Analytics */,
+				7E45402B2CA7535D00ADB083 /* Settings */,
 				7E2504DB2C768CA900496296 /* UI */,
 				7EB685522CA48DB9002C1759 /* Utility */,
-				7E951D022C73D1260023922C /* Add */,
-				7ECAE6962CA8933400ECEFD9 /* Accessory */,
-				7E951D012C73D1140023922C /* Item */,
-				7E951D032C73E7C70023922C /* Session */,
-				7E5301E42C74490300909048 /* Strain */,
-				7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */,
-				7EC008EE2C5EEDE80093217B /* ContentView.swift */,
-				7E5301EA2C74F97500909048 /* DashboardView.swift */,
-				7E5301EC2C74F98200909048 /* JournalView.swift */,
-				7E0DE5232CA5CDF8003C0642 /* AnalyticsView.swift */,
-				7E5301EE2C74F99B00909048 /* InventoryView.swift */,
 				7E3C636F2C76CD1B009A3AF9 /* SharedModelContainer.swift */,
 				7EC008F22C5EEDEA0093217B /* Assets.xcassets */,
 				7EC008FC2C5EF1A00093217B /* Data */,
@@ -537,7 +578,6 @@
 		7ECAE6962CA8933400ECEFD9 /* Accessory */ = {
 			isa = PBXGroup;
 			children = (
-				7ECAE6972CA8934700ECEFD9 /* AccessoryListView.swift */,
 				7ECAE6992CA8936D00ECEFD9 /* AccessoryRowView.swift */,
 				7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */,
 			);
