@@ -37,7 +37,7 @@ struct AccessoryListView: View {
     }
     
     init(filter: InventoryFilter, sort: InventorySort, searchText: String) {
-        _accessories = Query(filter: Accessory.predicate(filter: filter, searchText: searchText), sort: [sort.accessorySortDescriptors()])
+        _accessories = Query(filter: Accessory.predicate(filter: filter, searchText: searchText), sort: [sort.accessorySortDescriptor()])
     }
 }
 

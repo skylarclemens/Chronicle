@@ -14,11 +14,29 @@ import SwiftData
     public var subtype: StrainSubType?
     public var createdAt: Date
     public var desc: String
+    public var favorite: Bool
     
-    init(name: String, type: StrainType, createdAt: Date = Date(), desc: String = "") {
+    init(name: String, type: StrainType, createdAt: Date = Date(), desc: String = "", favorite: Bool = false) {
         self.name = name
         self.type = type
         self.createdAt = createdAt
         self.desc = desc
+        self.favorite = favorite
+    }
+    
+    static func predicate(
+        filter: InventoryFilter = .all,
+        searchText: String
+    ) -> Predicate<Strain> {
+        if filter == .favorites {
+            return #Predicate<Strain> { strain in
+                (searchText.isEmpty || strain.name.localizedStandardContains(searchText))
+                &&
+                strain.favorite
+            }
+        }
+        return #Predicate<Strain> { strain in
+            searchText.isEmpty || strain.name.localizedStandardContains(searchText)
+        }
     }
 }
