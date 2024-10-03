@@ -11,11 +11,15 @@ import SwiftData
 struct JournalView: View {
     @Query private var sessions: [Session]
     @Binding var selectedDate: Date
+    @State private var selectedSession: Session?
     @State private var openCalendar: Bool = false
+    @State private var openSearch: Bool = false
     @State private var searchText = ""
     
+    @State private var navigationPath = NavigationPath()
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             List {
                 SessionsListView(date: $selectedDate, searchText: searchText)
             }
@@ -38,6 +42,24 @@ struct JournalView: View {
                         }
                         .animation(.spring(), value: selectedDate)
                         Spacer()
+                        Button {
+                            openSearch = true
+                        } label: {
+                            Image(systemName: "magnifyingglass")
+                                .font(.headline)
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 8)
+                        .background(.quaternary,
+                                    in: Circle())
+                        .overlay(
+                            Circle()
+                                .strokeBorder(.quaternary)
+                        )
+                        .transaction { transaction in
+                            transaction.animation = nil
+                        }
                         Button {
                             openCalendar = true
                         } label: {
@@ -80,6 +102,18 @@ struct JournalView: View {
             .sheet(isPresented: $openCalendar) {
                 ContinuousCalendarView(sessions: sessions, selectedDate: $selectedDate)
             }
+            .sheet(isPresented: $openSearch) {
+                SearchView(selectedSession: $selectedSession)
+            }
+            .onChange(of: selectedSession) { oldValue, newValue in
+                if let session = newValue {
+                    navigateToSession(session)
+                    selectedSession = nil
+                }
+            }
+            .navigationDestination(for: Session.self) { session in
+                SessionDetailsView(session: session)
+            }
         }
     }
     
@@ -95,6 +129,10 @@ struct JournalView: View {
             dateFormatter.dateFormat = "EEEE"
             return dateFormatter.string(from: selectedDate)
         }
+    }
+    
+    private func navigateToSession(_ session: Session) {
+        navigationPath.append(session)
     }
 }
 
