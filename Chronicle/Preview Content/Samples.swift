@@ -75,7 +75,7 @@ extension Accessory {
 
 extension Strain {
     static let sampleData: [Strain] = [
-        Strain(name: "Blue Dream", type: .hybrid, desc: "test"),
+        Strain(name: "Blue Dream", type: .hybrid, desc: "test", favorite: true),
         Strain(name: "Wedding Cake", type: .hybrid, desc: "test")
     ]
 }

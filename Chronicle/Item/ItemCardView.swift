@@ -10,43 +10,40 @@ import SwiftData
 
 struct ItemCardView: View {
     let item: Item
+    var imageHeight: CGFloat = 45
+    var imageWidth: CGFloat = 45
     
     var body: some View {
-        VStack {
-            Spacer()
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 4) {
-                    Text(item.name)
-                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                    Spacer()
-                    if item.favorite {
-                        Image(systemName: "star.fill")
-                            .font(.caption2)
-                            .foregroundStyle(.accent)
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(8)
-        }
-        .frame(width: 180, height: 80)
-        .background {
+        HStack {
             if let imagesData = item.imagesData, !imagesData.isEmpty,
                let uiImage = UIImage(data: imagesData[0]) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFill()
-                    .mask(
-                        LinearGradient(gradient: Gradient(colors: [.black, .black.opacity(0)]), startPoint: .top, endPoint: .bottom)
-                    )
+                VStack {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                }
+                .frame(width: imageWidth, height: imageHeight)
+                .cornerRadius(8)
+                .clipped()
+            }
+            Text(item.name)
+                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+            if item.favorite {
+                Image(systemName: "star.fill")
+                    .font(.caption2)
+                    .foregroundStyle(.accent)
             }
         }
-        .background(.primary.opacity(0.25))
+        .padding(8)
+        .frame(maxHeight: 60, alignment: .leading)
+        .background(.thickMaterial)
         .clipShape(.rect(cornerRadius: 12))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(.primary.opacity(0.1))
+                .strokeBorder(.primary.opacity(0.1), lineWidth: 1)
+                .allowsHitTesting(false)
         )
+        .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 4)
     }
 }
 

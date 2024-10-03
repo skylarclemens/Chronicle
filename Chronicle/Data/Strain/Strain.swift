@@ -16,12 +16,15 @@ import SwiftData
     public var desc: String
     public var favorite: Bool
     
-    init(name: String, type: StrainType, createdAt: Date = Date(), desc: String = "", favorite: Bool = false) {
+    @Relationship(inverse: \Item.strain) public var items: [Item]
+    
+    init(name: String, type: StrainType, createdAt: Date = Date(), desc: String = "", favorite: Bool = false, items: [Item] = []) {
         self.name = name
         self.type = type
         self.createdAt = createdAt
         self.desc = desc
         self.favorite = favorite
+        self.items = items
     }
     
     static func predicate(
