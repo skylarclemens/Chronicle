@@ -29,20 +29,6 @@ struct ItemDetailsView: View {
         return counts
     }
     
-    var topEmotions: [Emotion: Int] {
-        var counts: [Emotion: Int] = [:]
-        if let item {
-            for mood in item.moods {
-                for emotion in mood.emotions {
-                    counts[emotion, default: 0] += 1
-                }
-            }
-        }
-        return counts.sorted { $0.value > $1.value }.prefix(5).reduce(into: [:]) {
-            $0[$1.key] = $1.value
-        }
-    }
-    
     var body: some View {
         if let item {
             ScrollView {
@@ -87,101 +73,10 @@ struct ItemDetailsView: View {
                                 Text(" \(item.unit ?? "")")
                             }
                         }
-                        if !item.compounds.isEmpty {
-                            if !item.cannabinoids.isEmpty {
-                                DetailSection(header: "Cannabinoids", isScrollView: true) {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(item.cannabinoids) { cannabinoid in
-                                                HStack(spacing: 12) {
-                                                    Text(cannabinoid.name)
-                                                        .bold()
-                                                    Text(cannabinoid.value, format: .percent)
-                                                        .foregroundStyle(.secondary)
-                                                }
-                                                .padding(.vertical, 6)
-                                                .padding(.horizontal, 12)
-                                                .background(Color(.systemGroupedBackground),
-                                                            in: RoundedRectangle(cornerRadius: 12))
-                                            }
-                                        }
-                                        .padding(.horizontal)
-                                    }
-                                    .scrollIndicators(.hidden)
-                                }
-                            }
-                            if !item.terpenes.isEmpty {
-                                DetailSection(header: "Terpenes", isScrollView: true) {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(item.terpenes) { terpene in
-                                                TerpeneView(terpene)
-                                            }
-                                        }
-                                        .padding(.horizontal)
-                                    }
-                                    .scrollIndicators(.hidden)
-                                }
-                            }
-                        }
                     }
                     .padding(.horizontal)
                     if !item.sessions.isEmpty {
-                        if !item.moods.isEmpty {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Moods")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                                    .padding(.horizontal)
-                                ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach(MoodType.allCases, id: \.self) { moodType in
-                                            if let count = moodTypes[moodType] {
-                                                HStack {
-                                                    RoundedRectangle(cornerRadius: 8)
-                                                        .frame(maxWidth: 3, maxHeight: 14)
-                                                        .foregroundStyle(moodType.color)
-                                                    Text(moodType.label)
-                                                    Text(count, format: .number)
-                                                        .font(.footnote)
-                                                        .fontWeight(.semibold)
-                                                        .fontDesign(.rounded)
-                                                        .padding(.horizontal, 8)
-                                                        .padding(.vertical, 4)
-                                                        .background(.background.opacity(0.33),
-                                                                    in: RoundedRectangle(cornerRadius: 8))
-                                                }
-                                                .padding(.vertical, 6)
-                                                .padding(.horizontal, 10)
-                                                .background(moodType.color.opacity(0.33),
-                                                            in: RoundedRectangle(cornerRadius: 12))
-                                            }
-                                        }
-                                    }
-                                }
-                                .contentMargins(.horizontal, 16)
-                                DetailSection(header: "Top Feelings") {
-                                    ForEach(Array(topEmotions.keys), id: \.id) { emotion in
-                                        if let count = topEmotions[emotion] {
-                                            HStack {
-                                                if let emoji = emotion.emoji {
-                                                    Text(emoji)
-                                                }
-                                                Text(emotion.name)
-                                                Spacer()
-                                                Text(count, format: .number)
-                                            }
-                                            .padding(.vertical, 2)
-                                        }
-                                    }
-                                } headerRight: {
-                                    Text("Count")
-                                        .font(.footnote)
-                                        .foregroundStyle(.secondary)
-                                }
-                                .padding(.horizontal)
-                            }
-                        }
+                        ItemMoodInsightsView(item: item, moods: item.moods, sessions: item.sessions)
                         VStack(alignment: .leading) {
                             Text("Recent Sessions")
                                 .font(.title2)
@@ -202,6 +97,7 @@ struct ItemDetailsView: View {
                                     .padding(.horizontal)
                                 }
                                 .scrollIndicators(.hidden)
+                                .scrollClipDisabled()
                             }
                         }
                     }
@@ -241,6 +137,48 @@ struct ItemDetailsView: View {
                             .padding()
                             .background(Color(UIColor.secondarySystemGroupedBackground),
                                         in: RoundedRectangle(cornerRadius: 12))
+                        }
+                        .padding(.horizontal)
+                    }
+                   
+                        
+                    if !item.compounds.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Composition")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            if !item.cannabinoids.isEmpty {
+                                DetailSection(header: "Cannabinoids", isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(item.cannabinoids) { cannabinoid in
+                                                HStack(spacing: 12) {
+                                                    Text(cannabinoid.name)
+                                                        .bold()
+                                                    Text(cannabinoid.value, format: .percent)
+                                                        .foregroundStyle(.secondary)
+                                                }
+                                                .pillStyle()
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                    .scrollIndicators(.hidden)
+                                }
+                            }
+                            if !item.terpenes.isEmpty {
+                                DetailSection(header: "Terpenes", isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(item.terpenes) { terpene in
+                                                TerpeneView(terpene)
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                    .scrollIndicators(.hidden)
+                                }
+                            }
                         }
                         .padding(.horizontal)
                     }

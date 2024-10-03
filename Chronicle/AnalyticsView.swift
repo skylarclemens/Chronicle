@@ -44,7 +44,7 @@ struct AnalyticsView: View {
                 }
                 .padding(.horizontal)
             }
-            .navigationTitle("Analytics")
+            .navigationTitle("Trends")
             .background(
                 BackgroundView()
             )

@@ -8,8 +8,9 @@
 import Foundation
 import SwiftUI
 import SwiftData
+import Charts
 
-struct Emotion: Identifiable, Codable, Hashable {
+struct Emotion: Identifiable, Codable, Hashable, Plottable {
     var id: String { name }
     var name: String
     var emoji: String?
@@ -17,6 +18,14 @@ struct Emotion: Identifiable, Codable, Hashable {
     init(name: String, emoji: String? = nil) {
         self.name = name
         self.emoji = emoji
+    }
+    
+    var primitivePlottable: String {
+        return "\(emoji == nil ? "" : emoji! + " ")\(name)"
+    }
+    
+    init?(primitivePlottable: String) {
+        return nil
     }
 }
 

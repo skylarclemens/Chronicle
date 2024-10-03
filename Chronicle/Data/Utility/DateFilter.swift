@@ -16,8 +16,7 @@ enum DateFilter: String, CaseIterable {
     
     func dateRange() -> (Date, Date) {
         let calendar = Calendar.autoupdatingCurrent
-        let now = Date()
-        let startOfDay = calendar.startOfDay(for: now)
+        let startOfDay = calendar.startOfDay(for: Date())
         
         switch self {
         case .week:

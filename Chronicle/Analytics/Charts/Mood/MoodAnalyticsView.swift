@@ -94,21 +94,25 @@ struct MoodsAnalyticsDetailsView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     GroupBox("Average Weekday Mood") {
                         moodTrendChart
+                            .frame(height: 200)
                     }
-                    .frame(height: 200)
+                    .backgroundStyle(Color(.secondarySystemGroupedBackground))
                     GroupBox("Moods Logged") {
                         MoodPieChartView(sessions: sessions)
                             .frame(height: 300)
                     }
+                    .backgroundStyle(Color(.secondarySystemGroupedBackground))
                     GroupBox("Top Emotions") {
                         topEmotionsChart
                             .frame(height: 200)
                     }
+                    .backgroundStyle(Color(.secondarySystemGroupedBackground))
                 }
             }
             .animation(.default, value: sessions)
             .padding(.horizontal)
         }
+        .background(Color(.systemGroupedBackground))
     }
     
     private var moodTrendChart: some View {

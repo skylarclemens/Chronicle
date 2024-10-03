@@ -19,70 +19,23 @@ struct AnalyticsListView: View {
         return sessions.filter { $0.date >= startDate && $0.date <= endDate }
     }
     
+    var filteredItems: [Item] {
+        let (startDate, endDate) = filter.dateRange()
+        return items.filter { $0.createdAt >= startDate && $0.createdAt <= endDate }
+    }
+    
+    var filteredStrains: [Strain] {
+        let (startDate, endDate) = filter.dateRange()
+        return strains.filter { $0.createdAt >= startDate && $0.createdAt <= endDate }
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(mostUsedItem()?.name ?? "None")
-                        .contentTransition(.interpolate)
-                    Text("Most Used Item".localizedUppercase)
-                        .font(.caption2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.secondary)
-                }
-                .fontDesign(.rounded)
-                .padding(.vertical, 10)
-                .padding(.horizontal, 12)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.thickMaterial,
-                            in: RoundedRectangle(cornerRadius: 12))
-               
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(mostUsedStrain() ?? "None")
-                        .contentTransition(.interpolate)
-                    Text("Most Used Strain".localizedUppercase)
-                        .font(.caption2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.secondary)
-                }
-                .fontDesign(.rounded)
-                .padding(.vertical, 10)
-                .padding(.horizontal, 12)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.thickMaterial,
-                            in: RoundedRectangle(cornerRadius: 12))
-            }
             UsagePatternsView(sessions: filteredSessions, filter: $filter)
+            ItemAnalyticsView(items: filteredItems, sessions: filteredSessions, strains: filteredStrains, filter: $filter)
             MoodAnalyticsView(sessions: filteredSessions, filter: $filter)
         }
         .padding(.vertical)
-    }
-    
-    private func mostUsedStrain() -> String? {
-        let strainCounts = filteredSessions.compactMap {
-            $0.item?.strain?.name
-        }.reduce(into: [:]) { counts, strain in
-            counts[strain, default: 0] += 1
-        }
-        
-        guard !strainCounts.isEmpty else { return nil }
-        
-        let maxCount = strainCounts.values.max()!
-        let mostUsedStrains = strainCounts.filter { $0.value == maxCount }.keys
-        
-        return mostUsedStrains.min(by: { $0.lowercased() < $1.lowercased() })
-    }
-    
-    private func mostUsedItem() -> Item? {
-        let itemCounts = filteredSessions.compactMap(\.item).reduce(into: [:]) { counts, item in
-            counts[item, default: 0] += 1
-        }
-        guard !itemCounts.isEmpty else { return nil }
-        
-        let maxCount = itemCounts.values.max()!
-        let mostUsedItems = itemCounts.filter { $0.value == maxCount }.keys
-        
-        return mostUsedItems.min(by: { $0.createdAt < $1.createdAt })
     }
 }
 
