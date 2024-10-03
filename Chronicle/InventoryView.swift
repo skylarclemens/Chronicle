@@ -20,16 +20,20 @@ struct InventoryView: View {
                 Picker("Select which list to view", selection: $listSelection.animation()) {
                     Text(InventoryType.items.rawValue.localizedCapitalized)
                         .tag(InventoryType.items)
+                    Text(InventoryType.strains.rawValue.localizedCapitalized)
+                        .tag(InventoryType.strains)
                     Text(InventoryType.accessories.rawValue.localizedCapitalized)
                         .tag(InventoryType.accessories)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
                 List {
-                    if listSelection == .items {
+                    switch listSelection {
+                    case .items:
                         ItemsListView(filter: filter, sort: sortOrder, searchText: searchText)
-                        
-                    } else {
+                    case .strains:
+                        StrainListView(filter: filter, sort: sortOrder, searchText: searchText)
+                    case .accessories:
                         AccessoryListView(filter: filter, sort: sortOrder, searchText: searchText)
                     }
                 }
@@ -80,7 +84,7 @@ struct InventoryView: View {
     }
     
     private enum InventoryType: String {
-        case items, accessories
+        case items, strains, accessories
     }
 }
 
@@ -104,7 +108,18 @@ public enum InventorySort {
         }
     }
     
-    func accessorySortDescriptors() -> SortDescriptor<Accessory> {
+    func strainSortDescriptor() -> SortDescriptor<Strain> {
+        switch self {
+        case .name:
+            return SortDescriptor(\Strain.name)
+        case .favorites:
+            return SortDescriptor(\Strain.favorite, order: .reverse)
+        case .dateAdded:
+            return SortDescriptor(\Strain.createdAt)
+        }
+    }
+    
+    func accessorySortDescriptor() -> SortDescriptor<Accessory> {
         switch self {
         case .name:
             return SortDescriptor(\Accessory.name)

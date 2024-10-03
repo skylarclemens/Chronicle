@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(ImageViewManager.self) var imageViewManager
     
-    @State var activeTab: AppTab = .trends
+    @State var activeTab: AppTab = .dashboard
     @State var selectedDate: Date = Date()
 
     var body: some View {

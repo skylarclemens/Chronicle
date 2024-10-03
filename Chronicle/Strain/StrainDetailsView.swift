@@ -16,15 +16,61 @@ struct StrainDetailsView: View {
     
     var body: some View {
         if let strain {
-            VStack {
-                HStack {
-                    Image(systemName: "leaf")
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 8).fill(.regularMaterial))
-                        .foregroundStyle(.accent)
-                    Text(strain.name)
+            ScrollView {
+                VStack(spacing: 24) {
+                    HStack(alignment: .center) {
+                        Text(strain.type.rawValue.localizedCapitalized)
+                            .font(.footnote)
+                            .infoPillStyle()
+                        Spacer()
+                        if strain.favorite {
+                            Image(systemName: "star.fill")
+                                .font(.caption)
+                                .foregroundStyle(.accent)
+                        }
+                    }
+                    .frame(height: 24)
+                    .padding(.horizontal)
+                    if !strain.desc.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Description")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            DetailSection {
+                                Text(strain.desc)
+                                    .font(.body)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    if !strain.items.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Related Items")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal)
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(strain.items) { item in
+                                        NavigationLink {
+                                            ItemDetailsView(item: item)
+                                        } label: {
+                                            ItemCardView(item: item)
+                                        }
+                                        .tint(.primary)
+                                    }
+                                }
+                            }
+                            .scrollIndicators(.hidden)
+                            .contentMargins(.horizontal, 16)
+                        }
+                    }
                 }
+                
             }
+            .navigationTitle(strain.name)
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 Menu("Options", systemImage: "ellipsis") {
                     Button {

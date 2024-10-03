@@ -79,45 +79,6 @@ struct DashboardView: View {
                     }
                     .padding(.top)
                     .padding(.horizontal)
-                    if !strains.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Strains")
-                                .font(.title2)
-                                .padding(.horizontal)
-                                .bold()
-                                .accessibilityAddTraits(.isHeader)
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(strains) { strain in
-                                        NavigationLink {
-                                            StrainDetailsView(strain: strain)
-                                        } label: {
-                                            VStack {
-                                                HStack {
-                                                    Image(systemName: "leaf")
-                                                        .foregroundStyle(.accent)
-                                                    Text(strain.name)
-                                                }
-                                                .tint(.primary)
-                                                .padding(8)
-                                                .background(.thickMaterial,
-                                                            in: RoundedRectangle(cornerRadius: 8))
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 8)
-                                                        .strokeBorder(.primary.opacity(0.1))
-                                                )
-                                                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 2)
-                                            }
-                                        }
-                                        .buttonStyle(.plain)
-                                    }
-                                }
-                            }
-                            .contentMargins(.horizontal, 16)
-                            .scrollClipDisabled()
-                        }
-                        .padding(.vertical)
-                    }
                 }
                 .frame(maxHeight: .infinity)
             }
