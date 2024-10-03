@@ -9,6 +9,7 @@ import Foundation
 import SwiftData
 
 @Model public class Strain {
+    public var id: UUID
     public var name: String
     public var type: StrainType
     public var subtype: StrainSubType?
@@ -18,7 +19,16 @@ import SwiftData
     
     @Relationship(inverse: \Item.strain) public var items: [Item]
     
-    init(name: String, type: StrainType, createdAt: Date = Date(), desc: String = "", favorite: Bool = false, items: [Item] = []) {
+    init(
+        id: UUID = UUID(),
+        name: String,
+        type: StrainType,
+        createdAt: Date = Date(),
+        desc: String = "",
+        favorite: Bool = false,
+        items: [Item] = []
+    ) {
+        self.id = id
         self.name = name
         self.type = type
         self.createdAt = createdAt

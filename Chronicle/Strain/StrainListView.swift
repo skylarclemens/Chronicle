@@ -17,11 +17,11 @@ struct StrainListView: View {
     
     var body: some View {
         if !strains.isEmpty {
-            ForEach(StrainType.allCases) { strainType in
+            ForEach(StrainType.allCases, id: \.rawValue) { strainType in
                 if let typeStrains = strainsByType[strainType],
                    !typeStrains.isEmpty {
                     Section(strainType.rawValue.localizedCapitalized) {
-                        ForEach(typeStrains) { strain in
+                        ForEach(typeStrains, id: \.id) { strain in
                             NavigationLink {
                                 StrainDetailsView(strain: strain)
                             } label: {

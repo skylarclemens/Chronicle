@@ -130,17 +130,35 @@ struct ItemEditorBasicsView: View {
                                         .focused($focusedField, equals: .name)
                                         .submitLabel(.done)
                                     HStack {
-                                        HStack(spacing: -4) {
+                                        HStack {
                                             Image(systemName: "leaf")
-                                            Picker("Strain", selection: $viewModel.linkedStrain) {
-                                                Text("Strain").tag(nil as Strain?)
+                                            Menu {
+                                                Button("None") {
+                                                    viewModel.linkedStrain = nil
+                                                }
                                                 ForEach(strains, id: \.self) { strain in
-                                                    Text(strain.name).tag(strain as Strain?)
+                                                    Button {
+                                                        viewModel.linkedStrain = strain
+                                                    } label: {
+                                                        Text(strain.name)
+                                                    }
+                                                }
+                                            } label: {
+                                                HStack(spacing: 4) {
+                                                    if let linkedStrain = viewModel.linkedStrain {
+                                                        Text(linkedStrain.name)
+                                                            .lineLimit(1)
+                                                    } else {
+                                                        Text("Strain")
+                                                            .foregroundStyle(.secondary)
+                                                    }
+                                                    Image(systemName: "chevron.up.chevron.down")
+                                                        .font(.caption)
                                                 }
                                             }
                                         }
                                         .tint(.primary)
-                                        .padding(.leading, 8)
+                                        .padding(8)
                                         .background(.accent.opacity(0.33),
                                                     in: Capsule())
                                         .overlay(
@@ -153,6 +171,7 @@ struct ItemEditorBasicsView: View {
                                         .tint(.primary)
                                         .buttonStyle(.editorInput)
                                     }
+                                    .frame(maxWidth: 350, alignment: .leading)
                                 }
                             }
                         }
