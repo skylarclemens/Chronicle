@@ -388,7 +388,7 @@ class ItemEditorViewModel {
     var ingredients: [String] = []
     var purchases: [Purchase] = []
     var purchasePrice: Double?
-    var purchaseLocation: String = ""
+    var purchaseLocation: LocationInfo?
     var purchaseDate: Date = Date()
     var brand: String = ""
     var linkedStrain: Strain?

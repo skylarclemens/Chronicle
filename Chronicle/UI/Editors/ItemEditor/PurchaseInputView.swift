@@ -16,6 +16,8 @@ struct PurchaseInputView: View {
     @State private var selectedPurchase: Purchase?
     @State private var isDeleting: Bool = false
     
+    @State private var openLocationSearch: Bool = false
+    
     var body: some View {
         Section {
             if item != nil {
@@ -124,8 +126,25 @@ struct PurchaseInputView: View {
                         Divider()
                         HStack {
                             Text("Location")
-                            TextField("Dispensary", text: $viewModel.purchaseLocation)
-                                .multilineTextAlignment(.trailing)
+                            Spacer()
+                            if viewModel.purchaseLocation != nil {
+                                Text(viewModel.purchaseLocation?.name ?? "")
+                                    .lineLimit(1)
+                                Button("Remove location", systemImage: "xmark.circle.fill") {
+                                    withAnimation {
+                                        viewModel.purchaseLocation = nil
+                                    }
+                                }
+                                .buttonStyle(.plain)
+                                .labelStyle(.iconOnly)
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(.secondary, .quaternary)
+                                .tint(.secondary)
+                            } else {
+                                Button("Add location", systemImage: "location.fill") {
+                                    openLocationSearch = true
+                                }
+                            }
                         }
                         .padding(.vertical, 6)
                         .padding(.trailing)
@@ -151,6 +170,9 @@ struct PurchaseInputView: View {
         .sheet(isPresented: $openPurchaseEditor) {
             PurchaseEditorView(itemViewModel: $viewModel, purchase: selectedPurchase)
                 .presentationDetents([.height(500)])
+        }
+        .sheet(isPresented: $openLocationSearch) {
+            LocationSelectorView(locationInfo: $viewModel.purchaseLocation)
         }
         .alert("Are you sure you want to delete purchase from \(selectedPurchase?.date ?? Date())?", isPresented: $isDeleting) {
             Button("Yes", role: .destructive) {
@@ -184,6 +206,8 @@ struct PurchaseEditorView: View {
     @Binding var itemViewModel: ItemEditorViewModel
     var purchase: Purchase?
     
+    @State private var openLocationSearch: Bool = false
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -213,8 +237,25 @@ struct PurchaseEditorView: View {
                     }
                     HStack {
                         Text("Location")
-                        TextField("Dispensary", text: $viewModel.location)
-                            .multilineTextAlignment(.trailing)
+                        Spacer()
+                        if viewModel.location != nil {
+                            Text(viewModel.location?.name ?? "")
+                                .lineLimit(1)
+                            Button("Remove location", systemImage: "xmark.circle.fill") {
+                                withAnimation {
+                                    viewModel.location = nil
+                                }
+                            }
+                            .buttonStyle(.plain)
+                            .labelStyle(.iconOnly)
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.secondary, .quaternary)
+                            .tint(.secondary)
+                        } else {
+                            Button("Add location", systemImage: "location.fill") {
+                                openLocationSearch = true
+                            }
+                        }
                     }
                     DatePicker("Date", selection: $viewModel.date)
                 }
@@ -260,8 +301,11 @@ struct PurchaseEditorView: View {
                 viewModel.amount = purchase.amount?.value
                 viewModel.unit = purchase.amount?.unit ?? ""
                 viewModel.price = purchase.price
-                viewModel.location = purchase.location ?? ""
+                viewModel.location = purchase.location
             }
+        }
+        .sheet(isPresented: $openLocationSearch) {
+            LocationSelectorView(locationInfo: $viewModel.location)
         }
     }
     
@@ -272,15 +316,13 @@ struct PurchaseEditorView: View {
                 purchase.amount = Amount(value: amountValue, unit: viewModel.unit)
             }
             purchase.price = viewModel.price
-            if !viewModel.location.isEmpty {
-                purchase.location = viewModel.location
-            }
+            purchase.location = viewModel.location
         } else {
             var newAmount: Amount?
             if let amountValue = viewModel.amount {
                 newAmount = Amount(value: amountValue, unit: viewModel.unit)
             }
-                
+            
             let newPurchase = Purchase(date: viewModel.date, amount: newAmount, price: viewModel.price, location: viewModel.location)
             itemViewModel.purchases.append(newPurchase)
         }
@@ -293,7 +335,7 @@ class PurchaseEditorViewModel {
     var amount: Double?
     var unit: String = ""
     var price: Double?
-    var location: String = ""
+    var location: LocationInfo?
 }
 
 #Preview {

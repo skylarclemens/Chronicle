@@ -78,6 +78,7 @@ class SampleData {
         item.tags.append(allTags[2])
         session.item = item
         session.mood = mood
+        session.locationInfo = LocationInfo(name: "Sample Location", latitude: 40.7127, longitude: -74.0059)
         if let sampleAudio = NSDataAsset(name: "sample")?.data {
             session.audioData = sampleAudio
         }

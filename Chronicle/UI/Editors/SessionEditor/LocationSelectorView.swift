@@ -10,27 +10,27 @@ import MapKit
 
 struct LocationSelectorView: View {
     @Environment(\.dismiss) private var dismiss
-    @Binding var viewModel: SessionEditorViewModel
+    @Binding var locationInfo: LocationInfo?
     @State private var position: MapCameraPosition = .automatic
-    @State private var searchResults: [LocationSearchResult] = []
+    @State private var mapResults = Set<LocationSearchResult>()
     
-    @State private var selectedResult: MKMapItem?
+    @State private var selectedResult: LocationSearchResult?
+    @State private var selectedMarker: MKMapItem?
     @State private var visibleRegion: MKCoordinateRegion?
     @State private var showSearchSheet: Bool = true
+    
+    @State private var selectedDetent: PresentationDetent = .height(200)
+    @State private var openSelectedResult: Bool = false
     
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                Map(position: $position) {
-                    if let selectedResult {
-                        Marker(selectedResult.name ?? "Selected Location", coordinate: selectedResult.placemark.coordinate)
-                    } else {
-                        ForEach(searchResults) { result in
-                            Marker(coordinate: result.item.placemark.coordinate) {
-                                Image(systemName: "mappin")
-                            }
-                            .tag(result)
+                Map(position: $position, selection: $selectedMarker) {
+                    ForEach(Array(mapResults)) { result in
+                        Marker(coordinate: result.item.placemark.coordinate) {
+                            Image(systemName: "mappin")
                         }
+                        .tag(result.item)
                     }
                 }
                 .mapControls {
@@ -41,12 +41,25 @@ struct LocationSelectorView: View {
                 .onMapCameraChange { context in
                     visibleRegion = context.region
                 }
+                .onChange(of: selectedMarker) { _, newValue in
+                    if let newValue {
+                        withAnimation {
+                            selectedResult = LocationSearchResult(item: newValue)
+                            position = .region(MKCoordinateRegion(center: newValue.placemark.coordinate, span: .init(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+                        }
+                        openSelectedResult = true
+                    }
+                }
                 .ignoresSafeArea()
-                .sheet(isPresented: $showSearchSheet) {
-                    LocationSearchSheetView(selectedResult: $selectedResult, visibleRegion: $visibleRegion, position: $position, searchResults: $searchResults)
+                .sheet(isPresented: .constant(true)) {
+                    LocationSearchSheetView(locationInfo: $locationInfo, selectedResult: $selectedResult, visibleRegion: $visibleRegion, position: $position, mapResults: $mapResults, selectedMarker: $selectedMarker, selectedDetent: $selectedDetent, openSelectedResult: $openSelectedResult, parentDismiss: dismiss)
                         .interactiveDismissDisabled()
-                        .presentationDetents([.height(200), .large])
-                        .presentationBackground(.regularMaterial)
+                        .presentationDetents([.height(200), .large], selection: $selectedDetent)
+                        .presentationBackground {
+                            Rectangle()
+                                .fill(.regularMaterial)
+                                .padding(.bottom, -1000)
+                        }
                         .presentationBackgroundInteraction(.enabled(upThrough: .large))
                 }
                 
@@ -61,27 +74,27 @@ struct LocationSelectorView: View {
                     }
                     .buttonStyle(.close)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
             }
         }
-        
     }
-    
-    
 }
 
 struct LocationSearchSheetView: View {
-    @Binding var selectedResult: MKMapItem?
+    @Binding var locationInfo: LocationInfo?
+    @Binding var selectedResult: LocationSearchResult?
     @Binding var visibleRegion: MKCoordinateRegion?
     @Binding var position: MapCameraPosition
-    @Binding var searchResults: [LocationSearchResult]
+    @Binding var mapResults: Set<LocationSearchResult>
+    @Binding var selectedMarker: MKMapItem?
+    @Binding var selectedDetent: PresentationDetent
     
+    @State private var searchResults: [LocationSearchResult] = []
     @State private var searchText = ""
     
+    @Binding var openSelectedResult: Bool
+    @FocusState private var isSearchFocused: Bool
+    
+    var parentDismiss: DismissAction
     
     var body: some View {
         VStack {
@@ -91,8 +104,13 @@ struct LocationSearchSheetView: View {
                 TextField("Search for a location", text: $searchText)
                     .autocorrectionDisabled()
                     .padding(.vertical, 8)
+                    .focused($isSearchFocused)
+                    .submitLabel(.search)
                     .onSubmit {
-                        searchLocation(query: searchText)
+                        searchLocation(query: searchText, addToMap: true)
+                    }
+                    .onChange(of: searchText) { _, newValue in
+                        searchLocation(query: newValue)
                     }
             }
             .padding(.horizontal, 8)
@@ -103,10 +121,15 @@ struct LocationSearchSheetView: View {
             if !searchResults.isEmpty {
                 List(searchResults) { result in
                     Button {
+                        selectedDetent = .height(200)
                         withAnimation {
-                            selectedResult = result.item
+                            isSearchFocused = false
+                            selectedResult = result
+                            mapResults = Set(searchResults)
                             position = .region(MKCoordinateRegion(center: result.item.placemark.coordinate, span: .init(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+                            selectedMarker = result.item
                         }
+                        openSelectedResult = true
                     } label: {
                         VStack(alignment: .leading) {
                             Text(result.item.name ?? "")
@@ -115,6 +138,8 @@ struct LocationSearchSheetView: View {
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .listRowBackground(Color.clear)
@@ -124,9 +149,15 @@ struct LocationSearchSheetView: View {
                 .scrollContentBackground(.hidden)
             }
         }
+        .sheet(isPresented: $openSelectedResult) {
+            SelectedLocationView(locationInfo: $locationInfo, selectedResult: $selectedResult, selectedMarker: $selectedMarker, searchResults: $searchResults, mapResults: $mapResults, position: $position, isOpen: $openSelectedResult, parentDismiss: parentDismiss)
+                .interactiveDismissDisabled()
+                .presentationDetents([.height(220), .medium])
+                .presentationBackgroundInteraction(.enabled(upThrough: .medium))
+        }
     }
     
-    private func searchLocation(query: String) {
+    private func searchLocation(query: String, addToMap: Bool = false) {
         guard !query.isEmpty else {
             self.searchResults = []
             return
@@ -143,10 +174,81 @@ struct LocationSearchSheetView: View {
                 return
             }
             
+            if addToMap {
+                withAnimation {
+                    self.mapResults = Set(response.mapItems.compactMap { item in
+                        guard item.placemark.location?.coordinate != nil else { return nil }
+                        
+                        return LocationSearchResult(item: item)
+                    })
+                    self.position = .automatic
+                }
+            }
             self.searchResults = response.mapItems.compactMap { item in
                 guard item.placemark.location?.coordinate != nil else { return nil }
                 
                 return LocationSearchResult(item: item)
+            }
+        }
+    }
+}
+
+struct SelectedLocationView: View {
+    @Binding var locationInfo: LocationInfo?
+    @Binding var selectedResult: LocationSearchResult?
+    @Binding var selectedMarker: MKMapItem?
+    @Binding var searchResults: [LocationSearchResult]
+    @Binding var mapResults: Set<LocationSearchResult>
+    @Binding var position: MapCameraPosition
+    @Binding var isOpen: Bool
+    
+    var parentDismiss: DismissAction
+    
+    var body: some View {
+        if let selectedResult {
+            NavigationStack {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text(selectedResult.item.name ?? "")
+                        .font(.title2.weight(.medium))
+                        .fontDesign(.rounded)
+                    if let address = selectedResult.item.placemark.title {
+                        DetailSection(header: "Details") {
+                            Text(address)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Close", systemImage: "xmark.circle.fill") {
+                            Task {
+                                isOpen = false
+                                withAnimation {
+                                    mapResults = Set(searchResults)
+                                    self.selectedResult = nil
+                                    self.selectedMarker = nil
+                                    position = .automatic
+                                }
+                            }
+                        }
+                        .buttonStyle(.close)
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Add") {
+                            withAnimation {
+                                self.locationInfo = LocationInfo(name: selectedResult.item.name, latitude: selectedResult.item.placemark.coordinate.latitude, longitude: selectedResult.item.placemark.coordinate.longitude)
+                            }
+                            parentDismiss()
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
+                        .buttonBorderShape(.capsule)
+                        .tint(.accent)
+                    }
+                }
             }
         }
     }
@@ -166,9 +268,9 @@ struct LocationSearchResult: Identifiable, Hashable {
 }
 
 #Preview {
-    @Previewable @State var sessionViewModel = SessionEditorViewModel()
+    @Previewable @State var locationInfo: LocationInfo?
         VStack {}
             .sheet(isPresented: .constant(true)) {
-                LocationSelectorView(viewModel: $sessionViewModel)
+                LocationSelectorView(locationInfo: $locationInfo)
             }
 }

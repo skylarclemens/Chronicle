@@ -123,7 +123,7 @@ struct AccessoryEditorView: View {
                 viewModel.type = accessory.type
                 viewModel.purchasePrice = accessory.purchase?.price
                 viewModel.purchaseBrand = accessory.brand ?? ""
-                viewModel.purchaseLocation = accessory.purchase?.location ?? ""
+                viewModel.purchaseLocation = accessory.purchase?.location
                 viewModel.purchaseDate = accessory.purchase?.date ?? Date()
                 viewModel.lastCleanedDate = accessory.lastCleanedDate
                 viewModel.favorite = accessory.favorite
@@ -212,6 +212,8 @@ struct AccessoryTypeSelectionView: View {
 struct AccessoryPurchaseEditorView: View {
     @Binding var viewModel: AccessoryEditorViewModel
     
+    @State private var openLocationSearch: Bool = false
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Purchase Information")
@@ -230,8 +232,25 @@ struct AccessoryPurchaseEditorView: View {
                 Divider()
                 HStack {
                     Text("Location")
-                    TextField("Dispensary", text: $viewModel.purchaseLocation)
-                        .multilineTextAlignment(.trailing)
+                    Spacer()
+                    if viewModel.purchaseLocation != nil {
+                        Text(viewModel.purchaseLocation?.name ?? "")
+                            .lineLimit(1)
+                        Button("Remove location", systemImage: "xmark.circle.fill") {
+                            withAnimation {
+                                viewModel.purchaseLocation = nil
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .labelStyle(.iconOnly)
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.secondary, .quaternary)
+                        .tint(.secondary)
+                    } else {
+                        Button("Add location", systemImage: "location.fill") {
+                            openLocationSearch = true
+                        }
+                    }
                 }
                 .padding(.vertical, 6)
                 .padding(.trailing)
@@ -252,6 +271,9 @@ struct AccessoryPurchaseEditorView: View {
             .background(Color(UIColor.secondarySystemGroupedBackground),
                         in: RoundedRectangle(cornerRadius: 12))
         }
+        .sheet(isPresented: $openLocationSearch) {
+            LocationSelectorView(locationInfo: $viewModel.purchaseLocation)
+        }
     }
 }
 
@@ -264,7 +286,7 @@ class AccessoryEditorViewModel {
     var name: String = ""
     var type: Accessory.AccessoryType?
     var purchasePrice: Double?
-    var purchaseLocation: String = ""
+    var purchaseLocation: LocationInfo?
     var purchaseBrand: String = ""
     var purchaseDate: Date = Date()
     var lastCleanedDate: Date?
