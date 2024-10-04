@@ -13,11 +13,11 @@ import SwiftData
     public var date: Date
     public var amount: Amount?
     public var price: Double?
-    public var location: String?
+    public var location: LocationInfo?
     public var isAdjustment: Bool
     @Relationship public var item: Item?
     
-    init(date: Date, amount: Amount? = nil, unit: String? = nil, price: Double? = nil, location: String? = nil, isAdjustment: Bool = false, item: Item? = nil) {
+    init(date: Date, amount: Amount? = nil, unit: String? = nil, price: Double? = nil, location: LocationInfo? = nil, isAdjustment: Bool = false, item: Item? = nil) {
         self.id = UUID().uuidString
         self.date = date
         self.amount = amount

@@ -54,7 +54,6 @@ extension Session {
                 duration: TimeInterval.random(in: 600...3600),  // 10 minutes to 1 hour
                 amountConsumed: Double.random(in: 0.1...1.0),
                 notes: "Sample session notes for session \(index + 1)",
-                location: randomLocation,
                 favorite: Bool.random(),
                 mood: Mood(
                     type: MoodType.allCases.randomElement()!,
@@ -68,8 +67,8 @@ extension Session {
 
 extension Accessory {
     static let sampleData: [Accessory] = [
-        Accessory(name: "My Bong", type: .bong, purchase: Purchase(date: Date(), price: 100, location: "Online"), brand: "Brand", favorite: true),
-        Accessory(name: "Pipe", type: .pipe, purchase: Purchase(date: Date(), price: 20, location: "Upstate"), brand: "Brand")
+        Accessory(name: "My Bong", type: .bong, purchase: Purchase(date: Date(), price: 100), brand: "Brand", favorite: true),
+        Accessory(name: "Pipe", type: .pipe, purchase: Purchase(date: Date(), price: 20), brand: "Brand")
     ]
 }
 
@@ -89,7 +88,7 @@ extension Mood {
 
 extension Purchase {
     static let sampleData: [Purchase] = [
-        Purchase(date: Date(), amount: Amount(value: 3.5, unit: "g"), price: 20.0, location: "Dispensary")
+        Purchase(date: Date(), amount: Amount(value: 3.5, unit: "g"), price: 20.0, location: LocationInfo(name: "Sample Location", latitude: 40.7127, longitude: -74.0059))
     ]
 }
 

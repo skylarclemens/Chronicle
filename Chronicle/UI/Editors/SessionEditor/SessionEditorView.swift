@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import PhotosUI
+import MapKit
 
 struct SessionEditorView: View {
     @Environment(\.modelContext) var modelContext
@@ -21,6 +22,7 @@ struct SessionEditorView: View {
     @State private var openRecorder: Bool = false
     @State private var showRecording: Bool = false
     @State private var showingImagesPicker: Bool = false
+    @State private var openLocationSearch: Bool = false
     
     @FocusState var focusedField: Field?
     
@@ -201,6 +203,39 @@ struct SessionEditorView: View {
                             }
                         }
                         .padding(.top)
+                        if let location = viewModel.locationInfo,
+                           let mapItem = location.getMapData() {
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("Location")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                    Spacer()
+                                    Menu {
+                                        Button("Remove", role: .destructive) {
+                                            withAnimation {
+                                                viewModel.locationInfo = nil
+                                            }
+                                        }
+                                    } label: {
+                                        Image(systemName: "ellipsis")
+                                            .imageScale(.large)
+                                            .padding(8)
+                                            .contentShape(Circle())
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                                Map(interactionModes: []) {
+                                    Annotation(location.name ?? "", coordinate: mapItem.placemark.coordinate) {
+                                        Text(location.name ?? "")
+                                    }
+                                }
+                                .frame(height: 125)
+                                .clipShape(.rect(cornerRadius: 12))
+                            }
+                            .padding(.top)
+                        }
+                        
                         Section {
                             SessionEditorAdditionalView(viewModel: $viewModel, openTags: $openTags, openAccessories: $openAccessories)
                         }
@@ -286,6 +321,13 @@ struct SessionEditorView: View {
                     }
                     .labelStyle(.iconOnly)
                     .tint(.primary)
+                    Spacer()
+                    Button("Add location", systemImage: "location.fill") {
+                        openLocationSearch = true
+                    }
+                    .labelStyle(.iconOnly)
+                    .tint(.primary)
+                    .disabled(viewModel.locationInfo != nil)
                 }
                 /// Show same toolbar when keyboard opens
                 ToolbarItemGroup(placement: .keyboard) {
@@ -309,6 +351,13 @@ struct SessionEditorView: View {
                     }
                     .labelStyle(.iconOnly)
                     .tint(.primary)
+                    Spacer()
+                    Button("Add location", systemImage: "location.fill") {
+                        openLocationSearch = true
+                    }
+                    .labelStyle(.iconOnly)
+                    .tint(.primary)
+                    .disabled(viewModel.locationInfo != nil)
                     Spacer()
                     Button {
                         focusedField = nil
@@ -351,6 +400,9 @@ struct SessionEditorView: View {
             .sheet(isPresented: $openAccessories) {
                 AccessoriesSelectorView(accessories: $viewModel.accessories)
             }
+            .sheet(isPresented: $openLocationSearch) {
+                LocationSelectorView(locationInfo: $viewModel.locationInfo)
+            }
         }
         .onAppear {
             if let session {
@@ -358,7 +410,7 @@ struct SessionEditorView: View {
                 viewModel.title = session.title
                 viewModel.date = session.date
                 viewModel.duration = session.duration ?? 0
-                viewModel.location = session.location ?? ""
+                viewModel.locationInfo = session.locationInfo
                 viewModel.notes = session.notes ?? ""
                 viewModel.selectedImagesData = session.imagesData ?? []
                 viewModel.amountConsumed = session.amountConsumed
@@ -384,7 +436,7 @@ struct SessionEditorView: View {
             session.title = viewModel.title
             session.notes = viewModel.notes
             session.duration = viewModel.duration
-            session.location = viewModel.location
+            session.locationInfo = viewModel.locationInfo
             session.imagesData = viewModel.selectedImagesData
             session.mood = viewModel.mood
             session.tags = viewModel.tags
@@ -478,7 +530,7 @@ class SessionEditorViewModel {
     var duration: Double = 0
     var mood: Mood?
     var notes: String = ""
-    var location: String = ""
+    var locationInfo: LocationInfo?
     var amountConsumed: Double? = nil
     var tags: [Tag] = []
     var accessories: [Accessory] = []

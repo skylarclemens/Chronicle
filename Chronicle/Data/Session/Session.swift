@@ -18,7 +18,7 @@ import SwiftUI
     public var duration: TimeInterval?
     public var amountConsumed: Double?
     public var notes: String?
-    public var location: String?
+    public var locationInfo: LocationInfo?
     public var favorite: Bool
     @Attribute(.externalStorage) public var imagesData: [Data]?
     @Attribute(.externalStorage) public var audioData: Data?
@@ -38,7 +38,7 @@ import SwiftUI
         duration: TimeInterval? = nil,
         amountConsumed: Double? = nil,
         notes: String? = nil,
-        location: String? = nil,
+        locationInfo: LocationInfo? = nil,
         favorite: Bool = false,
         accessories: [Accessory] = [],
         tags: [Tag] = [],
@@ -52,7 +52,7 @@ import SwiftUI
         self.duration = duration
         self.amountConsumed = amountConsumed
         self.notes = notes
-        self.location = location
+        self.locationInfo = locationInfo
         self.favorite = favorite
         self.accessories = accessories
         self.tags = tags
@@ -98,3 +98,5 @@ import SwiftUI
         return descriptor
     }
 }
+
+

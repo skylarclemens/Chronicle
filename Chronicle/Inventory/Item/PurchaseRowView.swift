@@ -35,7 +35,7 @@ struct PurchaseRowView: View {
                             Label("Location", systemImage: "location")
                                 .fontWeight(.semibold)
                             Spacer()
-                            Text(location)
+                            Text(location.name ?? "")
                         }
                     }
                     if let amount = purchase.amount {
