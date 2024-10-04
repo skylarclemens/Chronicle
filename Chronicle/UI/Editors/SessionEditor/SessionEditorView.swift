@@ -99,38 +99,6 @@ struct SessionEditorView: View {
                                 .buttonStyle(.editorInput)
                             }
                         }
-                        if let location = viewModel.locationInfo,
-                           let mapItem = location.getMapData() {
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("Location")
-                                        .font(.title2)
-                                        .fontWeight(.semibold)
-                                    Spacer()
-                                    Menu {
-                                        Button("Remove", role: .destructive) {
-                                            withAnimation {
-                                                viewModel.locationInfo = nil
-                                            }
-                                        }
-                                    } label: {
-                                        Image(systemName: "ellipsis")
-                                            .imageScale(.large)
-                                            .padding(8)
-                                            .contentShape(Circle())
-                                    }
-                                    .buttonStyle(.plain)
-                                }
-                                Map(interactionModes: []) {
-                                    Annotation(location.name ?? "", coordinate: mapItem.placemark.coordinate) {
-                                        Text(location.name ?? "")
-                                    }
-                                }
-                                .frame(height: 125)
-                                .clipShape(.rect(cornerRadius: 12))
-                            }
-                            .padding(.top)
-                        }
                         if let item = viewModel.item {
                             Section {
                                 VStack(alignment: .leading) {
@@ -235,6 +203,38 @@ struct SessionEditorView: View {
                             }
                         }
                         .padding(.top)
+                        if let location = viewModel.locationInfo,
+                           let mapItem = location.getMapData() {
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("Location")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                    Spacer()
+                                    Menu {
+                                        Button("Remove", role: .destructive) {
+                                            withAnimation {
+                                                viewModel.locationInfo = nil
+                                            }
+                                        }
+                                    } label: {
+                                        Image(systemName: "ellipsis")
+                                            .imageScale(.large)
+                                            .padding(8)
+                                            .contentShape(Circle())
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                                Map(interactionModes: []) {
+                                    Annotation(location.name ?? "", coordinate: mapItem.placemark.coordinate) {
+                                        Text(location.name ?? "")
+                                    }
+                                }
+                                .frame(height: 125)
+                                .clipShape(.rect(cornerRadius: 12))
+                            }
+                            .padding(.top)
+                        }
                         
                         Section {
                             SessionEditorAdditionalView(viewModel: $viewModel, openTags: $openTags, openAccessories: $openAccessories)

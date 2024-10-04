@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import _MapKit_SwiftUI
 
 struct SessionDetailsView: View {
     @Environment(\.modelContext) var modelContext
@@ -173,6 +174,22 @@ struct SessionDetailsView: View {
                             DetailSection {
                                 AudioPlayerView(audioData: audioData)
                             }
+                        }
+                        .padding(.top)
+                    }
+                    if let location = session.locationInfo,
+                       let mapItem = location.getMapData() {
+                        VStack(alignment: .leading) {
+                            Text("Location")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            Map(interactionModes: []) {
+                                Annotation(location.name ?? "", coordinate: mapItem.placemark.coordinate) {
+                                    Text(location.name ?? "")
+                                }
+                            }
+                            .frame(height: 125)
+                            .clipShape(.rect(cornerRadius: 12))
                         }
                         .padding(.top)
                     }
