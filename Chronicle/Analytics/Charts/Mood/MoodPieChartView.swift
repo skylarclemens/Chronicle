@@ -13,8 +13,9 @@ struct MoodPieChartView: View {
     
     private var moodCounts: [MoodCount] {
         let counts: [MoodType: Int] = sessions.reduce(into: [:]) { counts, session in
-            if let mood = session.mood {
-                counts[mood.type, default: 0] += 1
+            if let mood = session.mood,
+               let moodType = mood.type {
+                counts[moodType, default: 0] += 1
             }
         }
         return Array(counts).sorted {

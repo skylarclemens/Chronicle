@@ -216,7 +216,7 @@ struct ItemAnalyticsDetailsView: View {
     private func averageMoodByItem() -> [(item: String, averageMood: Double)] {
         let itemMoods = sessions.compactMap { session -> (String, Double)? in
             guard let itemName = session.item?.name,
-                  let moodValue = session.mood?.type.rawValue else {
+                  let moodValue = session.mood?.type?.rawValue else {
                 return nil
             }
             return (itemName, moodValue)

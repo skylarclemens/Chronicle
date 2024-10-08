@@ -33,7 +33,7 @@ struct SearchView: View {
             let matchesSearch = searchText.isEmpty || session.title.localizedStandardContains(searchText)
             
             let matchesItems = selectedItems.isEmpty || (session.item != nil && selectedItems.contains(session.item!))
-            let matchesTags = selectedTags.isEmpty || !selectedTags.isDisjoint(with: Set(session.tags))
+            let matchesTags = selectedTags.isEmpty || !selectedTags.isDisjoint(with: Set(session.tags ?? []))
             let matchesFilter = matchesItems && matchesTags
             
             return matchesSearch && matchesFilter

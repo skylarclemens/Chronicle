@@ -185,7 +185,7 @@ struct PurchaseInputView: View {
         }
         .onAppear {
             if let item {
-                viewModel.purchases = item.purchases
+                viewModel.purchases = item.purchases ?? []
             }
         }
     }

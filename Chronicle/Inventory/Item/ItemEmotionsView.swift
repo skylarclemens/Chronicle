@@ -11,11 +11,11 @@ struct ItemEmotionsView: View {
     var item: Item
     
     var allEmotions: [(emotion: Emotion, count: Int)] {
-        let emotions = item.sessions.flatMap { $0.mood?.emotions ?? [] }
-        let counts = emotions.reduce(into: [:]) { counts, emotion in
+        let emotions = item.sessions?.flatMap { $0.mood?.emotions ?? [] }
+        let counts = emotions?.reduce(into: [:]) { counts, emotion in
             counts[emotion, default: 0] += 1
         }
-        return counts.sorted {
+        return counts?.sorted {
             $0.value > $1.value
         }.map { ($0.key, $0.value) }
             .sorted {
@@ -23,7 +23,7 @@ struct ItemEmotionsView: View {
                     return $0.emotion.name < $1.emotion.name
                 }
                 return $0.count > $1.count
-            }
+            } ?? []
     }
     
     var body: some View {

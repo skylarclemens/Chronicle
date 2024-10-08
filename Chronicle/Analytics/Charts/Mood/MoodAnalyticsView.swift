@@ -169,7 +169,7 @@ struct MoodsAnalyticsDetailsView: View {
         
         return (1...7).map { weekday in
             let sessions = groupedSessions[weekday] ?? []
-            let totalMood = sessions.compactMap { $0.mood?.type.rawValue }.reduce(0, +)
+            let totalMood = sessions.compactMap { $0.mood?.type?.rawValue }.reduce(0, +)
             let averageMood = sessions.isEmpty ? 0 : totalMood / Double(sessions.count)
             return (weekday: calendar.shortWeekdaySymbols[weekday-1], averageMood: averageMood)
         }

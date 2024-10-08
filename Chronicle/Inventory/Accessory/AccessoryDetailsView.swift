@@ -21,9 +21,11 @@ struct AccessoryDetailsView: View {
                 VStack(spacing: 24) {
                     VStack(alignment: .leading) {
                         HStack(alignment: .center) {
-                                Label(accessory.type.label().localizedCapitalized, systemImage: accessory.type.symbol())
+                            if let type = accessory.type {
+                                Label(type.label().localizedCapitalized, systemImage: type.symbol())
                                 .font(.footnote)
                                 .infoPillStyle()
+                            }
                             if let brand = accessory.brand {
                                 Label(brand.localizedCapitalized, systemImage: "cart")
                                     .font(.footnote)
@@ -45,7 +47,8 @@ struct AccessoryDetailsView: View {
                         PurchaseRowView(purchase: purchase)
                             .padding(.horizontal)
                     }
-                    if !accessory.sessions.isEmpty {
+                    if let sessions = accessory.sessions,
+                        !sessions.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Recent Sessions")
                                 .font(.title2)

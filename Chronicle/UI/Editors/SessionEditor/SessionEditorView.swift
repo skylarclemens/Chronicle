@@ -144,14 +144,15 @@ struct SessionEditorView: View {
                                 Text("Mood")
                                     .font(.title2)
                                     .fontWeight(.semibold)
-                                if let currentMood = viewModel.mood {
+                                if let currentMood = viewModel.mood,
+                                   let moodType = currentMood.type {
                                     HStack(alignment: .bottom) {
-                                        Text(currentMood.type.label)
+                                        Text(moodType.label)
                                             .padding(.horizontal, 8)
                                             .padding(.vertical, 4)
                                             .background(
                                                 RoundedRectangle(cornerRadius: 12)
-                                                    .fill(currentMood.type.color.opacity(0.33))
+                                                    .fill(moodType.color.opacity(0.33))
                                             )
                                         Spacer()
                                         Button {
@@ -164,11 +165,13 @@ struct SessionEditorView: View {
                                     }
                                 }
                             }
-                            if let currentMood = viewModel.mood, !currentMood.emotions.isEmpty {
+                            if let currentMood = viewModel.mood,
+                               let moodEmotions = currentMood.emotions,
+                               !moodEmotions.isEmpty {
                                 DetailSection(header: "Feelings", isScrollView: true) {
                                     ScrollView(.horizontal) {
                                         HStack {
-                                            ForEach(currentMood.emotions, id: \.self) { emotion in
+                                            ForEach(moodEmotions, id: \.self) { emotion in
                                                 HStack {
                                                     Text(emotion.emoji ?? "")
                                                         .font(.system(size: 12))
@@ -414,8 +417,8 @@ struct SessionEditorView: View {
                 viewModel.notes = session.notes ?? ""
                 viewModel.selectedImagesData = session.imagesData ?? []
                 viewModel.amountConsumed = session.amountConsumed
-                viewModel.tags = session.tags
-                viewModel.accessories = session.accessories
+                viewModel.tags = session.tags ?? []
+                viewModel.accessories = session.accessories ?? []
                 viewModel.audioData = session.audioData
                 
                 if let mood = session.mood {

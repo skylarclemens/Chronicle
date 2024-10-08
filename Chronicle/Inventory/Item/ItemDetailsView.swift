@@ -19,8 +19,9 @@ struct ItemDetailsView: View {
     
     var moodTypes: [MoodType: Int] {
         var counts: [MoodType: Int] = [:]
-        if let item {
-            for session in item.sessions {
+        if let item,
+           let sessions = item.sessions {
+            for session in sessions {
                 if let moodType = session.mood?.type {
                     counts[moodType, default: 0] += 1
                 }
@@ -35,11 +36,14 @@ struct ItemDetailsView: View {
                 VStack(spacing: 24) {
                     VStack(alignment: .leading) {
                         HStack(alignment: .center) {
-                            Text(item.type.label())
-                                .font(.footnote)
-                                .infoPillStyle()
-                            if let strain = item.strain {
-                                Text(strain.type.rawValue.localizedCapitalized)
+                            if let itemType = item.type {
+                                Text(itemType.label())
+                                    .font(.footnote)
+                                    .infoPillStyle()
+                            }
+                            if let strain = item.strain,
+                               let strainType = strain.type {
+                                Text(strainType.rawValue.localizedCapitalized)
                                     .font(.footnote)
                                     .infoPillStyle()
                                 HStack {
@@ -75,8 +79,9 @@ struct ItemDetailsView: View {
                         }
                     }
                     .padding(.horizontal)
-                    if !item.sessions.isEmpty {
-                        ItemMoodInsightsView(item: item, moods: item.moods, sessions: item.sessions)
+                    if let sessions = item.sessions,
+                        !sessions.isEmpty {
+                        ItemMoodInsightsView(item: item, moods: item.moods, sessions: sessions)
                         VStack(alignment: .leading) {
                             Text("Recent Sessions")
                                 .font(.title2)
@@ -101,19 +106,20 @@ struct ItemDetailsView: View {
                             }
                         }
                     }
-                    if !item.purchases.isEmpty {
+                    if let purchases = item.purchases,
+                        !purchases.isEmpty {
                         
                         VStack(alignment: .leading) {
                             Text("Purchases")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                             VStack(alignment: .leading) {
-                                PurchaseRowView(purchase: item.purchases.first)
-                                if item.purchases.count > 1 {
+                                PurchaseRowView(purchase: purchases.first)
+                                if purchases.count > 1 {
                                     NavigationLink {
                                         ScrollView {
                                             VStack {
-                                                ForEach(item.purchases) { purchase in
+                                                ForEach(purchases) { purchase in
                                                     PurchaseRowView(purchase: purchase)
                                                 }
                                             }
@@ -182,14 +188,15 @@ struct ItemDetailsView: View {
                         }
                         .padding(.horizontal)
                     }
-                    if !item.tags.isEmpty {
+                    if let tags = item.tags,
+                        !tags.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Tags")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                             ScrollView(.horizontal) {
                                 HStack {
-                                    ForEach(item.tags) { tag in
+                                    ForEach(tags) { tag in
                                         Text(tag.name)
                                             .tagStyle()
                                     }

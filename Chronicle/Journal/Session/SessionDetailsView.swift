@@ -67,50 +67,50 @@ struct SessionDetailsView: View {
                                 }
                             }
                             .infoPillStyle(.accent)
-                            if let strain = item.strain {
-                                Text(strain.type.rawValue.localizedCapitalized)
+                            if let strain = item.strain,
+                               let strainType = strain.type {
+                                Text(strainType.rawValue.localizedCapitalized)
                                     .font(.footnote)
                                     .infoPillStyle()
                             }
                         }
                     }
                     
-                    if session.amountConsumed != nil || !session.accessories.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Details")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            if let amountConsumed = session.amountConsumed {
-                                DetailSection(header: "Amount") {} headerRight: {
-                                    HStack(spacing: 0) {
-                                        Text(amountConsumed, format: .number)
-                                        Text(" \(session.item?.unit ?? "")")
-                                    }
+                    VStack(alignment: .leading) {
+                        Text("Details")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        if let amountConsumed = session.amountConsumed {
+                            DetailSection(header: "Amount") {} headerRight: {
+                                HStack(spacing: 0) {
+                                    Text(amountConsumed, format: .number)
+                                    Text(" \(session.item?.unit ?? "")")
                                 }
-                                
                             }
-                            if !session.accessories.isEmpty {
-                                DetailSection(header: "Accessories", isScrollView: true) {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(session.accessories) { accessory in
-                                                NavigationLink {
-                                                    AccessoryDetailsView(accessory: accessory)
-                                                } label: {
-                                                    Label(accessory.name, systemImage: accessory.type.symbol())
-                                                }
-                                                .foregroundStyle(.primary)
-                                                .pillStyle()
+                            
+                        }
+                        if let accessories = session.accessories,
+                           !accessories.isEmpty {
+                            DetailSection(header: "Accessories", isScrollView: true) {
+                                ScrollView(.horizontal) {
+                                    HStack {
+                                        ForEach(accessories) { accessory in
+                                            NavigationLink {
+                                                AccessoryDetailsView(accessory: accessory)
+                                            } label: {
+                                                Label(accessory.name, systemImage: accessory.type?.symbol() ?? "")
                                             }
+                                            .foregroundStyle(.primary)
+                                            .pillStyle()
                                         }
                                     }
-                                    .contentMargins(.horizontal, 16)
-                                    .scrollIndicators(.hidden)
                                 }
+                                .contentMargins(.horizontal, 16)
+                                .scrollIndicators(.hidden)
                             }
                         }
-                        .padding(.top)
                     }
+                    .padding(.top)
                     
                     if let notes = session.notes, !notes.isEmpty {
                         VStack(alignment: .leading) {
@@ -130,20 +130,23 @@ struct SessionDetailsView: View {
                                 Text("Mood")
                                     .font(.title2)
                                     .fontWeight(.semibold)
-                                    Text(mood.type.label)
+                                if let moodType = mood.type {
+                                    Text(moodType.label)
                                         .padding(.horizontal, 8)
                                         .padding(.vertical, 4)
                                         .background(
                                             RoundedRectangle(cornerRadius: 12)
-                                                .fill(mood.type.color.opacity(0.33))
+                                                .fill(moodType.color.opacity(0.33))
                                         )
+                                }
                                     Spacer()
                             }
-                            if !mood.emotions.isEmpty {
+                            if let emotions = mood.emotions,
+                                !emotions.isEmpty {
                                 DetailSection(header: "Feelings", isScrollView: true) {
                                     ScrollView(.horizontal) {
                                         HStack {
-                                            ForEach(mood.emotions, id: \.self) { emotion in
+                                            ForEach(emotions, id: \.self) { emotion in
                                                 HStack {
                                                     Text(emotion.emoji ?? "")
                                                         .font(.system(size: 12))
@@ -193,14 +196,15 @@ struct SessionDetailsView: View {
                         }
                         .padding(.top)
                     }
-                    if !session.tags.isEmpty {
+                    if let tags = session.tags,
+                        tags.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Tags")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                             ScrollView(.horizontal) {
                                 HStack {
-                                    ForEach(session.tags) { tag in
+                                    ForEach(tags) { tag in
                                         Text(tag.name)
                                             .tagStyle()
                                     }

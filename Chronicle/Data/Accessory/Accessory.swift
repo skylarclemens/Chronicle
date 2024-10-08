@@ -10,17 +10,17 @@ import SwiftData
 
 @Model
 public class Accessory {
-    public var id: UUID
-    public var name: String
-    public var createdAt: Date
-    public var type: AccessoryType
+    public var id: UUID?
+    public var name: String = ""
+    public var createdAt: Date = Date()
+    public var type: AccessoryType?
     public var purchase: Purchase?
     public var brand: String?
     public var lastCleanedDate: Date?
-    public var favorite: Bool
+    public var favorite: Bool = false
     @Attribute(.externalStorage) public var imagesData: [Data]?
     
-    @Relationship public var sessions: [Session]
+    public var sessions: [Session]?
     
     init(id: UUID = UUID(),
          name: String = "",
@@ -31,7 +31,7 @@ public class Accessory {
          lastCleanedDate: Date? = nil,
          favorite: Bool = false,
          imagesData: [Data]? = nil,
-         sessions: [Session] = []) {
+         sessions: [Session]? = []) {
         self.id = id
         self.name = name
         self.createdAt = createdAt
@@ -130,6 +130,6 @@ public class Accessory {
     }
     
     func mostRecentSessions(_ num: Int = 5) -> [Session] {
-        Array(sessions.sorted(by: { $0.date.compare($1.date) == .orderedDescending }).prefix(num))
+        Array(sessions?.sorted(by: { $0.date.compare($1.date) == .orderedDescending }).prefix(num) ?? [])
     }
 }

@@ -64,9 +64,6 @@ struct MoodDescriptorSelectView: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .onAppear {
-            if let mood = viewModel.mood {
-                print(mood.type.label)
-            }
             if !viewModel.emotions.isEmpty {
                 selectedEmotions = viewModel.emotions
             }

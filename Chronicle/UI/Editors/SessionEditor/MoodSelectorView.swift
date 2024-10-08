@@ -76,8 +76,8 @@ struct MoodSelectorView: View {
         .onAppear {
             if let mood = sessionViewModel.mood {
                 viewModel.mood = mood
-                viewModel.emotions = mood.emotions
-                selectedMoodIndex = mood.type.rawValue
+                viewModel.emotions = mood.emotions ?? []
+                selectedMoodIndex = mood.type?.rawValue ?? 0.0
             } else {
                 viewModel.mood = Mood(type: .neutral)
             }

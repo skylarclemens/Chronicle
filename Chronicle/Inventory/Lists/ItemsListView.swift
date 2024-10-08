@@ -11,7 +11,7 @@ import SwiftData
 struct ItemsListView: View {
     @Query(sort: \Item.name) private var items: [Item]
     
-    var itemsByType: [ItemType: [Item]] {
+    var itemsByType: [ItemType?: [Item]] {
         Dictionary(grouping: items, by: \.type)
     }
     

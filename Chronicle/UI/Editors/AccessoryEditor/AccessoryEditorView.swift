@@ -127,7 +127,7 @@ struct AccessoryEditorView: View {
                 viewModel.purchaseDate = accessory.purchase?.date ?? Date()
                 viewModel.lastCleanedDate = accessory.lastCleanedDate
                 viewModel.favorite = accessory.favorite
-                viewModel.sessions = accessory.sessions
+                viewModel.sessions = accessory.sessions ?? []
                 viewModel.selectedImagesData = accessory.imagesData ?? []
             } else {
                 focusedField = .name

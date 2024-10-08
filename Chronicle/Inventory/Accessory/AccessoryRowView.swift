@@ -19,8 +19,8 @@ struct AccessoryRowView: View {
                         .scaledToFill()
                         .frame(width: 45, height: 45)
                         .clipShape(.rect(cornerRadius: 8))
-                } else {
-                    Image(systemName: accessory.type.symbol())
+                } else if let accessoryType = accessory.type {
+                    Image(systemName: accessoryType.symbol())
                         .frame(width: 45, height: 45)
                         .foregroundStyle(.accent)
                         .background(.accent.opacity(0.15),

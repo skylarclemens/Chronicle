@@ -11,7 +11,7 @@ import SwiftData
 struct StrainListView: View {
     @Query(sort: \Strain.name) private var strains: [Strain]
     
-    var strainsByType: [StrainType: [Strain]] {
+    var strainsByType: [StrainType?: [Strain]] {
         Dictionary(grouping: strains, by: \.type)
     }
     

@@ -76,7 +76,7 @@ struct SimpleAnalyticsView: View {
     /// Most common mood across all items
     private var mostCommonMood: String {
         let moodCounts = sessions.compactMap { $0.mood }.reduce(into: [:]) { counts, mood in
-            counts[mood.type.label, default: 0] += 1
+            counts[mood.type?.label, default: 0] += 1
         }
         return moodCounts.max(by: { $0.value < $1.value })?.key ?? "None"
     }

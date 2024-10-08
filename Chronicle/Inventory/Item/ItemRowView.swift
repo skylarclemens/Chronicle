@@ -46,5 +46,5 @@ struct ItemRowView: View {
             ItemRowView(item: SampleData.shared.item)
         }
     }
-    .modelContainer(SampleData.shared.container)
+      .modelContainer(SampleData.shared.container)
 }

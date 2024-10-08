@@ -11,16 +11,16 @@ import SwiftUICore
 
 @Model
 public class Mood {
-    var type: MoodType
-    var valence: Double
+    var type: MoodType?
+    var valence: Double?
     /// Associated emotions with current mood
-    var emotions: [Emotion]
+    var emotions: [Emotion]?
     var session: Session?
     
     init(
-        type: MoodType,
-        valence: Double = 0.0,
-        emotions: [Emotion] = [],
+        type: MoodType? = .neutral,
+        valence: Double? = 0.0,
+        emotions: [Emotion]? = [],
         session: Session? = nil
     ) {
         self.type = type
