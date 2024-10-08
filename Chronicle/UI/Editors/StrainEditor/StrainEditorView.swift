@@ -69,7 +69,7 @@ struct StrainEditorView: View {
             .onAppear {
                 if let strain {
                     viewModel.name = strain.name
-                    viewModel.type = strain.type
+                    viewModel.type = strain.type ?? .sativa
                     viewModel.subtype = strain.subtype
                     viewModel.desc = strain.desc
                 }

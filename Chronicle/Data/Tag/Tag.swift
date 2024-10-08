@@ -9,18 +9,21 @@ import SwiftData
 
 @Model
 public class Tag {
-    var name: String
-    @Relationship var items: [Item]
-    @Relationship var sessions: [Session]
+    var name: String = ""
+    var items: [Item]?
+    var sessions: [Session]?
     
-    init(name: String, items: [Item] = [], sessions: [Session] = []) {
+    init(name: String, items: [Item]? = [], sessions: [Session]? = []) {
         self.name = name
         self.items = items
         self.sessions = sessions
     }
     
     var hasNoItemsOrSessions: Bool {
-        items.isEmpty && sessions.isEmpty
+        if let items, let sessions {
+            return items.isEmpty && sessions.isEmpty
+        }
+        return true
     }
     
     public enum TagContext {

@@ -25,7 +25,7 @@ class SampleData {
             Session.self,
             Strain.self,
         ])
-        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
         do {
             container = try ModelContainer(for: schema, configurations: config)
             
@@ -72,19 +72,19 @@ class SampleData {
         }
         
         item.strain = strain
-        item.sessions.append(session)
-        item.purchases.append(purchase)
-        item.tags.append(tag)
-        item.tags.append(allTags[2])
+        item.sessions?.append(session)
+        item.purchases?.append(purchase)
+        item.tags?.append(tag)
+        item.tags?.append(allTags[2])
         session.item = item
         session.mood = mood
         session.locationInfo = LocationInfo(name: "Sample Location", latitude: 40.7127, longitude: -74.0059)
         if let sampleAudio = NSDataAsset(name: "sample")?.data {
             session.audioData = sampleAudio
         }
-        session.tags.append(tag2)
-        session.accessories.append(accessory)
-        accessory.sessions.append(session)
+        session.tags?.append(tag2)
+        session.accessories?.append(accessory)
+        accessory.sessions?.append(session)
         
         do {
             try context.save()

@@ -19,9 +19,11 @@ struct StrainDetailsView: View {
             ScrollView {
                 VStack(spacing: 24) {
                     HStack(alignment: .center) {
-                        Text(strain.type.rawValue.localizedCapitalized)
-                            .font(.footnote)
-                            .infoPillStyle()
+                        if let type = strain.type {
+                            Text(type.rawValue.localizedCapitalized)
+                                .font(.footnote)
+                                .infoPillStyle()
+                        }
                         Spacer()
                         if strain.favorite {
                             Image(systemName: "star.fill")
@@ -44,7 +46,8 @@ struct StrainDetailsView: View {
                         }
                         .padding(.horizontal)
                     }
-                    if !strain.items.isEmpty {
+                    if let items = strain.items,
+                        !items.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Related Items")
                                 .font(.title2)
@@ -52,7 +55,7 @@ struct StrainDetailsView: View {
                                 .padding(.horizontal)
                             ScrollView(.horizontal) {
                                 HStack {
-                                    ForEach(strain.items) { item in
+                                    ForEach(items) { item in
                                         NavigationLink {
                                             ItemDetailsView(item: item)
                                         } label: {

@@ -10,27 +10,27 @@ import SwiftData
 import SwiftUI
 
 @Model public class Item {
-    @Attribute(.unique) public var id: UUID
-    public var name: String
+    public var id: UUID?
+    public var name: String = ""
     public var strain: Strain?
-    public var createdAt: Date
-    public var type: ItemType
+    public var createdAt: Date = Date()
+    public var type: ItemType?
     public var subtype: String?
     public var amount: Amount?
     public var dosage: Amount?
     public var unit: String?
     public var brand: String?
-    public var compounds: [Compound]
-    public var ingredients: [String]
-    public var favorite: Bool
+    public var compounds: [Compound] = []
+    public var ingredients: [String] = []
+    public var favorite: Bool = false
     @Attribute(.externalStorage) public var imagesData: [Data]?
     
     @Relationship(deleteRule: .cascade, inverse: \Purchase.item)
-    public var purchases: [Purchase]
+    public var purchases: [Purchase]?
     @Relationship(deleteRule: .noAction, inverse: \Tag.items)
-    public var tags: [Tag]
+    public var tags: [Tag]?
     @Relationship(deleteRule: .nullify, inverse: \Session.item)
-    public var sessions: [Session]
+    public var sessions: [Session]?
     
     var cannabinoids: [Compound] {
         compounds.filter { $0.type == .cannabinoid }
@@ -41,13 +41,13 @@ import SwiftUI
     }
     
     var remainingAmount: Double {
-        let totalPurchased = purchases.reduce(0) { $0 + ($1.amount?.value ?? 0) }
-        let totalUsed = sessions.reduce(0) { $0 + ($1.amountConsumed ?? 0) }
+        let totalPurchased = purchases?.reduce(0) { $0 + ($1.amount?.value ?? 0) } ?? 0
+        let totalUsed = sessions?.reduce(0) { $0 + ($1.amountConsumed ?? 0) } ?? 0
         return max(totalPurchased - totalUsed, 0)
     }
     
     var moods: [Mood] {
-        return sessions.compactMap { $0.mood }
+        return sessions?.compactMap { $0.mood } ?? []
     }
     
     init(
@@ -61,9 +61,9 @@ import SwiftUI
         compounds: [Compound] = [],
         ingredients: [String] = [],
         favorite: Bool = false,
-        purchases: [Purchase] = [],
-        tags: [Tag] = [],
-        sessions: [Session] = []
+        purchases: [Purchase]? = [],
+        tags: [Tag]? = [],
+        sessions: [Session]? = []
     ) {
         self.id = id
         self.name = name
@@ -99,10 +99,10 @@ import SwiftUI
     func updateRemainingAmount(newAmount: Double) {
         let adjustment = newAmount - remainingAmount
         let adjustmentRecord = Purchase(date: Date(), amount: Amount(value: adjustment, unit: ""), isAdjustment: true)
-        purchases.append(adjustmentRecord)
+        purchases?.append(adjustmentRecord)
     }
     
     func mostRecentSessions(_ num: Int = 5) -> [Session] {
-        Array(sessions.sorted(by: { $0.date.compare($1.date) == .orderedDescending }).prefix(num))
+        Array(sessions?.sorted(by: { $0.date.compare($1.date) == .orderedDescending }).prefix(num) ?? [])
     }
 }

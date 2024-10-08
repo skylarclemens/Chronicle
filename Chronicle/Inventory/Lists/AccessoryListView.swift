@@ -11,7 +11,7 @@ import SwiftData
 struct AccessoryListView: View {
     @Query(sort: \Accessory.name) private var accessories: [Accessory]
     
-    var accessoriesByType: [Accessory.AccessoryType: [Accessory]] {
+    var accessoriesByType: [Accessory.AccessoryType?: [Accessory]] {
         Dictionary(grouping: accessories, by: \.type)
     }
     

@@ -30,10 +30,10 @@ struct ItemEditorView: View {
                 viewModel.cannabinoids = item.compounds.filter { $0.type == .cannabinoid }
                 viewModel.terpenes = item.compounds.filter { $0.type == .terpene }
                 viewModel.ingredients = item.ingredients
-                viewModel.purchases = item.purchases
+                viewModel.purchases = item.purchases ?? []
                 viewModel.brand = item.brand ?? ""
                 viewModel.linkedStrain = item.strain
-                viewModel.tags = item.tags
+                viewModel.tags = item.tags ?? []
                 viewModel.selectedImagesData = item.imagesData ?? []
             }
         }
@@ -261,7 +261,7 @@ struct ItemEditorBasicsView: View {
             }
             let newPurchase = Purchase(date: viewModel.purchaseDate, amount: newAmount, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
             modelContext.insert(newPurchase)
-            newItem.purchases.append(newPurchase)
+            newItem.purchases?.append(newPurchase)
             modelContext.insert(newItem)
         }
         try modelContext.save()

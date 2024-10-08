@@ -140,6 +140,8 @@
 		7E26DF832CB0623900F54E00 /* LocationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfo.swift; sourceTree = "<group>"; };
 		7E309D982C792DF40004A25A /* ImageViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerView.swift; sourceTree = "<group>"; };
 		7E309D9B2C7936EC0004A25A /* ImageViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewManager.swift; sourceTree = "<group>"; };
+		7E3AE9BB2CB5852000EC45CB /* Chronicle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chronicle.entitlements; sourceTree = "<group>"; };
+		7E3AE9BC2CB585C800EC45CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7E3B557B2C8A2EFD00AB0961 /* DurationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerView.swift; sourceTree = "<group>"; };
 		7E3B557D2C8A3AEF00AB0961 /* HorizontalImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalImagesView.swift; sourceTree = "<group>"; };
 		7E3B55822C8A524D00AB0961 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
@@ -525,6 +527,8 @@
 		7EC008EB2C5EEDE80093217B /* Chronicle */ = {
 			isa = PBXGroup;
 			children = (
+				7E3AE9BC2CB585C800EC45CB /* Info.plist */,
+				7E3AE9BB2CB5852000EC45CB /* Chronicle.entitlements */,
 				7E26DF762CAF342400F54E00 /* App */,
 				7E26DF782CAF343B00F54E00 /* Dashboard */,
 				7E26DF792CAF345100F54E00 /* Journal */,
@@ -554,10 +558,10 @@
 		7EC008FC2C5EF1A00093217B /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				7ECAE6902CA87B8D00ECEFD9 /* Accessory */,
 				7E4540302CA755DB00ADB083 /* Utility */,
 				7E3B557F2C8A4D0900AB0961 /* Extensions */,
 				7E309D9A2C7936DD0004A25A /* Managers */,
+				7ECAE6902CA87B8D00ECEFD9 /* Accessory */,
 				7EE6261B2C6A947700448F80 /* Item */,
 				7E70B97F2C9218D50092ECE7 /* Session */,
 				7E08D41A2C6BD99100F96328 /* Strain */,
@@ -981,12 +985,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Chronicle/Chronicle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Chronicle/Preview Content\"";
 				DEVELOPMENT_TEAM = 2798XB6UZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Chronicle/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app allows the user to capture a photo with their camera in order to add it to a selection of images for an item or a session.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app allows the user to record a voice note with their microphone";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1012,12 +1018,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Chronicle/Chronicle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Chronicle/Preview Content\"";
 				DEVELOPMENT_TEAM = 2798XB6UZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Chronicle/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app allows the user to capture a photo with their camera in order to add it to a selection of images for an item or a session.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app allows the user to record a voice note with their microphone";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

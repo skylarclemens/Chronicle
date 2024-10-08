@@ -9,15 +9,16 @@ import Foundation
 import SwiftData
 
 @Model public class Purchase {
-    public var id: String
-    public var date: Date
+    public var id: String?
+    public var date: Date = Date()
     public var amount: Amount?
     public var price: Double?
     public var location: LocationInfo?
-    public var isAdjustment: Bool
-    @Relationship public var item: Item?
+    public var isAdjustment: Bool = false
+    public var item: Item?
+    public var accessory: Accessory?
     
-    init(date: Date, amount: Amount? = nil, unit: String? = nil, price: Double? = nil, location: LocationInfo? = nil, isAdjustment: Bool = false, item: Item? = nil) {
+    init(date: Date, amount: Amount? = nil, unit: String? = nil, price: Double? = nil, location: LocationInfo? = nil, isAdjustment: Bool = false, item: Item? = nil, accessory: Accessory? = nil) {
         self.id = UUID().uuidString
         self.date = date
         self.amount = amount
@@ -25,5 +26,6 @@ import SwiftData
         self.location = location
         self.isAdjustment = isAdjustment
         self.item = item
+        self.accessory = accessory
     }
 }

@@ -10,22 +10,22 @@ import SwiftData
 import SwiftUI
 
 @Model public class Session {
-    public var id: UUID
-    public var createdAt: Date
-    public var title: String
-    public var date: Date
+    public var id: UUID?
+    public var createdAt: Date = Date()
+    public var title: String = ""
+    public var date: Date = Date()
     public var item: Item?
     public var duration: TimeInterval?
     public var amountConsumed: Double?
     public var notes: String?
     public var locationInfo: LocationInfo?
-    public var favorite: Bool
+    public var favorite: Bool = false
     @Attribute(.externalStorage) public var imagesData: [Data]?
     @Attribute(.externalStorage) public var audioData: Data?
     @Relationship(inverse: \Accessory.sessions)
-    public var accessories: [Accessory]
+    public var accessories: [Accessory]?
     @Relationship(deleteRule: .noAction, inverse: \Tag.sessions)
-    public var tags: [Tag]
+    public var tags: [Tag]?
     @Relationship(deleteRule: .cascade, inverse: \Mood.session)
     public var mood: Mood?
     
@@ -40,8 +40,8 @@ import SwiftUI
         notes: String? = nil,
         locationInfo: LocationInfo? = nil,
         favorite: Bool = false,
-        accessories: [Accessory] = [],
-        tags: [Tag] = [],
+        accessories: [Accessory]? = [],
+        tags: [Tag]? = [],
         mood: Mood? = nil
     ) {
         self.id = id

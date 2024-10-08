@@ -120,7 +120,7 @@ struct ItemMoodInsightsView: View {
 #Preview {
     NavigationStack {
         ScrollView {
-            ItemMoodInsightsView(item: SampleData.shared.item, moods: SampleData.shared.item.moods, sessions: SampleData.shared.item.sessions)
+            ItemMoodInsightsView(item: SampleData.shared.item, moods: SampleData.shared.item.moods, sessions: SampleData.shared.item.sessions!)
         }
     }
     .modelContainer(SampleData.shared.container)

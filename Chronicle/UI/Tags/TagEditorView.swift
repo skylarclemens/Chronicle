@@ -110,7 +110,7 @@ struct TagEditorView: View {
                     viewModel.suggestedTags = viewModel.allTags.filter {
                         if $0.hasNoItemsOrSessions {
                             return true
-                        } else if !$0.items.isEmpty {
+                        } else if !($0.items?.isEmpty ?? true) {
                             return true
                         } else {
                             return false
@@ -120,7 +120,7 @@ struct TagEditorView: View {
                     viewModel.suggestedTags = viewModel.allTags.filter {
                         if $0.hasNoItemsOrSessions {
                             return true
-                        } else if !$0.sessions.isEmpty {
+                        } else if !($0.sessions?.isEmpty ?? true) {
                             return true
                         } else {
                             return false
