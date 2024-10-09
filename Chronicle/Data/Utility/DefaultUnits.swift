@@ -8,16 +8,16 @@
 import Foundation
 
 struct DefaultUnits: Codable {
-    var edible: AcceptedUnit = .milligrams
-    var flower: AcceptedUnit = .grams
-    var preroll: AcceptedUnit = .grams
-    var tincture: AcceptedUnit = .milliliters
-    var concentrate: AcceptedUnit = .grams
-    var topical: AcceptedUnit = .milligrams
-    var pill: AcceptedUnit = .milligrams
-    var other: AcceptedUnit = .grams
+    var edible: ItemUnits = ItemUnits(amount: .count, dosage: .milligrams)
+    var flower: ItemUnits = ItemUnits(amount: .grams, dosage: .grams)
+    var preroll: ItemUnits = ItemUnits(amount: .grams, dosage: .grams)
+    var tincture: ItemUnits = ItemUnits(amount: .milliliters, dosage: .milliliters)
+    var concentrate: ItemUnits = ItemUnits(amount: .grams, dosage: .grams)
+    var topical: ItemUnits = ItemUnits(amount: .milliliters, dosage: .milliliters)
+    var pill: ItemUnits = ItemUnits(amount: .count, dosage: .milligrams)
+    var other: ItemUnits = ItemUnits(amount: .grams, dosage: .milligrams)
     
-    subscript(itemType: ItemType) -> AcceptedUnit {
+    subscript(itemType: ItemType) -> ItemUnits {
         get {
             switch itemType {
             case .edible:
@@ -59,4 +59,9 @@ struct DefaultUnits: Codable {
             }
         }
     }
+}
+
+struct ItemUnits: Codable {
+    var amount: AcceptedUnit
+    var dosage: AcceptedUnit
 }

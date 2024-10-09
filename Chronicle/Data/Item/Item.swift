@@ -18,7 +18,7 @@ import SwiftUI
     public var subtype: String?
     public var amount: Amount?
     public var dosage: Amount?
-    public var unit: String?
+    public var selectedUnit: AcceptedUnit?
     public var brand: String?
     public var compounds: [Compound] = []
     public var ingredients: [String] = []
@@ -57,7 +57,7 @@ import SwiftUI
         createdAt: Date = Date(),
         type: ItemType,
         amount: Amount? = nil,
-        unit: String? = nil,
+        selectedUnit: AcceptedUnit? = nil,
         compounds: [Compound] = [],
         ingredients: [String] = [],
         favorite: Bool = false,
@@ -71,7 +71,7 @@ import SwiftUI
         self.createdAt = createdAt
         self.type = type
         self.amount = amount
-        self.unit = unit
+        self.selectedUnit = selectedUnit
         self.compounds = compounds
         self.ingredients = ingredients
         self.favorite = favorite

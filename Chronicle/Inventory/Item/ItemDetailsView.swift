@@ -74,7 +74,7 @@ struct ItemDetailsView: View {
                         DetailSection(header: "Amount") {} headerRight: {
                             HStack(spacing: 0) {
                                 Text(item.remainingAmount, format: .number)
-                                Text(" \(item.unit ?? "")")
+                                Text(" \(item.selectedUnit?.rawValue ?? "")")
                             }
                         }
                     }

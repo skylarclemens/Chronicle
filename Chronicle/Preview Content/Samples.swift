@@ -10,8 +10,8 @@ import UIKit
 
 extension Item {
     static let sampleData: [Item] = [
-        Item(name: "Blue Dream", type: .edible, amount: Amount(value: 2.0, unit: "g"), unit: "mg", favorite: true),
-        Item(name: "Wedding Cake", type: .flower, amount: Amount(value: 2.5, unit: "g"), unit: "g"),
+        Item(name: "Blue Dream", type: .edible, amount: Amount(value: 2.0, unit: "g"), selectedUnit: AcceptedUnit.milligrams, favorite: true),
+        Item(name: "Wedding Cake", type: .flower, amount: Amount(value: 2.5, unit: "g"), selectedUnit: AcceptedUnit.grams),
     ]
     
     static var sampleImages: [Data] {

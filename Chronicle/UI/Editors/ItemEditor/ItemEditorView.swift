@@ -257,7 +257,6 @@ struct ItemEditorBasicsView: View {
             var newAmount: Amount?
             if let amountValue = viewModel.amountValue {
                 newAmount = Amount(value: amountValue, unit: viewModel.amountUnit)
-                newItem.unit = viewModel.amountUnit
             }
             let newPurchase = Purchase(date: viewModel.purchaseDate, amount: newAmount, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
             modelContext.insert(newPurchase)

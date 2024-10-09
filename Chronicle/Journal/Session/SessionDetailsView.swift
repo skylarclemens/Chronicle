@@ -84,7 +84,7 @@ struct SessionDetailsView: View {
                             DetailSection(header: "Amount") {} headerRight: {
                                 HStack(spacing: 0) {
                                     Text(amountConsumed, format: .number)
-                                    Text(" \(session.item?.unit ?? "")")
+                                    Text(" \(session.item?.selectedUnit?.rawValue ?? "")")
                                 }
                             }
                             

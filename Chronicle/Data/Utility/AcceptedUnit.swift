@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AcceptedUnit: String, CaseIterable, Identifiable, Codable {
+public enum AcceptedUnit: String, CaseIterable, Identifiable, Codable {
     case grams = "g"
     case ounces = "oz"
     case pounds = "lb"
@@ -15,7 +15,7 @@ enum AcceptedUnit: String, CaseIterable, Identifiable, Codable {
     case milliliters = "ml"
     case count = "count"
     
-    var id: String { self.rawValue }
+    public var id: String { self.rawValue }
     
     var unitType: Unit {
         switch self {

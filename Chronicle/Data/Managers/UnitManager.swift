@@ -32,11 +32,23 @@ class UnitManager {
     
     private init() {}
     
-    func getDefaultUnit(for itemType: ItemType) -> AcceptedUnit {
-        return defaultUnits[itemType]
+    func getAmountUnit(for itemType: ItemType) -> AcceptedUnit {
+        defaultUnits[itemType].amount
     }
     
-    func setDefaultUnit(_ unit: AcceptedUnit, for itemType: ItemType) {
-        defaultUnits[itemType] = unit
+    func getDosageUnit(for itemType: ItemType) -> AcceptedUnit {
+        defaultUnits[itemType].dosage
+    }
+    
+    func setAmountUnit(_ unit: AcceptedUnit, for itemType: ItemType) {
+        var itemUnits = defaultUnits[itemType]
+        itemUnits.amount = unit
+        defaultUnits[itemType] = itemUnits
+    }
+    
+    func setDosageUnit(_ unit: AcceptedUnit, for itemType: ItemType) {
+        var itemUnits = defaultUnits[itemType]
+        itemUnits.dosage = unit
+        defaultUnits[itemType] = itemUnits
     }
 }

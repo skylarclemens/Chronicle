@@ -113,11 +113,6 @@ struct SessionEditorView: View {
                                             .padding(.vertical, 11)
                                             .background(Color(uiColor: .secondarySystemGroupedBackground))
                                             .clipShape(.rect(cornerRadius: 10))
-                                        Text(item.unit ?? "")
-                                            .padding(.horizontal)
-                                            .padding(.vertical, 11)
-                                            .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                            .clipShape(.rect(cornerRadius: 10))
                                     }
                                     
                                 }
