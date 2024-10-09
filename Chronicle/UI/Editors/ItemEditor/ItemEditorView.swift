@@ -23,9 +23,9 @@ struct ItemEditorView: View {
                 viewModel.itemType = item.type
                 viewModel.name = item.name
                 viewModel.amountValue = item.amount?.value
-                viewModel.amountUnit = item.amount?.unit ?? ""
+                viewModel.amountUnit = item.selectedUnits?.amount ?? .count
                 viewModel.dosageValue = item.dosage?.value
-                viewModel.dosageUnit = item.dosage?.unit ?? ""
+                viewModel.dosageUnit = item.selectedUnits?.dosage ?? .count
                 viewModel.subtype = item.subtype ?? ""
                 viewModel.cannabinoids = item.compounds.filter { $0.type == .cannabinoid }
                 viewModel.terpenes = item.compounds.filter { $0.type == .terpene }
@@ -230,6 +230,8 @@ struct ItemEditorBasicsView: View {
         .onAppear {
             if item == nil {
                 focusedField = .name
+                viewModel.amountUnit = UnitManager.shared.getAmountUnit(for: viewModel.itemType ?? ItemType.other)
+                viewModel.dosageUnit = UnitManager.shared.getDosageUnit(for: viewModel.itemType ?? ItemType.other)
             }
         }
     }
@@ -246,6 +248,11 @@ struct ItemEditorBasicsView: View {
             item.imagesData = viewModel.selectedImagesData
             item.strain = viewModel.linkedStrain
             item.tags = viewModel.tags
+            
+            if let selectedUnits = item.selectedUnits,
+               viewModel.dosageUnit != selectedUnits.dosage {
+                item.selectedUnits = ItemUnits(amount: selectedUnits.amount, dosage: viewModel.dosageUnit)
+            }
         } else {
             let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
             newItem.dosage = Amount(value: viewModel.dosageValue ?? 0, unit: viewModel.dosageUnit)
@@ -259,6 +266,7 @@ struct ItemEditorBasicsView: View {
                 newAmount = Amount(value: amountValue, unit: viewModel.amountUnit)
             }
             let newPurchase = Purchase(date: viewModel.purchaseDate, amount: newAmount, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
+            newItem.selectedUnits = ItemUnits(amount: viewModel.amountUnit, dosage: viewModel.dosageUnit)
             modelContext.insert(newPurchase)
             newItem.purchases?.append(newPurchase)
             modelContext.insert(newItem)
@@ -281,19 +289,18 @@ struct ItemEditorDetailsView: View {
                     VStack(alignment: .leading) {
                         Section {
                             HStack {
-                                TextField("2.5", value: $viewModel.dosageValue, format: .number)
+                                TextField(viewModel.dosageUnit.promptValue, value: $viewModel.dosageValue, format: .number)
                                     .keyboardType(.decimalPad)
                                     .textFieldStyle(.plain)
                                     .padding(.horizontal)
                                     .padding(.vertical, 11)
                                     .background(Color(UIColor.secondarySystemGroupedBackground))
                                     .clipShape(.rect(cornerRadius: 10))
-                                TextField("g", text: $viewModel.dosageUnit)
-                                    .textFieldStyle(.plain)
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 11)
-                                    .background(Color(UIColor.secondarySystemGroupedBackground))
-                                    .clipShape(.rect(cornerRadius: 10))
+                                Picker("", selection: $viewModel.dosageUnit) {
+                                    ForEach(AcceptedUnit.allCases) { unit in
+                                        Text(unit.rawValue).tag(unit)
+                                    }
+                                }
                             }
                         } header: {
                             Text("Dosage")
@@ -378,9 +385,9 @@ class ItemEditorViewModel {
     var itemType: ItemType?
     var name: String = ""
     var amountValue: Double?
-    var amountUnit: String = ""
+    var amountUnit: AcceptedUnit = .count
     var dosageValue: Double?
-    var dosageUnit: String = ""
+    var dosageUnit: AcceptedUnit = .count
     var subtype: String = ""
     var cannabinoids: [Compound] = []
     var terpenes: [Compound] = []

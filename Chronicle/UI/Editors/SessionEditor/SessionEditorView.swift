@@ -49,7 +49,7 @@ struct SessionEditorView: View {
                             Section {
                                 HStack(spacing: -4) {
                                     Image(systemName: "link")
-                                    Picker("Item", selection: $viewModel.item) {
+                                    Picker("Item", selection: $viewModel.item.animation()) {
                                         Text("Item").tag(nil as Item?)
                                         ForEach(items, id: \.self) { item in
                                             Text(item.name).tag(item as Item?)
@@ -106,15 +106,15 @@ struct SessionEditorView: View {
                                         .font(.title2)
                                         .fontWeight(.semibold)
                                     HStack {
-                                        TextField("2.5", value: $viewModel.amountConsumed, format: .number)
+                                        TextField(item.selectedUnits?.amount.promptValue ?? "2.5", value: $viewModel.amountConsumed, format: .number)
                                             .keyboardType(.decimalPad)
                                             .textFieldStyle(.plain)
                                             .padding(.horizontal)
                                             .padding(.vertical, 11)
                                             .background(Color(uiColor: .secondarySystemGroupedBackground))
                                             .clipShape(.rect(cornerRadius: 10))
+                                        Text(item.selectedUnits?.amount.rawValue ?? "")
                                     }
-                                    
                                 }
                                 .padding(.top)
                             }

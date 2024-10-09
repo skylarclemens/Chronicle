@@ -10,8 +10,8 @@ import UIKit
 
 extension Item {
     static let sampleData: [Item] = [
-        Item(name: "Blue Dream", type: .edible, amount: Amount(value: 2.0, unit: "g"), selectedUnit: AcceptedUnit.milligrams, favorite: true),
-        Item(name: "Wedding Cake", type: .flower, amount: Amount(value: 2.5, unit: "g"), selectedUnit: AcceptedUnit.grams),
+        Item(name: "Blue Dream", type: .edible, amount: Amount(value: 2.0, unit: .grams), selectedUnits: ItemUnits(amount: .grams, dosage: .grams), favorite: true),
+        Item(name: "Wedding Cake", type: .flower, amount: Amount(value: 2.5, unit: .grams), selectedUnits: ItemUnits(amount: .grams, dosage: .grams))
     ]
     
     static var sampleImages: [Data] {
@@ -88,7 +88,7 @@ extension Mood {
 
 extension Purchase {
     static let sampleData: [Purchase] = [
-        Purchase(date: Date(), amount: Amount(value: 3.5, unit: "g"), price: 20.0, location: LocationInfo(name: "Sample Location", latitude: 40.7127, longitude: -74.0059))
+        Purchase(date: Date(), amount: Amount(value: 3.5, unit: .grams), price: 20.0, location: LocationInfo(name: "Sample Location", latitude: 40.7127, longitude: -74.0059))
     ]
 }
 

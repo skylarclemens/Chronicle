@@ -61,7 +61,7 @@ struct DefaultUnits: Codable {
     }
 }
 
-struct ItemUnits: Codable {
+public struct ItemUnits: Codable {
     var amount: AcceptedUnit
     var dosage: AcceptedUnit
 }

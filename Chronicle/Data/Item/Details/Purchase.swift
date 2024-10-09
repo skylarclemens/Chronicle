@@ -18,7 +18,7 @@ import SwiftData
     public var item: Item?
     public var accessory: Accessory?
     
-    init(date: Date, amount: Amount? = nil, unit: String? = nil, price: Double? = nil, location: LocationInfo? = nil, isAdjustment: Bool = false, item: Item? = nil, accessory: Accessory? = nil) {
+    init(date: Date, amount: Amount? = nil, unit: AcceptedUnit? = nil, price: Double? = nil, location: LocationInfo? = nil, isAdjustment: Bool = false, item: Item? = nil, accessory: Accessory? = nil) {
         self.id = UUID().uuidString
         self.date = date
         self.amount = amount

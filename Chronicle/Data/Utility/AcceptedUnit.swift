@@ -33,4 +33,21 @@ public enum AcceptedUnit: String, CaseIterable, Identifiable, Codable {
             Unit(symbol: "count")
         }
     }
+    
+    var promptValue: String {
+        switch self {
+        case .grams:
+            "3.5"
+        case .ounces:
+            "0.5"
+        case .pounds:
+            "0.25"
+        case .milligrams:
+            "2.5"
+        case .milliliters:
+            "5"
+        case .count:
+            "1"
+        }
+    }
 }

@@ -99,19 +99,18 @@ struct PurchaseInputView: View {
                         HStack {
                             Text("Amount")
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("2.5", value: $viewModel.amountValue, format: .number)
+                            TextField(viewModel.amountUnit.promptValue, value: $viewModel.amountValue, format: .number)
                                 .keyboardType(.decimalPad)
                                 .textFieldStyle(.plain)
                                 .padding(.horizontal)
                                 .padding(.vertical, 8)
                                 .background(Color(uiColor: .tertiarySystemGroupedBackground))
                                 .clipShape(.rect(cornerRadius: 10))
-                            TextField("g", text: $viewModel.amountUnit)
-                                .textFieldStyle(.plain)
-                                .padding(.horizontal)
-                                .padding(.vertical, 8)
-                                .background(Color(uiColor: .tertiarySystemGroupedBackground))
-                                .clipShape(.rect(cornerRadius: 10))
+                            Picker("", selection: $viewModel.amountUnit) {
+                                ForEach(AcceptedUnit.allCases) { unit in
+                                    Text(unit.rawValue).tag(unit)
+                                }
+                            }
                         }
                         .padding(.trailing)
                         Divider()
@@ -215,19 +214,18 @@ struct PurchaseEditorView: View {
                     HStack {
                         Text("Amount")
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        TextField("2.5", value: $viewModel.amount, format: .number)
+                        TextField(viewModel.unit.promptValue, value: $viewModel.amount, format: .number)
                             .keyboardType(.decimalPad)
                             .textFieldStyle(.plain)
                             .padding(.horizontal)
                             .padding(.vertical, 8)
                             .background(Color(uiColor: .tertiarySystemGroupedBackground))
                             .clipShape(.rect(cornerRadius: 10))
-                        TextField("g", text: $viewModel.unit)
-                            .textFieldStyle(.plain)
-                            .padding(.horizontal)
-                            .padding(.vertical, 8)
-                            .background(Color(uiColor: .tertiarySystemGroupedBackground))
-                            .clipShape(.rect(cornerRadius: 10))
+                        Picker("", selection: $viewModel.unit) {
+                            ForEach(AcceptedUnit.allCases) { unit in
+                                Text(unit.rawValue).tag(unit)
+                            }
+                        }
                     }
                     HStack {
                         Text("Price")
@@ -299,7 +297,7 @@ struct PurchaseEditorView: View {
             if let purchase {
                 viewModel.date = purchase.date
                 viewModel.amount = purchase.amount?.value
-                viewModel.unit = purchase.amount?.unit ?? ""
+                viewModel.unit = purchase.amount?.unit ?? .count
                 viewModel.price = purchase.price
                 viewModel.location = purchase.location
             }
@@ -317,6 +315,10 @@ struct PurchaseEditorView: View {
             }
             purchase.price = viewModel.price
             purchase.location = viewModel.location
+            
+            if itemViewModel.amountUnit != viewModel.unit {
+                itemViewModel.amountUnit = viewModel.unit
+            }
         } else {
             var newAmount: Amount?
             if let amountValue = viewModel.amount {
@@ -324,6 +326,7 @@ struct PurchaseEditorView: View {
             }
             
             let newPurchase = Purchase(date: viewModel.date, amount: newAmount, price: viewModel.price, location: viewModel.location)
+            itemViewModel.amountUnit = viewModel.unit
             itemViewModel.purchases.append(newPurchase)
         }
     }
@@ -333,7 +336,7 @@ struct PurchaseEditorView: View {
 class PurchaseEditorViewModel {
     var date: Date = Date()
     var amount: Double?
-    var unit: String = ""
+    var unit: AcceptedUnit = .count
     var price: Double?
     var location: LocationInfo?
 }
