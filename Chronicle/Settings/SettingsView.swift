@@ -17,7 +17,40 @@ struct SettingsView: View {
                     NavigationLink {
                         AppearanceView()
                     } label: {
-                        Label("Appearance", systemImage: "paintpalette")
+                        Label {
+                            Text("Appearance")
+                        } icon: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(.indigo)
+                                    .frame(maxWidth:.infinity, maxHeight: .infinity)
+                                Image(systemName: "paintpalette")
+                                    .foregroundStyle(.white)
+                                    .imageScale(.medium)
+                                    .frame(maxWidth:.infinity, maxHeight: .infinity)
+                            }
+                            .frame(width: 28, height: 28, alignment: .center)
+                        }
+                    }
+                }
+                Section {
+                    NavigationLink {
+                        UnitsSettingsView(color: .orange)
+                    } label: {
+                        Label {
+                            Text("Default Units")
+                        } icon: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(.orange)
+                                    .frame(maxWidth:.infinity, maxHeight: .infinity)
+                                Image(systemName: "lines.measurement.vertical")
+                                    .foregroundStyle(.white)
+                                    .imageScale(.medium)
+                                    .frame(maxWidth:.infinity, maxHeight: .infinity)
+                            }
+                            .frame(width: 28, height: 28, alignment: .center)
+                        }
                     }
                 }
             }
