@@ -26,6 +26,7 @@ struct ItemEditorView: View {
                 viewModel.amountUnit = item.selectedUnits?.amount ?? .count
                 viewModel.dosageValue = item.dosage?.value
                 viewModel.dosageUnit = item.selectedUnits?.dosage ?? .count
+                viewModel.selectedUnits = item.selectedUnits ?? ItemUnits(amount: .count, dosage: .count)
                 viewModel.subtype = item.subtype ?? ""
                 viewModel.cannabinoids = item.compounds.filter { $0.type == .cannabinoid }
                 viewModel.terpenes = item.compounds.filter { $0.type == .terpene }
@@ -230,8 +231,22 @@ struct ItemEditorBasicsView: View {
         .onAppear {
             if item == nil {
                 focusedField = .name
-                viewModel.amountUnit = UnitManager.shared.getAmountUnit(for: viewModel.itemType ?? ItemType.other)
-                viewModel.dosageUnit = UnitManager.shared.getDosageUnit(for: viewModel.itemType ?? ItemType.other)
+                let amountUnit = UnitManager.shared.getAmountUnit(for: viewModel.itemType ?? ItemType.other)
+                let dosageUnit = UnitManager.shared.getDosageUnit(for: viewModel.itemType ?? ItemType.other)
+                viewModel.amountUnit = amountUnit
+                viewModel.dosageUnit = dosageUnit
+                
+                viewModel.selectedUnits = ItemUnits(amount: amountUnit, dosage: dosageUnit)
+            }
+        }
+        .onChange(of: viewModel.amountUnit) { _, newValue in
+            if newValue != viewModel.selectedUnits.amount {
+                viewModel.selectedUnits = ItemUnits(amount: viewModel.amountUnit, dosage: viewModel.dosageUnit)
+            }
+        }
+        .onChange(of: viewModel.dosageUnit) { _, newValue in
+            if newValue != viewModel.selectedUnits.dosage {
+                viewModel.selectedUnits = ItemUnits(amount: viewModel.amountUnit, dosage: viewModel.dosageUnit)
             }
         }
     }
@@ -248,11 +263,7 @@ struct ItemEditorBasicsView: View {
             item.imagesData = viewModel.selectedImagesData
             item.strain = viewModel.linkedStrain
             item.tags = viewModel.tags
-            
-            if let selectedUnits = item.selectedUnits,
-               viewModel.dosageUnit != selectedUnits.dosage {
-                item.selectedUnits = ItemUnits(amount: selectedUnits.amount, dosage: viewModel.dosageUnit)
-            }
+            item.selectedUnits = viewModel.selectedUnits
         } else {
             let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
             newItem.dosage = Amount(value: viewModel.dosageValue ?? 0, unit: viewModel.dosageUnit)
@@ -266,7 +277,7 @@ struct ItemEditorBasicsView: View {
                 newAmount = Amount(value: amountValue, unit: viewModel.amountUnit)
             }
             let newPurchase = Purchase(date: viewModel.purchaseDate, amount: newAmount, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
-            newItem.selectedUnits = ItemUnits(amount: viewModel.amountUnit, dosage: viewModel.dosageUnit)
+            newItem.selectedUnits = viewModel.selectedUnits
             modelContext.insert(newPurchase)
             newItem.purchases?.append(newPurchase)
             modelContext.insert(newItem)
@@ -388,6 +399,7 @@ class ItemEditorViewModel {
     var amountUnit: AcceptedUnit = .count
     var dosageValue: Double?
     var dosageUnit: AcceptedUnit = .count
+    var selectedUnits: ItemUnits = ItemUnits(amount: .count, dosage: .count)
     var subtype: String = ""
     var cannabinoids: [Compound] = []
     var terpenes: [Compound] = []

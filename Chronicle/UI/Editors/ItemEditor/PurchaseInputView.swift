@@ -300,6 +300,8 @@ struct PurchaseEditorView: View {
                 viewModel.unit = purchase.amount?.unit ?? .count
                 viewModel.price = purchase.price
                 viewModel.location = purchase.location
+            } else {
+                viewModel.unit = itemViewModel.selectedUnits.amount
             }
         }
         .sheet(isPresented: $openLocationSearch) {

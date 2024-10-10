@@ -23,6 +23,8 @@ struct SessionEditorView: View {
     @State private var showRecording: Bool = false
     @State private var showingImagesPicker: Bool = false
     @State private var openLocationSearch: Bool = false
+    @State private var shouldUpdateInventory: Bool = true
+    @State private var showingInventoryUpdateConfirmation: Bool = false
     
     @FocusState var focusedField: Field?
     
@@ -51,7 +53,7 @@ struct SessionEditorView: View {
                                     Image(systemName: "link")
                                     Picker("Item", selection: $viewModel.item.animation()) {
                                         Text("Item").tag(nil as Item?)
-                                        ForEach(items, id: \.self) { item in
+                                        ForEach(items, id: \.id) { item in
                                             Text(item.name).tag(item as Item?)
                                         }
                                     }
@@ -102,7 +104,7 @@ struct SessionEditorView: View {
                         if let item = viewModel.item {
                             Section {
                                 VStack(alignment: .leading) {
-                                    Text("Amount")
+                                    Text("Amount Consumed")
                                         .font(.title2)
                                         .fontWeight(.semibold)
                                     HStack {
@@ -112,12 +114,34 @@ struct SessionEditorView: View {
                                             .padding(.horizontal)
                                             .padding(.vertical, 11)
                                             .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                            .clipShape(.rect(cornerRadius: 10))
+                                            .clipShape(.rect(cornerRadius: 12))
                                         Text(item.selectedUnits?.amount.rawValue ?? "")
                                     }
+                                    if item.remainingAmount > 0 {
+                                        Text("Current Inventory: ") +
+                                        Text(item.remainingAmount, format: .number) +
+                                        Text(" \(item.selectedUnits?.amount.rawValue ?? "")")
+                                    }
+                                    Toggle("Update Inventory", isOn: $shouldUpdateInventory)
+                                        .onChange(of: shouldUpdateInventory) { _, newValue in
+                                            if newValue {
+                                                showingInventoryUpdateConfirmation = true
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                        .padding(.vertical, 10)
+                                        .background(Color(uiColor: .secondarySystemGroupedBackground),
+                                                    in: RoundedRectangle(cornerRadius: 12))
                                 }
                                 .padding(.top)
                             }
+                            .alert("Update Inventory?", isPresented: $showingInventoryUpdateConfirmation) {
+                                Button("Yes") { shouldUpdateInventory = true }
+                                Button("No") { shouldUpdateInventory = false }
+                            } message: {
+                                Text("Do you want to automatically update your inventory based on this session?")
+                            }
+                            .animation(.default, value: viewModel.item)
                         }
                         if !viewModel.notes.isEmpty {
                             Section {
@@ -442,6 +466,9 @@ struct SessionEditorView: View {
             session.audioData = viewModel.audioData
             if let amountConsumed = viewModel.amountConsumed {
                 session.amountConsumed = amountConsumed
+                if shouldUpdateInventory {
+                    item.updateRemainingAmount(newAmount: amountConsumed)
+                }
             }
             
             if self.session == nil {

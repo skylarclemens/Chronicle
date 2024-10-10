@@ -45,7 +45,7 @@ struct PurchaseRowView: View {
                                 .fontWeight(.semibold)
                             Spacer()
                             Text(amount.value, format: .number) +
-                            Text(" \(amount.unit)")
+                            Text(" \(amount.unit.rawValue)")
                         }
                     }
                 }
