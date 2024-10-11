@@ -275,9 +275,11 @@ struct ItemEditorBasicsView: View {
             var newAmount: Amount?
             if let amountValue = viewModel.amountValue {
                 newAmount = Amount(value: amountValue, unit: viewModel.amountUnit)
+                let initialSnapshot = InventorySnapshot(date: newItem.createdAt, amount: newAmount)
+                newItem.snapshots?.append(initialSnapshot)
             }
             let newPurchase = Purchase(date: viewModel.purchaseDate, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
-            let newTransaction = InventoryTransaction(type: viewModel.transactionType, amount: newAmount, purchase: newPurchase)
+            let newTransaction = InventoryTransaction(type: viewModel.transactionType, amount: newAmount, updateInventory: false, purchase: newPurchase)
             newItem.selectedUnits = viewModel.selectedUnits
             modelContext.insert(newPurchase)
             modelContext.insert(newTransaction)
@@ -293,46 +295,44 @@ struct ItemEditorDetailsView: View {
     @Binding var viewModel: ItemEditorViewModel
     
     var body: some View {
-        if viewModel.itemType == .edible || viewModel.itemType == .pill {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Details")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                VStack(alignment: .leading) {
-                    HStack(spacing: 16) {
-                        Text("Dosage")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        HStack(spacing: 0) {
-                            TextField(viewModel.dosageUnit.promptValue, value: $viewModel.dosageValue, format: .number)
-                                .keyboardType(.decimalPad)
-                                .textFieldStyle(.plain)
-                                .padding(.horizontal)
-                                .padding(.vertical, 8)
-                                .background(Color(UIColor.tertiarySystemGroupedBackground))
-                                .clipShape(.rect(cornerRadius: 10))
-                            Picker("", selection: $viewModel.dosageUnit) {
-                                ForEach(AcceptedUnit.allCases) { unit in
-                                    Text(unit.rawValue).tag(unit)
-                                }
-                            }.accessibilityLabel("Dosage unit picker")
-                        }
-                    }
-                    Divider()
-                    HStack {
-                        Text("Brand")
-                        TextField("Brand", text: $viewModel.brand)
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Details")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            VStack(alignment: .leading) {
+                HStack(spacing: 16) {
+                    Text("Dosage")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack(spacing: 0) {
+                        TextField(viewModel.dosageUnit.promptValue, value: $viewModel.dosageValue, format: .number)
+                            .keyboardType(.decimalPad)
                             .textFieldStyle(.plain)
-                            .multilineTextAlignment(.trailing)
+                            .padding(.horizontal)
                             .padding(.vertical, 8)
-                            .padding(.trailing)
+                            .background(Color(UIColor.tertiarySystemGroupedBackground))
+                            .clipShape(.rect(cornerRadius: 10))
+                        Picker("", selection: $viewModel.dosageUnit) {
+                            ForEach(AcceptedUnit.allCases) { unit in
+                                Text(unit.rawValue).tag(unit)
+                            }
+                        }.accessibilityLabel("Dosage unit picker")
                     }
                 }
-                .padding(.leading)
-                .padding(.vertical, 8)
-                .background(Color(UIColor.secondarySystemGroupedBackground),
-                            in: RoundedRectangle(cornerRadius: 12))
+                Divider()
+                HStack {
+                    Text("Brand")
+                    TextField("Brand", text: $viewModel.brand)
+                        .textFieldStyle(.plain)
+                        .multilineTextAlignment(.trailing)
+                        .padding(.vertical, 8)
+                        .padding(.trailing)
+                }
             }
+            .padding(.leading)
+            .padding(.vertical, 8)
+            .background(Color(UIColor.secondarySystemGroupedBackground),
+                        in: RoundedRectangle(cornerRadius: 12))
         }
     }
 }

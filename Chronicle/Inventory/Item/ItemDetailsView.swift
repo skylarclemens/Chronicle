@@ -71,8 +71,8 @@ struct ItemDetailsView: View {
                         Text("Details")
                             .font(.title2)
                             .fontWeight(.semibold)
-                        if let currentInventory = item.currentInventory {
-                            VStack(alignment: .leading) {
+                        VStack(alignment: .leading) {
+                            if let currentInventory = item.currentInventory {
                                 HStack(spacing: 0) {
                                     Text("Current Amount")
                                     Spacer()
@@ -82,25 +82,25 @@ struct ItemDetailsView: View {
                                 .padding(.trailing)
                                 .padding(.vertical, 6)
                                 Divider()
-                                NavigationLink {
-                                    TransactionHistoryView(item: item)
-                                } label: {
-                                    HStack {
-                                        Text("View Amount History")
-                                        Spacer()
-                                        Image(systemName: "chevron.right")
-                                            .font(.subheadline.bold())
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                                .padding(.trailing)
-                                .padding(.vertical, 6)
                             }
-                            .padding(.vertical, 8)
-                            .padding(.leading)
-                            .background(Color(UIColor.secondarySystemGroupedBackground),
-                                        in: .rect(cornerRadius: 12))
+                            NavigationLink {
+                                TransactionHistoryView(item: item)
+                            } label: {
+                                HStack {
+                                    Text("View Amount History")
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .font(.subheadline.bold())
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            .padding(.trailing)
+                            .padding(.vertical, 6)
                         }
+                        .padding(.vertical, 8)
+                        .padding(.leading)
+                        .background(Color(UIColor.secondarySystemGroupedBackground),
+                                    in: .rect(cornerRadius: 12))
                     }
                     .padding(.horizontal)
                     if let sessions = item.sessions,
