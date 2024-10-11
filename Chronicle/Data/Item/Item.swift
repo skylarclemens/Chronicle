@@ -25,12 +25,13 @@ import SwiftUI
     public var favorite: Bool = false
     @Attribute(.externalStorage) public var imagesData: [Data]?
     
-    @Relationship(deleteRule: .cascade, inverse: \Purchase.item)
-    public var purchases: [Purchase]?
-    @Relationship(deleteRule: .noAction, inverse: \Tag.items)
-    public var tags: [Tag]?
     @Relationship(deleteRule: .nullify, inverse: \Session.item)
     public var sessions: [Session]?
+    @Relationship(deleteRule: .cascade, inverse: \InventoryTransaction.item)
+    public var transactions: [InventoryTransaction]?
+    @Relationship(deleteRule: .noAction, inverse: \Tag.items)
+    public var tags: [Tag]?
+    
     
     var cannabinoids: [Compound] {
         compounds.filter { $0.type == .cannabinoid }
@@ -40,10 +41,22 @@ import SwiftUI
         compounds.filter { $0.type == .terpene }
     }
     
-    var remainingAmount: Double {
-        let totalPurchased = purchases?.reduce(0) { $0 + ($1.amount?.value ?? 0) } ?? 0
-        let totalUsed = sessions?.reduce(0) { $0 + ($1.amountConsumed ?? 0) } ?? 0
-        return max(totalPurchased - totalUsed, 0)
+    var purchases: [InventoryTransaction] {
+        transactions?.filter { $0.type == .purchase } ?? []
+    }
+    
+    var currentInventory: Amount? {
+        guard let transactions = transactions, !transactions.isEmpty else { return nil }
+        let totalValue = transactions.reduce(0) {
+            if $1.type == .purchase {
+                return $0 + ($1.amount?.value ?? 0)
+            } else if $1.type == .consumption {
+                return $0 - ($1.amount?.value ?? 0)
+            } else {
+                return $0 + ($1.amount?.value ?? 0)
+            }
+        }
+        return Amount(value: totalValue, unit: selectedUnits?.amount ?? AcceptedUnit.count)
     }
     
     var moods: [Mood] {
@@ -57,13 +70,14 @@ import SwiftUI
         createdAt: Date = Date(),
         type: ItemType,
         amount: Amount? = nil,
+        dosage: Amount? = nil,
         selectedUnits: ItemUnits? = nil,
         compounds: [Compound] = [],
         ingredients: [String] = [],
         favorite: Bool = false,
-        purchases: [Purchase]? = [],
-        tags: [Tag]? = [],
-        sessions: [Session]? = []
+        sessions: [Session]? = [],
+        transactions: [InventoryTransaction]? = [],
+        tags: [Tag]? = []
     ) {
         self.id = id
         self.name = name
@@ -71,13 +85,14 @@ import SwiftUI
         self.createdAt = createdAt
         self.type = type
         self.amount = amount
+        self.dosage = dosage
         self.selectedUnits = selectedUnits
         self.compounds = compounds
         self.ingredients = ingredients
         self.favorite = favorite
-        self.purchases = purchases
-        self.tags = tags
         self.sessions = sessions
+        self.transactions = transactions
+        self.tags = tags
     }
     
     static func predicate(
@@ -94,12 +109,6 @@ import SwiftUI
         return #Predicate<Item> { item in
             searchText.isEmpty || item.name.localizedStandardContains(searchText)
         }
-    }
-    
-    func updateRemainingAmount(newAmount: Double) {
-        let adjustment = newAmount - remainingAmount
-        let adjustmentRecord = Purchase(date: Date(), amount: Amount(value: adjustment, unit: self.selectedUnits?.amount ?? .count), isAdjustment: true)
-        purchases?.append(adjustmentRecord)
     }
     
     func mostRecentSessions(_ num: Int = 5) -> [Session] {

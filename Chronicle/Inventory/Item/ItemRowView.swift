@@ -28,10 +28,10 @@ struct ItemRowView: View {
                         .foregroundStyle(.accent)
                 }
                 Spacer()
-                if let amount = item.amount {
+                if let currentInventory = item.currentInventory {
                     HStack(spacing: 0) {
-                        Text(amount.value, format: .number)
-                        Text(" \(amount.unit)")
+                        Text(currentInventory.value, format: .number)
+                        Text(" \(currentInventory.unit)")
                     }
                     .font(.subheadline)
                 }

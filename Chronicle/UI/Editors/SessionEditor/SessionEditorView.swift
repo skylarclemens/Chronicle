@@ -107,31 +107,47 @@ struct SessionEditorView: View {
                                     Text("Amount Consumed")
                                         .font(.title2)
                                         .fontWeight(.semibold)
-                                    HStack {
-                                        TextField(item.selectedUnits?.amount.promptValue ?? "2.5", value: $viewModel.amountConsumed, format: .number)
-                                            .keyboardType(.decimalPad)
-                                            .textFieldStyle(.plain)
-                                            .padding(.horizontal)
-                                            .padding(.vertical, 11)
-                                            .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                            .clipShape(.rect(cornerRadius: 12))
-                                        Text(item.selectedUnits?.amount.rawValue ?? "")
-                                    }
-                                    if item.remainingAmount > 0 {
-                                        Text("Current Inventory: ") +
-                                        Text(item.remainingAmount, format: .number) +
-                                        Text(" \(item.selectedUnits?.amount.rawValue ?? "")")
-                                    }
-                                    Toggle("Update Inventory", isOn: $shouldUpdateInventory)
-                                        .onChange(of: shouldUpdateInventory) { _, newValue in
-                                            if newValue {
-                                                showingInventoryUpdateConfirmation = true
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text("Amount")
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                            HStack {
+                                                TextField(item.selectedUnits?.amount.promptValue ?? "2.5", value: $viewModel.amountConsumed, format: .number)
+                                                    .keyboardType(.decimalPad)
+                                                    .textFieldStyle(.plain)
+                                                    .padding(.horizontal)
+                                                    .padding(.vertical, 8)
+                                                    .background(Color(uiColor: .tertiarySystemGroupedBackground))
+                                                    .clipShape(.rect(cornerRadius: 10))
+                                                Text(item.selectedUnits?.amount.rawValue ?? "")
                                             }
                                         }
-                                        .padding(.horizontal)
-                                        .padding(.vertical, 10)
-                                        .background(Color(uiColor: .secondarySystemGroupedBackground),
-                                                    in: RoundedRectangle(cornerRadius: 12))
+                                        .padding(.trailing)
+                                        Divider()
+                                        Toggle("Update Inventory", isOn: $shouldUpdateInventory)
+                                            .onChange(of: shouldUpdateInventory) { _, newValue in
+                                                if newValue {
+                                                    showingInventoryUpdateConfirmation = true
+                                                }
+                                            }
+                                            .padding(.trailing)
+                                            .padding(.vertical, 4)
+                                    }
+                                    .padding(.vertical, 8)
+                                    .padding(.leading)
+                                    .background(Color(UIColor.secondarySystemGroupedBackground),
+                                                in: RoundedRectangle(cornerRadius: 12))
+                                    if let currentInventory = item.currentInventory,
+                                       currentInventory.value > 0 {
+                                        Group {
+                                            Text("Current Inventory: ") +
+                                            Text(currentInventory.value, format: .number) +
+                                            Text(" \(currentInventory.unit.rawValue)")
+                                        }
+                                        .font(.footnote)
+                                        .foregroundStyle(.secondary)
+                                        .padding(.leading, 8)
+                                    }
                                 }
                                 .padding(.top)
                             }
@@ -435,7 +451,8 @@ struct SessionEditorView: View {
                 viewModel.locationInfo = session.locationInfo
                 viewModel.notes = session.notes ?? ""
                 viewModel.selectedImagesData = session.imagesData ?? []
-                viewModel.amountConsumed = session.amountConsumed
+                viewModel.transaction = session.transaction ?? InventoryTransaction(type: .consumption)
+                viewModel.amountConsumed = session.transaction?.amount?.value
                 viewModel.tags = session.tags ?? []
                 viewModel.accessories = session.accessories ?? []
                 viewModel.audioData = session.audioData
@@ -465,11 +482,12 @@ struct SessionEditorView: View {
             session.accessories = viewModel.accessories
             session.audioData = viewModel.audioData
             if let amountConsumed = viewModel.amountConsumed {
-                session.amountConsumed = amountConsumed
+                viewModel.transaction?.amount = Amount(value: amountConsumed, unit: item.selectedUnits?.amount ?? .count)
                 if shouldUpdateInventory {
-                    item.updateRemainingAmount(newAmount: amountConsumed)
+                    viewModel.transaction?.item = item
                 }
             }
+            session.transaction = viewModel.transaction
             
             if self.session == nil {
                 modelContext.insert(session)
@@ -556,7 +574,8 @@ class SessionEditorViewModel {
     var mood: Mood?
     var notes: String = ""
     var locationInfo: LocationInfo?
-    var amountConsumed: Double? = nil
+    var transaction: InventoryTransaction?
+    var amountConsumed: Double?
     var tags: [Tag] = []
     var accessories: [Accessory] = []
     

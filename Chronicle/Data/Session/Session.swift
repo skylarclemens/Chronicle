@@ -16,12 +16,13 @@ import SwiftUI
     public var date: Date = Date()
     public var item: Item?
     public var duration: TimeInterval?
-    public var amountConsumed: Double?
     public var notes: String?
     public var locationInfo: LocationInfo?
     public var favorite: Bool = false
     @Attribute(.externalStorage) public var imagesData: [Data]?
     @Attribute(.externalStorage) public var audioData: Data?
+    @Relationship(deleteRule: .cascade, inverse: \InventoryTransaction.session)
+    public var transaction: InventoryTransaction?
     @Relationship(inverse: \Accessory.sessions)
     public var accessories: [Accessory]?
     @Relationship(deleteRule: .noAction, inverse: \Tag.sessions)
@@ -36,10 +37,10 @@ import SwiftUI
         date: Date = Date(),
         item: Item? = nil,
         duration: TimeInterval? = nil,
-        amountConsumed: Double? = nil,
         notes: String? = nil,
         locationInfo: LocationInfo? = nil,
         favorite: Bool = false,
+        transaction: InventoryTransaction? = nil,
         accessories: [Accessory]? = [],
         tags: [Tag]? = [],
         mood: Mood? = nil
@@ -50,10 +51,10 @@ import SwiftUI
         self.date = date
         self.item = item
         self.duration = duration
-        self.amountConsumed = amountConsumed
         self.notes = notes
         self.locationInfo = locationInfo
         self.favorite = favorite
+        self.transaction = transaction
         self.accessories = accessories
         self.tags = tags
         self.mood = mood

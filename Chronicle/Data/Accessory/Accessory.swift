@@ -14,13 +14,14 @@ public class Accessory {
     public var name: String = ""
     public var createdAt: Date = Date()
     public var type: AccessoryType?
-    public var purchase: Purchase?
     public var brand: String?
     public var lastCleanedDate: Date?
     public var favorite: Bool = false
     @Attribute(.externalStorage) public var imagesData: [Data]?
     
     public var sessions: [Session]?
+    @Relationship(deleteRule: .cascade, inverse: \Purchase.accessory)
+    public var purchase: Purchase?
     
     init(id: UUID = UUID(),
          name: String = "",

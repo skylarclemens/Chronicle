@@ -10,8 +10,8 @@ import UIKit
 
 extension Item {
     static let sampleData: [Item] = [
-        Item(name: "Blue Dream", type: .edible, amount: Amount(value: 2.0, unit: .grams), selectedUnits: ItemUnits(amount: .grams, dosage: .grams), favorite: true),
-        Item(name: "Wedding Cake", type: .flower, amount: Amount(value: 2.5, unit: .grams), selectedUnits: ItemUnits(amount: .grams, dosage: .grams))
+        Item(name: "Blue Dream", type: .edible, selectedUnits: ItemUnits(amount: .grams, dosage: .grams), favorite: true),
+        Item(name: "Wedding Cake", type: .flower, selectedUnits: ItemUnits(amount: .grams, dosage: .grams))
     ]
     
     static var sampleImages: [Data] {
@@ -52,9 +52,12 @@ extension Session {
                 title: "Session \(index + 1)",
                 date: randomDate,
                 duration: TimeInterval.random(in: 600...3600),  // 10 minutes to 1 hour
-                amountConsumed: Double.random(in: 0.1...1.0),
                 notes: "Sample session notes for session \(index + 1)",
                 favorite: Bool.random(),
+                transaction: InventoryTransaction(
+                    type: .consumption,
+                    amount: Amount(value: Double.random(in: 0.1...1.0), unit: AcceptedUnit.allCases.randomElement()!)
+                ),
                 mood: Mood(
                     type: MoodType.allCases.randomElement()!,
                     valence: Double.random(in: -1.0...1.0),
@@ -88,7 +91,14 @@ extension Mood {
 
 extension Purchase {
     static let sampleData: [Purchase] = [
-        Purchase(date: Date(), amount: Amount(value: 3.5, unit: .grams), price: 20.0, location: LocationInfo(name: "Sample Location", latitude: 40.7127, longitude: -74.0059))
+        Purchase(date: Date(), price: 20.0, location: LocationInfo(name: "Sample Location", latitude: 40.7127, longitude: -74.0059))
+    ]
+}
+
+extension InventoryTransaction {
+    static let sampleData: [InventoryTransaction] = [
+        InventoryTransaction(type: .purchase, amount: Amount(value: 3.5, unit: .grams), date: Date()),
+        InventoryTransaction(type: .consumption, amount: Amount(value: 1.0, unit: .grams), date: Date())
     ]
 }
 

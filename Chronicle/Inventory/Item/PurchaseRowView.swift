@@ -38,7 +38,7 @@ struct PurchaseRowView: View {
                             Text(location.name ?? "")
                         }
                     }
-                    if let amount = purchase.amount {
+                    if let amount = purchase.transaction?.amount {
                         Divider()
                         HStack {
                             Label("Amount", systemImage: "scalemass")
