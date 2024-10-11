@@ -29,6 +29,8 @@ import SwiftUI
     public var sessions: [Session]?
     @Relationship(deleteRule: .cascade, inverse: \InventoryTransaction.item)
     public var transactions: [InventoryTransaction]?
+    @Relationship(deleteRule: .cascade, inverse: \InventorySnapshot.item)
+    public var snapshots: [InventorySnapshot]?
     @Relationship(deleteRule: .noAction, inverse: \Tag.items)
     public var tags: [Tag]?
     
@@ -45,9 +47,17 @@ import SwiftUI
     }
     
     var currentInventory: Amount? {
-        guard let transactions = transactions?.filter({ $0.updateInventory }), !transactions.isEmpty else { return nil }
-        let totalValue = transactions.reduce(0) { $0 + ($1.amount?.value ?? 0) }
-        return Amount(value: totalValue, unit: selectedUnits?.amount ?? AcceptedUnit.count)
+        guard let latestSnapshot = snapshots?.sorted(by: { $0.date > $1.date }).first else {
+            return calculateFromAllTransactions()
+        }
+        
+        let transactionsAfterSnapshot = transactions?.filter { ($0.date > latestSnapshot.date) && $0.updateInventory } ?? []
+        
+        if let snapshotAmount = latestSnapshot.amount {
+            let totalValue = transactionsAfterSnapshot.reduce(snapshotAmount.value) { $0 + ($1.amount?.value ?? 0) }
+            return Amount(value: totalValue, unit: snapshotAmount.unit)
+        }
+        return nil
     }
     
     var moods: [Mood] {
@@ -68,6 +78,7 @@ import SwiftUI
         favorite: Bool = false,
         sessions: [Session]? = [],
         transactions: [InventoryTransaction]? = [],
+        snapshots: [InventorySnapshot]? = [],
         tags: [Tag]? = []
     ) {
         self.id = id
@@ -83,6 +94,7 @@ import SwiftUI
         self.favorite = favorite
         self.sessions = sessions
         self.transactions = transactions
+        self.snapshots = snapshots
         self.tags = tags
     }
     
@@ -104,5 +116,11 @@ import SwiftUI
     
     func mostRecentSessions(_ num: Int = 5) -> [Session] {
         Array(sessions?.sorted(by: { $0.date.compare($1.date) == .orderedDescending }).prefix(num) ?? [])
+    }
+    
+    private func calculateFromAllTransactions() -> Amount? {
+        guard let transactions = transactions?.filter({ $0.updateInventory }), !transactions.isEmpty else { return nil }
+        let totalValue = transactions.reduce(0) { $0 + ($1.amount?.value ?? 0) }
+        return Amount(value: totalValue, unit: selectedUnits?.amount ?? AcceptedUnit.count)
     }
 }

@@ -113,6 +113,8 @@
 		7EF2D05E2CB8D9BE00D72BAC /* TransactionHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2D05D2CB8D9BE00D72BAC /* TransactionHistoryView.swift */; };
 		7EF2D0602CB989F100D72BAC /* InventoryAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2D05F2CB989F100D72BAC /* InventoryAdjustment.swift */; };
 		7EF2D0632CB98ACF00D72BAC /* InventoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2D0622CB98ACF00D72BAC /* InventoryError.swift */; };
+		7EF2D0652CB9B8FE00D72BAC /* InventorySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2D0642CB9B8FE00D72BAC /* InventorySnapshot.swift */; };
+		7EF2D0672CB9C43800D72BAC /* AmountAdjustmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2D0662CB9C43800D72BAC /* AmountAdjustmentView.swift */; };
 		7EFA15382CAA51DF00F54CE5 /* AddContentSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFA15372CAA51DF00F54CE5 /* AddContentSheets.swift */; };
 		7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC60E2C7E6DC90090588D /* Emotion.swift */; };
 		7EFCC6112C7E6F040090588D /* Compound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFCC6102C7E6F040090588D /* Compound.swift */; };
@@ -235,6 +237,8 @@
 		7EF2D05D2CB8D9BE00D72BAC /* TransactionHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryView.swift; sourceTree = "<group>"; };
 		7EF2D05F2CB989F100D72BAC /* InventoryAdjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryAdjustment.swift; sourceTree = "<group>"; };
 		7EF2D0622CB98ACF00D72BAC /* InventoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryError.swift; sourceTree = "<group>"; };
+		7EF2D0642CB9B8FE00D72BAC /* InventorySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventorySnapshot.swift; sourceTree = "<group>"; };
+		7EF2D0662CB9C43800D72BAC /* AmountAdjustmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountAdjustmentView.swift; sourceTree = "<group>"; };
 		7EFA15372CAA51DF00F54CE5 /* AddContentSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContentSheets.swift; sourceTree = "<group>"; };
 		7EFCC60E2C7E6DC90090588D /* Emotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
 		7EFCC6102C7E6F040090588D /* Compound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compound.swift; sourceTree = "<group>"; };
@@ -508,6 +512,7 @@
 				7E1D08732C979CD5004B39D5 /* PurchaseRowView.swift */,
 				7EFCDE402CAE210D002D68AC /* ItemEmotionsView.swift */,
 				7EF2D05D2CB8D9BE00D72BAC /* TransactionHistoryView.swift */,
+				7EF2D0662CB9C43800D72BAC /* AmountAdjustmentView.swift */,
 			);
 			path = Item;
 			sourceTree = "<group>";
@@ -684,6 +689,7 @@
 				7EFCC6122C7E6F420090588D /* Amount.swift */,
 				7EF2D0592CB8706E00D72BAC /* InventoryTransaction.swift */,
 				7EF2D05F2CB989F100D72BAC /* InventoryAdjustment.swift */,
+				7EF2D0642CB9B8FE00D72BAC /* InventorySnapshot.swift */,
 			);
 			path = Inventory;
 			sourceTree = "<group>";
@@ -808,6 +814,7 @@
 				7ED0D8062CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift in Sources */,
 				7ED747932C8BC67B00F07679 /* CGFloat.swift in Sources */,
 				7ED747912C8BB3F100F07679 /* CustomSliderView.swift in Sources */,
+				7EF2D0672CB9C43800D72BAC /* AmountAdjustmentView.swift in Sources */,
 				7EFCDE362CADFB7A002D68AC /* ItemAnalyticsView.swift in Sources */,
 				7EF0BB162C6D3A2D0068542D /* ItemDetailsView.swift in Sources */,
 				7EB685542CA48DCD002C1759 /* ImagesPicker.swift in Sources */,
@@ -888,6 +895,7 @@
 				7E4540382CA7766900ADB083 /* AudioPlayer.swift in Sources */,
 				7E5E2E2E2CB5BA2800A1C3FC /* DefaultUnits.swift in Sources */,
 				7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */,
+				7EF2D0652CB9B8FE00D72BAC /* InventorySnapshot.swift in Sources */,
 				7E26DF842CB0623E00F54E00 /* LocationInfo.swift in Sources */,
 				7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,

@@ -12,20 +12,24 @@ extension Item {
     func setCurrentAmount(newAmount: Amount, note: String? = nil, context: ModelContext) throws {
         let currentInventory = self.currentInventory ?? Amount(value: 0, unit: self.selectedUnits?.amount ?? .count)
         
+        // Create new snapshot
+        let snapshot = InventorySnapshot(date: Date(), amount: newAmount)
+        if self.snapshots == nil {
+            self.snapshots = []
+        }
+        snapshots?.append(snapshot)
+        snapshot.item = self
+        
         guard newAmount.unit == currentInventory.unit else {
             throw InventoryError.unitMismatch
         }
         
-        // Calculate adjustment
-        let adjustmentValue: Double = newAmount.value - currentInventory.value
-        let adjustment: Amount = Amount(value: adjustmentValue, unit: newAmount.unit)
-        
-        // Create set transaction with adjusted value
+        // Create set transaction with new inventory value
         let transaction: InventoryTransaction = InventoryTransaction(
             type: .set,
-            amount: adjustment,
-            setAmount: newAmount,
-            note: note
+            amount: newAmount,
+            note: note,
+            updateInventory: false
         )
         
         if self.transactions == nil {
