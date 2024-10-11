@@ -71,10 +71,12 @@ struct ItemDetailsView: View {
                         Text("Details")
                             .font(.title2)
                             .fontWeight(.semibold)
-                        DetailSection(header: "Amount") {} headerRight: {
-                            HStack(spacing: 0) {
-                                Text(item.remainingAmount, format: .number)
-                                Text(" \(item.unit ?? "")")
+                        if let currentInventory = item.currentInventory {
+                            DetailSection(header: "Amount") {} headerRight: {
+                                HStack(spacing: 0) {
+                                    Text(currentInventory.value, format: .number)
+                                    Text(" \(currentInventory.unit.rawValue)")
+                                }
                             }
                         }
                     }
@@ -106,21 +108,19 @@ struct ItemDetailsView: View {
                             }
                         }
                     }
-                    if let purchases = item.purchases,
-                        !purchases.isEmpty {
-                        
+                    if !item.purchases.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Purchases")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                             VStack(alignment: .leading) {
-                                PurchaseRowView(purchase: purchases.first)
-                                if purchases.count > 1 {
+                                PurchaseRowView(purchase: item.purchases.first?.purchase)
+                                if item.purchases.count > 1 {
                                     NavigationLink {
                                         ScrollView {
                                             VStack {
-                                                ForEach(purchases) { purchase in
-                                                    PurchaseRowView(purchase: purchase)
+                                                ForEach(item.purchases) { transaction in
+                                                    PurchaseRowView(purchase: transaction.purchase)
                                                 }
                                             }
                                             .padding(.horizontal)
@@ -146,8 +146,6 @@ struct ItemDetailsView: View {
                         }
                         .padding(.horizontal)
                     }
-                   
-                        
                     if !item.compounds.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Composition")

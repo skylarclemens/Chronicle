@@ -23,6 +23,8 @@ struct SessionEditorView: View {
     @State private var showRecording: Bool = false
     @State private var showingImagesPicker: Bool = false
     @State private var openLocationSearch: Bool = false
+    @State private var shouldUpdateInventory: Bool = true
+    @State private var showingInventoryUpdateConfirmation: Bool = false
     
     @FocusState var focusedField: Field?
     
@@ -49,9 +51,9 @@ struct SessionEditorView: View {
                             Section {
                                 HStack(spacing: -4) {
                                     Image(systemName: "link")
-                                    Picker("Item", selection: $viewModel.item) {
+                                    Picker("Item", selection: $viewModel.item.animation()) {
                                         Text("Item").tag(nil as Item?)
-                                        ForEach(items, id: \.self) { item in
+                                        ForEach(items, id: \.id) { item in
                                             Text(item.name).tag(item as Item?)
                                         }
                                     }
@@ -102,27 +104,60 @@ struct SessionEditorView: View {
                         if let item = viewModel.item {
                             Section {
                                 VStack(alignment: .leading) {
-                                    Text("Amount")
+                                    Text("Amount Consumed")
                                         .font(.title2)
                                         .fontWeight(.semibold)
-                                    HStack {
-                                        TextField("2.5", value: $viewModel.amountConsumed, format: .number)
-                                            .keyboardType(.decimalPad)
-                                            .textFieldStyle(.plain)
-                                            .padding(.horizontal)
-                                            .padding(.vertical, 11)
-                                            .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                            .clipShape(.rect(cornerRadius: 10))
-                                        Text(item.unit ?? "")
-                                            .padding(.horizontal)
-                                            .padding(.vertical, 11)
-                                            .background(Color(uiColor: .secondarySystemGroupedBackground))
-                                            .clipShape(.rect(cornerRadius: 10))
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text("Amount")
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                            HStack {
+                                                TextField(item.selectedUnits?.amount.promptValue ?? "2.5", value: $viewModel.amountConsumed, format: .number)
+                                                    .keyboardType(.decimalPad)
+                                                    .textFieldStyle(.plain)
+                                                    .padding(.horizontal)
+                                                    .padding(.vertical, 8)
+                                                    .background(Color(uiColor: .tertiarySystemGroupedBackground))
+                                                    .clipShape(.rect(cornerRadius: 10))
+                                                Text(item.selectedUnits?.amount.rawValue ?? "")
+                                            }
+                                        }
+                                        .padding(.trailing)
+                                        Divider()
+                                        Toggle("Update Inventory", isOn: $shouldUpdateInventory)
+                                            .onChange(of: shouldUpdateInventory) { _, newValue in
+                                                if newValue {
+                                                    showingInventoryUpdateConfirmation = true
+                                                }
+                                            }
+                                            .padding(.trailing)
+                                            .padding(.vertical, 4)
                                     }
-                                    
+                                    .padding(.vertical, 8)
+                                    .padding(.leading)
+                                    .background(Color(UIColor.secondarySystemGroupedBackground),
+                                                in: RoundedRectangle(cornerRadius: 12))
+                                    if let currentInventory = item.currentInventory,
+                                       currentInventory.value > 0 {
+                                        Group {
+                                            Text("Current Inventory: ") +
+                                            Text(currentInventory.value, format: .number) +
+                                            Text(" \(currentInventory.unit.rawValue)")
+                                        }
+                                        .font(.footnote)
+                                        .foregroundStyle(.secondary)
+                                        .padding(.leading, 8)
+                                    }
                                 }
                                 .padding(.top)
                             }
+                            .alert("Update Inventory?", isPresented: $showingInventoryUpdateConfirmation) {
+                                Button("Yes") { shouldUpdateInventory = true }
+                                Button("No") { shouldUpdateInventory = false }
+                            } message: {
+                                Text("Do you want to automatically update your inventory based on this session?")
+                            }
+                            .animation(.default, value: viewModel.item)
                         }
                         if !viewModel.notes.isEmpty {
                             Section {
@@ -416,7 +451,8 @@ struct SessionEditorView: View {
                 viewModel.locationInfo = session.locationInfo
                 viewModel.notes = session.notes ?? ""
                 viewModel.selectedImagesData = session.imagesData ?? []
-                viewModel.amountConsumed = session.amountConsumed
+                viewModel.transaction = session.transaction ?? InventoryTransaction(type: .consumption)
+                viewModel.amountConsumed = session.transaction?.amount?.value
                 viewModel.tags = session.tags ?? []
                 viewModel.accessories = session.accessories ?? []
                 viewModel.audioData = session.audioData
@@ -446,8 +482,12 @@ struct SessionEditorView: View {
             session.accessories = viewModel.accessories
             session.audioData = viewModel.audioData
             if let amountConsumed = viewModel.amountConsumed {
-                session.amountConsumed = amountConsumed
+                viewModel.transaction?.amount = Amount(value: amountConsumed, unit: item.selectedUnits?.amount ?? .count)
+                if shouldUpdateInventory {
+                    viewModel.transaction?.item = item
+                }
             }
+            session.transaction = viewModel.transaction
             
             if self.session == nil {
                 modelContext.insert(session)
@@ -534,7 +574,8 @@ class SessionEditorViewModel {
     var mood: Mood?
     var notes: String = ""
     var locationInfo: LocationInfo?
-    var amountConsumed: Double? = nil
+    var transaction: InventoryTransaction?
+    var amountConsumed: Double?
     var tags: [Tag] = []
     var accessories: [Accessory] = []
     

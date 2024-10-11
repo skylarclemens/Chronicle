@@ -9,5 +9,5 @@ import Foundation
 
 public struct Amount: Codable {
     public var value: Double
-    public var unit: String
+    public var unit: AcceptedUnit
 }

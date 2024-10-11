@@ -80,14 +80,13 @@ struct SessionDetailsView: View {
                         Text("Details")
                             .font(.title2)
                             .fontWeight(.semibold)
-                        if let amountConsumed = session.amountConsumed {
+                        if let amountConsumed = session.transaction {
                             DetailSection(header: "Amount") {} headerRight: {
                                 HStack(spacing: 0) {
-                                    Text(amountConsumed, format: .number)
-                                    Text(" \(session.item?.unit ?? "")")
+                                    Text(amountConsumed.amount?.value ?? 0, format: .number)
+                                    Text(" \(amountConsumed.amount?.unit.rawValue ?? "")")
                                 }
                             }
-                            
                         }
                         if let accessories = session.accessories,
                            !accessories.isEmpty {

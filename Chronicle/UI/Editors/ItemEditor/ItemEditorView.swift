@@ -23,14 +23,15 @@ struct ItemEditorView: View {
                 viewModel.itemType = item.type
                 viewModel.name = item.name
                 viewModel.amountValue = item.amount?.value
-                viewModel.amountUnit = item.amount?.unit ?? ""
+                viewModel.amountUnit = item.selectedUnits?.amount ?? .count
                 viewModel.dosageValue = item.dosage?.value
-                viewModel.dosageUnit = item.dosage?.unit ?? ""
+                viewModel.dosageUnit = item.selectedUnits?.dosage ?? .count
+                viewModel.selectedUnits = item.selectedUnits ?? ItemUnits(amount: .count, dosage: .count)
                 viewModel.subtype = item.subtype ?? ""
                 viewModel.cannabinoids = item.compounds.filter { $0.type == .cannabinoid }
                 viewModel.terpenes = item.compounds.filter { $0.type == .terpene }
                 viewModel.ingredients = item.ingredients
-                viewModel.purchases = item.purchases ?? []
+                viewModel.transactions = item.transactions ?? []
                 viewModel.brand = item.brand ?? ""
                 viewModel.linkedStrain = item.strain
                 viewModel.tags = item.tags ?? []
@@ -176,7 +177,7 @@ struct ItemEditorBasicsView: View {
                             }
                         }
                         ItemEditorDetailsView(viewModel: $viewModel)
-                        PurchaseInputView(viewModel: $viewModel, item: item)
+                        ItemPurchaseInputView(viewModel: $viewModel, item: item)
                         ItemEditorCompositionView(viewModel: $viewModel)
                         ItemEditorAdditionalView(viewModel: $viewModel, focusedField: $focusedField)
                     }
@@ -230,6 +231,22 @@ struct ItemEditorBasicsView: View {
         .onAppear {
             if item == nil {
                 focusedField = .name
+                let amountUnit = UnitManager.shared.getAmountUnit(for: viewModel.itemType ?? ItemType.other)
+                let dosageUnit = UnitManager.shared.getDosageUnit(for: viewModel.itemType ?? ItemType.other)
+                viewModel.amountUnit = amountUnit
+                viewModel.dosageUnit = dosageUnit
+                
+                viewModel.selectedUnits = ItemUnits(amount: amountUnit, dosage: dosageUnit)
+            }
+        }
+        .onChange(of: viewModel.amountUnit) { _, newValue in
+            if newValue != viewModel.selectedUnits.amount {
+                viewModel.selectedUnits = ItemUnits(amount: viewModel.amountUnit, dosage: viewModel.dosageUnit)
+            }
+        }
+        .onChange(of: viewModel.dosageUnit) { _, newValue in
+            if newValue != viewModel.selectedUnits.dosage {
+                viewModel.selectedUnits = ItemUnits(amount: viewModel.amountUnit, dosage: viewModel.dosageUnit)
             }
         }
     }
@@ -242,10 +259,11 @@ struct ItemEditorBasicsView: View {
             item.dosage = Amount(value: viewModel.dosageValue ?? 0, unit: viewModel.dosageUnit)
             item.compounds = viewModel.cannabinoids + viewModel.terpenes
             item.ingredients = viewModel.ingredients
-            item.purchases = viewModel.purchases
+            item.transactions = viewModel.transactions
             item.imagesData = viewModel.selectedImagesData
             item.strain = viewModel.linkedStrain
             item.tags = viewModel.tags
+            item.selectedUnits = viewModel.selectedUnits
         } else {
             let newItem = Item(name: viewModel.name, type: viewModel.itemType ?? .other)
             newItem.dosage = Amount(value: viewModel.dosageValue ?? 0, unit: viewModel.dosageUnit)
@@ -257,11 +275,14 @@ struct ItemEditorBasicsView: View {
             var newAmount: Amount?
             if let amountValue = viewModel.amountValue {
                 newAmount = Amount(value: amountValue, unit: viewModel.amountUnit)
-                newItem.unit = viewModel.amountUnit
             }
-            let newPurchase = Purchase(date: viewModel.purchaseDate, amount: newAmount, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
+            let newPurchase = Purchase(date: viewModel.purchaseDate, price: viewModel.purchasePrice, location: viewModel.purchaseLocation)
+            let newTransaction = InventoryTransaction(type: viewModel.transactionType, amount: newAmount, purchase: newPurchase)
+            newItem.selectedUnits = viewModel.selectedUnits
             modelContext.insert(newPurchase)
-            newItem.purchases?.append(newPurchase)
+            modelContext.insert(newTransaction)
+            newItem.transactions?.append(newTransaction)
+            
             modelContext.insert(newItem)
         }
         try modelContext.save()
@@ -278,31 +299,39 @@ struct ItemEditorDetailsView: View {
                     .font(.title3)
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                VStack(spacing: 16) {
-                    VStack(alignment: .leading) {
-                        Section {
-                            HStack {
-                                TextField("2.5", value: $viewModel.dosageValue, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .textFieldStyle(.plain)
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 11)
-                                    .background(Color(UIColor.secondarySystemGroupedBackground))
-                                    .clipShape(.rect(cornerRadius: 10))
-                                TextField("g", text: $viewModel.dosageUnit)
-                                    .textFieldStyle(.plain)
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 11)
-                                    .background(Color(UIColor.secondarySystemGroupedBackground))
-                                    .clipShape(.rect(cornerRadius: 10))
-                            }
-                        } header: {
-                            Text("Dosage")
-                                .font(.headline)
-                                .foregroundStyle(.secondary)
+                VStack(alignment: .leading) {
+                    HStack(spacing: 16) {
+                        Text("Dosage")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        HStack(spacing: 0) {
+                            TextField(viewModel.dosageUnit.promptValue, value: $viewModel.dosageValue, format: .number)
+                                .keyboardType(.decimalPad)
+                                .textFieldStyle(.plain)
+                                .padding(.horizontal)
+                                .padding(.vertical, 8)
+                                .background(Color(UIColor.tertiarySystemGroupedBackground))
+                                .clipShape(.rect(cornerRadius: 10))
+                            Picker("", selection: $viewModel.dosageUnit) {
+                                ForEach(AcceptedUnit.allCases) { unit in
+                                    Text(unit.rawValue).tag(unit)
+                                }
+                            }.accessibilityLabel("Dosage unit picker")
                         }
                     }
+                    Divider()
+                    HStack {
+                        Text("Brand")
+                        TextField("Brand", text: $viewModel.brand)
+                            .textFieldStyle(.plain)
+                            .multilineTextAlignment(.trailing)
+                            .padding(.vertical, 8)
+                            .padding(.trailing)
+                    }
                 }
+                .padding(.leading)
+                .padding(.vertical, 8)
+                .background(Color(UIColor.secondarySystemGroupedBackground),
+                            in: RoundedRectangle(cornerRadius: 12))
             }
         }
     }
@@ -378,26 +407,40 @@ class ItemEditorViewModel {
     var item: Item?
     var itemType: ItemType?
     var name: String = ""
+    
+    // Values and units
     var amountValue: Double?
-    var amountUnit: String = ""
+    var amountUnit: AcceptedUnit = .count
     var dosageValue: Double?
-    var dosageUnit: String = ""
+    var dosageUnit: AcceptedUnit = .count
+    var selectedUnits: ItemUnits = ItemUnits(amount: .count, dosage: .count)
+    
     var subtype: String = ""
+    var brand: String = ""
+    
+    // Composition
     var cannabinoids: [Compound] = []
     var terpenes: [Compound] = []
     var ingredients: [String] = []
-    var purchases: [Purchase] = []
+    
+    // Transactions
+    var transactions: [InventoryTransaction] = []
+    var transactionType: TransactionType = .purchase
+    
+    // Purchases
     var purchasePrice: Double?
     var purchaseLocation: LocationInfo?
     var purchaseDate: Date = Date()
-    var brand: String = ""
+    
+    // Strain
     var linkedStrain: Strain?
+    
+    // Tags
     var tags: [Tag] = []
     
+    // Images
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
-    
-    
 }
 
 #Preview {

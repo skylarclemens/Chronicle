@@ -62,6 +62,10 @@ class SampleData {
             container.mainContext.insert(purchase)
         }
         
+        for inventoryTransaction in InventoryTransaction.sampleData {
+            container.mainContext.insert(inventoryTransaction)
+        }
+        
         for tag in Tag.sampleData {
             container.mainContext.insert(tag)
         }
@@ -73,11 +77,15 @@ class SampleData {
         
         item.strain = strain
         item.sessions?.append(session)
-        item.purchases?.append(purchase)
         item.tags?.append(tag)
         item.tags?.append(allTags[2])
+        
+        inventoryTransaction.purchase = purchase
+        item.transactions?.append(inventoryTransaction)
+        
         session.item = item
         session.mood = mood
+        session.transaction = consumptionInventoryTransaction
         session.locationInfo = LocationInfo(name: "Sample Location", latitude: 40.7127, longitude: -74.0059)
         if let sampleAudio = NSDataAsset(name: "sample")?.data {
             session.audioData = sampleAudio
@@ -119,6 +127,14 @@ class SampleData {
         
     var purchase: Purchase {
         Purchase.sampleData[0]
+    }
+    
+    var inventoryTransaction: InventoryTransaction {
+        InventoryTransaction.sampleData[0]
+    }
+    
+    var consumptionInventoryTransaction: InventoryTransaction {
+        InventoryTransaction.sampleData[1]
     }
     
     var tag: Tag {
