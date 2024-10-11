@@ -82,6 +82,7 @@ class SampleData {
         
         inventoryTransaction.purchase = purchase
         item.transactions?.append(inventoryTransaction)
+        item.transactions?.append(consumptionInventoryTransaction)
         
         session.item = item
         session.mood = mood

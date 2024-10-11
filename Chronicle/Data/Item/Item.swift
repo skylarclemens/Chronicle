@@ -32,7 +32,6 @@ import SwiftUI
     @Relationship(deleteRule: .noAction, inverse: \Tag.items)
     public var tags: [Tag]?
     
-    
     var cannabinoids: [Compound] {
         compounds.filter { $0.type == .cannabinoid }
     }
@@ -46,16 +45,8 @@ import SwiftUI
     }
     
     var currentInventory: Amount? {
-        guard let transactions = transactions, !transactions.isEmpty else { return nil }
-        let totalValue = transactions.reduce(0) {
-            if $1.type == .purchase {
-                return $0 + ($1.amount?.value ?? 0)
-            } else if $1.type == .consumption {
-                return $0 - ($1.amount?.value ?? 0)
-            } else {
-                return $0 + ($1.amount?.value ?? 0)
-            }
-        }
+        guard let transactions = transactions?.filter({ $0.updateInventory }), !transactions.isEmpty else { return nil }
+        let totalValue = transactions.reduce(0) { $0 + ($1.amount?.value ?? 0) }
         return Amount(value: totalValue, unit: selectedUnits?.amount ?? AcceptedUnit.count)
     }
     

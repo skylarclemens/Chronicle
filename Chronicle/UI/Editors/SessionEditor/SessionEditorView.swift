@@ -124,7 +124,7 @@ struct SessionEditorView: View {
                                         }
                                         .padding(.trailing)
                                         Divider()
-                                        Toggle("Update Inventory", isOn: $shouldUpdateInventory)
+                                        Toggle("Update Inventory", systemImage: "arrow.triangle.2.circlepath", isOn: $shouldUpdateInventory)
                                             .onChange(of: shouldUpdateInventory) { _, newValue in
                                                 if newValue {
                                                     showingInventoryUpdateConfirmation = true
@@ -451,11 +451,12 @@ struct SessionEditorView: View {
                 viewModel.locationInfo = session.locationInfo
                 viewModel.notes = session.notes ?? ""
                 viewModel.selectedImagesData = session.imagesData ?? []
-                viewModel.transaction = session.transaction ?? InventoryTransaction(type: .consumption)
+                viewModel.transaction = session.transaction
                 viewModel.amountConsumed = session.transaction?.amount?.value
                 viewModel.tags = session.tags ?? []
                 viewModel.accessories = session.accessories ?? []
                 viewModel.audioData = session.audioData
+                self.shouldUpdateInventory = session.transaction?.updateInventory ?? true
                 
                 if let mood = session.mood {
                     viewModel.mood = mood
@@ -481,13 +482,13 @@ struct SessionEditorView: View {
             session.tags = viewModel.tags
             session.accessories = viewModel.accessories
             session.audioData = viewModel.audioData
+            let transaction = viewModel.transaction ?? InventoryTransaction(type: .consumption)
+            transaction.updateInventory = shouldUpdateInventory
             if let amountConsumed = viewModel.amountConsumed {
-                viewModel.transaction?.amount = Amount(value: amountConsumed, unit: item.selectedUnits?.amount ?? .count)
-                if shouldUpdateInventory {
-                    viewModel.transaction?.item = item
-                }
+                transaction.amount = Amount(value: -amountConsumed, unit: item.selectedUnits?.amount ?? .count)
+                item.transactions?.append(transaction)
             }
-            session.transaction = viewModel.transaction
+            session.transaction = transaction
             
             if self.session == nil {
                 modelContext.insert(session)

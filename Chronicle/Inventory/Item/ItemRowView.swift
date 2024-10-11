@@ -31,7 +31,7 @@ struct ItemRowView: View {
                 if let currentInventory = item.currentInventory {
                     HStack(spacing: 0) {
                         Text(currentInventory.value, format: .number)
-                        Text(" \(currentInventory.unit)")
+                        Text(" \(currentInventory.unit.rawValue)")
                     }
                     .font(.subheadline)
                 }

@@ -56,7 +56,7 @@ extension Session {
                 favorite: Bool.random(),
                 transaction: InventoryTransaction(
                     type: .consumption,
-                    amount: Amount(value: Double.random(in: 0.1...1.0), unit: AcceptedUnit.allCases.randomElement()!)
+                    amount: Amount(value: Double.random(in: -3.0..<0.0), unit: AcceptedUnit.allCases.randomElement()!)
                 ),
                 mood: Mood(
                     type: MoodType.allCases.randomElement()!,
@@ -98,7 +98,7 @@ extension Purchase {
 extension InventoryTransaction {
     static let sampleData: [InventoryTransaction] = [
         InventoryTransaction(type: .purchase, amount: Amount(value: 3.5, unit: .grams), date: Date()),
-        InventoryTransaction(type: .consumption, amount: Amount(value: 1.0, unit: .grams), date: Date())
+        InventoryTransaction(type: .consumption, amount: Amount(value: -1.0, unit: .grams), date: Date())
     ]
 }
 
