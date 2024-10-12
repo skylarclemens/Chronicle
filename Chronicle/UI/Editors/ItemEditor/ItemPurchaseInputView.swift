@@ -32,7 +32,7 @@ struct ItemPurchaseInputView: View {
                                     if let purchase = transaction.purchase {
                                         PurchaseRowView(purchase: purchase)
                                             .overlay(alignment: .topTrailing) {
-                                                Menu("Options", systemImage: "ellipsis") {
+                                                Menu {
                                                     Section {
                                                         Button {
                                                             selectedTransaction = transaction
@@ -47,11 +47,14 @@ struct ItemPurchaseInputView: View {
                                                             Label("Delete", systemImage: "trash")
                                                         }
                                                     }
+                                                } label: {
+                                                    Image(systemName: "ellipsis")
+                                                        .imageScale(.large)
+                                                        .padding(20)
+                                                        .tint(.secondary)
+                                                        .contentShape(Circle())
                                                 }
-                                                .font(.title3)
-                                                .labelStyle(.iconOnly)
-                                                .tint(.secondary)
-                                                .padding(20)
+                                                .accessibilityLabel("Purchase Options Menu")
                                             }
                                     }
                                 }
@@ -102,7 +105,7 @@ struct ItemPurchaseInputView: View {
         }
         .sheet(isPresented: $openPurchaseEditor) {
             PurchaseEditorView(itemViewModel: $viewModel, transaction: $selectedTransaction)
-                .presentationDetents([.height(420)])
+                .presentationDetents([.height(450)])
         }
         
         .alert("Are you sure you want to delete purchase from \(selectedTransaction?.purchase?.date ?? Date())?", isPresented: $isDeleting) {
@@ -142,7 +145,7 @@ struct PurchaseEditorView: View {
     
     var body: some View {
         NavigationStack {
-            PurchaseInputView(amountValue: $viewModel.amount, amountUnit: $viewModel.unit, price: $viewModel.price, location: $viewModel.location, date: $viewModel.date)
+            PurchaseInputView(amountValue: $viewModel.amount, amountUnit: $viewModel.unit, price: $viewModel.price, location: $viewModel.location, date: $viewModel.date, shouldUpdateInventory: $viewModel.shouldUpdateInventory, showUpdateInventoryToggle: transaction?.type != .set ? true : false, transaction: transaction)
             .padding(.horizontal)
             .safeAreaInset(edge: .bottom, alignment: .center) {
                 ZStack {
@@ -187,6 +190,7 @@ struct PurchaseEditorView: View {
                 viewModel.unit = transaction.amount?.unit ?? .count
                 viewModel.price = purchase.price
                 viewModel.location = purchase.location
+                viewModel.shouldUpdateInventory = transaction.updateInventory
             } else {
                 viewModel.unit = itemViewModel.selectedUnits.amount
             }
@@ -207,6 +211,7 @@ struct PurchaseEditorView: View {
                 transaction.amount = Amount(value: amountValue, unit: viewModel.unit)
             }
             transaction.type = .purchase
+            transaction.updateInventory = viewModel.shouldUpdateInventory
             
             if itemViewModel.amountUnit != viewModel.unit {
                 itemViewModel.amountUnit = viewModel.unit
@@ -218,7 +223,7 @@ struct PurchaseEditorView: View {
             }
             
             let newPurchase = Purchase(date: viewModel.date, price: viewModel.price, location: viewModel.location)
-            let newTransaction = InventoryTransaction(type: .purchase, amount: newAmount, purchase: newPurchase)
+            let newTransaction = InventoryTransaction(type: .purchase, amount: newAmount, updateInventory: viewModel.shouldUpdateInventory, purchase: newPurchase)
             
             itemViewModel.amountUnit = viewModel.unit
             itemViewModel.transactions.append(newTransaction)
@@ -234,11 +239,12 @@ class PurchaseEditorViewModel {
     var price: Double?
     var location: LocationInfo?
     var transaction: InventoryTransaction?
+    var shouldUpdateInventory: Bool = true
 }
 
 #Preview {
     @Previewable @State var viewModel = ItemEditorViewModel()
     
-    ItemPurchaseInputView(viewModel: $viewModel)
+    ItemPurchaseInputView(viewModel: $viewModel, item: SampleData.shared.item)
         .modelContainer(SampleData.shared.container)
 }

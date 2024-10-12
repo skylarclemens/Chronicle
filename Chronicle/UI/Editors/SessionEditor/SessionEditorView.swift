@@ -155,7 +155,7 @@ struct SessionEditorView: View {
                                 Button("Yes") { shouldUpdateInventory = true }
                                 Button("No") { shouldUpdateInventory = false }
                             } message: {
-                                Text("Do you want to automatically update your inventory based on this session?")
+                                Text("Do you want to automatically update your item's current amount based on this session?")
                             }
                             .animation(.default, value: viewModel.item)
                         }
