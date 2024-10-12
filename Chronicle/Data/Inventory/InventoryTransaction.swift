@@ -47,6 +47,7 @@ public class InventoryTransaction {
         self.type = type
         self.amount = amount
         self.setAmount = setAmount
+        self.date = date
         self.note = note
         self.updateInventory = updateInventory
         self.item = item

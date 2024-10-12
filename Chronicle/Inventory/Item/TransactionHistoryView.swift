@@ -13,92 +13,131 @@ struct TransactionHistoryView: View {
     
     @State private var openAddAdjustment: Bool = false
     
+    // Group transactions by InventorySnapshot
+    var groupedTransactions: [(InventorySnapshot?, [InventoryTransaction])] {
+        guard let item = item,
+              let snapshots = item.snapshots?.sorted(by: { $0.date > $1.date }),
+              let transactions = item.transactions?.sorted(by: { $0.date > $1.date })
+        else { return [] }
+        
+        var result: [(InventorySnapshot?, [InventoryTransaction])] = []
+        var remainingTransactions = transactions
+        
+        for snapshot in snapshots {
+            let n = remainingTransactions.partition(by: { $0.date > snapshot.date })
+            let leftoverTransactions = Array(remainingTransactions[..<n])
+            let snapshotTransactions = Array(remainingTransactions[n...])
+            result.append((snapshot, snapshotTransactions))
+            remainingTransactions = leftoverTransactions
+        }
+        
+        if !remainingTransactions.isEmpty {
+            result.append((nil, remainingTransactions))
+        }
+        
+        return result
+    }
+    
     var body: some View {
-        if let item,
-           let transactions = item.transactions?.sorted(by: { $0.date > $1.date }) {
-            List {
+        List {
+            ForEach(groupedTransactions, id: \.0?.id) { snapshot, transactions in
                 Section {
-                    ForEach(transactions) { transaction in
+                    if let snapshot {
                         HStack {
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text(transaction.type.rawValue.localizedCapitalized)
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                        .padding(.vertical, 4)
-                                        .padding(.horizontal, 8)
-                                        .background(Color.secondary.opacity(0.1),
-                                                    in: Capsule())
-                                    if transaction.updateInventory {
-                                        Image(systemName: "arrow.triangle.2.circlepath.circle.fill")
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                                Text(transaction.date.formatted(.dateTime))
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
+                            Text("Snapshot")
+                                .font(.headline)
+                                .fontDesign(.rounded)
                             Spacer()
-                            if let amount = transaction.amount,
-                               let displayValue = transaction.displayValue {
-                                if transaction.updateInventory {
-                                    if amount.value >= 0 {
-                                        Image(systemName: "plus.circle.fill")
-                                            .foregroundStyle(.green.opacity(0.75))
-                                    } else {
-                                        Image(systemName: "minus.circle.fill")
-                                            .foregroundStyle(.red.opacity(0.75))
-                                    }
-                                }
-                                Text(displayValue, format: .number) +
-                                Text(" \(transaction.unit)")
-                            }
+                            Text(snapshot.date.formatted(.dateTime))
+                                .font(.subheadline)
+                                .fontDesign(.rounded)
+                                .foregroundStyle(.secondary)
                         }
                     }
-                    .onDelete(perform: delete)
-                } footer: {
-                    HStack(spacing: 0) {
-                        Text("Logged amounts that adjust the item's current amount are indicated by ") +
-                        Text(Image(systemName: "arrow.triangle.2.circlepath.circle.fill"))
+                    let sortedTransactions = transactions.sorted(by: { $0.date > $1.date })
+                    ForEach(sortedTransactions) { transaction in
+                        TransactionRowView(transaction: transaction)
+                    }
+                    .onDelete { indexSet in
+                        delete(transactions: sortedTransactions, at: indexSet)
                     }
                 }
             }
-            .navigationTitle("Amount History")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        EditButton()
-                        Button("Add adjustment", systemImage: "plus") {
-                            openAddAdjustment = true
-                        }
-                    } label: {
-                        Label("Options", systemImage: "ellipsis")
+        }
+        .navigationTitle("Amount History")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    EditButton()
+                    Button("Add adjustment", systemImage: "plus") {
+                        openAddAdjustment = true
                     }
+                } label: {
+                    Label("Options", systemImage: "ellipsis")
                 }
             }
-            .sheet(isPresented: $openAddAdjustment) {
-                AmountAdjustmentView(item: item)
-                    .presentationDetents([.medium])
-            }
+        }
+        .sheet(isPresented: $openAddAdjustment) {
+            AmountAdjustmentView(item: item)
+                .presentationDetents([.medium])
         }
     }
     
-    func delete(at indexSet: IndexSet) {
+    func delete(transactions: [InventoryTransaction], at indexSet: IndexSet) {
         do {
-            if let item,
-               let transactions = item.transactions {
-                for index in indexSet {
-                    let transaction = transactions[index]
-                    withAnimation {
-                        self.item?.transactions?.removeAll(where: { $0 == transaction })
-                        modelContext.delete(transaction)
-                    }
+            for index in indexSet {
+                let transaction = transactions[index]
+                withAnimation {
+                    self.item?.transactions?.removeAll(where: { $0 == transaction })
+                    modelContext.delete(transaction)
                 }
             }
             try modelContext.save()
         } catch {
             print("Error deleting transactions: \(error)")
+        }
+    }
+}
+
+struct TransactionRowView: View {
+    let transaction: InventoryTransaction
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(transaction.type.rawValue.localizedCapitalized)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 8)
+                        .background(Color.secondary.opacity(0.1),
+                                    in: Capsule())
+                    if transaction.updateInventory {
+                        Image(systemName: "arrow.triangle.2.circlepath.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Text(transaction.date.formatted(.dateTime))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            Spacer()
+            if let amount = transaction.amount,
+               let displayValue = transaction.displayValue {
+                if transaction.updateInventory {
+                    if amount.value >= 0 {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundStyle(.green.opacity(0.75))
+                    } else {
+                        Image(systemName: "minus.circle.fill")
+                            .foregroundStyle(.red.opacity(0.75))
+                    }
+                }
+                Text(displayValue, format: .number) +
+                Text(" \(transaction.unit)")
+            }
         }
     }
 }
