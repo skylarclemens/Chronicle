@@ -77,14 +77,16 @@ struct SessionDetailsView: View {
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("Details")
-                            .font(.title2)
-                            .fontWeight(.semibold)
+                        if !(session.accessories?.isEmpty ?? true) || session.transaction != nil {
+                            Text("Details")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                        }
                         if let amountConsumed = session.transaction {
                             DetailSection(header: "Amount") {} headerRight: {
                                 HStack(spacing: 0) {
-                                    Text(amountConsumed.amount?.value ?? 0, format: .number)
-                                    Text(" \(amountConsumed.amount?.unit.rawValue ?? "")")
+                                    Text(amountConsumed.displayValue ?? 0, format: .number) +
+                                    Text(" \(amountConsumed.unit)")
                                 }
                             }
                         }
@@ -196,7 +198,7 @@ struct SessionDetailsView: View {
                         .padding(.top)
                     }
                     if let tags = session.tags,
-                        tags.isEmpty {
+                        !tags.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Tags")
                                 .font(.title2)

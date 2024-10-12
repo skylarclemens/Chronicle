@@ -66,6 +66,10 @@ class SampleData {
             container.mainContext.insert(inventoryTransaction)
         }
         
+        for inventorySnapshot in InventorySnapshot.sampleData {
+            container.mainContext.insert(inventorySnapshot)
+        }
+        
         for tag in Tag.sampleData {
             container.mainContext.insert(tag)
         }
@@ -82,6 +86,11 @@ class SampleData {
         
         inventoryTransaction.purchase = purchase
         item.transactions?.append(inventoryTransaction)
+        item.transactions?.append(consumptionInventoryTransaction)
+        inventorySnapshot.item = item
+        inventorySnapshot2.item = item
+        item.snapshots?.append(inventorySnapshot)
+        item.snapshots?.append(inventorySnapshot2)
         
         session.item = item
         session.mood = mood
@@ -135,6 +144,14 @@ class SampleData {
     
     var consumptionInventoryTransaction: InventoryTransaction {
         InventoryTransaction.sampleData[1]
+    }
+    
+    var inventorySnapshot: InventorySnapshot {
+        InventorySnapshot.sampleData[0]
+    }
+    
+    var inventorySnapshot2: InventorySnapshot {
+        InventorySnapshot.sampleData[1]
     }
     
     var tag: Tag {
