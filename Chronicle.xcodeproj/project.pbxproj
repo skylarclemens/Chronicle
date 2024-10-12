@@ -688,8 +688,8 @@
 			children = (
 				7EFCC6122C7E6F420090588D /* Amount.swift */,
 				7EF2D0592CB8706E00D72BAC /* InventoryTransaction.swift */,
-				7EF2D05F2CB989F100D72BAC /* InventoryAdjustment.swift */,
 				7EF2D0642CB9B8FE00D72BAC /* InventorySnapshot.swift */,
+				7EF2D05F2CB989F100D72BAC /* InventoryAdjustment.swift */,
 			);
 			path = Inventory;
 			sourceTree = "<group>";

@@ -88,7 +88,9 @@ struct AmountAdjustmentView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(adjustmentAction == .adjust ? "Add" : "Save") {
-                        save()
+                        withAnimation {
+                            save()
+                        }
                     }
                 }
             }

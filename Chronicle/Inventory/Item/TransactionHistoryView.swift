@@ -13,26 +13,36 @@ struct TransactionHistoryView: View {
     
     @State private var openAddAdjustment: Bool = false
     
-    // Group transactions by InventorySnapshot
-    var groupedTransactions: [(InventorySnapshot?, [InventoryTransaction])] {
+    // Group transactions (with running total) by InventorySnapshot
+    var groupedTransactions: [(InventorySnapshot?, [(transaction: InventoryTransaction, total: Double)])] {
         guard let item = item,
               let snapshots = item.snapshots?.sorted(by: { $0.date > $1.date }),
-              let transactions = item.transactions?.sorted(by: { $0.date > $1.date })
+              let transactions = item.transactions
         else { return [] }
         
-        var result: [(InventorySnapshot?, [InventoryTransaction])] = []
+        var result: [(InventorySnapshot?, [(transaction: InventoryTransaction, total: Double)])] = []
         var remainingTransactions = transactions
+        var runningTotal: Double = 0
         
         for snapshot in snapshots {
-            let n = remainingTransactions.partition(by: { $0.date > snapshot.date })
+            runningTotal = 0
+            let n = remainingTransactions.partition(by: { $0.date >= snapshot.date })
             let leftoverTransactions = Array(remainingTransactions[..<n])
             let snapshotTransactions = Array(remainingTransactions[n...])
-            result.append((snapshot, snapshotTransactions))
+            let snapshotTransactionsWithTotals = snapshotTransactions.sorted(by: { $0.date < $1.date }).map {
+                runningTotal += ($0.amount?.value ?? 0)
+                return ($0, runningTotal)
+            }
+            result.append((snapshot, snapshotTransactionsWithTotals))
             remainingTransactions = leftoverTransactions
         }
         
         if !remainingTransactions.isEmpty {
-            result.append((nil, remainingTransactions))
+            let remainingTransactionsWithTotals = remainingTransactions.map {
+                runningTotal += ($0.amount?.value ?? 0)
+                return ($0, runningTotal)
+            }
+            result.append((nil, remainingTransactionsWithTotals))
         }
         
         return result
@@ -41,25 +51,15 @@ struct TransactionHistoryView: View {
     var body: some View {
         List {
             ForEach(groupedTransactions, id: \.0?.id) { snapshot, transactions in
-                Section {
-                    if let snapshot {
-                        HStack {
-                            Text("Snapshot")
-                                .font(.headline)
-                                .fontDesign(.rounded)
-                            Spacer()
-                            Text(snapshot.date.formatted(.dateTime))
-                                .font(.subheadline)
-                                .fontDesign(.rounded)
-                                .foregroundStyle(.secondary)
+                Group {
+                    Section {
+                        let sortedTransactions = transactions.sorted(by: { $0.transaction.date > $1.transaction.date })
+                        ForEach(sortedTransactions, id: \.0) { transaction, total in
+                            TransactionRowView(transaction: transaction, total: total)
                         }
-                    }
-                    let sortedTransactions = transactions.sorted(by: { $0.date > $1.date })
-                    ForEach(sortedTransactions) { transaction in
-                        TransactionRowView(transaction: transaction)
-                    }
-                    .onDelete { indexSet in
-                        delete(transactions: sortedTransactions, at: indexSet)
+                        .onDelete { indexSet in
+                            delete(transactions: sortedTransactions.map { $0.transaction }, at: indexSet)
+                        }
                     }
                 }
             }
@@ -98,10 +98,15 @@ struct TransactionHistoryView: View {
             print("Error deleting transactions: \(error)")
         }
     }
+    
+    var line: some View {
+        VStack { Divider().background(.secondary) }.padding(16)
+    }
 }
 
 struct TransactionRowView: View {
-    let transaction: InventoryTransaction
+    var transaction: InventoryTransaction
+    var total: Double
     
     var body: some View {
         HStack {
@@ -114,6 +119,15 @@ struct TransactionRowView: View {
                         .padding(.horizontal, 8)
                         .background(Color.secondary.opacity(0.1),
                                     in: Capsule())
+                    if transaction.type == .set && transaction.purchase != nil {
+                        Text(TransactionType.purchase.rawValue.localizedCapitalized)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 8)
+                            .background(Color.secondary.opacity(0.1),
+                                        in: Capsule())
+                    }
                     if transaction.updateInventory {
                         Image(systemName: "arrow.triangle.2.circlepath.circle.fill")
                             .foregroundStyle(.secondary)
@@ -124,19 +138,37 @@ struct TransactionRowView: View {
                     .foregroundColor(.secondary)
             }
             Spacer()
-            if let amount = transaction.amount,
-               let displayValue = transaction.displayValue {
-                if transaction.updateInventory {
-                    if amount.value >= 0 {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundStyle(.green.opacity(0.75))
-                    } else {
-                        Image(systemName: "minus.circle.fill")
-                            .foregroundStyle(.red.opacity(0.75))
+            VStack(alignment: .trailing, spacing: 4) {
+                HStack {
+                    if let amount = transaction.amount,
+                       let displayValue = transaction.displayValue {
+                        if transaction.updateInventory {
+                            if amount.value >= 0 {
+                                Image(systemName: "plus.circle.fill")
+                                    .foregroundStyle(.green.opacity(0.75))
+                            } else {
+                                Image(systemName: "minus.circle.fill")
+                                    .foregroundStyle(.red.opacity(0.75))
+                            }
+                        }
+                        Group {
+                            Text(displayValue, format: .number) +
+                            Text(" \(transaction.unit)")
+                        }
+                        .fontWeight(.medium)
+                        .fontDesign(.rounded)
                     }
                 }
-                Text(displayValue, format: .number) +
-                Text(" \(transaction.unit)")
+                if transaction.type != .set {
+                    Group {
+                        Text("Total: ") +
+                        Text(total, format: .number) +
+                        Text(" \(transaction.unit)")
+                    }
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                }
+                    
             }
         }
     }
