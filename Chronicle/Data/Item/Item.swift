@@ -43,7 +43,7 @@ import SwiftUI
     }
     
     var purchases: [InventoryTransaction] {
-        transactions?.filter { $0.type == .purchase } ?? []
+        transactions?.filter { $0.type == .purchase || $0.purchase != nil } ?? []
     }
     
     var currentInventory: Amount? {

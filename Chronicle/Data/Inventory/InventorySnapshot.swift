@@ -14,6 +14,17 @@ public class InventorySnapshot {
     public var amount: Amount?
     public var item: Item?
     
+    var displayValue: Double? {
+        if let amount {
+            return abs(amount.value)
+        }
+        return nil
+    }
+    
+    var unit: String {
+        amount?.unit.rawValue ?? ""
+    }
+    
     init(date: Date = Date(), amount: Amount? = nil, item: Item? = nil) {
         self.date = date
         self.amount = amount

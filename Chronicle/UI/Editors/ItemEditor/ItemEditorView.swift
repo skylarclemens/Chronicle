@@ -425,7 +425,7 @@ class ItemEditorViewModel {
     
     // Transactions
     var transactions: [InventoryTransaction] = []
-    var transactionType: TransactionType = .purchase
+    var transactionType: TransactionType = .set
     
     // Purchases
     var purchasePrice: Double?

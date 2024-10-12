@@ -97,7 +97,9 @@ extension Purchase {
 
 extension InventoryTransaction {
     static let sampleData: [InventoryTransaction] = [
-        InventoryTransaction(type: .purchase, amount: Amount(value: 3.5, unit: .grams), date: Calendar.autoupdatingCurrent.date(byAdding: .month, value: -2, to: Date())!),
+        InventoryTransaction(type: .set, amount: Amount(value: 3.5, unit: .grams), date: Calendar.autoupdatingCurrent.date(byAdding: .month, value: -3, to: Date())!, updateInventory: false),
+        InventoryTransaction(type: .consumption, amount: Amount(value: -1.5, unit: .grams), date: Calendar.autoupdatingCurrent.date(byAdding: .month, value: -2, to: Date())!),
+        InventoryTransaction(type: .set, amount: Amount(value: 10, unit: .grams), date: Calendar.autoupdatingCurrent.date(byAdding: .day, value: -2, to: Date())!, updateInventory: false),
         InventoryTransaction(type: .consumption, amount: Amount(value: -1.0, unit: .grams), date: Calendar.autoupdatingCurrent.date(byAdding: .day, value: -1, to: Date())!)
     ]
 }
