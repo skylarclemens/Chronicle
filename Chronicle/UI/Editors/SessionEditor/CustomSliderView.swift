@@ -78,7 +78,7 @@ struct CustomSliderView: View {
 }
 
 #Preview {
-    @State var value: Double = 0
+    @Previewable @State var value: Double = 0
     
     return CustomSliderView(value: $value)
         .frame(height: 42)

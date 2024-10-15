@@ -56,7 +56,7 @@ struct NotesEditorView: View {
 }
 
 #Preview {
-    @State var notes = ""
+    @Previewable @State var notes = ""
     return NavigationStack {
         NotesEditorView(notes: $notes)
     }
