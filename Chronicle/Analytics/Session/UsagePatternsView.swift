@@ -15,62 +15,7 @@ struct UsagePatternsView: View {
     
     var body: some View {
         NavigationLink {
-            ScrollView {
-                VStack(alignment: .leading) {
-                    Picker("Date Range", selection: $filter.animation()) {
-                        ForEach(DateFilter.allCases, id: \.self) { filterSelection in
-                            Text(filterSelection.rawValue.localizedCapitalized).tag(filterSelection)
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    VStack(alignment: .leading) {
-                        VStack(alignment: .leading) {
-                            Text("Sessions")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                            filter.dateLabel
-                                .font(.caption)
-                                .fontWeight(.medium)
-                                .fontDesign(.rounded)
-                                .foregroundStyle(.secondary)
-                        }
-                        GroupBox("Sessions Logged") {
-                            chart
-                                .frame(height: 250)
-                        }
-                        .backgroundStyle(Color(.secondarySystemGroupedBackground))
-                    }
-                    .animation(.default, value: filter)
-                    VStack(alignment: .leading) {
-                        HStack {
-                            if !sessions.isEmpty {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    HStack {
-                                        Image(systemName: "rectangle.stack.fill")
-                                            .foregroundStyle(.primary.opacity(0.5))
-                                        Text(sessions.count, format: .number)
-                                            .contentTransition(.numericText(value: Double(sessions.count)))
-                                    }
-                                    Text("Total Sessions".localizedUppercase)
-                                        .font(.caption2)
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.secondary)
-                                }
-                                .fontDesign(.rounded)
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 12)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color(.secondarySystemGroupedBackground),
-                                            in: RoundedRectangle(cornerRadius: 12))
-                            }
-                        }
-                        
-                    }
-                    .padding(.vertical)
-                }
-                .padding(.horizontal)
-            }
-            .background(Color(.systemGroupedBackground))
+            SessionUsageAnalyticsView(sessions: sessions, filter: $filter)
         } label: {
             VStack(alignment: .leading) {
                 HStack {
@@ -97,7 +42,7 @@ struct UsagePatternsView: View {
                     }
                     .padding(.bottom)
                     Spacer()
-                    chart
+                    SessionsUsageChartView(sessions: sessions, filter: $filter)
                         .frame(width: 80, height: 60)
                         .chartXAxis(.hidden)
                         .chartYAxis(.hidden)
@@ -110,6 +55,79 @@ struct UsagePatternsView: View {
                         in: RoundedRectangle(cornerRadius: 12))
         }
         .tint(.primary)
+    }
+}
+
+struct SessionUsageAnalyticsView: View {
+    var sessions: [Session]
+    @Binding var filter: DateFilter
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading) {
+                Picker("Date Range", selection: $filter.animation()) {
+                    ForEach(DateFilter.allCases, id: \.self) { filterSelection in
+                        Text(filterSelection.rawValue.localizedCapitalized).tag(filterSelection)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                VStack(alignment: .leading) {
+                    VStack(alignment: .leading) {
+                        Text("Sessions")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                        filter.dateLabel
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .fontDesign(.rounded)
+                            .foregroundStyle(.secondary)
+                    }
+                    GroupBox("Sessions Logged") {
+                        SessionsUsageChartView(sessions: sessions, filter: $filter)
+                            .frame(height: 250)
+                    }
+                    .backgroundStyle(Color(.secondarySystemGroupedBackground))
+                }
+                .animation(.default, value: filter)
+                VStack(alignment: .leading) {
+                    HStack {
+                        if !sessions.isEmpty {
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Image(systemName: "rectangle.stack.fill")
+                                        .foregroundStyle(.primary.opacity(0.5))
+                                    Text(sessions.count, format: .number)
+                                        .contentTransition(.numericText(value: Double(sessions.count)))
+                                }
+                                Text("Total Sessions".localizedUppercase)
+                                    .font(.caption2)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .fontDesign(.rounded)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 12)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color(.secondarySystemGroupedBackground),
+                                        in: RoundedRectangle(cornerRadius: 12))
+                        }
+                    }
+                    
+                }
+                .padding(.vertical)
+            }
+            .padding(.horizontal)
+        }
+        .background(Color(.systemGroupedBackground))
+    }
+}
+
+struct SessionsUsageChartView: View {
+    var sessions: [Session]
+    @Binding var filter: DateFilter
+    
+    var body: some View {
+        chart
     }
     
     @ViewBuilder

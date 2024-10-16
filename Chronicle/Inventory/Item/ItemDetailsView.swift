@@ -105,7 +105,13 @@ struct ItemDetailsView: View {
                     .padding(.horizontal)
                     if let sessions = item.sessions,
                         !sessions.isEmpty {
-                        ItemMoodInsightsView(item: item, moods: item.moods, sessions: sessions)
+                        VStack(alignment: .leading) {
+                            Text("Moods")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .padding(.horizontal)
+                            ItemMoodInsightsView(item: item, sessions: sessions)
+                        }
                         VStack(alignment: .leading) {
                             Text("Recent Sessions")
                                 .font(.title2)
