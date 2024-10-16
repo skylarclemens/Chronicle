@@ -27,6 +27,8 @@ import SwiftUI
     public var accessories: [Accessory]?
     @Relationship(deleteRule: .noAction, inverse: \Tag.sessions)
     public var tags: [Tag]?
+    @Relationship(deleteRule: .cascade, inverse: \WellnessEntry.session)
+    public var wellnessEntries: [WellnessEntry]?
     @Relationship(deleteRule: .cascade, inverse: \Mood.session)
     public var mood: Mood?
     
@@ -43,6 +45,7 @@ import SwiftUI
         transaction: InventoryTransaction? = nil,
         accessories: [Accessory]? = [],
         tags: [Tag]? = [],
+        wellnessEntries: [WellnessEntry]? = [],
         mood: Mood? = nil
     ) {
         self.id = id
@@ -57,6 +60,7 @@ import SwiftUI
         self.transaction = transaction
         self.accessories = accessories
         self.tags = tags
+        self.wellnessEntries = wellnessEntries
         self.mood = mood
     }
     

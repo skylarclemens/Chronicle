@@ -90,7 +90,7 @@ struct TagEditorView: View {
                     .buttonStyle(.close)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
+                    Button("Done") {
                         tags = Array(viewModel.tags)
                         dismiss()
                     }

@@ -61,7 +61,7 @@ struct AccessoriesSelectorView: View {
                     .buttonStyle(.close)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
+                    Button("Done") {
                         withAnimation {
                             accessories = Array(selectedAccessories)
                         }
