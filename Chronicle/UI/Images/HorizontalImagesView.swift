@@ -60,10 +60,11 @@ struct HorizontalImagesView: View {
                                 .contentShape(RoundedRectangle(cornerRadius: 12))
                                 .rotationEffect(rotateImages ? .degrees(Double.random(in: firstRotate...secondRotate)) : .zero)
                                 .onTapGestureIf(allowImageViewer) {
-                                    imageViewManager.imagesToShow = imagesData
-                                    imageViewManager.selectedImage = index
-                                    imageViewManager.showImageViewer = true
-                                    print("clicked \(index)")
+                                    withAnimation {
+                                        imageViewManager.imagesToShow = imagesData
+                                        imageViewManager.selectedImage = index
+                                        imageViewManager.showImageViewer = true
+                                    }
                                 }
                                 .zIndex(Double(-index))
                         }
@@ -78,6 +79,13 @@ struct HorizontalImagesView: View {
 }
 
 #Preview {
+    @Previewable @State var imageViewManager = ImageViewManager()
+    
     HorizontalImagesView(imagesData: Item.sampleImages + Item.sampleImages + Item.sampleImages, rotateImages: true)
-        .environment(ImageViewManager())
+        .overlay {
+            if imageViewManager.showImageViewer {
+                ImageViewerView()
+            }
+        }
+        .environment(imageViewManager)
 }

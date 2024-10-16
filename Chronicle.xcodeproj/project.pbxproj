@@ -15,7 +15,6 @@
 		7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */; };
 		7E0DE5242CA5CDF8003C0642 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0DE5232CA5CDF8003C0642 /* AnalyticsView.swift */; };
 		7E0DE5262CA5D5A7003C0642 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0DE5252CA5D5A6003C0642 /* Date.swift */; };
-		7E0DE5282CA5EFA2003C0642 /* AnalyticsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */; };
 		7E164A602CA4C565008996F1 /* UsagePatternsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */; };
 		7E164A622CA4C710008996F1 /* DateFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E164A612CA4C70C008996F1 /* DateFilter.swift */; };
 		7E1D086E2C977D17004B39D5 /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1D086D2C977D15004B39D5 /* Purchase.swift */; };
@@ -50,6 +49,8 @@
 		7E5301ED2C74F98200909048 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EC2C74F98200909048 /* JournalView.swift */; };
 		7E5301EF2C74F99B00909048 /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301EE2C74F99B00909048 /* InventoryView.swift */; };
 		7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5301F02C74FD7F00909048 /* ItemRowView.swift */; };
+		7E530BEA2CBF2D9200B8DDE8 /* AllItemsAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E530BE92CBF2D9200B8DDE8 /* AllItemsAnalyticsView.swift */; };
+		7E530BEC2CBF2E3800B8DDE8 /* SelectedItemAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E530BEB2CBF2E3800B8DDE8 /* SelectedItemAnalyticsView.swift */; };
 		7E5581382C823E6E00F461EB /* SimpleAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */; };
 		7E5E2E2A2CB5B73B00A1C3FC /* UnitsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5E2E292CB5B73B00A1C3FC /* UnitsSettingsView.swift */; };
 		7E5E2E2C2CB5B8D100A1C3FC /* AcceptedUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5E2E2B2CB5B8D100A1C3FC /* AcceptedUnit.swift */; };
@@ -136,7 +137,6 @@
 		7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerWheel.swift; sourceTree = "<group>"; };
 		7E0DE5232CA5CDF8003C0642 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 		7E0DE5252CA5D5A6003C0642 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
-		7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsListView.swift; sourceTree = "<group>"; };
 		7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsagePatternsView.swift; sourceTree = "<group>"; };
 		7E164A612CA4C70C008996F1 /* DateFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilter.swift; sourceTree = "<group>"; };
 		7E1D086D2C977D15004B39D5 /* Purchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
@@ -173,6 +173,8 @@
 		7E5301EC2C74F98200909048 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
 		7E5301EE2C74F99B00909048 /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
 		7E5301F02C74FD7F00909048 /* ItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRowView.swift; sourceTree = "<group>"; };
+		7E530BE92CBF2D9200B8DDE8 /* AllItemsAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllItemsAnalyticsView.swift; sourceTree = "<group>"; };
+		7E530BEB2CBF2E3800B8DDE8 /* SelectedItemAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedItemAnalyticsView.swift; sourceTree = "<group>"; };
 		7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAnalyticsView.swift; sourceTree = "<group>"; };
 		7E5E2E292CB5B73B00A1C3FC /* UnitsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsSettingsView.swift; sourceTree = "<group>"; };
 		7E5E2E2B2CB5B8D100A1C3FC /* AcceptedUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedUnit.swift; sourceTree = "<group>"; };
@@ -459,14 +461,22 @@
 			path = Strain;
 			sourceTree = "<group>";
 		};
+		7E530BED2CBF431E00B8DDE8 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
 		7E5581362C823CD700F461EB /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
 				7E0DE5232CA5CDF8003C0642 /* AnalyticsView.swift */,
 				7E5581372C823E6E00F461EB /* SimpleAnalyticsView.swift */,
-				7E164A5F2CA4C565008996F1 /* UsagePatternsView.swift */,
-				7E0DE5272CA5EFA2003C0642 /* AnalyticsListView.swift */,
-				7EFCDE312CADDDD1002D68AC /* Charts */,
+				7EFCDE3B2CAE0CAB002D68AC /* Item */,
+				7E530BED2CBF431E00B8DDE8 /* Session */,
+				7EFCDE322CADDDD8002D68AC /* Mood */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -712,21 +722,14 @@
 			path = Traits;
 			sourceTree = "<group>";
 		};
-		7EFCDE312CADDDD1002D68AC /* Charts */ = {
-			isa = PBXGroup;
-			children = (
-				7EFCDE3B2CAE0CAB002D68AC /* Item */,
-				7EFCDE322CADDDD8002D68AC /* Mood */,
-			);
-			path = Charts;
-			sourceTree = "<group>";
-		};
 		7EFCDE322CADDDD8002D68AC /* Mood */ = {
 			isa = PBXGroup;
 			children = (
 				7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */,
 				7EFCDE332CADDDEF002D68AC /* MoodPieChartView.swift */,
 				7EFCDE372CAE0681002D68AC /* ItemTypeDistributionChartView.swift */,
+				7EFCDE3C2CAE0D16002D68AC /* ItemMoodInsightsView.swift */,
+				7EFCDE3E2CAE12CC002D68AC /* TopEmotionsChartView.swift */,
 			);
 			path = Mood;
 			sourceTree = "<group>";
@@ -735,8 +738,8 @@
 			isa = PBXGroup;
 			children = (
 				7EFCDE352CADFB7A002D68AC /* ItemAnalyticsView.swift */,
-				7EFCDE3C2CAE0D16002D68AC /* ItemMoodInsightsView.swift */,
-				7EFCDE3E2CAE12CC002D68AC /* TopEmotionsChartView.swift */,
+				7E530BE92CBF2D9200B8DDE8 /* AllItemsAnalyticsView.swift */,
+				7E530BEB2CBF2E3800B8DDE8 /* SelectedItemAnalyticsView.swift */,
 			);
 			path = Item;
 			sourceTree = "<group>";
@@ -856,6 +859,7 @@
 				7E5E2E2A2CB5B73B00A1C3FC /* UnitsSettingsView.swift in Sources */,
 				7E26DF7F2CAF384500F54E00 /* SearchView.swift in Sources */,
 				7EFCDE382CAE0681002D68AC /* ItemTypeDistributionChartView.swift in Sources */,
+				7E530BEC2CBF2E3800B8DDE8 /* SelectedItemAnalyticsView.swift in Sources */,
 				7EF2D05A2CB8706E00D72BAC /* InventoryTransaction.swift in Sources */,
 				7ECAE68B2CA86A0B00ECEFD9 /* AudioPlayerView.swift in Sources */,
 				7E4540362CA76DD500ADB083 /* AudioRecorder.swift in Sources */,
@@ -866,7 +870,6 @@
 				7E0DE5242CA5CDF8003C0642 /* AnalyticsView.swift in Sources */,
 				7EF2D0602CB989F100D72BAC /* InventoryAdjustment.swift in Sources */,
 				7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */,
-				7E0DE5282CA5EFA2003C0642 /* AnalyticsListView.swift in Sources */,
 				7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */,
 				7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */,
 				7ED7478D2C8A909E00F07679 /* NotesEditorView.swift in Sources */,
@@ -897,6 +900,7 @@
 				7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */,
 				7EF2D0652CB9B8FE00D72BAC /* InventorySnapshot.swift in Sources */,
 				7E26DF842CB0623E00F54E00 /* LocationInfo.swift in Sources */,
+				7E530BEA2CBF2D9200B8DDE8 /* AllItemsAnalyticsView.swift in Sources */,
 				7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,

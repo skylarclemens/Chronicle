@@ -10,8 +10,11 @@ import Charts
 
 struct ItemMoodInsightsView: View {
     var item: Item
-    var moods: [Mood]
     var sessions: [Session]
+    
+    var moods: [Mood] {
+        return sessions.compactMap { $0.mood }
+    }
     
     var moodTypes: [MoodType: Int] {
         var counts: [MoodType: Int] = [:]
@@ -53,10 +56,6 @@ struct ItemMoodInsightsView: View {
     var body: some View {
         if !moods.isEmpty {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Moods")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .padding(.horizontal)
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(moodTypes.sorted { $0.value > $1.value }, id: \.key) { moodType, count in
@@ -120,7 +119,7 @@ struct ItemMoodInsightsView: View {
 #Preview {
     NavigationStack {
         ScrollView {
-            ItemMoodInsightsView(item: SampleData.shared.item, moods: SampleData.shared.item.moods, sessions: SampleData.shared.item.sessions!)
+            ItemMoodInsightsView(item: SampleData.shared.item, sessions: SampleData.shared.item.sessions!)
         }
     }
     .modelContainer(SampleData.shared.container)

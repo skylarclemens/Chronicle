@@ -137,7 +137,7 @@ class MoodSelectorViewModel {
 }
 
 #Preview {
-    @State var viewModel = SessionEditorViewModel()
+    @Previewable @State var viewModel = SessionEditorViewModel()
     
     return NavigationStack {
         MoodSelectorView(sessionViewModel: $viewModel)

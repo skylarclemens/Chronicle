@@ -13,8 +13,6 @@ struct ImageViewerView: View {
     @State private var currentMagnify = 0.0
     @State private var finalMagnify = 1.0
     
-    //@GestureState private var zoom = 1.0
-    
     var body: some View {
         if let imagesData = imageViewManager.imagesToShow, !imagesData.isEmpty {
             ZStack {
@@ -76,8 +74,7 @@ struct ImageViewerView: View {
     if let imageData, let imageData2, let imageData3, let imageData4, let imageData5 {
         imagesData = [imageData, imageData2, imageData3, imageData4, imageData5]
     }
-    @State var imageViewManager = ImageViewManager(selectedImage: 0, showImageViewer: true, imagesToShow: imagesData)
     
     return ImageViewerView()
-        .environment(imageViewManager)
+        .environment(ImageViewManager(selectedImage: 0, showImageViewer: true, imagesToShow: imagesData))
 }

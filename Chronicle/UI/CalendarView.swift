@@ -43,8 +43,8 @@ struct CalendarView: View {
 }
 
 #Preview {
-    @State var date: Date = Date()
-    @State var show = true
+    @Previewable @State var date: Date = Date()
+    @Previewable @State var show = true
     return VStack {
         
     }

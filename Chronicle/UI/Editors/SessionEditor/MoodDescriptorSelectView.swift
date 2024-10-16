@@ -127,9 +127,9 @@ struct EmotionsSelectView: View {
 }
 
 #Preview {
-    @Environment(\.dismiss) var dismiss
-    @State var sessionViewModel = SessionEditorViewModel()
-    @State var viewModel = MoodSelectorViewModel()
+    @Previewable @Environment(\.dismiss) var dismiss
+    @Previewable @State var sessionViewModel = SessionEditorViewModel()
+    @Previewable @State var viewModel = MoodSelectorViewModel()
     
     return NavigationStack {
         MoodDescriptorSelectView(sessionViewModel: $sessionViewModel, viewModel: $viewModel, parentDismiss: dismiss)

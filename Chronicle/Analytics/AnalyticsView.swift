@@ -33,16 +33,9 @@ struct AnalyticsView: View {
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    dateLabel
-                        .font(.callout)
-                        .fontWeight(.medium)
-                        .fontDesign(.rounded)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.top, 4)
-                    AnalyticsListView(items: items, sessions: sessions, strains: strains, filter: $filter)
+                    .padding(.horizontal)
+                    ItemAnalyticsDetailsView(items: items, sessions: sessions, strains: strains, filter: $filter)
                 }
-                .padding(.horizontal)
             }
             .navigationTitle("Trends")
             .background(

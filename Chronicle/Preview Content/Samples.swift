@@ -39,12 +39,8 @@ extension Session {
         let currentDate = Date()
         let threeMonthsAgo = calendar.date(byAdding: .month, value: -3, to: currentDate)!
         
-        let strains = ["Blue Dream", "OG Kush", "Sour Diesel", "Girl Scout Cookies", "Purple Haze"]
-        let locations = ["Home", "Park", "Friend's House", "Beach", "Concert"]
-        
         return (0..<50).map { index in
             let randomDate = Date.random(in: threeMonthsAgo...currentDate)
-            let randomLocation = locations.randomElement()
             
             return Session(
                 id: UUID(),

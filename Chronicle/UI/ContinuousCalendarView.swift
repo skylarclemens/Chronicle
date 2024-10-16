@@ -216,12 +216,9 @@ struct CalendarMonth: Identifiable, Hashable {
 
 #Preview {
     @Previewable @State var selectedDate: Date = Date()
-    let calendar = Calendar.autoupdatingCurrent
     
     NavigationStack {
-        VStack {
-            
-        }
+        VStack {}
         .sheet(isPresented: .constant(true)) {
             ContinuousCalendarView(sessions: SampleData.shared.randomDatesSessions, selectedDate: $selectedDate)
         }
