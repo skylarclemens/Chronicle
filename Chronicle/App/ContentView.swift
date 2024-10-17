@@ -14,6 +14,8 @@ struct ContentView: View {
     
     @State var activeTab: AppTab = .dashboard
     @State var selectedDate: Date = Date()
+    
+    @Query var wellness: [Wellness]
 
     var body: some View {
         TabView(selection: $activeTab) {
@@ -49,6 +51,18 @@ struct ContentView: View {
             tabBarAppearance.configureWithDefaultBackground()
             UITabBar.appearance().standardAppearance = tabBarAppearance
             UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        }
+        .onAppear {
+            if wellness.isEmpty {
+                for wellness in Wellness.predefinedData {
+                    modelContext.insert(wellness)
+                }
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Model context failed to save when adding predefined Wellness: \(error.localizedDescription)")
+                }
+            }
         }
     }
 }

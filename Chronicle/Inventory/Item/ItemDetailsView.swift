@@ -69,8 +69,7 @@ struct ItemDetailsView: View {
                     .padding(.horizontal)
                     VStack(alignment: .leading) {
                         Text("Details")
-                            .font(.title2)
-                            .fontWeight(.semibold)
+                            .headerTitle()
                         VStack(alignment: .leading) {
                             if let currentInventory = item.currentInventory {
                                 HStack(spacing: 0) {
@@ -107,15 +106,13 @@ struct ItemDetailsView: View {
                         !sessions.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Moods")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                                 .padding(.horizontal)
                             ItemMoodInsightsView(item: item, sessions: sessions)
                         }
                         VStack(alignment: .leading) {
                             Text("Recent Sessions")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                                 .padding(.horizontal)
                             VStack(alignment: .leading) {
                                 ScrollView(.horizontal) {
@@ -139,8 +136,7 @@ struct ItemDetailsView: View {
                     if !item.purchases.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Purchases")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                             VStack(alignment: .leading) {
                                 PurchaseRowView(purchase: item.purchases.first?.purchase)
                                 if item.purchases.count > 1 {
@@ -177,8 +173,7 @@ struct ItemDetailsView: View {
                     if !item.compounds.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Composition")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                             if !item.cannabinoids.isEmpty {
                                 DetailSection(header: "Cannabinoids", isScrollView: true) {
                                     ScrollView(.horizontal) {
@@ -218,8 +213,7 @@ struct ItemDetailsView: View {
                         !tags.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Tags")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                             ScrollView(.horizontal) {
                                 HStack {
                                     ForEach(tags) { tag in

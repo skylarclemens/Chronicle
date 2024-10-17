@@ -63,7 +63,7 @@
 		7E6BC8B32CAC99D5007AC9AF /* MoodAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */; };
 		7E70B97C2C9214980092ECE7 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97B2C9214980092ECE7 /* Mood.swift */; };
 		7E70B97E2C9214BC0092ECE7 /* Flavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B97D2C9214BC0092ECE7 /* Flavor.swift */; };
-		7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */; };
+		7E70B9822C9254830092ECE7 /* SessionLogButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9812C9254830092ECE7 /* SessionLogButtonStyle.swift */; };
 		7E70B9842C92567E0092ECE7 /* EditorInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9832C9256790092ECE7 /* EditorInputButton.swift */; };
 		7E70B9862C925BD10092ECE7 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70B9852C925BCD0092ECE7 /* Double.swift */; };
 		7E7349B72C80EEC800262930 /* ItemsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7349B62C80EEC800262930 /* ItemsListView.swift */; };
@@ -82,6 +82,10 @@
 		7EC008F32C5EEDEA0093217B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EC008F22C5EEDEA0093217B /* Assets.xcassets */; };
 		7EC008F62C5EEDEA0093217B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EC008F52C5EEDEA0093217B /* Preview Assets.xcassets */; };
 		7EC009022C5EF1F70093217B /* Strain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC009012C5EF1F70093217B /* Strain.swift */; };
+		7EC3D96D2CC0529F00E6522C /* Wellness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3D96C2CC0529F00E6522C /* Wellness.swift */; };
+		7EC3D96F2CC0534100E6522C /* WellnessEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3D96E2CC0534100E6522C /* WellnessEntry.swift */; };
+		7EC3D9712CC0571D00E6522C /* LogsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3D9702CC0571D00E6522C /* LogsPickerView.swift */; };
+		7EC3D9732CC0740200E6522C /* WellnessSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3D9722CC0740200E6522C /* WellnessSelectorView.swift */; };
 		7ECAE68B2CA86A0B00ECEFD9 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE68A2CA86A0B00ECEFD9 /* AudioPlayerView.swift */; };
 		7ECAE68D2CA86A9D00ECEFD9 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE68C2CA86A9D00ECEFD9 /* Format.swift */; };
 		7ECAE6922CA87B9800ECEFD9 /* Accessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE6912CA87B9400ECEFD9 /* Accessory.swift */; };
@@ -91,6 +95,7 @@
 		7ECAE69C2CA8937400ECEFD9 /* AccessoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */; };
 		7ECAFC272C6410340056A44E /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC262C6410340056A44E /* Session.swift */; };
 		7ECAFC2A2C6421310056A44E /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC292C6421310056A44E /* SampleData.swift */; };
+		7ECDBAAA2CC1BA090036BA33 /* HeaderTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECDBAA92CC1B9FD0036BA33 /* HeaderTitle.swift */; };
 		7ECFA5352CAB053F00BC5E54 /* ContinuousCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */; };
 		7ECFA53B2CAB279C00BC5E54 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA53A2CAB279C00BC5E54 /* Calendar.swift */; };
 		7ECFA53D2CAB475C00BC5E54 /* WeekScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */; };
@@ -187,7 +192,7 @@
 		7E6BC8B22CAC99D5007AC9AF /* MoodAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodAnalyticsView.swift; sourceTree = "<group>"; };
 		7E70B97B2C9214980092ECE7 /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
 		7E70B97D2C9214BC0092ECE7 /* Flavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flavor.swift; sourceTree = "<group>"; };
-		7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodButtonStyle.swift; sourceTree = "<group>"; };
+		7E70B9812C9254830092ECE7 /* SessionLogButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionLogButtonStyle.swift; sourceTree = "<group>"; };
 		7E70B9832C9256790092ECE7 /* EditorInputButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorInputButton.swift; sourceTree = "<group>"; };
 		7E70B9852C925BCD0092ECE7 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		7E7349B62C80EEC800262930 /* ItemsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsListView.swift; sourceTree = "<group>"; };
@@ -207,6 +212,10 @@
 		7EC008F22C5EEDEA0093217B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7EC008F52C5EEDEA0093217B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7EC009012C5EF1F70093217B /* Strain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strain.swift; sourceTree = "<group>"; };
+		7EC3D96C2CC0529F00E6522C /* Wellness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wellness.swift; sourceTree = "<group>"; };
+		7EC3D96E2CC0534100E6522C /* WellnessEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessEntry.swift; sourceTree = "<group>"; };
+		7EC3D9702CC0571D00E6522C /* LogsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsPickerView.swift; sourceTree = "<group>"; };
+		7EC3D9722CC0740200E6522C /* WellnessSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessSelectorView.swift; sourceTree = "<group>"; };
 		7ECAE68A2CA86A0B00ECEFD9 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		7ECAE68C2CA86A9D00ECEFD9 /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
 		7ECAE6912CA87B9400ECEFD9 /* Accessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessory.swift; sourceTree = "<group>"; };
@@ -216,6 +225,7 @@
 		7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryDetailsView.swift; sourceTree = "<group>"; };
 		7ECAFC262C6410340056A44E /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		7ECAFC292C6421310056A44E /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
+		7ECDBAA92CC1B9FD0036BA33 /* HeaderTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTitle.swift; sourceTree = "<group>"; };
 		7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuousCalendarView.swift; sourceTree = "<group>"; };
 		7ECFA53A2CAB279C00BC5E54 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekScrollerView.swift; sourceTree = "<group>"; };
@@ -288,11 +298,9 @@
 				7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */,
 				7E3B557B2C8A2EFD00AB0961 /* DurationPickerView.swift */,
 				7ED7478C2C8A909E00F07679 /* NotesEditorView.swift */,
-				7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */,
-				7E079F872C8CFE4E009391D0 /* MoodDescriptorSelectView.swift */,
-				7ED747902C8BB3F100F07679 /* CustomSliderView.swift */,
 				7ED0D8052CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift */,
 				7E26DF812CAF57DA00F54E00 /* LocationSelectorView.swift */,
+				7ECDBAA52CC1B7F50036BA33 /* Logs */,
 			);
 			path = SessionEditor;
 			sourceTree = "<group>";
@@ -302,16 +310,11 @@
 			children = (
 				7E26DF7D2CAF352300F54E00 /* Editors */,
 				7E656A262C94CD3A00C6FD6A /* Styles */,
-				7EDFFA542CA1ED2F0033163E /* Tags */,
 				7E523C1A2C77E0DE005B6186 /* Images */,
-				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
-				7E7349BA2C811BE300262930 /* CalendarView.swift */,
 				7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */,
 				7E81C3452CAA17C7006E9DD3 /* AddView.swift */,
 				7EFA15372CAA51DF00F54CE5 /* AddContentSheets.swift */,
-				7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */,
-				7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */,
-				7E3E7DBF2CB70CFF0072B6E5 /* SettingsHeader.swift */,
+				7ECDBAA72CC1B83D0036BA33 /* Components */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 				7E08D4172C6BD80600F96328 /* StrainEditor */,
 				7E08D41F2C6BF6C000F96328 /* SessionEditor */,
 				7ECAE6932CA8803D00ECEFD9 /* AccessoryEditor */,
+				7EDFFA542CA1ED2F0033163E /* Tags */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -484,6 +488,7 @@
 		7E656A262C94CD3A00C6FD6A /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				7ECDBAA82CC1B9B60036BA33 /* Text */,
 				7E70B9802C9253450092ECE7 /* Button */,
 				7E9ACB512CA1F67400CFF92D /* TagStyle.swift */,
 				7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */,
@@ -506,7 +511,7 @@
 			isa = PBXGroup;
 			children = (
 				7E70B9832C9256790092ECE7 /* EditorInputButton.swift */,
-				7E70B9812C9254830092ECE7 /* MoodButtonStyle.swift */,
+				7E70B9812C9254830092ECE7 /* SessionLogButtonStyle.swift */,
 				7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */,
 				7E6BC8B02CAC8BC7007AC9AF /* CloseButtonStyle.swift */,
 			);
@@ -613,6 +618,15 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		7EC3D96B2CC0529500E6522C /* Wellness */ = {
+			isa = PBXGroup;
+			children = (
+				7EC3D96C2CC0529F00E6522C /* Wellness.swift */,
+				7EC3D96E2CC0534100E6522C /* WellnessEntry.swift */,
+			);
+			path = Wellness;
+			sourceTree = "<group>";
+		};
 		7ECAE6892CA869C100ECEFD9 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
@@ -645,6 +659,54 @@
 				7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */,
 			);
 			path = Accessory;
+			sourceTree = "<group>";
+		};
+		7ECDBAA42CC1B7ED0036BA33 /* Wellness */ = {
+			isa = PBXGroup;
+			children = (
+				7EC3D9722CC0740200E6522C /* WellnessSelectorView.swift */,
+			);
+			path = Wellness;
+			sourceTree = "<group>";
+		};
+		7ECDBAA52CC1B7F50036BA33 /* Logs */ = {
+			isa = PBXGroup;
+			children = (
+				7EC3D9702CC0571D00E6522C /* LogsPickerView.swift */,
+				7ECDBAA62CC1B7F90036BA33 /* Mood */,
+				7ECDBAA42CC1B7ED0036BA33 /* Wellness */,
+			);
+			path = Logs;
+			sourceTree = "<group>";
+		};
+		7ECDBAA62CC1B7F90036BA33 /* Mood */ = {
+			isa = PBXGroup;
+			children = (
+				7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */,
+				7E079F872C8CFE4E009391D0 /* MoodDescriptorSelectView.swift */,
+			);
+			path = Mood;
+			sourceTree = "<group>";
+		};
+		7ECDBAA72CC1B83D0036BA33 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				7ED747902C8BB3F100F07679 /* CustomSliderView.swift */,
+				7E7349BA2C811BE300262930 /* CalendarView.swift */,
+				7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */,
+				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
+				7E3E7DBF2CB70CFF0072B6E5 /* SettingsHeader.swift */,
+				7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		7ECDBAA82CC1B9B60036BA33 /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				7ECDBAA92CC1B9FD0036BA33 /* HeaderTitle.swift */,
+			);
+			path = Text;
 			sourceTree = "<group>";
 		};
 		7EDFFA512CA1EB4D0033163E /* Tag */ = {
@@ -715,6 +777,7 @@
 		7EFCC6092C7E6DA20090588D /* Traits */ = {
 			isa = PBXGroup;
 			children = (
+				7EC3D96B2CC0529500E6522C /* Wellness */,
 				7EFCC60E2C7E6DC90090588D /* Emotion.swift */,
 				7E70B97B2C9214980092ECE7 /* Mood.swift */,
 				7E70B97D2C9214BC0092ECE7 /* Flavor.swift */,
@@ -828,6 +891,7 @@
 				7E0DE5262CA5D5A7003C0642 /* Date.swift in Sources */,
 				7EFCDE3D2CAE0D16002D68AC /* ItemMoodInsightsView.swift in Sources */,
 				7E3B557E2C8A3AEF00AB0961 /* HorizontalImagesView.swift in Sources */,
+				7EC3D9732CC0740200E6522C /* WellnessSelectorView.swift in Sources */,
 				7EFCDE412CAE210D002D68AC /* ItemEmotionsView.swift in Sources */,
 				7ED0D8022CA8C05D00FF8D8A /* SessionRowView.swift in Sources */,
 				7E08D4232C6BFB4400F96328 /* TimePickerWheel.swift in Sources */,
@@ -855,6 +919,7 @@
 				7E45402D2CA7536A00ADB083 /* SettingsView.swift in Sources */,
 				7E309D9C2C7936EC0004A25A /* ImageViewManager.swift in Sources */,
 				7ECAFC272C6410340056A44E /* Session.swift in Sources */,
+				7EC3D96F2CC0534100E6522C /* WellnessEntry.swift in Sources */,
 				7ECAE6922CA87B9800ECEFD9 /* Accessory.swift in Sources */,
 				7E5E2E2A2CB5B73B00A1C3FC /* UnitsSettingsView.swift in Sources */,
 				7E26DF7F2CAF384500F54E00 /* SearchView.swift in Sources */,
@@ -897,13 +962,16 @@
 				7E26DF752CAF219A00F54E00 /* StrainRowView.swift in Sources */,
 				7E4540382CA7766900ADB083 /* AudioPlayer.swift in Sources */,
 				7E5E2E2E2CB5BA2800A1C3FC /* DefaultUnits.swift in Sources */,
-				7E70B9822C9254830092ECE7 /* MoodButtonStyle.swift in Sources */,
+				7E70B9822C9254830092ECE7 /* SessionLogButtonStyle.swift in Sources */,
+				7EC3D9712CC0571D00E6522C /* LogsPickerView.swift in Sources */,
 				7EF2D0652CB9B8FE00D72BAC /* InventorySnapshot.swift in Sources */,
 				7E26DF842CB0623E00F54E00 /* LocationInfo.swift in Sources */,
 				7E530BEA2CBF2D9200B8DDE8 /* AllItemsAnalyticsView.swift in Sources */,
 				7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
+				7ECDBAAA2CC1BA090036BA33 /* HeaderTitle.swift in Sources */,
+				7EC3D96D2CC0529F00E6522C /* Wellness.swift in Sources */,
 				7EF2D05E2CB8D9BE00D72BAC /* TransactionHistoryView.swift in Sources */,
 				7E079F882C8CFE4E009391D0 /* MoodDescriptorSelectView.swift in Sources */,
 				7EFA15382CAA51DF00F54CE5 /* AddContentSheets.swift in Sources */,

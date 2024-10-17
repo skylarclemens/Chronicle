@@ -35,7 +35,7 @@ struct SettingsHeader<Description: View>: View {
                     .padding(.top)
             }
             Text(title)
-                .font(.title2.weight(.semibold))
+                .headerTitle()
             if let description {
                 VStack {
                     description()

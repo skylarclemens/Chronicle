@@ -107,6 +107,13 @@ extension InventorySnapshot {
     ]
 }
 
+extension WellnessEntry {
+    static let sampleData: [WellnessEntry] = [
+        WellnessEntry(intensity: 5),
+        WellnessEntry(intensity: 10)
+    ]
+}
+
 extension Tag {
     static let sampleData: [Tag] = [
         Tag(name: "Top Shelf"),

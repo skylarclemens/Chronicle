@@ -26,140 +26,171 @@ struct SessionDetailsView: View {
                         HorizontalImagesView(imagesData: imagesData, rotateImages: true, showAllImages: false, allowImageViewer: true)
                             .frame(height: 180)
                     }
-                    HStack {
-                        Text(session.title)
-                            .font(.system(.title, design: .rounded))
-                            .fontWeight(.semibold)
-                            .padding(.vertical, 1)
-                        if session.favorite {
-                            Image(systemName: "bookmark.fill")
-                                .font(.caption)
-                                .foregroundStyle(.accent)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    if let item = session.item {
-                        HStack {
-                            VStack {
-                                if !fromItem {
-                                    NavigationLink {
-                                        ItemDetailsView(item: item)
-                                    } label: {
-                                        Label {
-                                            Text(item.name)
-                                                .foregroundStyle(.primary)
-                                        } icon: {
-                                            Image(systemName: "link")
-                                                .foregroundStyle(.accent)
-                                        }
-                                        .font(.footnote)
-                                    }
-                                    .buttonStyle(.plain)
-                                } else {
-                                    Label {
-                                        Text(item.name)
-                                            .foregroundStyle(.primary)
-                                    } icon: {
-                                        Image(systemName: "link")
-                                            .foregroundStyle(.accent)
-                                    }
-                                    .font(.footnote)
-                                }
-                            }
-                            .infoPillStyle(.accent)
-                            if let strain = item.strain,
-                               let strainType = strain.type {
-                                Text(strainType.rawValue.localizedCapitalized)
-                                    .font(.footnote)
-                                    .infoPillStyle()
-                            }
-                        }
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        if !(session.accessories?.isEmpty ?? true) || session.transaction != nil {
-                            Text("Details")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                        }
-                        if let amountConsumed = session.transaction {
-                            DetailSection(header: "Amount") {} headerRight: {
-                                HStack(spacing: 0) {
-                                    Text(amountConsumed.displayValue ?? 0, format: .number) +
-                                    Text(" \(amountConsumed.unit)")
-                                }
-                            }
-                        }
-                        if let accessories = session.accessories,
-                           !accessories.isEmpty {
-                            DetailSection(header: "Accessories", isScrollView: true) {
-                                ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach(accessories) { accessory in
-                                            NavigationLink {
-                                                AccessoryDetailsView(accessory: accessory)
-                                            } label: {
-                                                Label(accessory.name, systemImage: accessory.type?.symbol() ?? "")
-                                            }
-                                            .foregroundStyle(.primary)
-                                            .pillStyle()
-                                        }
-                                    }
-                                }
-                                .contentMargins(.horizontal, 16)
-                                .scrollIndicators(.hidden)
-                            }
-                        }
-                    }
-                    .padding(.top)
-                    
-                    if let notes = session.notes, !notes.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Notes")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            DetailSection {
-                                Text(notes)
-                                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                            }
-                        }
-                        .padding(.top)
-                    }
-                    if let mood = session.mood {
+                    VStack(alignment: .leading, spacing: 24) {
                         VStack(alignment: .leading) {
                             HStack {
-                                Text("Mood")
-                                    .font(.title2)
+                                Text(session.title)
+                                    .font(.system(.title, design: .rounded))
                                     .fontWeight(.semibold)
-                                if let moodType = mood.type {
-                                    Text(moodType.label)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 4)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 12)
-                                                .fill(moodType.color.opacity(0.33))
-                                        )
+                                    .padding(.vertical, 1)
+                                if session.favorite {
+                                    Image(systemName: "bookmark.fill")
+                                        .font(.caption)
+                                        .foregroundStyle(.accent)
                                 }
-                                    Spacer()
                             }
-                            if let emotions = mood.emotions,
-                                !emotions.isEmpty {
-                                DetailSection(header: "Feelings", isScrollView: true) {
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            if let item = session.item {
+                                HStack {
+                                    VStack {
+                                        if !fromItem {
+                                            NavigationLink {
+                                                ItemDetailsView(item: item)
+                                            } label: {
+                                                Label {
+                                                    Text(item.name)
+                                                        .foregroundStyle(.primary)
+                                                } icon: {
+                                                    Image(systemName: "link")
+                                                        .foregroundStyle(.accent)
+                                                }
+                                                .font(.footnote)
+                                            }
+                                            .buttonStyle(.plain)
+                                        } else {
+                                            Label {
+                                                Text(item.name)
+                                                    .foregroundStyle(.primary)
+                                            } icon: {
+                                                Image(systemName: "link")
+                                                    .foregroundStyle(.accent)
+                                            }
+                                            .font(.footnote)
+                                        }
+                                    }
+                                    .infoPillStyle(.accent)
+                                    if let strain = item.strain,
+                                       let strainType = strain.type {
+                                        Text(strainType.rawValue.localizedCapitalized)
+                                            .font(.footnote)
+                                            .infoPillStyle()
+                                    }
+                                }
+                            }
+                        }
+                        if !(session.accessories?.isEmpty ?? true) || session.transaction != nil {
+                            VStack(alignment: .leading) {
+                                Text("Details")
+                                    .headerTitle()
+                                if let amountConsumed = session.transaction {
+                                    DetailSection(header: "Amount") {} headerRight: {
+                                        HStack(spacing: 0) {
+                                            Text(amountConsumed.displayValue ?? 0, format: .number) +
+                                            Text(" \(amountConsumed.unit)")
+                                        }
+                                    }
+                                }
+                                if let accessories = session.accessories,
+                                   !accessories.isEmpty {
+                                    DetailSection(header: "Accessories", isScrollView: true) {
+                                        ScrollView(.horizontal) {
+                                            HStack {
+                                                ForEach(accessories) { accessory in
+                                                    NavigationLink {
+                                                        AccessoryDetailsView(accessory: accessory)
+                                                    } label: {
+                                                        Label(accessory.name, systemImage: accessory.type?.symbol() ?? "")
+                                                    }
+                                                    .foregroundStyle(.primary)
+                                                    .pillStyle()
+                                                }
+                                            }
+                                        }
+                                        .contentMargins(.horizontal, 16)
+                                        .scrollIndicators(.hidden)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if let notes = session.notes, !notes.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Notes")
+                                    .headerTitle()
+                                DetailSection {
+                                    Text(notes)
+                                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                                }
+                            }
+                        }
+                        if let mood = session.mood {
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("Mood")
+                                        .headerTitle()
+                                    if let moodType = mood.type {
+                                        Text(moodType.label)
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 4)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .fill(moodType.color.opacity(0.33))
+                                            )
+                                    }
+                                    Spacer()
+                                }
+                                if let emotions = mood.emotions,
+                                   !emotions.isEmpty {
+                                    DetailSection(header: "Feelings", isScrollView: true) {
+                                        ScrollView(.horizontal) {
+                                            HStack {
+                                                ForEach(emotions, id: \.self) { emotion in
+                                                    HStack {
+                                                        Text(emotion.emoji ?? "")
+                                                            .font(.system(size: 12))
+                                                        Text(emotion.name)
+                                                            .font(.subheadline)
+                                                            .fontWeight(.medium)
+                                                    }
+                                                    .padding(8)
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 12)
+                                                            .fill(.ultraThinMaterial)
+                                                    )
+                                                }
+                                            }
+                                        }
+                                        .contentMargins(.horizontal, 16)
+                                        .scrollIndicators(.hidden)
+                                    }
+                                }
+                            }
+                        }
+                        if let wellnessEntries = session.wellnessEntries,
+                           !wellnessEntries.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Wellness")
+                                    .headerTitle()
+                                DetailSection(isScrollView: true) {
                                     ScrollView(.horizontal) {
                                         HStack {
-                                            ForEach(emotions, id: \.self) { emotion in
-                                                HStack {
-                                                    Text(emotion.emoji ?? "")
-                                                        .font(.system(size: 12))
-                                                    Text(emotion.name)
-                                                        .font(.subheadline)
-                                                        .fontWeight(.medium)
+                                            ForEach(wellnessEntries) { entry in
+                                                if let wellness = entry.wellness {
+                                                    HStack {
+                                                        Text(wellness.name ?? "")
+                                                            .font(.subheadline)
+                                                            .fontWeight(.medium)
+                                                        if let intensity = entry.intensity {
+                                                            Text(intensity, format: .number)
+                                                                .font(.footnote)
+                                                                .padding(.horizontal, 6)
+                                                                .padding(.vertical, 2)
+                                                                .background(Color(.secondarySystemFill),
+                                                                            in: RoundedRectangle(cornerRadius: 6))
+                                                        }
+                                                    }
+                                                    .pillStyle()
                                                 }
-                                                .padding(8)
-                                                .background(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                        .fill(.ultraThinMaterial)
-                                                )
                                             }
                                         }
                                     }
@@ -168,57 +199,49 @@ struct SessionDetailsView: View {
                                 }
                             }
                         }
-                        .padding(.top)
-                    }
-                    if let audioData = session.audioData {
-                        VStack(alignment: .leading) {
-                            Text("Audio")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            DetailSection {
-                                AudioPlayerView(audioData: audioData)
-                            }
-                        }
-                        .padding(.top)
-                    }
-                    if let location = session.locationInfo,
-                       let mapItem = location.getMapData() {
-                        VStack(alignment: .leading) {
-                            Text("Location")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            Map(interactionModes: []) {
-                                Annotation(location.name ?? "", coordinate: mapItem.placemark.coordinate) {
-                                    Text(location.name ?? "")
+                        if let audioData = session.audioData {
+                            VStack(alignment: .leading) {
+                                Text("Audio")
+                                    .headerTitle()
+                                DetailSection {
+                                    AudioPlayerView(audioData: audioData)
                                 }
                             }
-                            .frame(height: 125)
-                            .clipShape(.rect(cornerRadius: 12))
                         }
-                        .padding(.top)
-                    }
-                    if let tags = session.tags,
-                        !tags.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Tags")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(tags) { tag in
-                                        Text(tag.name)
-                                            .tagStyle()
+                        if let location = session.locationInfo,
+                           let mapItem = location.getMapData() {
+                            VStack(alignment: .leading) {
+                                Text("Location")
+                                    .headerTitle()
+                                Map(interactionModes: []) {
+                                    Annotation(location.name ?? "", coordinate: mapItem.placemark.coordinate) {
+                                        Text(location.name ?? "")
                                     }
                                 }
+                                .frame(height: 125)
+                                .clipShape(.rect(cornerRadius: 12))
                             }
-                            .contentMargins(.horizontal, 16)
-                            .padding(.vertical, 12)
-                            .background(Color(UIColor.secondarySystemGroupedBackground),
-                                        in: RoundedRectangle(cornerRadius: 12))
                         }
-                        .padding(.top)
+                        if let tags = session.tags,
+                           !tags.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Tags")
+                                    .headerTitle()
+                                DetailSection(isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(tags) { tag in
+                                                Text(tag.name)
+                                                    .tagStyle()
+                                            }
+                                        }
+                                    }
+                                    .contentMargins(.horizontal, 16)
+                                }
+                            }
+                        }
+                        Spacer()
                     }
-                    Spacer()
                 }
                 .padding(.horizontal)
             }

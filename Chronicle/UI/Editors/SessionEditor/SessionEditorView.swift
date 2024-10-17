@@ -105,8 +105,7 @@ struct SessionEditorView: View {
                             Section {
                                 VStack(alignment: .leading) {
                                     Text("Amount Consumed")
-                                        .font(.title2)
-                                        .fontWeight(.semibold)
+                                        .headerTitle()
                                     VStack(alignment: .leading) {
                                         HStack {
                                             Text("Amount")
@@ -163,8 +162,7 @@ struct SessionEditorView: View {
                             Section {
                                 VStack(alignment: .leading) {
                                     Text("Notes")
-                                        .font(.title2)
-                                        .fontWeight(.semibold)
+                                        .headerTitle()
                                     Text(viewModel.notes)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(12)
@@ -175,70 +173,9 @@ struct SessionEditorView: View {
                             }
                         }
                         VStack(alignment: .leading) {
-                            HStack {
-                                Text("Mood")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                                if let currentMood = viewModel.mood,
-                                   let moodType = currentMood.type {
-                                    HStack(alignment: .bottom) {
-                                        Text(moodType.label)
-                                            .padding(.horizontal, 8)
-                                            .padding(.vertical, 4)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .fill(moodType.color.opacity(0.33))
-                                            )
-                                        Spacer()
-                                        Button {
-                                            openMood = true
-                                        } label: {
-                                            Text("Edit")
-                                        }
-                                        .buttonStyle(.mood)
-                                        .controlSize(.small)
-                                    }
-                                }
-                            }
-                            if let currentMood = viewModel.mood,
-                               let moodEmotions = currentMood.emotions,
-                               !moodEmotions.isEmpty {
-                                DetailSection(header: "Feelings", isScrollView: true) {
-                                    ScrollView(.horizontal) {
-                                        HStack {
-                                            ForEach(moodEmotions, id: \.self) { emotion in
-                                                HStack {
-                                                    Text(emotion.emoji ?? "")
-                                                        .font(.system(size: 12))
-                                                    Text(emotion.name)
-                                                        .font(.subheadline)
-                                                        .fontWeight(.medium)
-                                                }
-                                                .padding(8)
-                                                .background(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                        .fill(.ultraThinMaterial)
-                                                )
-                                            }
-                                        }
-                                    }
-                                    .contentMargins(.horizontal, 16)
-                                    .scrollIndicators(.hidden)
-                                }
-                            } else {
-                                Button {
-                                    openMood = true
-                                } label: {
-                                    HStack {
-                                        Text("Log how you're feeling")
-                                        Spacer()
-                                        Image(systemName: "chevron.right")
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                                .buttonStyle(.mood)
-                                .controlSize(.large)
-                            }
+                            Text("Logs")
+                                .headerTitle()
+                            LogsPickerView(viewModel: $viewModel)
                         }
                         .padding(.top)
                         if let location = viewModel.locationInfo,
@@ -246,11 +183,10 @@ struct SessionEditorView: View {
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("Location")
-                                        .font(.title2)
-                                        .fontWeight(.semibold)
+                                        .headerTitle()
                                     Spacer()
                                     Menu {
-                                        Button("Remove", role: .destructive) {
+                                        Button("Remove", systemImage: "trash", role: .destructive) {
                                             withAnimation {
                                                 viewModel.locationInfo = nil
                                             }
@@ -424,14 +360,6 @@ struct SessionEditorView: View {
                 .presentationDetents([.medium])
                 .presentationBackground(.thickMaterial)
             }
-            .sheet(isPresented: $openMood) {
-                NavigationStack {
-                    MoodSelectorView(sessionViewModel: $viewModel)
-                }
-                .tint(.primary)
-                .presentationDetents([.large])
-                .presentationBackground(.thickMaterial)
-            }
             .sheet(isPresented: $openTags) {
                 TagEditorView(tags: $viewModel.tags, context: .session)
             }
@@ -452,9 +380,12 @@ struct SessionEditorView: View {
                 viewModel.notes = session.notes ?? ""
                 viewModel.selectedImagesData = session.imagesData ?? []
                 viewModel.transaction = session.transaction
-                viewModel.amountConsumed = session.transaction?.amount?.value
+                if let amountConsumed = session.transaction?.amount?.value {
+                    viewModel.amountConsumed = abs(amountConsumed)
+                }
                 viewModel.tags = session.tags ?? []
                 viewModel.accessories = session.accessories ?? []
+                viewModel.wellnessEntries = session.wellnessEntries ?? []
                 viewModel.audioData = session.audioData
                 self.shouldUpdateInventory = session.transaction?.updateInventory ?? true
                 
@@ -489,6 +420,7 @@ struct SessionEditorView: View {
                 item.transactions?.append(transaction)
             }
             session.transaction = transaction
+            session.wellnessEntries = viewModel.wellnessEntries
             
             if self.session == nil {
                 modelContext.insert(session)
@@ -579,6 +511,7 @@ class SessionEditorViewModel {
     var amountConsumed: Double?
     var tags: [Tag] = []
     var accessories: [Accessory] = []
+    var wellnessEntries: [WellnessEntry] = []
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
