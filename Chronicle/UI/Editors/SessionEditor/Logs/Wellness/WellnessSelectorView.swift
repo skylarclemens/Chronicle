@@ -142,9 +142,6 @@ struct WellnessSelectorView: View {
                 viewModel.entries.append(contentsOf: sessionViewModel.wellnessEntries)
             }
         }
-        .onChange(of: viewModel.entries) { oldValue, newValue in
-            print("Entries changed: \(newValue.count) entries")
-        }
     }
     
     private func save() {
@@ -206,13 +203,11 @@ struct AddWellnessEntryView: View {
     }
     
     private func addWellnessEntry() {
-        print("Before adding: \(viewModel.entries.count) entries")
         guard let wellness = viewModel.selectedWellness else { return }
         let newEntry = WellnessEntry(wellness: wellness, intensity: Int(intensity))
         withAnimation {
             viewModel.entries.append(newEntry)
         }
-        print("After adding: \(viewModel.entries.count) entries")
     }
 }
 
