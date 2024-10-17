@@ -296,13 +296,9 @@
 				7E08D4222C6BFB4400F96328 /* TimePickerWheel.swift */,
 				7E3B557B2C8A2EFD00AB0961 /* DurationPickerView.swift */,
 				7ED7478C2C8A909E00F07679 /* NotesEditorView.swift */,
-				7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */,
-				7E079F872C8CFE4E009391D0 /* MoodDescriptorSelectView.swift */,
-				7ED747902C8BB3F100F07679 /* CustomSliderView.swift */,
 				7ED0D8052CA8C4FC00FF8D8A /* AccessoriesSelectorView.swift */,
 				7E26DF812CAF57DA00F54E00 /* LocationSelectorView.swift */,
-				7EC3D9702CC0571D00E6522C /* LogsPickerView.swift */,
-				7EC3D9722CC0740200E6522C /* WellnessSelectorView.swift */,
+				7ECDBAA52CC1B7F50036BA33 /* Logs */,
 			);
 			path = SessionEditor;
 			sourceTree = "<group>";
@@ -312,16 +308,11 @@
 			children = (
 				7E26DF7D2CAF352300F54E00 /* Editors */,
 				7E656A262C94CD3A00C6FD6A /* Styles */,
-				7EDFFA542CA1ED2F0033163E /* Tags */,
 				7E523C1A2C77E0DE005B6186 /* Images */,
-				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
-				7E7349BA2C811BE300262930 /* CalendarView.swift */,
 				7E08D41D2C6BEE7700F96328 /* BackgroundView.swift */,
 				7E81C3452CAA17C7006E9DD3 /* AddView.swift */,
 				7EFA15372CAA51DF00F54CE5 /* AddContentSheets.swift */,
-				7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */,
-				7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */,
-				7E3E7DBF2CB70CFF0072B6E5 /* SettingsHeader.swift */,
+				7ECDBAA72CC1B83D0036BA33 /* Components */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -391,6 +382,7 @@
 				7E08D4172C6BD80600F96328 /* StrainEditor */,
 				7E08D41F2C6BF6C000F96328 /* SessionEditor */,
 				7ECAE6932CA8803D00ECEFD9 /* AccessoryEditor */,
+				7EDFFA542CA1ED2F0033163E /* Tags */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -664,6 +656,46 @@
 				7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */,
 			);
 			path = Accessory;
+			sourceTree = "<group>";
+		};
+		7ECDBAA42CC1B7ED0036BA33 /* Wellness */ = {
+			isa = PBXGroup;
+			children = (
+				7EC3D9722CC0740200E6522C /* WellnessSelectorView.swift */,
+			);
+			path = Wellness;
+			sourceTree = "<group>";
+		};
+		7ECDBAA52CC1B7F50036BA33 /* Logs */ = {
+			isa = PBXGroup;
+			children = (
+				7EC3D9702CC0571D00E6522C /* LogsPickerView.swift */,
+				7ECDBAA62CC1B7F90036BA33 /* Mood */,
+				7ECDBAA42CC1B7ED0036BA33 /* Wellness */,
+			);
+			path = Logs;
+			sourceTree = "<group>";
+		};
+		7ECDBAA62CC1B7F90036BA33 /* Mood */ = {
+			isa = PBXGroup;
+			children = (
+				7ED7478E2C8BA9A100F07679 /* MoodSelectorView.swift */,
+				7E079F872C8CFE4E009391D0 /* MoodDescriptorSelectView.swift */,
+			);
+			path = Mood;
+			sourceTree = "<group>";
+		};
+		7ECDBAA72CC1B83D0036BA33 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				7ED747902C8BB3F100F07679 /* CustomSliderView.swift */,
+				7E7349BA2C811BE300262930 /* CalendarView.swift */,
+				7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */,
+				7E2504DC2C768CDB00496296 /* DetailSection.swift */,
+				7E3E7DBF2CB70CFF0072B6E5 /* SettingsHeader.swift */,
+				7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		7EDFFA512CA1EB4D0033163E /* Tag */ = {
