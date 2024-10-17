@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct LogsPickerView: View {
     @Binding var viewModel: SessionEditorViewModel
     
     @State private var openMood: Bool = false
-    @State private var openWellness: Bool = true
+    @State private var openWellness: Bool = false
     
     var body: some View {
         VStack(spacing: 16) {
@@ -29,22 +30,24 @@ struct LogsPickerView: View {
                         }
                     }
                     .buttonStyle(.mood)
-                    .controlSize(.large)
+                    .controlSize(.extraLarge)
                 }
-                HStack {
-                    Button {
-                        openWellness = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "heart")
-                            Text("Wellness")
-                            Spacer()
-                            Image(systemName: "plus")
-                                .foregroundStyle(.secondary)
+                if viewModel.wellnessEntries.isEmpty {
+                    HStack {
+                        Button {
+                            openWellness = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "heart")
+                                Text("Wellness")
+                                Spacer()
+                                Image(systemName: "plus")
+                                    .foregroundStyle(.secondary)
+                            }
                         }
+                        .buttonStyle(.sessionLog(color: .pink))
+                        .controlSize(.extraLarge)
                     }
-                    .buttonStyle(.sessionLog(color: .pink))
-                    .controlSize(.large)
                 }
             }
             
@@ -64,13 +67,22 @@ struct LogsPickerView: View {
                                         .fill(moodType.color.opacity(0.33))
                                 )
                             Spacer()
-                            Button {
-                                openMood = true
+                            Menu {
+                                Button("Edit", systemImage: "pencil") {
+                                    openMood = true
+                                }
+                                Button("Remove", systemImage: "trash", role: .destructive) {
+                                    withAnimation {
+                                        viewModel.mood = nil
+                                    }
+                                }
                             } label: {
-                                Text("Edit")
+                                Image(systemName: "ellipsis")
+                                    .imageScale(.large)
+                                    .padding(8)
+                                    .contentShape(Circle())
                             }
-                            .buttonStyle(.mood)
-                            .controlSize(.small)
+                            .buttonStyle(.plain)
                         }
                     }
                     if let moodEmotions = currentMood.emotions,
@@ -81,7 +93,7 @@ struct LogsPickerView: View {
                                     ForEach(moodEmotions, id: \.self) { emotion in
                                         HStack {
                                             Text(emotion.emoji ?? "")
-                                                .font(.system(size: 12))
+                                                .font(.caption)
                                             Text(emotion.name)
                                                 .font(.subheadline)
                                                 .fontWeight(.medium)
@@ -102,6 +114,54 @@ struct LogsPickerView: View {
             }
             
             /// Wellness
+            if !viewModel.wellnessEntries.isEmpty {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Wellness")
+                            .font(.title3.weight(.medium))
+                        Spacer()
+                        Menu {
+                            Button("Edit", systemImage: "pencil") {
+                                openWellness = true
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .imageScale(.large)
+                                .padding(8)
+                                .contentShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    DetailSection(isScrollView: true) {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(viewModel.wellnessEntries) { entry in
+                                    HStack {
+                                        Text(entry.wellness?.name ?? "")
+                                            .font(.subheadline)
+                                            .fontWeight(.medium)
+                                        if let intensity = entry.intensity {
+                                            Text(intensity, format: .number)
+                                                .font(.footnote)
+                                                .padding(.horizontal, 6)
+                                                .padding(.vertical, 2)
+                                                .background(Color(.secondarySystemFill),
+                                                            in: RoundedRectangle(cornerRadius: 6))
+                                        }
+                                    }
+                                    .padding(8)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(.ultraThinMaterial)
+                                    )
+                                }
+                            }
+                        }
+                        .contentMargins(.horizontal, 16)
+                        .scrollIndicators(.hidden)
+                    }
+                }
+            }
         }
         .sheet(isPresented: $openMood) {
             NavigationStack {
@@ -113,37 +173,7 @@ struct LogsPickerView: View {
         }
         .sheet(isPresented: $openWellness) {
             WellnessSelectorView(sessionViewModel: $viewModel)
-        }
-    }
-}
-
-struct WellnessSelectorView: View {
-    @Environment(\.dismiss) private var dismiss
-    @Binding var sessionViewModel: SessionEditorViewModel
-    
-    var body: some View {
-        NavigationStack {
-            VStack {
-                
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                    }
-                    .buttonStyle(.close)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                    .tint(.accent)
-                }
-            }
+                .id("WellnessSelectorView")
         }
     }
 }
@@ -159,5 +189,6 @@ struct WellnessSelectorView: View {
     .modelContainer(SampleData.shared.container)
     .onAppear {
         viewModel.mood = SampleData.shared.mood
+        viewModel.wellnessEntries = [SampleData.shared.wellnessEntry]
     }
 }

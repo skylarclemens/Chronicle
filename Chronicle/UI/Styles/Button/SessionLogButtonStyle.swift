@@ -84,9 +84,9 @@ struct SessionLogButtonStyle: ButtonStyle {
         case .regular:
             return .body
         case .large:
-            return .headline.weight(.regular)
+            return .body
         case .extraLarge:
-            return .title3
+            return .body
         @unknown default:
             fatalError()
         }

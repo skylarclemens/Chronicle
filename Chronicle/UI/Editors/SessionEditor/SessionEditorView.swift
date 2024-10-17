@@ -190,7 +190,7 @@ struct SessionEditorView: View {
                                         .fontWeight(.semibold)
                                     Spacer()
                                     Menu {
-                                        Button("Remove", role: .destructive) {
+                                        Button("Remove", systemImage: "trash", role: .destructive) {
                                             withAnimation {
                                                 viewModel.locationInfo = nil
                                             }
@@ -389,6 +389,7 @@ struct SessionEditorView: View {
                 }
                 viewModel.tags = session.tags ?? []
                 viewModel.accessories = session.accessories ?? []
+                viewModel.wellnessEntries = session.wellnessEntries ?? []
                 viewModel.audioData = session.audioData
                 self.shouldUpdateInventory = session.transaction?.updateInventory ?? true
                 
@@ -423,6 +424,7 @@ struct SessionEditorView: View {
                 item.transactions?.append(transaction)
             }
             session.transaction = transaction
+            session.wellnessEntries = viewModel.wellnessEntries
             
             if self.session == nil {
                 modelContext.insert(session)
@@ -513,6 +515,7 @@ class SessionEditorViewModel {
     var amountConsumed: Double?
     var tags: [Tag] = []
     var accessories: [Accessory] = []
+    var wellnessEntries: [WellnessEntry] = []
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
