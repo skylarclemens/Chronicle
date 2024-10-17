@@ -11,13 +11,15 @@ import SwiftData
 @Model
 public class Wellness {
     public var id: UUID?
-    public var name: String?
+    public var createdAt: Date = Date()
+    public var name: String = ""
     public var type: WellnessType?
-    public var isCustom: Bool?
+    public var isCustom: Bool = false
     public var entries: [WellnessEntry]?
     
-    init(id: UUID = UUID(), name: String? = nil, type: WellnessType? = nil, isCustom: Bool? = false, entries: [WellnessEntry]? = []) {
+    init(id: UUID = UUID(), createdAt: Date = Date(), name: String = "", type: WellnessType? = nil, isCustom: Bool = false, entries: [WellnessEntry]? = []) {
         self.id = id
+        self.createdAt = createdAt
         self.name = name
         self.type = type
         self.isCustom = isCustom

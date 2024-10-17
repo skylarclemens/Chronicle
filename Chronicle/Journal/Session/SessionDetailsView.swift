@@ -177,7 +177,7 @@ struct SessionDetailsView: View {
                                             ForEach(wellnessEntries) { entry in
                                                 if let wellness = entry.wellness {
                                                     HStack {
-                                                        Text(wellness.name ?? "")
+                                                        Text(wellness.name)
                                                             .font(.subheadline)
                                                             .fontWeight(.medium)
                                                         if let intensity = entry.intensity {

@@ -386,6 +386,7 @@ struct SessionEditorView: View {
                 viewModel.tags = session.tags ?? []
                 viewModel.accessories = session.accessories ?? []
                 viewModel.wellnessEntries = session.wellnessEntries ?? []
+                viewModel.activityEntries = session.activityEntries ?? []
                 viewModel.audioData = session.audioData
                 self.shouldUpdateInventory = session.transaction?.updateInventory ?? true
                 
@@ -421,6 +422,7 @@ struct SessionEditorView: View {
             }
             session.transaction = transaction
             session.wellnessEntries = viewModel.wellnessEntries
+            session.activityEntries = viewModel.activityEntries
             
             if self.session == nil {
                 modelContext.insert(session)
@@ -512,6 +514,7 @@ class SessionEditorViewModel {
     var tags: [Tag] = []
     var accessories: [Accessory] = []
     var wellnessEntries: [WellnessEntry] = []
+    var activityEntries: [ActivityEntry] = []
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
