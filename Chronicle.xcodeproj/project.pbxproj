@@ -95,6 +95,7 @@
 		7ECAE69C2CA8937400ECEFD9 /* AccessoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */; };
 		7ECAFC272C6410340056A44E /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC262C6410340056A44E /* Session.swift */; };
 		7ECAFC2A2C6421310056A44E /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC292C6421310056A44E /* SampleData.swift */; };
+		7ECDBAAA2CC1BA090036BA33 /* HeaderTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECDBAA92CC1B9FD0036BA33 /* HeaderTitle.swift */; };
 		7ECFA5352CAB053F00BC5E54 /* ContinuousCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */; };
 		7ECFA53B2CAB279C00BC5E54 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA53A2CAB279C00BC5E54 /* Calendar.swift */; };
 		7ECFA53D2CAB475C00BC5E54 /* WeekScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */; };
@@ -224,6 +225,7 @@
 		7ECAE69B2CA8937400ECEFD9 /* AccessoryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryDetailsView.swift; sourceTree = "<group>"; };
 		7ECAFC262C6410340056A44E /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		7ECAFC292C6421310056A44E /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
+		7ECDBAA92CC1B9FD0036BA33 /* HeaderTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTitle.swift; sourceTree = "<group>"; };
 		7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuousCalendarView.swift; sourceTree = "<group>"; };
 		7ECFA53A2CAB279C00BC5E54 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekScrollerView.swift; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 		7E656A262C94CD3A00C6FD6A /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				7ECDBAA82CC1B9B60036BA33 /* Text */,
 				7E70B9802C9253450092ECE7 /* Button */,
 				7E9ACB512CA1F67400CFF92D /* TagStyle.swift */,
 				7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */,
@@ -696,6 +699,14 @@
 				7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		7ECDBAA82CC1B9B60036BA33 /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				7ECDBAA92CC1B9FD0036BA33 /* HeaderTitle.swift */,
+			);
+			path = Text;
 			sourceTree = "<group>";
 		};
 		7EDFFA512CA1EB4D0033163E /* Tag */ = {
@@ -959,6 +970,7 @@
 				7EFCC60F2C7E6DC90090588D /* Emotion.swift in Sources */,
 				7E2504DA2C76838500496296 /* ColorData.swift in Sources */,
 				7EE626242C6ACE4B00448F80 /* IngredientsInputView.swift in Sources */,
+				7ECDBAAA2CC1BA090036BA33 /* HeaderTitle.swift in Sources */,
 				7EC3D96D2CC0529F00E6522C /* Wellness.swift in Sources */,
 				7EF2D05E2CB8D9BE00D72BAC /* TransactionHistoryView.swift in Sources */,
 				7E079F882C8CFE4E009391D0 /* MoodDescriptorSelectView.swift in Sources */,

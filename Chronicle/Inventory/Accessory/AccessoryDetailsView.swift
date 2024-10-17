@@ -51,8 +51,7 @@ struct AccessoryDetailsView: View {
                         !sessions.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Recent Sessions")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                                 .padding(.horizontal)
                             VStack(alignment: .leading) {
                                 ScrollView(.horizontal) {

@@ -79,8 +79,7 @@ struct SessionDetailsView: View {
                     VStack(alignment: .leading) {
                         if !(session.accessories?.isEmpty ?? true) || session.transaction != nil {
                             Text("Details")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                         }
                         if let amountConsumed = session.transaction {
                             DetailSection(header: "Amount") {} headerRight: {
@@ -116,8 +115,7 @@ struct SessionDetailsView: View {
                     if let notes = session.notes, !notes.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Notes")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                             DetailSection {
                                 Text(notes)
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -129,8 +127,7 @@ struct SessionDetailsView: View {
                         VStack(alignment: .leading) {
                             HStack {
                                 Text("Mood")
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
+                                    .headerTitle()
                                 if let moodType = mood.type {
                                     Text(moodType.label)
                                         .padding(.horizontal, 8)
@@ -173,8 +170,7 @@ struct SessionDetailsView: View {
                     if let audioData = session.audioData {
                         VStack(alignment: .leading) {
                             Text("Audio")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                             DetailSection {
                                 AudioPlayerView(audioData: audioData)
                             }
@@ -185,8 +181,7 @@ struct SessionDetailsView: View {
                        let mapItem = location.getMapData() {
                         VStack(alignment: .leading) {
                             Text("Location")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                             Map(interactionModes: []) {
                                 Annotation(location.name ?? "", coordinate: mapItem.placemark.coordinate) {
                                     Text(location.name ?? "")
@@ -201,8 +196,7 @@ struct SessionDetailsView: View {
                         !tags.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Tags")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                             ScrollView(.horizontal) {
                                 HStack {
                                     ForEach(tags) { tag in

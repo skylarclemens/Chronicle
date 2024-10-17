@@ -36,8 +36,7 @@ struct StrainDetailsView: View {
                     if !strain.desc.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Description")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                             DetailSection {
                                 Text(strain.desc)
                                     .font(.body)
@@ -50,8 +49,7 @@ struct StrainDetailsView: View {
                         !items.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Related Items")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                                 .padding(.horizontal)
                             ScrollView(.horizontal) {
                                 HStack {

@@ -105,8 +105,7 @@ struct SessionEditorView: View {
                             Section {
                                 VStack(alignment: .leading) {
                                     Text("Amount Consumed")
-                                        .font(.title2)
-                                        .fontWeight(.semibold)
+                                        .headerTitle()
                                     VStack(alignment: .leading) {
                                         HStack {
                                             Text("Amount")
@@ -163,8 +162,7 @@ struct SessionEditorView: View {
                             Section {
                                 VStack(alignment: .leading) {
                                     Text("Notes")
-                                        .font(.title2)
-                                        .fontWeight(.semibold)
+                                        .headerTitle()
                                     Text(viewModel.notes)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(12)
@@ -176,8 +174,7 @@ struct SessionEditorView: View {
                         }
                         VStack(alignment: .leading) {
                             Text("Logs")
-                                .font(.title2)
-                                .fontWeight(.semibold)
+                                .headerTitle()
                             LogsPickerView(viewModel: $viewModel)
                         }
                         .padding(.top)
@@ -186,8 +183,7 @@ struct SessionEditorView: View {
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("Location")
-                                        .font(.title2)
-                                        .fontWeight(.semibold)
+                                        .headerTitle()
                                     Spacer()
                                     Menu {
                                         Button("Remove", systemImage: "trash", role: .destructive) {

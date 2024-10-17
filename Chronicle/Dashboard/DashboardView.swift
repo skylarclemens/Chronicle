@@ -46,8 +46,7 @@ struct DashboardView: View {
                     .padding(.top)
                     VStack(alignment: .leading) {
                         Text("Recent Sessions")
-                            .font(.title2)
-                            .bold()
+                            .headerTitle()
                             .accessibilityAddTraits(.isHeader)
                         if !sessions.isEmpty {
                             LazyVStack(spacing: 16) {
