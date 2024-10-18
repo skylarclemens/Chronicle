@@ -50,13 +50,13 @@ struct LogsPickerView: View {
                         .buttonStyle(.sessionLog(color: .pink))
                         .controlSize(.extraLarge)
                     }
-                    if viewModel.activityEntries.isEmpty {
+                    if viewModel.activities.isEmpty {
                         Button {
-                            
+                            openActivity = true
                         } label: {
                             HStack {
                                 Image(systemName: "figure.run")
-                                Text("Activity")
+                                Text("Activities")
                                 Spacer()
                                 Image(systemName: "plus")
                                     .foregroundStyle(.secondary)
@@ -181,6 +181,45 @@ struct LogsPickerView: View {
                     }
                 }
             }
+            
+            /// Activities
+            if !viewModel.activities.isEmpty {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Activities")
+                            .font(.title3.weight(.medium))
+                        Spacer()
+                        Menu {
+                            Button("Edit", systemImage: "pencil") {
+                                openActivity = true
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .imageScale(.large)
+                                .padding(8)
+                                .contentShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    DetailSection(isScrollView: true) {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(viewModel.activities) { activity in
+                                    HStack {
+                                        if let symbol = activity.symbol {
+                                            Image(systemName: symbol)
+                                        }
+                                        Text(activity.name)
+                                    }
+                                    .pillStyle()
+                                }
+                            }
+                        }
+                        .contentMargins(.horizontal, 16)
+                        .scrollIndicators(.hidden)
+                    }
+                }
+            }
         }
         .sheet(isPresented: $openMood) {
             NavigationStack {
@@ -193,6 +232,9 @@ struct LogsPickerView: View {
         .sheet(isPresented: $openWellness) {
             WellnessSelectorView(sessionViewModel: $viewModel)
                 .id("WellnessSelectorView")
+        }
+        .sheet(isPresented: $openActivity) {
+            AllActivitiesList(sessionViewModel: $viewModel)
         }
     }
 }
@@ -209,6 +251,5 @@ struct LogsPickerView: View {
     .onAppear {
         viewModel.mood = SampleData.shared.mood
         viewModel.wellnessEntries = [SampleData.shared.wellnessEntry]
-        viewModel.activityEntries = [SampleData.shared.activityEntry]
     }
 }

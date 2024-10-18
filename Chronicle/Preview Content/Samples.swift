@@ -114,13 +114,6 @@ extension WellnessEntry {
     ]
 }
 
-extension ActivityEntry {
-    static let sampleData: [ActivityEntry] = [
-        ActivityEntry(activity: Activity.predefinedData[1]),
-        ActivityEntry(activity: Activity.predefinedData[10])
-    ]
-}
-
 extension Tag {
     static let sampleData: [Tag] = [
         Tag(name: "Top Shelf"),

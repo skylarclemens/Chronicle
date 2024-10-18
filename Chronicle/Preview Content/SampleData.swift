@@ -86,10 +86,6 @@ class SampleData {
             container.mainContext.insert(activity)
         }
         
-        for activityEntry in ActivityEntry.sampleData {
-            container.mainContext.insert(activityEntry)
-        }
-        
         for randomDateSession in Session.randomDatesSampleData {
             randomDateSession.item = item
             container.mainContext.insert(session)
@@ -119,8 +115,10 @@ class SampleData {
         wellnessEntry.wellness = wellness
         wellnessEntry.session = session
         session.wellnessEntries?.append(wellnessEntry)
-        activityEntry.session = session
-        session.activityEntries?.append(activityEntry)
+        activity.sessions?.append(session)
+        activity2.sessions?.append(session)
+        session.activities?.append(activity)
+        session.activities?.append(activity2)
         accessory.sessions?.append(session)
         
         do {
@@ -186,8 +184,12 @@ class SampleData {
         WellnessEntry.sampleData[0]
     }
     
-    var activityEntry: ActivityEntry {
-        ActivityEntry.sampleData[0]
+    var activity: Activity {
+        Activity.predefinedData[10]
+    }
+    
+    var activity2: Activity {
+        Activity.predefinedData[12]
     }
     
     var tag: Tag {

@@ -199,6 +199,32 @@ struct SessionDetailsView: View {
                                 }
                             }
                         }
+                        if let activities = session.activities,
+                           !activities.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Activities")
+                                    .headerTitle()
+                                DetailSection(isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(activities) { activity in
+                                                HStack {
+                                                    if let symbol = activity.symbol {
+                                                        Image(systemName: symbol)
+                                                    }
+                                                    Text(activity.name)
+                                                        .font(.subheadline)
+                                                        .fontWeight(.medium)
+                                                }
+                                                .pillStyle()
+                                            }
+                                        }
+                                    }
+                                    .contentMargins(.horizontal, 16)
+                                    .scrollIndicators(.hidden)
+                                }
+                            }
+                        }
                         if let audioData = session.audioData {
                             VStack(alignment: .leading) {
                                 Text("Audio")

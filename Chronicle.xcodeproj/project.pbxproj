@@ -72,6 +72,7 @@
 		7E7DDC192C66A8730057F983 /* ItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7DDC182C66A8730057F983 /* ItemEditorView.swift */; };
 		7E80B7FB2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80B7FA2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift */; };
 		7E81C3462CAA17C7006E9DD3 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E81C3452CAA17C7006E9DD3 /* AddView.swift */; };
+		7E8AC9FC2CC2ED70006289CB /* AddNewActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8AC9FB2CC2ED70006289CB /* AddNewActivityView.swift */; };
 		7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951CFF2C73D10E0023922C /* ItemCardView.swift */; };
 		7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951D042C73E7E20023922C /* CompactSessionCardView.swift */; };
 		7E9ACB522CA1F67700CFF92D /* TagStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9ACB512CA1F67400CFF92D /* TagStyle.swift */; };
@@ -97,7 +98,7 @@
 		7ECAFC2A2C6421310056A44E /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECAFC292C6421310056A44E /* SampleData.swift */; };
 		7ECDBAAA2CC1BA090036BA33 /* HeaderTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECDBAA92CC1B9FD0036BA33 /* HeaderTitle.swift */; };
 		7ECDBAAD2CC1C3C80036BA33 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECDBAAC2CC1C3C80036BA33 /* Activity.swift */; };
-		7ECDBAAF2CC1C4F40036BA33 /* ActivityEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECDBAAE2CC1C4F10036BA33 /* ActivityEntry.swift */; };
+		7ECDBAB22CC1CCB40036BA33 /* ActivitySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECDBAB12CC1CCB40036BA33 /* ActivitySelectorView.swift */; };
 		7ECFA5352CAB053F00BC5E54 /* ContinuousCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */; };
 		7ECFA53B2CAB279C00BC5E54 /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA53A2CAB279C00BC5E54 /* Calendar.swift */; };
 		7ECFA53D2CAB475C00BC5E54 /* WeekScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */; };
@@ -203,6 +204,7 @@
 		7E7DDC182C66A8730057F983 /* ItemEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorView.swift; sourceTree = "<group>"; };
 		7E80B7FA2CA9FDA400E9CDD1 /* EditableHorizontalImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableHorizontalImagesView.swift; sourceTree = "<group>"; };
 		7E81C3452CAA17C7006E9DD3 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
+		7E8AC9FB2CC2ED70006289CB /* AddNewActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewActivityView.swift; sourceTree = "<group>"; };
 		7E951CFF2C73D10E0023922C /* ItemCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCardView.swift; sourceTree = "<group>"; };
 		7E951D042C73E7E20023922C /* CompactSessionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactSessionCardView.swift; sourceTree = "<group>"; };
 		7E9ACB512CA1F67400CFF92D /* TagStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStyle.swift; sourceTree = "<group>"; };
@@ -229,7 +231,7 @@
 		7ECAFC292C6421310056A44E /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		7ECDBAA92CC1B9FD0036BA33 /* HeaderTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTitle.swift; sourceTree = "<group>"; };
 		7ECDBAAC2CC1C3C80036BA33 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
-		7ECDBAAE2CC1C4F10036BA33 /* ActivityEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityEntry.swift; sourceTree = "<group>"; };
+		7ECDBAB12CC1CCB40036BA33 /* ActivitySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySelectorView.swift; sourceTree = "<group>"; };
 		7ECFA5342CAB053F00BC5E54 /* ContinuousCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuousCalendarView.swift; sourceTree = "<group>"; };
 		7ECFA53A2CAB279C00BC5E54 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		7ECFA53C2CAB475C00BC5E54 /* WeekScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekScrollerView.swift; sourceTree = "<group>"; };
@@ -677,6 +679,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC3D9702CC0571D00E6522C /* LogsPickerView.swift */,
+				7ECDBAB02CC1CCA10036BA33 /* Activity */,
 				7ECDBAA62CC1B7F90036BA33 /* Mood */,
 				7ECDBAA42CC1B7ED0036BA33 /* Wellness */,
 			);
@@ -717,7 +720,15 @@
 			isa = PBXGroup;
 			children = (
 				7ECDBAAC2CC1C3C80036BA33 /* Activity.swift */,
-				7ECDBAAE2CC1C4F10036BA33 /* ActivityEntry.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		7ECDBAB02CC1CCA10036BA33 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				7ECDBAB12CC1CCB40036BA33 /* ActivitySelectorView.swift */,
+				7E8AC9FB2CC2ED70006289CB /* AddNewActivityView.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -925,6 +936,7 @@
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
 				7ECAE69C2CA8937400ECEFD9 /* AccessoryDetailsView.swift in Sources */,
+				7E8AC9FC2CC2ED70006289CB /* AddNewActivityView.swift in Sources */,
 				7E164A602CA4C565008996F1 /* UsagePatternsView.swift in Sources */,
 				7E7349B92C81148B00262930 /* SessionsListView.swift in Sources */,
 				7EFCC6112C7E6F040090588D /* Compound.swift in Sources */,
@@ -936,7 +948,6 @@
 				7EC3D96F2CC0534100E6522C /* WellnessEntry.swift in Sources */,
 				7ECAE6922CA87B9800ECEFD9 /* Accessory.swift in Sources */,
 				7E5E2E2A2CB5B73B00A1C3FC /* UnitsSettingsView.swift in Sources */,
-				7ECDBAAF2CC1C4F40036BA33 /* ActivityEntry.swift in Sources */,
 				7E26DF7F2CAF384500F54E00 /* SearchView.swift in Sources */,
 				7EFCDE382CAE0681002D68AC /* ItemTypeDistributionChartView.swift in Sources */,
 				7E530BEC2CBF2E3800B8DDE8 /* SelectedItemAnalyticsView.swift in Sources */,
@@ -977,6 +988,7 @@
 				7E1D08702C9782F3004B39D5 /* ItemPurchaseInputView.swift in Sources */,
 				7E26DF752CAF219A00F54E00 /* StrainRowView.swift in Sources */,
 				7E4540382CA7766900ADB083 /* AudioPlayer.swift in Sources */,
+				7ECDBAB22CC1CCB40036BA33 /* ActivitySelectorView.swift in Sources */,
 				7E5E2E2E2CB5BA2800A1C3FC /* DefaultUnits.swift in Sources */,
 				7E70B9822C9254830092ECE7 /* SessionLogButtonStyle.swift in Sources */,
 				7EC3D9712CC0571D00E6522C /* LogsPickerView.swift in Sources */,

@@ -76,7 +76,6 @@ struct WellnessSelectorView: View {
                             Spacer()
                             Image(systemName: "plus.circle.fill")
                         }
-                        
                     }
                     ForEach(filteredWellnessList) { wellness in
                         Button {
