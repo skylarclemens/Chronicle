@@ -43,7 +43,7 @@ struct DetailSection<Content: View, HeaderRight: View>: View {
         }
         .padding(.horizontal, isScrollView ? 0 : nil)
         .padding(.vertical)
-        .background(showBackground ? Color(uiColor: UIColor.secondarySystemGroupedBackground) : .clear,
+        .background(showBackground ? Color(.secondarySystemGroupedBackground) : .clear,
                     in: RoundedRectangle(cornerRadius: 12))
     }
 }

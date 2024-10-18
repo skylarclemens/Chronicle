@@ -16,6 +16,7 @@ struct ContentView: View {
     @State var selectedDate: Date = Date()
     
     @Query var wellness: [Wellness]
+    @Query var activities: [Activity]
 
     var body: some View {
         TabView(selection: $activeTab) {
@@ -61,6 +62,16 @@ struct ContentView: View {
                     try modelContext.save()
                 } catch {
                     print("Model context failed to save when adding predefined Wellness: \(error.localizedDescription)")
+                }
+            }
+            if activities.isEmpty {
+                for activity in Activity.predefinedData {
+                    modelContext.insert(activity)
+                }
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Model context failed to save when adding predefined Activity: \(error.localizedDescription)")
                 }
             }
         }

@@ -177,7 +177,7 @@ struct SessionDetailsView: View {
                                             ForEach(wellnessEntries) { entry in
                                                 if let wellness = entry.wellness {
                                                     HStack {
-                                                        Text(wellness.name ?? "")
+                                                        Text(wellness.name)
                                                             .font(.subheadline)
                                                             .fontWeight(.medium)
                                                         if let intensity = entry.intensity {
@@ -191,6 +191,32 @@ struct SessionDetailsView: View {
                                                     }
                                                     .pillStyle()
                                                 }
+                                            }
+                                        }
+                                    }
+                                    .contentMargins(.horizontal, 16)
+                                    .scrollIndicators(.hidden)
+                                }
+                            }
+                        }
+                        if let activities = session.activities,
+                           !activities.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Activities")
+                                    .headerTitle()
+                                DetailSection(isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(activities) { activity in
+                                                HStack {
+                                                    if let symbol = activity.symbol {
+                                                        Image(systemName: symbol)
+                                                    }
+                                                    Text(activity.name)
+                                                        .font(.subheadline)
+                                                        .fontWeight(.medium)
+                                                }
+                                                .pillStyle()
                                             }
                                         }
                                     }

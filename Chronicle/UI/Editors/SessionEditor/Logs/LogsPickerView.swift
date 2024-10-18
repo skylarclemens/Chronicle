@@ -13,6 +13,7 @@ struct LogsPickerView: View {
     
     @State private var openMood: Bool = false
     @State private var openWellness: Bool = false
+    @State private var openActivity: Bool = false
     
     var body: some View {
         VStack(spacing: 16) {
@@ -32,8 +33,9 @@ struct LogsPickerView: View {
                     .buttonStyle(.mood)
                     .controlSize(.extraLarge)
                 }
-                if viewModel.wellnessEntries.isEmpty {
-                    HStack {
+                
+                HStack {
+                    if viewModel.wellnessEntries.isEmpty {
                         Button {
                             openWellness = true
                         } label: {
@@ -46,6 +48,21 @@ struct LogsPickerView: View {
                             }
                         }
                         .buttonStyle(.sessionLog(color: .pink))
+                        .controlSize(.extraLarge)
+                    }
+                    if viewModel.activities.isEmpty {
+                        Button {
+                            openActivity = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "figure.run")
+                                Text("Activities")
+                                Spacer()
+                                Image(systemName: "plus")
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .buttonStyle(.sessionLog(color: .green))
                         .controlSize(.extraLarge)
                     }
                 }
@@ -136,24 +153,65 @@ struct LogsPickerView: View {
                         ScrollView(.horizontal) {
                             HStack {
                                 ForEach(viewModel.wellnessEntries) { entry in
-                                    HStack {
-                                        Text(entry.wellness?.name ?? "")
-                                            .font(.subheadline)
-                                            .fontWeight(.medium)
-                                        if let intensity = entry.intensity {
-                                            Text(intensity, format: .number)
-                                                .font(.footnote)
-                                                .padding(.horizontal, 6)
-                                                .padding(.vertical, 2)
-                                                .background(Color(.secondarySystemFill),
-                                                            in: RoundedRectangle(cornerRadius: 6))
+                                    if let wellness = entry.wellness {
+                                        HStack {
+                                            Text(wellness.name)
+                                                .font(.subheadline)
+                                                .fontWeight(.medium)
+                                            if let intensity = entry.intensity {
+                                                Text(intensity, format: .number)
+                                                    .font(.footnote)
+                                                    .padding(.horizontal, 6)
+                                                    .padding(.vertical, 2)
+                                                    .background(Color(.secondarySystemFill),
+                                                                in: RoundedRectangle(cornerRadius: 6))
+                                            }
                                         }
+                                        .padding(8)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .fill(.ultraThinMaterial)
+                                        )
                                     }
-                                    .padding(8)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(.ultraThinMaterial)
-                                    )
+                                }
+                            }
+                        }
+                        .contentMargins(.horizontal, 16)
+                        .scrollIndicators(.hidden)
+                    }
+                }
+            }
+            
+            /// Activities
+            if !viewModel.activities.isEmpty {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Activities")
+                            .font(.title3.weight(.medium))
+                        Spacer()
+                        Menu {
+                            Button("Edit", systemImage: "pencil") {
+                                openActivity = true
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .imageScale(.large)
+                                .padding(8)
+                                .contentShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    DetailSection(isScrollView: true) {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(viewModel.activities) { activity in
+                                    HStack {
+                                        if let symbol = activity.symbol {
+                                            Image(systemName: symbol)
+                                        }
+                                        Text(activity.name)
+                                    }
+                                    .pillStyle()
                                 }
                             }
                         }
@@ -174,6 +232,9 @@ struct LogsPickerView: View {
         .sheet(isPresented: $openWellness) {
             WellnessSelectorView(sessionViewModel: $viewModel)
                 .id("WellnessSelectorView")
+        }
+        .sheet(isPresented: $openActivity) {
+            AllActivitiesList(sessionViewModel: $viewModel)
         }
     }
 }

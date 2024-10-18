@@ -19,13 +19,10 @@ struct WellnessSelectorView: View {
     @Query(sort: [SortDescriptor(\Wellness.isCustom, order: .reverse), SortDescriptor(\Wellness.name)]) var wellnessList: [Wellness]
     
     var filteredWellnessList: [Wellness] {
-        wellnessList.filter {
-            if let name = $0.name {
-                return !viewModel.entries.contains {
-                    $0.wellness?.name == name
-                }
+        return wellnessList.filter { item in
+            return !viewModel.entries.contains {
+                $0.wellness?.name == item.name
             }
-            return false
         }
     }
     
@@ -40,7 +37,7 @@ struct WellnessSelectorView: View {
                         ForEach(viewModel.entries) { entry in
                                 if let wellness = entry.wellness {
                                     HStack {
-                                        Text(wellness.name ?? "")
+                                        Text(wellness.name)
                                         Text(wellness.type?.rawValue.localizedCapitalized ?? "")
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
@@ -79,7 +76,6 @@ struct WellnessSelectorView: View {
                             Spacer()
                             Image(systemName: "plus.circle.fill")
                         }
-                        
                     }
                     ForEach(filteredWellnessList) { wellness in
                         Button {
@@ -89,7 +85,7 @@ struct WellnessSelectorView: View {
                             }
                         } label: {
                             HStack {
-                                Text(wellness.name ?? "")
+                                Text(wellness.name)
                                 Text(wellness.type?.rawValue.localizedCapitalized ?? "")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
@@ -160,7 +156,7 @@ struct AddWellnessEntryView: View {
         NavigationStack {
             Form {
                 if let wellness = viewModel.selectedWellness {
-                    Text(wellness.name ?? "")
+                    Text(wellness.name)
                     HStack {
                         Text("Intensity")
                         Spacer()
