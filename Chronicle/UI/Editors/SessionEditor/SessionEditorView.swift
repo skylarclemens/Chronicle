@@ -240,11 +240,8 @@ struct SessionEditorView: View {
                             Text("Save")
                                 .frame(maxWidth: .infinity)
                         }
+                        .saveButton()
                         .disabled(viewModel.item == nil || viewModel.title.isEmpty)
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
-                        .padding()
                     }
                     .ignoresSafeArea(.keyboard)
                     if openRecorder {

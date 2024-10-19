@@ -46,11 +46,8 @@ struct StrainEditorView: View {
                         Text("Save")
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.large)
-                    .tint(.accent)
+                    .saveButton()
                     .disabled(viewModel.name.isEmpty)
-                    .padding()
                 }
                 .frame(height: 120)
                 .ignoresSafeArea(.keyboard)
