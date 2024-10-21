@@ -95,7 +95,7 @@ struct MoodsAnalyticsDetailsView: View {
                 }
                 .padding(.horizontal)
                 VStack(alignment: .leading, spacing: 20) {
-                    ItemMoodInsightsView(item: item, sessions: sessions)
+                    ItemMoodInsightsView(item: item)
                     GroupBox("Average Weekday Mood") {
                         moodTrendChart
                             .frame(height: 200)

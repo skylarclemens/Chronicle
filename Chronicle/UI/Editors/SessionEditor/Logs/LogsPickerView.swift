@@ -86,63 +86,39 @@ struct LogsPickerView: View {
             }
             
             /// Mood
-            if let currentMood = viewModel.mood {
+            if let currentMood = viewModel.mood,
+                let moodType = currentMood.type {
                 VStack(alignment: .leading) {
-                    if let moodType = currentMood.type {
-                        HStack(alignment: .bottom) {
-                            Text("Mood")
-                                .font(.title3.weight(.medium))
-                            Text(moodType.label)
-                                .font(.subheadline)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(moodType.color.opacity(0.33))
-                                )
-                            Spacer()
-                            Menu {
-                                Button("Edit", systemImage: "pencil") {
-                                    openMood = true
-                                }
-                                Button("Remove", systemImage: "trash", role: .destructive) {
-                                    withAnimation {
-                                        viewModel.mood = nil
-                                    }
-                                }
-                            } label: {
-                                Image(systemName: "ellipsis")
-                                    .imageScale(.large)
-                                    .padding(8)
-                                    .contentShape(Circle())
+                    HStack(alignment: .bottom) {
+                        Text("Mood")
+                            .font(.title3.weight(.medium))
+                        Spacer()
+                        Menu {
+                            Button("Edit", systemImage: "pencil") {
+                                openMood = true
                             }
-                            .buttonStyle(.plain)
+                            Button("Remove", systemImage: "trash", role: .destructive) {
+                                withAnimation {
+                                    viewModel.mood = nil
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .imageScale(.large)
+                                .padding(8)
+                                .contentShape(Circle())
                         }
+                        .buttonStyle(.plain)
                     }
-                    if let moodEmotions = currentMood.emotions,
-                       !moodEmotions.isEmpty {
-                        DetailSection(header: "Feelings", isScrollView: true) {
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(moodEmotions, id: \.self) { emotion in
-                                        HStack {
-                                            Text(emotion.emoji ?? "")
-                                                .font(.caption)
-                                            Text(emotion.name)
-                                                .font(.subheadline)
-                                                .fontWeight(.medium)
-                                        }
-                                        .padding(8)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 12)
-                                                .fill(.ultraThinMaterial)
-                                        )
-                                    }
-                                }
-                            }
-                            .contentMargins(.horizontal, 16)
-                            .scrollIndicators(.hidden)
-                        }
+                    DetailSection {
+                        Text(moodType.label)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(moodType.color.opacity(0.33))
+                            )
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
             }

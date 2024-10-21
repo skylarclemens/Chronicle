@@ -108,7 +108,7 @@ struct ItemDetailsView: View {
                             Text("Moods")
                                 .headerTitle()
                                 .padding(.horizontal)
-                            ItemMoodInsightsView(item: item, sessions: sessions)
+                            ItemMoodInsightsView(item: item)
                         }
                         VStack(alignment: .leading) {
                             Text("Recent Sessions")

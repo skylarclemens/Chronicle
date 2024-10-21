@@ -54,10 +54,11 @@ extension Session {
                     type: .consumption,
                     amount: Amount(value: Double.random(in: -3.0..<0.0), unit: AcceptedUnit.allCases.randomElement()!)
                 ),
+                activities: Array(Activity.predefinedData.shuffled().prefix(2)),
+                effects: Array(Effect.predefinedData.shuffled().prefix(3)),
                 mood: Mood(
                     type: MoodType.allCases.randomElement()!,
-                    valence: Double.random(in: -1.0...1.0),
-                    emotions: Array(Emotion.initialEmotions.shuffled().prefix(3))
+                    valence: Double.random(in: -1.0...1.0)
                 )
             )
         }.sorted { $0.date < $1.date }
@@ -80,8 +81,8 @@ extension Strain {
 
 extension Mood {
     static let sampleData: [Mood] = [
-        Mood(type: .positive, emotions: [Emotion.initialEmotions[0], Emotion.initialEmotions[1]]),
-        Mood(type: .neutral, emotions: [Emotion.initialEmotions[3], Emotion.initialEmotions[4]]),
+        Mood(type: .positive),
+        Mood(type: .neutral)
     ]
 }
 

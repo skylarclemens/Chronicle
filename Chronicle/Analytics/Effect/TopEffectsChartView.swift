@@ -1,5 +1,5 @@
 //
-//  TopEmotionsChartView.swift
+//  TopEffectsChartView.swift
 //  Chronicle
 //
 //  Created by Skylar Clemens on 10/2/24.
@@ -8,22 +8,22 @@
 import SwiftUI
 import Charts
 
-struct TopEmotionsChartView: View {
-    var allTopEmotions: [(emotion: Emotion, count: Int)]
-    var topEmotions: [Emotion]
+struct TopEffectsChartView: View {
+    var allTopEffects: [(effect: Effect, count: Int)]
+    var topEffects: [Effect]
     var showAnnotation: Bool = false
     
     var body: some View {
-        Chart(allTopEmotions, id: \.emotion) { emotionCount in
+        Chart(allTopEffects, id: \.effect) { effectCount in
             BarMark(
-                x: .value("Count", emotionCount.count),
-                y: .value("Emotion", emotionCount.emotion.name)
+                x: .value("Count", effectCount.count),
+                y: .value("Effect", effectCount.effect.name)
             )
             .clipShape(Capsule())
-            .foregroundStyle(topEmotions.contains { $0.name == emotionCount.emotion.name } ? .blue : .secondary.opacity(0.5))
+            .foregroundStyle(topEffects.contains { $0.name == effectCount.effect.name } ? .blue : .secondary.opacity(0.5))
             .annotation(position: .trailing) {
                 if showAnnotation {
-                    Text(emotionCount.count, format: .number)
+                    Text(effectCount.count, format: .number)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -44,13 +44,13 @@ struct TopEmotionsChartView: View {
     }
 }
 
-struct TopEmotionsChartExpandedView: View {
+struct TopEffectsChartExpandedView: View {
     var item: Item
-    var allTopEmotions: [(emotion: Emotion, count: Int)]
-    var topEmotions: [Emotion]
+    var allTopEffects: [(effect: Effect, count: Int)]
+    var topEffects: [Effect]
     
-    var topEmotionsStrings: [String] {
-        topEmotions.map { $0.name }
+    var topEffectsStrings: [String] {
+        topEffects.map { $0.name }
     }
     
     var body: some View {
@@ -59,14 +59,14 @@ struct TopEmotionsChartExpandedView: View {
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
                         VStack(alignment: .leading) {
-                            Text("Top Emotion\(topEmotions.count == 1 ? "" : "s")")
+                            Text("Top Effect\(topEffects.count == 1 ? "" : "s")")
                                 .font(.title3)
                                 .fontWeight(.semibold)
                                 .fontDesign(.rounded)
                                 .foregroundStyle(.secondary)
                         }
-                        if !topEmotionsStrings.isEmpty {
-                            Text(topEmotionsStrings.joined(separator: ", "))
+                        if !topEffectsStrings.isEmpty {
+                            Text(topEffectsStrings.joined(separator: ", "))
                                 .font(.title2.weight(.medium))
                                 .fontDesign(.rounded)
                                 .lineLimit(2)
@@ -75,15 +75,16 @@ struct TopEmotionsChartExpandedView: View {
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    Chart(allTopEmotions, id: \.emotion) { emotionCount in
+                    Chart(allTopEffects, id: \.effect) { effectCount in
+                        let effectDisplayName = "\(effectCount.effect.emoji ?? "") \(effectCount.effect.name)"
                         BarMark(
-                            x: .value("Count", emotionCount.count),
-                            y: .value("Emotion", emotionCount.emotion)
+                            x: .value("Count", effectCount.count),
+                            y: .value("Effect", effectDisplayName)
                         )
                         .clipShape(Capsule())
-                        .foregroundStyle(by: .value("Emotion", emotionCount.emotion.name))
+                        .foregroundStyle(by: .value("Effect", effectDisplayName))
                         .annotation(position: .trailing) {
-                            Text(emotionCount.count, format: .number)
+                            Text(effectCount.count, format: .number)
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -106,10 +107,10 @@ struct TopEmotionsChartExpandedView: View {
                                 in: RoundedRectangle(cornerRadius: 12))
                     Spacer()
                     NavigationLink {
-                        ItemEmotionsView(item: item)
+                        ItemEffectsView(item: item)
                     } label: {
                         HStack {
-                            Text("View All Emotions")
+                            Text("View All Effects")
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .font(.subheadline.bold())
@@ -136,10 +137,10 @@ struct TopEmotionsChartExpandedView: View {
 }
 
 #Preview {
-    var allTopEmotions: [(emotion: Emotion, count: Int)] {
-        let emotions = SampleData.shared.randomDatesSessions.flatMap { $0.mood?.emotions ?? [] }
-        let counts = emotions.reduce(into: [:]) { counts, emotion in
-            counts[emotion, default: 0] += 1
+    var allTopEffects: [(effect: Effect, count: Int)] {
+        let effects = SampleData.shared.randomDatesSessions.flatMap { $0.effects ?? [] }
+        let counts = effects.reduce(into: [:]) { counts, effect in
+            counts[effect, default: 0] += 1
         }
         return counts.sorted {
             $0.value > $1.value
@@ -147,24 +148,24 @@ struct TopEmotionsChartExpandedView: View {
             .sorted { $0.count > $1.count }
     }
     
-    var topEmotions: [Emotion] {
-        guard !allTopEmotions.isEmpty else { return [] }
-        let highestCount = allTopEmotions.first!.count
-        let topEmotions = allTopEmotions.filter { $0.count == highestCount }
-        return topEmotions.map { $0.emotion }
+    var topEffects: [Effect] {
+        guard !allTopEffects.isEmpty else { return [] }
+        let highestCount = allTopEffects.first!.count
+        let topEffects = allTopEffects.filter { $0.count == highestCount }
+        return topEffects.map { $0.effect }
     }
     
     NavigationStack {
-        TopEmotionsChartExpandedView(item: SampleData.shared.item, allTopEmotions: allTopEmotions, topEmotions: topEmotions)
+        TopEffectsChartExpandedView(item: SampleData.shared.item, allTopEffects: allTopEffects, topEffects: topEffects)
     }
     .modelContainer(SampleData.shared.container)
 }
 
 #Preview {
-    var allTopEmotions: [(emotion: Emotion, count: Int)] {
-        let emotions = SampleData.shared.randomDatesSessions.flatMap { $0.mood?.emotions ?? [] }
-        let counts = emotions.reduce(into: [:]) { counts, emotion in
-            counts[emotion, default: 0] += 1
+    var allTopEffects: [(effect: Effect, count: Int)] {
+        let effects = SampleData.shared.randomDatesSessions.flatMap { $0.effects ?? [] }
+        let counts = effects.reduce(into: [:]) { counts, effect in
+            counts[effect, default: 0] += 1
         }
         return counts.sorted {
             $0.value > $1.value
@@ -172,13 +173,13 @@ struct TopEmotionsChartExpandedView: View {
             .sorted { $0.count > $1.count }
     }
     
-    var topEmotions: [Emotion] {
-        guard !allTopEmotions.isEmpty else { return [] }
-        let highestCount = allTopEmotions.first!.count
-        let topEmotions = allTopEmotions.filter { $0.count == highestCount }
-        return topEmotions.map { $0.emotion }
+    var topEffects: [Effect] {
+        guard !allTopEffects.isEmpty else { return [] }
+        let highestCount = allTopEffects.first!.count
+        let topEffects = allTopEffects.filter { $0.count == highestCount }
+        return topEffects.map { $0.effect }
     }
     
-    TopEmotionsChartView(allTopEmotions: allTopEmotions, topEmotions: topEmotions)
+    TopEffectsChartView(allTopEffects: allTopEffects, topEffects: topEffects)
         .modelContainer(SampleData.shared.container)
 }

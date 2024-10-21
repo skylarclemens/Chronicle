@@ -112,42 +112,28 @@ struct IngredientSelectorView: View {
                         }
                     }
                 }
-                ZStack {
-                    Color(UIColor.systemBackground).mask(
-                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
-                    )
-                    .allowsHitTesting(false)
-                    VStack {
-                        Button {
-                            withAnimation {
-                                setIngredients()
-                            }
-                            dismiss()
-                        } label: {
-                            Text("Done")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
-                        .padding()
-                        .ignoresSafeArea(.keyboard)
-                    }
-                    .padding(.vertical, 20)
-                }
-                .frame(height: 120)
             }
-            .ignoresSafeArea(edges: .bottom)
             .navigationTitle("Add Ingredients")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                     }
                     .buttonStyle(.close)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        withAnimation {
+                            setIngredients()
+                        }
+                        dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .tint(.accent)
                 }
             }
         }

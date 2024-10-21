@@ -15,6 +15,7 @@ public class Wellness {
     public var name: String = ""
     public var type: WellnessType?
     public var isCustom: Bool = false
+    @Relationship(inverse: \WellnessEntry.wellness)
     public var entries: [WellnessEntry]?
     @Relationship(inverse: \Effect.relatedWellness)
     public var relatedEffect: Effect?

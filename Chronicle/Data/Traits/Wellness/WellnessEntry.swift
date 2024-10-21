@@ -11,7 +11,7 @@ import SwiftData
 @Model
 public class WellnessEntry {
     public var id: UUID?
-    @Relationship public var wellness: Wellness?
+    public var wellness: Wellness?
     public var intensity: Int?
     public var session: Session?
     

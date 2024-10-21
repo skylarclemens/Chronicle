@@ -107,41 +107,28 @@ struct TerpeneSelectorView: View {
                 }
                 .searchable(text: $pickerSearchText)
                 .contentMargins(.bottom, 100)
-                ZStack {
-                    Color(UIColor.systemBackground).mask(
-                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
-                    )
-                    .allowsHitTesting(false)
-                    VStack {
-                        Button {
-                            withAnimation {
-                                setTerpenes()
-                            }
-                            dismiss()
-                        } label: {
-                            Text("Done")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
-                        .padding()
-                    }
-                    .padding(.vertical, 20)
-                }
-                .frame(height: 120)
             }
-            .ignoresSafeArea(edges: .bottom)
             .navigationTitle("Select Terpenes")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                     }
                     .buttonStyle(.close)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        withAnimation {
+                            setTerpenes()
+                        }
+                        dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .tint(.accent)
                 }
             }
         }

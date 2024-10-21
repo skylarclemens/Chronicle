@@ -139,31 +139,6 @@ struct SessionDetailsView: View {
                                     }
                                     Spacer()
                                 }
-                                if let emotions = mood.emotions,
-                                   !emotions.isEmpty {
-                                    DetailSection(header: "Feelings", isScrollView: true) {
-                                        ScrollView(.horizontal) {
-                                            HStack {
-                                                ForEach(emotions, id: \.self) { emotion in
-                                                    HStack {
-                                                        Text(emotion.emoji ?? "")
-                                                            .font(.system(size: 12))
-                                                        Text(emotion.name)
-                                                            .font(.subheadline)
-                                                            .fontWeight(.medium)
-                                                    }
-                                                    .padding(8)
-                                                    .background(
-                                                        RoundedRectangle(cornerRadius: 12)
-                                                            .fill(.ultraThinMaterial)
-                                                    )
-                                                }
-                                            }
-                                        }
-                                        .contentMargins(.horizontal, 16)
-                                        .scrollIndicators(.hidden)
-                                    }
-                                }
                             }
                         }
                         if let wellnessEntries = session.wellnessEntries,
