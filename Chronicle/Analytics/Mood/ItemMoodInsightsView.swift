@@ -29,9 +29,16 @@ struct ItemMoodInsightsView: View {
         return counts
     }
     
+    var showHeader: Bool = false
+    
     var body: some View {
         if !moods.isEmpty {
             VStack(alignment: .leading, spacing: 8) {
+                if showHeader {
+                    Text("Moods")
+                        .headerTitle()
+                        .padding(.horizontal)
+                }
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(moodTypes.sorted { $0.value > $1.value }, id: \.key) { moodType, count in

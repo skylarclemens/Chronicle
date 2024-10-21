@@ -17,7 +17,8 @@ struct TopEffectsChartView: View {
         Chart(allTopEffects, id: \.effect) { effectCount in
             BarMark(
                 x: .value("Count", effectCount.count),
-                y: .value("Effect", effectCount.effect.name)
+                y: .value("Effect", effectCount.effect.name),
+                height: .fixed(10)
             )
             .clipShape(Capsule())
             .foregroundStyle(topEffects.contains { $0.name == effectCount.effect.name } ? .blue : .secondary.opacity(0.5))
@@ -79,7 +80,8 @@ struct TopEffectsChartExpandedView: View {
                         let effectDisplayName = "\(effectCount.effect.emoji ?? "") \(effectCount.effect.name)"
                         BarMark(
                             x: .value("Count", effectCount.count),
-                            y: .value("Effect", effectDisplayName)
+                            y: .value("Effect", effectDisplayName),
+                            height: .fixed(10)
                         )
                         .clipShape(Capsule())
                         .foregroundStyle(by: .value("Effect", effectDisplayName))
@@ -101,7 +103,7 @@ struct TopEffectsChartExpandedView: View {
                             }
                         }
                     }
-                    .frame(height: 200)
+                    .frame(height: CGFloat(allTopEffects.count * 50))
                     .padding()
                     .background(Color(.secondarySystemGroupedBackground),
                                 in: RoundedRectangle(cornerRadius: 12))
@@ -180,6 +182,11 @@ struct TopEffectsChartExpandedView: View {
         return topEffects.map { $0.effect }
     }
     
-    TopEffectsChartView(allTopEffects: allTopEffects, topEffects: topEffects)
-        .modelContainer(SampleData.shared.container)
+    ScrollView {
+        TopEffectsChartView(allTopEffects: allTopEffects, topEffects: topEffects)
+            .frame(height: 75)
+            .chartXAxis(.hidden)
+            .chartYAxis(.hidden)
+    }
+    .modelContainer(SampleData.shared.container)
 }

@@ -58,9 +58,9 @@ struct ItemEffectsInsightsView: View {
                             .foregroundStyle(.primary)
                     }
                     TopEffectsChartView(allTopEffects: allTopEffects, topEffects: topEffects)
-                        .frame(height: 75)
                         .chartXAxis(.hidden)
                         .chartYAxis(.hidden)
+                        .frame(height: CGFloat(allTopEffects.count * 15))
                 } headerRight: {
                     Image(systemName: "chevron.right")
                         .font(.subheadline.bold())

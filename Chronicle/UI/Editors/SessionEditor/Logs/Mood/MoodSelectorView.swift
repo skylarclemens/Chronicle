@@ -69,9 +69,13 @@ struct MoodSelectorView: View {
                     viewModel.mood?.type = selectedMood
                     viewModel.mood?.valence = selectedMoodIndex
                     
-                    if let mood = viewModel.mood {
-                        sessionViewModel.mood = mood
+                    withAnimation {
+                        if let mood = viewModel.mood {
+                            sessionViewModel.mood = mood
+                        }
                     }
+                    
+                    dismiss()
                 } label: {
                     Text("Save")
                         .frame(maxWidth: .infinity)

@@ -33,54 +33,55 @@ struct EffectSelectorView: View {
     }
     
     var body: some View {
-        List {
-            if searchText.isEmpty {
-                Button {
-                    openAddNewEffect = true
-                } label: {
-                    HStack {
-                        Text("Add New Effect")
-                        Spacer()
-                        Image(systemName: "plus.circle.fill")
+        NavigationStack {
+            List {
+                if searchText.isEmpty {
+                    Button {
+                        openAddNewEffect = true
+                    } label: {
+                        HStack {
+                            Text("Add New Effect")
+                            Spacer()
+                            Image(systemName: "plus.circle.fill")
+                        }
                     }
                 }
-            }
-            
-            ForEach(EffectType.allCases, id: \.id) { type in
-                if let typeEffects = effectsByType[type],
-                   !typeEffects.isEmpty {
-                    Section(type.rawValue) {
-                        ForEach(typeEffects) { effect in
-                            let selected = viewModel.effects.contains { $0.name == effect.name }
-                            Button {
-                                withAnimation {
-                                    if selected {
-                                        viewModel.effects.removeAll { $0.name == effect.name }
-                                    } else {
-                                        viewModel.effects.append(effect)
+                
+                ForEach(EffectType.allCases, id: \.id) { type in
+                    if let typeEffects = effectsByType[type],
+                       !typeEffects.isEmpty {
+                        Section(type.rawValue) {
+                            ForEach(typeEffects) { effect in
+                                let selected = viewModel.effects.contains { $0.name == effect.name }
+                                Button {
+                                    withAnimation {
+                                        if selected {
+                                            viewModel.effects.removeAll { $0.name == effect.name }
+                                        } else {
+                                            viewModel.effects.append(effect)
+                                        }
                                     }
-                                }
-                            } label: {
-                                HStack {
-                                    if let emoji = effect.emoji {
-                                        Text(emoji)
+                                } label: {
+                                    HStack {
+                                        if let emoji = effect.emoji {
+                                            Text(emoji)
+                                        }
+                                        Text(effect.name)
+                                        Spacer()
+                                        Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                                            .foregroundStyle(selected ? .accent : .secondary)
                                     }
-                                    Text(effect.name)
-                                    Spacer()
-                                    Image(systemName: selected ? "checkmark.circle.fill" : "circle")
-                                        .foregroundStyle(selected ? .accent : .secondary)
+                                    .contentShape(Rectangle())
                                 }
-                                .contentShape(Rectangle())
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
                     }
                 }
             }
-        }
-        .contentMargins(.top, 0)
-        .safeAreaInset(edge: .top) {
-            if !viewModel.effects.isEmpty {
+            .contentMargins(.top, 0)
+            .safeAreaInset(edge: .top) {
+                if !viewModel.effects.isEmpty {
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(viewModel.effects) { effect in
@@ -115,36 +116,30 @@ struct EffectSelectorView: View {
                         Color(.systemGroupedBackground)
                             .mask(LinearGradient(gradient: Gradient(colors: [.black, .black, .black, .clear]), startPoint: .top, endPoint: .bottom))
                     )
-            }
-        }
-        .scrollDismissesKeyboard(.immediately)
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search effects")
-        //.navigationTitle("What best describes how you're feeling?")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("What effects are you feeling?")
-                    .font(.headline)
-                    .fontDesign(.rounded)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
-            }
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
                 }
-                .buttonStyle(.close)
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") {
-                    save()
-                    dismiss()
+            .scrollDismissesKeyboard(.immediately)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search effects")
+            .navigationTitle("Select Effects")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                    }
+                    .buttonStyle(.close)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .tint(.accent)
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        save()
+                        dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .tint(.accent)
+                }
             }
         }
         .onAppear {
@@ -159,7 +154,9 @@ struct EffectSelectorView: View {
     }
     
     private func save() {
-        sessionViewModel.effects = viewModel.effects
+        withAnimation {
+            sessionViewModel.effects = viewModel.effects
+        }
     }
 }
 

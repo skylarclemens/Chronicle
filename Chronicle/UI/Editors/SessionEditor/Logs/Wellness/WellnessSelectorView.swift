@@ -141,7 +141,9 @@ struct WellnessSelectorView: View {
     }
     
     private func save() {
-        sessionViewModel.wellnessEntries = viewModel.entries
+        withAnimation {
+            sessionViewModel.wellnessEntries = viewModel.entries
+        }
     }
 }
 

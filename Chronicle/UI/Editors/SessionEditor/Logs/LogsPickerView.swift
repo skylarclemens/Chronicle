@@ -17,38 +17,40 @@ struct LogsPickerView: View {
     @State private var openActivity: Bool = false
     
     var body: some View {
-        VStack(spacing: 16) {
-            VStack {
-                HStack {
-                    if viewModel.mood == nil {
-                        Button {
-                            openMood = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "face.smiling")
-                                Text("Mood")
-                                Spacer()
-                                Image(systemName: "plus")
-                                    .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading) {
+                if viewModel.mood == nil || viewModel.effects.isEmpty {
+                    HStack {
+                        if viewModel.mood == nil {
+                            Button {
+                                openMood = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "face.smiling")
+                                    Text("Mood")
+                                    Spacer()
+                                    Image(systemName: "plus")
+                                        .foregroundStyle(.secondary)
+                                }
                             }
+                            .buttonStyle(.mood)
+                            .controlSize(.extraLarge)
                         }
-                        .buttonStyle(.mood)
-                        .controlSize(.extraLarge)
-                    }
-                    if viewModel.effects.isEmpty {
-                        Button {
-                            openEffects = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "theatermasks.fill")
-                                Text("Effects")
-                                Spacer()
-                                Image(systemName: "plus")
-                                    .foregroundStyle(.secondary)
+                        if viewModel.effects.isEmpty {
+                            Button {
+                                openEffects = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "theatermasks.fill")
+                                    Text("Effects")
+                                    Spacer()
+                                    Image(systemName: "plus")
+                                        .foregroundStyle(.secondary)
+                                }
                             }
+                            .buttonStyle(.sessionLog(color: .orange))
+                            .controlSize(.extraLarge)
                         }
-                        .buttonStyle(.sessionLog(color: .orange))
-                        .controlSize(.extraLarge)
                     }
                 }
                 HStack {
@@ -263,6 +265,9 @@ struct LogsPickerView: View {
             .presentationDetents([.large])
             .presentationBackground(.thickMaterial)
         }
+        .sheet(isPresented: $openEffects) {
+            EffectSelectorView(sessionViewModel: $viewModel)
+        }
         .sheet(isPresented: $openWellness) {
             WellnessSelectorView(sessionViewModel: $viewModel)
                 .id("WellnessSelectorView")
@@ -277,15 +282,19 @@ struct LogsPickerView: View {
     @Previewable @State var viewModel = SessionEditorViewModel()
     NavigationStack {
         ScrollView {
-            LogsPickerView(viewModel: $viewModel)
-                .padding(.horizontal)
+            VStack(alignment: .leading) {
+                Text("Logs")
+                    .headerTitle()
+                LogsPickerView(viewModel: $viewModel)
+            }
+            .padding(.horizontal)
         }
     }
     .modelContainer(SampleData.shared.container)
     .onAppear {
         viewModel.mood = SampleData.shared.mood
         viewModel.effects = [SampleData.shared.effect]
-        viewModel.wellnessEntries = [SampleData.shared.wellnessEntry]
-        viewModel.activities = [SampleData.shared.activity]
+        //viewModel.wellnessEntries = [SampleData.shared.wellnessEntry]
+        //viewModel.activities = [SampleData.shared.activity]
     }
 }
