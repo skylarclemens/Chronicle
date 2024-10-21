@@ -32,35 +32,21 @@ struct StrainEditorView: View {
                 }
             }
             .navigationTitle("\(strain != nil ? "Editing" : "New") Strain")
-            .safeAreaInset(edge: .bottom) {
-                ZStack {
-                    Color(UIColor.systemBackground).mask(
-                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
-                            .opacity(0.9)
-                    )
-                    .allowsHitTesting(false)
-                    Button {
-                        save()
-                        dismiss()
-                    } label: {
-                        Text("Save")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .saveButton()
-                    .disabled(viewModel.name.isEmpty)
-                }
-                .frame(height: 120)
-                .ignoresSafeArea(.keyboard)
-                .ignoresSafeArea(edges: .bottom)
-            }
             .toolbar {
-                ToolbarItem(placement: .destructiveAction) {
-                    Button {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Close", systemImage: "xmark.circle.fill") {
                         dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
                     }
                     .buttonStyle(.close)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Save") {
+                        save()
+                        dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .tint(.accent)
                 }
             }
             .onAppear {

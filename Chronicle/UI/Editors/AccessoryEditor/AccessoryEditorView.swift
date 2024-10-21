@@ -17,6 +17,7 @@ struct AccessoryEditorView: View {
     
     @State private var showingImagesPicker: Bool = false
     @State private var openTypeSelector: Bool = false
+    @State private var openLocationSearch: Bool = false
     @FocusState var focusedField: AccessoryEditorField?
     
     var body: some View {
@@ -63,35 +64,10 @@ struct AccessoryEditorView: View {
                                 .buttonStyle(.editorInput)
                             }
                         }
-                        AccessoryPurchaseEditorView(viewModel: $viewModel)
+                        AccessoryPurchaseEditorView(viewModel: $viewModel, openLocationSearch: $openLocationSearch)
                     }
                 }
                 .padding(.horizontal)
-            }
-            .safeAreaInset(edge: .bottom, alignment: .center) {
-                ZStack {
-                    Color(UIColor.systemBackground).mask(
-                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
-                            .opacity(0.9)
-                    )
-                    .allowsHitTesting(false)
-                    Button {
-                        do {
-                            try save()
-                        } catch {
-                            print("New/edited accessory could not be saved.")
-                        }
-                        dismiss()
-                    } label: {
-                        Text("Save")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .saveButton()
-                    .disabled(viewModel.name.isEmpty || viewModel.type == nil)
-                }
-                .frame(height: 120)
-                .ignoresSafeArea(.keyboard)
-                .ignoresSafeArea(edges: .bottom)
             }
             .interactiveDismissDisabled()
             .scrollDismissesKeyboard(.immediately)
@@ -100,18 +76,32 @@ struct AccessoryEditorView: View {
             .imagesPicker(isPresented: $showingImagesPicker, pickerItems: $viewModel.pickerItems, imagesData: $viewModel.selectedImagesData)
             .background(Color(.systemGroupedBackground))
             .toolbar {
-                ToolbarItem(placement: .destructiveAction) {
-                    Button {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Close", systemImage: "xmark.circle.fill") {
                         dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
                     }
                     .buttonStyle(.close)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Save") {
+                        do {
+                            try save()
+                        } catch {
+                            print("New/edited accessory could not be saved.")
+                        }
+                        dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .tint(.accent)
                 }
             }
             .sheet(isPresented: $openTypeSelector) {
                 AccessoryTypeSelectionView(viewModel: $viewModel)
                     .presentationDetents([.medium])
+            }
+            .sheet(isPresented: $openLocationSearch) {
+                LocationSelectorView(locationInfo: $viewModel.purchaseLocation)
             }
         }
         .onAppear {
@@ -209,7 +199,7 @@ struct AccessoryTypeSelectionView: View {
 struct AccessoryPurchaseEditorView: View {
     @Binding var viewModel: AccessoryEditorViewModel
     
-    @State private var openLocationSearch: Bool = false
+    @Binding var openLocationSearch: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -267,9 +257,6 @@ struct AccessoryPurchaseEditorView: View {
             .padding(.vertical, 8)
             .background(Color(UIColor.secondarySystemGroupedBackground),
                         in: RoundedRectangle(cornerRadius: 12))
-        }
-        .sheet(isPresented: $openLocationSearch) {
-            LocationSelectorView(locationInfo: $viewModel.purchaseLocation)
         }
     }
 }
