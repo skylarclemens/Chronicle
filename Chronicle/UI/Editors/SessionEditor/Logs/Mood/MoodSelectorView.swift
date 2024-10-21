@@ -16,6 +16,7 @@ struct MoodSelectorView: View {
     
     @State private var gradientColors: [Color] = [.primary.opacity(0.2), Color(.systemBackground).opacity(0)]
     
+    @State private var showEffectsSelector: Bool = false
     
     var moodColors: [Color] {
         MoodType.allCases.map { $0.color }
@@ -39,16 +40,21 @@ struct MoodSelectorView: View {
                 .animation(.easeInOut(duration: 0.5), value: gradientColors)
             
             VStack(spacing: 68) {
-                Text("How do you feel?")
+                Text("How did this session make you feel?")
                     .font(.largeTitle)
                     .fontWeight(.semibold)
                     .fontDesign(.rounded)
+                    .multilineTextAlignment(.center)
                 Text(selectedMood.label)
                     .font(.system(size: 38, weight: .medium, design: .rounded))
                     .padding(.horizontal)
                     .padding(.vertical, 4)
-                    .background(.regularMaterial,
+                    .background(.thinMaterial,
                                 in: RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder(.primary.opacity(0.1))
+                    )
                     .frame(maxWidth: .infinity)
                     .animation(.default, value: selectedMood.label)
                 CustomSliderView(value: $selectedMoodIndex, range: -1...1)
@@ -56,27 +62,39 @@ struct MoodSelectorView: View {
                     .padding(.horizontal)
             }
             .frame(maxHeight: .infinity)
-            NavigationLink {
-                MoodDescriptorSelectView(sessionViewModel: $sessionViewModel, viewModel: $viewModel, parentDismiss: dismiss)
-            } label: {
-                Text("Next")
-                    .frame(maxWidth: .infinity)
-                    .contentShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .safeAreaInset(edge: .bottom) {
+            VStack {
+                Button {
+                    viewModel.mood?.type = selectedMood
+                    viewModel.mood?.valence = selectedMoodIndex
+                    
+                    withAnimation {
+                        if let mood = viewModel.mood {
+                            sessionViewModel.mood = mood
+                        }
+                    }
+                    
+                    dismiss()
+                } label: {
+                    Text("Save")
+                        .frame(maxWidth: .infinity)
+                        .contentShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .buttonStyle(.plain)
+                .padding()
+                .background(.regularMaterial,
+                            in: RoundedRectangle(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(.primary.opacity(0.1))
+                )
+                .padding()
             }
-            .buttonStyle(.plain)
-            .padding()
-            .background(.regularMaterial,
-                        in: RoundedRectangle(cornerRadius: 12))
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(.primary.opacity(0.1))
-            )
-            .padding()
         }
         .onAppear {
             if let mood = sessionViewModel.mood {
                 viewModel.mood = mood
-                viewModel.emotions = mood.emotions ?? []
                 selectedMoodIndex = mood.type?.rawValue ?? 0.0
             } else {
                 viewModel.mood = Mood(type: .neutral)
@@ -84,8 +102,6 @@ struct MoodSelectorView: View {
         }
         .onChange(of: selectedMoodIndex) { oldValue, newValue in
             updateGradientColors(for: newValue)
-            viewModel.mood?.type = selectedMood
-            viewModel.mood?.valence = selectedMoodIndex
         }
         .tint(.primary)
         .toolbar {
@@ -133,7 +149,6 @@ struct MoodSelectorView: View {
 @Observable
 class MoodSelectorViewModel {
     var mood: Mood?
-    var emotions: [Emotion] = []
 }
 
 #Preview {

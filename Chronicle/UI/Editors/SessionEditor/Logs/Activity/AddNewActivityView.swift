@@ -12,12 +12,13 @@ struct AddNewActivityView: View {
     @Environment(\.dismiss) private var dismiss
     
     @Binding var viewModel: ActivitiesViewModel
+    var activities: [Activity]
     
     @State private var name: String = ""
     @State private var category: ActivityCategory? = .entertainment
     
     var nameAlreadyExists: Bool {
-        viewModel.activities.contains { $0.name == self.name }
+        activities.contains { $0.name.localizedLowercase == self.name.localizedLowercase }
     }
     
     var body: some View {
@@ -79,7 +80,7 @@ struct AddNewActivityView: View {
     NavigationStack {
         VStack {}
         .sheet(isPresented: .constant(true)) {
-            AllActivitiesList(sessionViewModel: $viewModel)
+            ActivitySelectorView(sessionViewModel: $viewModel)
         }
     }
     .modelContainer(SampleData.shared.container)

@@ -68,10 +68,9 @@ struct ItemPurchaseInputView: View {
                                         Image(systemName: "plus.circle.fill")
                                     }
                                 }
+                                .buttonStyle(.bordered)
+                                .controlSize(.large)
                                 .tint(.accent)
-                                .padding()
-                                .background(.accent.opacity(0.15),
-                                            in: RoundedRectangle(cornerRadius: 12))
                             }
                         } else {
                             ContentUnavailableView {
@@ -147,38 +146,28 @@ struct PurchaseEditorView: View {
         NavigationStack {
             PurchaseInputView(amountValue: $viewModel.amount, amountUnit: $viewModel.unit, price: $viewModel.price, location: $viewModel.location, date: $viewModel.date, shouldUpdateInventory: $viewModel.shouldUpdateInventory, showUpdateInventoryToggle: transaction?.type != .set ? true : false, transaction: transaction)
             .padding(.horizontal)
-            .safeAreaInset(edge: .bottom, alignment: .center) {
-                ZStack {
-                    Color(UIColor.systemBackground).mask(
-                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
-                    )
-                    .allowsHitTesting(false)
-                    VStack {
-                        Button {
-                            save()
-                            dismiss()
-                        } label: {
-                            Text("\(transaction?.purchase != nil ? "Save" : "Add")")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.bordered)
-                        .controlSize(.large)
-                        .tint(.accent)
-                        .padding()
-                    }
-                }
-                .frame(height: 120)
-            }
             .navigationTitle("\(transaction?.purchase != nil ? "Edit" : "New") Purchase")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                     }
                     .buttonStyle(.close)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        save()
+                        dismiss()
+                    } label: {
+                        Text("\(transaction?.purchase != nil ? "Save" : "Add")")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .tint(.accent)
                 }
             }
         }

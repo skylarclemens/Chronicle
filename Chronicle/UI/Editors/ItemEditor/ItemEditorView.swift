@@ -76,19 +76,23 @@ struct ItemTypeSelectionView: View {
                 }
             }
             .buttonStyle(.borderless)
+            .padding()
             Spacer()
-            NavigationLink {
-                ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
-            } label: {
-                Text("Next")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            .tint(.accentColor)
-            .disabled(viewModel.itemType == nil)
         }
-        .padding()
+        .safeAreaInset(edge: .bottom, alignment: .center) {
+            ZStack {
+                NavigationLink {
+                    ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
+                } label: {
+                    Text("Next")
+                        .frame(maxWidth: .infinity)
+                }
+                .saveButton()
+                .disabled(viewModel.itemType == nil)
+            }
+            .frame(height: 120)
+        }
+        .ignoresSafeArea(edges: .bottom)
         .navigationTitle(item == nil ? "What are you adding?" : "What type of item?")
         .background(Color(.systemGroupedBackground))
         .toolbar {
@@ -199,13 +203,11 @@ struct ItemEditorBasicsView: View {
                         }
                         parentDismiss()
                     } label: {
+                        
                         Text("Save")
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
-                    .padding()
+                    .saveButton()
                 }
                 .frame(height: 120)
                 .ignoresSafeArea(.keyboard)
@@ -453,7 +455,7 @@ class ItemEditorViewModel {
     }
 }
 
-/*#Preview {
+#Preview {
     ItemEditorView(item: SampleData.shared.item)
         .modelContainer(SampleData.shared.container)
-}*/
+}

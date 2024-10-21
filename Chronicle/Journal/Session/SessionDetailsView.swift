@@ -125,10 +125,10 @@ struct SessionDetailsView: View {
                         }
                         if let mood = session.mood {
                             VStack(alignment: .leading) {
-                                HStack {
-                                    Text("Mood")
-                                        .headerTitle()
-                                    if let moodType = mood.type {
+                                Text("Mood")
+                                    .headerTitle()
+                                if let moodType = mood.type {
+                                    DetailSection {
                                         Text(moodType.label)
                                             .padding(.horizontal, 8)
                                             .padding(.vertical, 4)
@@ -136,33 +136,33 @@ struct SessionDetailsView: View {
                                                 RoundedRectangle(cornerRadius: 12)
                                                     .fill(moodType.color.opacity(0.33))
                                             )
+                                            .frame(maxWidth: .infinity, alignment: .leading)
                                     }
-                                    Spacer()
                                 }
-                                if let emotions = mood.emotions,
-                                   !emotions.isEmpty {
-                                    DetailSection(header: "Feelings", isScrollView: true) {
-                                        ScrollView(.horizontal) {
-                                            HStack {
-                                                ForEach(emotions, id: \.self) { emotion in
-                                                    HStack {
-                                                        Text(emotion.emoji ?? "")
-                                                            .font(.system(size: 12))
-                                                        Text(emotion.name)
-                                                            .font(.subheadline)
-                                                            .fontWeight(.medium)
+                            }
+                        }
+                        if let effects = session.effects,
+                           !effects.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Effects")
+                                    .headerTitle()
+                                DetailSection(isScrollView: true) {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(effects) { effect in
+                                                HStack {
+                                                    if let emoji = effect.emoji {
+                                                        Text(emoji)
                                                     }
-                                                    .padding(8)
-                                                    .background(
-                                                        RoundedRectangle(cornerRadius: 12)
-                                                            .fill(.ultraThinMaterial)
-                                                    )
+                                                    Text(effect.name)
                                                 }
+                                                .font(.subheadline)
+                                                .pillStyle()
                                             }
                                         }
-                                        .contentMargins(.horizontal, 16)
-                                        .scrollIndicators(.hidden)
                                     }
+                                    .contentMargins(.horizontal, 16)
+                                    .scrollIndicators(.hidden)
                                 }
                             }
                         }

@@ -12,28 +12,47 @@ struct LogsPickerView: View {
     @Binding var viewModel: SessionEditorViewModel
     
     @State private var openMood: Bool = false
+    @State private var openEffects: Bool = false
     @State private var openWellness: Bool = false
     @State private var openActivity: Bool = false
     
     var body: some View {
-        VStack(spacing: 16) {
-            VStack {
-                if viewModel.mood == nil {
-                    Button {
-                        openMood = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "face.smiling")
-                            Text("Mood and Emotions")
-                            Spacer()
-                            Image(systemName: "plus")
-                                .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading) {
+                if viewModel.mood == nil || viewModel.effects.isEmpty {
+                    HStack {
+                        if viewModel.mood == nil {
+                            Button {
+                                openMood = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "face.smiling")
+                                    Text("Mood")
+                                    Spacer()
+                                    Image(systemName: "plus")
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            .buttonStyle(.mood)
+                            .controlSize(.extraLarge)
+                        }
+                        if viewModel.effects.isEmpty {
+                            Button {
+                                openEffects = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "theatermasks.fill")
+                                    Text("Effects")
+                                    Spacer()
+                                    Image(systemName: "plus")
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            .buttonStyle(.sessionLog(color: .orange))
+                            .controlSize(.extraLarge)
                         }
                     }
-                    .buttonStyle(.mood)
-                    .controlSize(.extraLarge)
                 }
-                
                 HStack {
                     if viewModel.wellnessEntries.isEmpty {
                         Button {
@@ -69,63 +88,79 @@ struct LogsPickerView: View {
             }
             
             /// Mood
-            if let currentMood = viewModel.mood {
+            if let currentMood = viewModel.mood,
+                let moodType = currentMood.type {
                 VStack(alignment: .leading) {
-                    if let moodType = currentMood.type {
-                        HStack(alignment: .bottom) {
-                            Text("Mood")
-                                .font(.title3.weight(.medium))
-                            Text(moodType.label)
-                                .font(.subheadline)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(moodType.color.opacity(0.33))
-                                )
-                            Spacer()
-                            Menu {
-                                Button("Edit", systemImage: "pencil") {
-                                    openMood = true
-                                }
-                                Button("Remove", systemImage: "trash", role: .destructive) {
-                                    withAnimation {
-                                        viewModel.mood = nil
-                                    }
-                                }
-                            } label: {
-                                Image(systemName: "ellipsis")
-                                    .imageScale(.large)
-                                    .padding(8)
-                                    .contentShape(Circle())
+                    HStack(alignment: .bottom) {
+                        Text("Mood")
+                            .font(.title3.weight(.medium))
+                        Spacer()
+                        Menu {
+                            Button("Edit", systemImage: "pencil") {
+                                openMood = true
                             }
-                            .buttonStyle(.plain)
+                            Button("Remove", systemImage: "trash", role: .destructive) {
+                                withAnimation {
+                                    viewModel.mood = nil
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .imageScale(.large)
+                                .padding(8)
+                                .contentShape(Circle())
                         }
+                        .buttonStyle(.plain)
                     }
-                    if let moodEmotions = currentMood.emotions,
-                       !moodEmotions.isEmpty {
-                        DetailSection(header: "Feelings", isScrollView: true) {
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(moodEmotions, id: \.self) { emotion in
-                                        HStack {
-                                            Text(emotion.emoji ?? "")
-                                                .font(.caption)
-                                            Text(emotion.name)
-                                                .font(.subheadline)
-                                                .fontWeight(.medium)
+                    DetailSection {
+                        Text(moodType.label)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(moodType.color.opacity(0.33))
+                            )
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+            }
+            
+            /// Effects
+            if !viewModel.effects.isEmpty {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Effects")
+                            .font(.title3.weight(.medium))
+                        Spacer()
+                        Menu {
+                            Button("Edit", systemImage: "pencil") {
+                                openEffects = true
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .imageScale(.large)
+                                .padding(8)
+                                .contentShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    DetailSection(isScrollView: true) {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(viewModel.effects) { effect in
+                                    HStack {
+                                        if let emoji = effect.emoji {
+                                            Text(emoji)
                                         }
-                                        .padding(8)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 12)
-                                                .fill(.ultraThinMaterial)
-                                        )
+                                        Text(effect.name)
                                     }
+                                    .font(.subheadline)
+                                    .pillStyle()
                                 }
                             }
-                            .contentMargins(.horizontal, 16)
-                            .scrollIndicators(.hidden)
                         }
+                        .contentMargins(.horizontal, 16)
+                        .scrollIndicators(.hidden)
                     }
                 }
             }
@@ -210,6 +245,7 @@ struct LogsPickerView: View {
                                             Image(systemName: symbol)
                                         }
                                         Text(activity.name)
+                                            .font(.subheadline)
                                     }
                                     .pillStyle()
                                 }
@@ -229,12 +265,15 @@ struct LogsPickerView: View {
             .presentationDetents([.large])
             .presentationBackground(.thickMaterial)
         }
+        .sheet(isPresented: $openEffects) {
+            EffectSelectorView(sessionViewModel: $viewModel)
+        }
         .sheet(isPresented: $openWellness) {
             WellnessSelectorView(sessionViewModel: $viewModel)
                 .id("WellnessSelectorView")
         }
         .sheet(isPresented: $openActivity) {
-            AllActivitiesList(sessionViewModel: $viewModel)
+            ActivitySelectorView(sessionViewModel: $viewModel)
         }
     }
 }
@@ -243,13 +282,19 @@ struct LogsPickerView: View {
     @Previewable @State var viewModel = SessionEditorViewModel()
     NavigationStack {
         ScrollView {
-            LogsPickerView(viewModel: $viewModel)
-                .padding(.horizontal)
+            VStack(alignment: .leading) {
+                Text("Logs")
+                    .headerTitle()
+                LogsPickerView(viewModel: $viewModel)
+            }
+            .padding(.horizontal)
         }
     }
     .modelContainer(SampleData.shared.container)
     .onAppear {
         viewModel.mood = SampleData.shared.mood
-        viewModel.wellnessEntries = [SampleData.shared.wellnessEntry]
+        viewModel.effects = [SampleData.shared.effect]
+        //viewModel.wellnessEntries = [SampleData.shared.wellnessEntry]
+        //viewModel.activities = [SampleData.shared.activity]
     }
 }

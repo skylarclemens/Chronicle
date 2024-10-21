@@ -86,11 +86,8 @@ struct AccessoryEditorView: View {
                         Text("Save")
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.large)
-                    .tint(.accent)
+                    .saveButton()
                     .disabled(viewModel.name.isEmpty || viewModel.type == nil)
-                    .padding()
                 }
                 .frame(height: 120)
                 .ignoresSafeArea(.keyboard)

@@ -87,133 +87,146 @@ struct SessionEditorView: View {
                                     .buttonStyle(.editorInput)
                                 }
                             }
-                            if viewModel.audioData != nil {
-                                Button {
-                                    withAnimation {
-                                        openRecorder.toggle()
-                                    }
-                                } label: {
-                                    HStack {
-                                        Image(systemName: "waveform")
-                                        Text("Audio recording")
-                                    }
-                                }
-                                .buttonStyle(.editorInput)
-                            }
                         }
-                        if let item = viewModel.item {
-                            Section {
-                                VStack(alignment: .leading) {
-                                    Text("Amount Consumed")
-                                        .headerTitle()
+                        VStack(alignment: .leading, spacing: 20) {
+                            if let item = viewModel.item {
+                                Section {
                                     VStack(alignment: .leading) {
-                                        HStack {
-                                            Text("Amount")
-                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                        Text("Amount Consumed")
+                                            .headerTitle()
+                                        VStack(alignment: .leading) {
                                             HStack {
-                                                TextField(item.selectedUnits?.amount.promptValue ?? "2.5", value: $viewModel.amountConsumed, format: .number)
-                                                    .keyboardType(.decimalPad)
-                                                    .textFieldStyle(.plain)
-                                                    .padding(.horizontal)
-                                                    .padding(.vertical, 8)
-                                                    .background(Color(uiColor: .tertiarySystemGroupedBackground))
-                                                    .clipShape(.rect(cornerRadius: 10))
-                                                Text(item.selectedUnits?.amount.rawValue ?? "")
-                                            }
-                                        }
-                                        .padding(.trailing)
-                                        Divider()
-                                        Toggle("Update Inventory", systemImage: "arrow.triangle.2.circlepath", isOn: $shouldUpdateInventory)
-                                            .onChange(of: shouldUpdateInventory) { _, newValue in
-                                                if newValue {
-                                                    showingInventoryUpdateConfirmation = true
+                                                Text("Amount")
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                                HStack {
+                                                    TextField(item.selectedUnits?.amount.promptValue ?? "2.5", value: $viewModel.amountConsumed, format: .number)
+                                                        .keyboardType(.decimalPad)
+                                                        .textFieldStyle(.plain)
+                                                        .padding(.horizontal)
+                                                        .padding(.vertical, 8)
+                                                        .background(Color(uiColor: .tertiarySystemGroupedBackground))
+                                                        .clipShape(.rect(cornerRadius: 10))
+                                                    Text(item.selectedUnits?.amount.rawValue ?? "")
                                                 }
                                             }
                                             .padding(.trailing)
-                                            .padding(.vertical, 4)
-                                    }
-                                    .padding(.vertical, 8)
-                                    .padding(.leading)
-                                    .background(Color(UIColor.secondarySystemGroupedBackground),
-                                                in: RoundedRectangle(cornerRadius: 12))
-                                    if let currentInventory = item.currentInventory,
-                                       currentInventory.value > 0 {
-                                        Group {
-                                            Text("Current Inventory: ") +
-                                            Text(currentInventory.value, format: .number) +
-                                            Text(" \(currentInventory.unit.rawValue)")
+                                            Divider()
+                                            Toggle("Update Inventory", systemImage: "arrow.triangle.2.circlepath", isOn: $shouldUpdateInventory)
+                                                .onChange(of: shouldUpdateInventory) { _, newValue in
+                                                    if newValue {
+                                                        showingInventoryUpdateConfirmation = true
+                                                    }
+                                                }
+                                                .padding(.trailing)
+                                                .padding(.vertical, 4)
                                         }
-                                        .font(.footnote)
-                                        .foregroundStyle(.secondary)
-                                        .padding(.leading, 8)
-                                    }
-                                }
-                                .padding(.top)
-                            }
-                            .alert("Update Inventory?", isPresented: $showingInventoryUpdateConfirmation) {
-                                Button("Yes") { shouldUpdateInventory = true }
-                                Button("No") { shouldUpdateInventory = false }
-                            } message: {
-                                Text("Do you want to automatically update your item's current amount based on this session?")
-                            }
-                            .animation(.default, value: viewModel.item)
-                        }
-                        if !viewModel.notes.isEmpty {
-                            Section {
-                                VStack(alignment: .leading) {
-                                    Text("Notes")
-                                        .headerTitle()
-                                    Text(viewModel.notes)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(12)
+                                        .padding(.vertical, 8)
+                                        .padding(.leading)
                                         .background(Color(UIColor.secondarySystemGroupedBackground),
-                                                    in: RoundedRectangle(cornerRadius: 8))
-                                }
-                                .padding(.top)
-                            }
-                        }
-                        VStack(alignment: .leading) {
-                            Text("Logs")
-                                .headerTitle()
-                            LogsPickerView(viewModel: $viewModel)
-                        }
-                        .padding(.top)
-                        if let location = viewModel.locationInfo,
-                           let mapItem = location.getMapData() {
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("Location")
-                                        .headerTitle()
-                                    Spacer()
-                                    Menu {
-                                        Button("Remove", systemImage: "trash", role: .destructive) {
-                                            withAnimation {
-                                                viewModel.locationInfo = nil
+                                                    in: RoundedRectangle(cornerRadius: 12))
+                                        if let currentInventory = item.currentInventory,
+                                           currentInventory.value > 0 {
+                                            Group {
+                                                Text("Current Inventory: ") +
+                                                Text(currentInventory.value, format: .number) +
+                                                Text(" \(currentInventory.unit.rawValue)")
                                             }
+                                            .font(.footnote)
+                                            .foregroundStyle(.secondary)
+                                            .padding(.leading, 8)
                                         }
-                                    } label: {
-                                        Image(systemName: "ellipsis")
-                                            .imageScale(.large)
-                                            .padding(8)
-                                            .contentShape(Circle())
                                     }
-                                    .buttonStyle(.plain)
+                                    .padding(.top)
                                 }
-                                Map(interactionModes: []) {
-                                    Annotation(location.name ?? "", coordinate: mapItem.placemark.coordinate) {
-                                        Text(location.name ?? "")
-                                    }
+                                .alert("Update Inventory?", isPresented: $showingInventoryUpdateConfirmation) {
+                                    Button("Yes") { shouldUpdateInventory = true }
+                                    Button("No") { shouldUpdateInventory = false }
+                                } message: {
+                                    Text("Do you want to automatically update your item's current amount based on this session?")
                                 }
-                                .frame(height: 125)
-                                .clipShape(.rect(cornerRadius: 12))
+                                .animation(.default, value: viewModel.item)
                             }
-                            .padding(.top)
+                            if !viewModel.notes.isEmpty {
+                                Section {
+                                    VStack(alignment: .leading) {
+                                        Text("Notes")
+                                            .headerTitle()
+                                        Text(viewModel.notes)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(12)
+                                            .background(Color(UIColor.secondarySystemGroupedBackground),
+                                                        in: RoundedRectangle(cornerRadius: 8))
+                                    }
+                                }
+                            }
+                            VStack(alignment: .leading) {
+                                Text("Logs")
+                                    .headerTitle()
+                                LogsPickerView(viewModel: $viewModel)
+                            }
+                            if let audioData = viewModel.audioData {
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text("Audio")
+                                            .headerTitle()
+                                        Spacer()
+                                        Menu {
+                                            Button("Edit", systemImage: "pencil") {
+                                                openRecorder.toggle()
+                                            }
+                                            Button("Remove", systemImage: "trash", role: .destructive) {
+                                                withAnimation {
+                                                    viewModel.audioData = nil
+                                                }
+                                            }
+                                        } label: {
+                                            Image(systemName: "ellipsis")
+                                                .imageScale(.large)
+                                                .padding(8)
+                                                .contentShape(Circle())
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
+                                    DetailSection {
+                                        AudioPlayerView(audioData: audioData)
+                                    }
+                                }
+                            }
+                            if let location = viewModel.locationInfo,
+                               let mapItem = location.getMapData() {
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text("Location")
+                                            .headerTitle()
+                                        Spacer()
+                                        Menu {
+                                            Button("Remove", systemImage: "trash", role: .destructive) {
+                                                withAnimation {
+                                                    viewModel.locationInfo = nil
+                                                }
+                                            }
+                                        } label: {
+                                            Image(systemName: "ellipsis")
+                                                .imageScale(.large)
+                                                .padding(8)
+                                                .contentShape(Circle())
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
+                                    Map(interactionModes: []) {
+                                        Annotation(location.name ?? "", coordinate: mapItem.placemark.coordinate) {
+                                            Text(location.name ?? "")
+                                        }
+                                    }
+                                    .frame(height: 125)
+                                    .clipShape(.rect(cornerRadius: 12))
+                                }
+                            }
+                            
+                            Section {
+                                SessionEditorAdditionalView(viewModel: $viewModel, openTags: $openTags, openAccessories: $openAccessories)
+                            }
                         }
-                        
-                        Section {
-                            SessionEditorAdditionalView(viewModel: $viewModel, openTags: $openTags, openAccessories: $openAccessories)
-                        }
-                        .padding(.top)
                     }
                     .padding(.horizontal)
                 }
@@ -240,11 +253,8 @@ struct SessionEditorView: View {
                             Text("Save")
                                 .frame(maxWidth: .infinity)
                         }
+                        .saveButton()
                         .disabled(viewModel.item == nil || viewModel.title.isEmpty)
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .tint(Color(red: 16 / 255, green: 69 / 255, blue: 29 / 255))
-                        .padding()
                     }
                     .ignoresSafeArea(.keyboard)
                     if openRecorder {
@@ -387,6 +397,7 @@ struct SessionEditorView: View {
                 viewModel.accessories = session.accessories ?? []
                 viewModel.wellnessEntries = session.wellnessEntries ?? []
                 viewModel.activities = session.activities ?? []
+                viewModel.effects = session.effects ?? []
                 viewModel.audioData = session.audioData
                 self.shouldUpdateInventory = session.transaction?.updateInventory ?? true
                 
@@ -423,6 +434,7 @@ struct SessionEditorView: View {
             session.transaction = transaction
             session.wellnessEntries = viewModel.wellnessEntries
             session.activities = viewModel.activities
+            session.effects = viewModel.effects
             
             if self.session == nil {
                 modelContext.insert(session)
@@ -445,8 +457,7 @@ struct SessionEditorAdditionalView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("Additional")
-                .font(.title3)
-                .fontWeight(.semibold)
+                .headerTitle()
                 .frame(maxWidth: .infinity, alignment: .leading)
             VStack {
                 Button {
@@ -515,6 +526,7 @@ class SessionEditorViewModel {
     var accessories: [Accessory] = []
     var wellnessEntries: [WellnessEntry] = []
     var activities: [Activity] = []
+    var effects: [Effect] = []
     
     var pickerItems: [PhotosPickerItem] = []
     var selectedImagesData: [Data] = []
