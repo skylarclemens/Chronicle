@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct AllActivitiesList: View {
+struct ActivitySelectorView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var sessionViewModel: SessionEditorViewModel
     
@@ -124,7 +124,7 @@ struct AllActivitiesList: View {
             }
             .scrollDismissesKeyboard(.immediately)
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search activities")
-            .navigationTitle("Add Activities")
+            .navigationTitle("Select Activities")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -136,7 +136,7 @@ struct AllActivitiesList: View {
                     .buttonStyle(.close)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Add") {
+                    Button("Done") {
                         save()
                         dismiss()
                     }
@@ -151,7 +151,7 @@ struct AllActivitiesList: View {
                 }
             }
             .sheet(isPresented: $openAddNewActivity) {
-                AddNewActivityView(viewModel: $viewModel)
+                AddNewActivityView(viewModel: $viewModel, activities: activityList)
                     .presentationDetents([.height(250)])
             }
         }
@@ -172,7 +172,7 @@ class ActivitiesViewModel {
     NavigationStack {
         VStack {}
         .sheet(isPresented: .constant(true)) {
-            AllActivitiesList(sessionViewModel: $viewModel)
+            ActivitySelectorView(sessionViewModel: $viewModel)
         }
     }
     .modelContainer(SampleData.shared.container)

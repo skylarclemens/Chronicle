@@ -31,6 +31,8 @@ import SwiftUI
     public var wellnessEntries: [WellnessEntry]?
     @Relationship(deleteRule: .cascade, inverse: \Activity.sessions)
     public var activities: [Activity]?
+    @Relationship(deleteRule: .cascade, inverse: \Effect.sessions)
+    public var effects: [Effect]?
     @Relationship(deleteRule: .cascade, inverse: \Mood.session)
     public var mood: Mood?
     
@@ -49,6 +51,7 @@ import SwiftUI
         tags: [Tag]? = [],
         wellnessEntries: [WellnessEntry]? = [],
         activities: [Activity]? = [],
+        effects: [Effect]? = [],
         mood: Mood? = nil
     ) {
         self.id = id
@@ -65,6 +68,7 @@ import SwiftUI
         self.tags = tags
         self.wellnessEntries = wellnessEntries
         self.activities = activities
+        self.effects = effects
         self.mood = mood
     }
     

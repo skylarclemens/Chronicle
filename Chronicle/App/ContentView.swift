@@ -17,6 +17,7 @@ struct ContentView: View {
     
     @Query var wellness: [Wellness]
     @Query var activities: [Activity]
+    @Query var effects: [Effect]
 
     var body: some View {
         TabView(selection: $activeTab) {
@@ -54,24 +55,26 @@ struct ContentView: View {
             UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         }
         .onAppear {
+            if effects.isEmpty {
+                for effect in Effect.predefinedData {
+                    modelContext.insert(effect)
+                }
+            }
             if wellness.isEmpty {
                 for wellness in Wellness.predefinedData {
                     modelContext.insert(wellness)
-                }
-                do {
-                    try modelContext.save()
-                } catch {
-                    print("Model context failed to save when adding predefined Wellness: \(error.localizedDescription)")
                 }
             }
             if activities.isEmpty {
                 for activity in Activity.predefinedData {
                     modelContext.insert(activity)
                 }
+            }
+            if effects.isEmpty || wellness.isEmpty || activities.isEmpty {
                 do {
                     try modelContext.save()
                 } catch {
-                    print("Model context failed to save when adding predefined Activity: \(error.localizedDescription)")
+                    print("Model context failed to save when adding predefined data: \(error.localizedDescription)")
                 }
             }
         }

@@ -86,6 +86,10 @@ class SampleData {
             container.mainContext.insert(activity)
         }
         
+        for effect in Effect.predefinedData {
+            container.mainContext.insert(effect)
+        }
+        
         for randomDateSession in Session.randomDatesSampleData {
             randomDateSession.item = item
             container.mainContext.insert(session)
@@ -112,6 +116,7 @@ class SampleData {
         }
         session.tags?.append(tag2)
         session.accessories?.append(accessory)
+        accessory.sessions?.append(session)
         wellnessEntry.wellness = wellness
         wellnessEntry.session = session
         session.wellnessEntries?.append(wellnessEntry)
@@ -119,7 +124,10 @@ class SampleData {
         activity2.sessions?.append(session)
         session.activities?.append(activity)
         session.activities?.append(activity2)
-        accessory.sessions?.append(session)
+        effect.sessions?.append(session)
+        effect2.sessions?.append(session)
+        session.effects?.append(effect)
+        session.effects?.append(effect2)
         
         do {
             try context.save()
@@ -190,6 +198,14 @@ class SampleData {
     
     var activity2: Activity {
         Activity.predefinedData[12]
+    }
+    
+    var effect: Effect {
+        Effect.predefinedData[2]
+    }
+    
+    var effect2: Effect {
+        Effect.predefinedData[14]
     }
     
     var tag: Tag {

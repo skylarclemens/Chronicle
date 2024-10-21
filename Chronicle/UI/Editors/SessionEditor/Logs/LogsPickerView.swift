@@ -12,28 +12,45 @@ struct LogsPickerView: View {
     @Binding var viewModel: SessionEditorViewModel
     
     @State private var openMood: Bool = false
+    @State private var openEffects: Bool = false
     @State private var openWellness: Bool = false
     @State private var openActivity: Bool = false
     
     var body: some View {
         VStack(spacing: 16) {
             VStack {
-                if viewModel.mood == nil {
-                    Button {
-                        openMood = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "face.smiling")
-                            Text("Mood and Emotions")
-                            Spacer()
-                            Image(systemName: "plus")
-                                .foregroundStyle(.secondary)
+                HStack {
+                    if viewModel.mood == nil {
+                        Button {
+                            openMood = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "face.smiling")
+                                Text("Mood")
+                                Spacer()
+                                Image(systemName: "plus")
+                                    .foregroundStyle(.secondary)
+                            }
                         }
+                        .buttonStyle(.mood)
+                        .controlSize(.extraLarge)
                     }
-                    .buttonStyle(.mood)
-                    .controlSize(.extraLarge)
+                    if viewModel.effects.isEmpty {
+                        Button {
+                            openEffects = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "theatermasks.fill")
+                                Text("Effects")
+                                Spacer()
+                                Image(systemName: "plus")
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .buttonStyle(.sessionLog(color: .orange))
+                        .controlSize(.extraLarge)
+                    }
                 }
-                
                 HStack {
                     if viewModel.wellnessEntries.isEmpty {
                         Button {
@@ -130,6 +147,46 @@ struct LogsPickerView: View {
                 }
             }
             
+            /// Effects
+            if !viewModel.effects.isEmpty {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Effects")
+                            .font(.title3.weight(.medium))
+                        Spacer()
+                        Menu {
+                            Button("Edit", systemImage: "pencil") {
+                                openEffects = true
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .imageScale(.large)
+                                .padding(8)
+                                .contentShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    DetailSection(isScrollView: true) {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(viewModel.effects) { effect in
+                                    HStack {
+                                        if let emoji = effect.emoji {
+                                            Text(emoji)
+                                        }
+                                        Text(effect.name)
+                                    }
+                                    .font(.subheadline)
+                                    .pillStyle()
+                                }
+                            }
+                        }
+                        .contentMargins(.horizontal, 16)
+                        .scrollIndicators(.hidden)
+                    }
+                }
+            }
+            
             /// Wellness
             if !viewModel.wellnessEntries.isEmpty {
                 VStack(alignment: .leading) {
@@ -210,6 +267,7 @@ struct LogsPickerView: View {
                                             Image(systemName: symbol)
                                         }
                                         Text(activity.name)
+                                            .font(.subheadline)
                                     }
                                     .pillStyle()
                                 }
@@ -234,7 +292,7 @@ struct LogsPickerView: View {
                 .id("WellnessSelectorView")
         }
         .sheet(isPresented: $openActivity) {
-            AllActivitiesList(sessionViewModel: $viewModel)
+            ActivitySelectorView(sessionViewModel: $viewModel)
         }
     }
 }
@@ -250,6 +308,8 @@ struct LogsPickerView: View {
     .modelContainer(SampleData.shared.container)
     .onAppear {
         viewModel.mood = SampleData.shared.mood
+        viewModel.effects = [SampleData.shared.effect]
         viewModel.wellnessEntries = [SampleData.shared.wellnessEntry]
+        viewModel.activities = [SampleData.shared.activity]
     }
 }
