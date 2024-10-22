@@ -14,24 +14,87 @@ struct StrainEditorView: View {
     @State private var viewModel = AddStrainViewModel()
     var strain: Strain?
     
+    @FocusState var focusedField: StrainEditorField?
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                Form {
-                    Section("Name") {
-                        TextField("Blue Dream", text: $viewModel.name)
-                    }
-                    Picker("Type", selection: $viewModel.type) {
-                        ForEach(StrainType.allCases) { strainType in
-                            Text(strainType.rawValue.localizedCapitalized).tag(strainType)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    VStack(alignment: .leading) {
+                        TextField("Strain Name", text: $viewModel.name)
+                            .font(.system(size: 24, weight: .medium, design: .rounded))
+                            .padding(.vertical, 8)
+                            .padding(.trailing)
+                            .focused($focusedField, equals: .name)
+                            .submitLabel(.done)
+                        HStack {
+                            Menu {
+                                Button("None") {
+                                    withAnimation {
+                                        viewModel.type = nil
+                                    }
+                                }
+                                ForEach(StrainType.allCases) { strainType in
+                                    Button {
+                                        withAnimation {
+                                            viewModel.type = strainType
+                                        }
+                                    } label: {
+                                        HStack {
+                                            if strainType == viewModel.type {
+                                                Image(systemName: "checkmark")
+                                            }
+                                            Text(strainType.rawValue.localizedCapitalized)
+                                        }
+                                    }
+                                }
+                            } label: {
+                                HStack {
+                                    Image(systemName: "leaf")
+                                    HStack(spacing: 4) {
+                                        if let type = viewModel.type {
+                                            Text(type.rawValue.localizedCapitalized)
+                                                .lineLimit(1)
+                                        } else {
+                                            Text("Type")
+                                                .foregroundStyle(.secondary)
+                                        }
+                                        Image(systemName: "chevron.up.chevron.down")
+                                            .font(.caption)
+                                    }
+                                }
+                                .contentShape(.capsule)
+                            }
+                            .menuStyle(.button)
+                            .tint(.primary)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 12)
+                            .background(.accent.opacity(0.33),
+                                        in: Capsule())
+                            .overlay(
+                                Capsule()
+                                    .strokeBorder(.accent.opacity(0.5))
+                            )
+                            .transition(.opacity)
                         }
                     }
-                    Section("Description") {
-                        TextField("Description of the strain", text: $viewModel.desc, axis: .vertical)
+                    VStack(alignment: .leading) {
+                        Text("Description")
+                            .headerTitle()
+                        TextField("Strain description", text: $viewModel.desc, axis: .vertical)
+                            .lineLimit(5...10)
+                            .padding()
+                            .background(Color(UIColor.secondarySystemGroupedBackground),
+                                        in: RoundedRectangle(cornerRadius: 12))
+                            
                     }
                 }
+                .padding(.horizontal)
             }
-            .navigationTitle("\(strain != nil ? "Editing" : "New") Strain")
+            .interactiveDismissDisabled()
+            .scrollDismissesKeyboard(.immediately)
+            .navigationTitle("\(strain != nil ? "Edit" : "Add") Strain")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Close", systemImage: "xmark.circle.fill") {
@@ -55,6 +118,8 @@ struct StrainEditorView: View {
                     viewModel.type = strain.type ?? .sativa
                     viewModel.subtype = strain.subtype
                     viewModel.desc = strain.desc
+                } else {
+                    focusedField = .name
                 }
             }
         }
@@ -78,9 +143,13 @@ struct StrainEditorView: View {
 @Observable
 class AddStrainViewModel {
     var name: String = ""
-    var type: StrainType = .sativa
+    var type: StrainType?
     var subtype: StrainSubType?
     var desc: String = ""
+}
+
+public enum StrainEditorField {
+    case name
 }
 
 #Preview {

@@ -22,7 +22,7 @@ struct EditorInputButton: ButtonStyle {
 }
 
 extension ButtonStyle where Self == EditorInputButton {
-    static var editorInput: EditorInputButton {
+    static var editorInput: Self {
         EditorInputButton()
     }
 }

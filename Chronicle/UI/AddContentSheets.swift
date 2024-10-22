@@ -79,14 +79,16 @@ struct AddContentSheets: ViewModifier {
         .sheet(isPresented: $openAddItem) {
             ItemEditorView()
         }
-        .sheet(isPresented: $openAddStrain) {
-            StrainEditorView()
-        }
         .sheet(isPresented: $openAddSession) {
             SessionEditorView()
         }
+        .sheet(isPresented: $openAddStrain) {
+            StrainEditorView()
+                .presentationDetents([.medium])
+        }
         .sheet(isPresented: $openAddAccessory) {
             AccessoryEditorView()
+                .presentationDetents([.medium])
         }
         .onDisappear {
             allowHaptic = false

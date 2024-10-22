@@ -54,7 +54,7 @@ struct DashboardView: View {
                                     NavigationLink {
                                         SessionDetailsView(session: session)
                                     } label: {
-                                        CompactSessionCardView(session: session)
+                                        SessionRowView(session: session)
                                     }
                                 }
                             }
