@@ -21,8 +21,8 @@ import SwiftData
     
     init(
         id: UUID = UUID(),
-        name: String,
-        type: StrainType,
+        name: String = "",
+        type: StrainType? = nil,
         createdAt: Date = Date(),
         desc: String = "",
         favorite: Bool = false,

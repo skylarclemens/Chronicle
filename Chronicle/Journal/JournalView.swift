@@ -95,7 +95,6 @@ struct JournalView: View {
                 .safeAreaPadding(.top)
                 .background(.bar)
             }
-            .addContentSheets()
             .background(
                 BackgroundView()
             )
@@ -115,6 +114,7 @@ struct JournalView: View {
                 SessionDetailsView(session: session)
             }
         }
+        .addContentSheets()
     }
     
     func checkCloseDate() -> String {

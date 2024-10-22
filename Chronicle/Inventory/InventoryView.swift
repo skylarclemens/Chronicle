@@ -79,8 +79,8 @@ struct InventoryView: View {
                     }
                 }
             }
-            .addContentSheets()
         }
+        .addContentSheets()
     }
     
     private enum InventoryType: String {
