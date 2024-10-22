@@ -91,7 +91,6 @@ struct DashboardView: View {
                     .tint(.primary)
                 }
             }
-            .addContentSheets()
             .sheet(isPresented: $openAddSession) {
                 SessionEditorView()
             }
@@ -103,7 +102,7 @@ struct DashboardView: View {
                 BackgroundView()
             )
         }
-
+        .addContentSheets()
     }
 }
 

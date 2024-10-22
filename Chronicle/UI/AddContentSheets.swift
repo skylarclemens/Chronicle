@@ -13,6 +13,7 @@ struct AddContentSheets: ViewModifier {
     @State var openAddAccessory: Bool = false
     @State var openAddStrain: Bool = false
     @State var openAddSelector: Bool = false
+    @State var allowHaptic: Bool = true
     
     func body(content: Content) -> some View {
         ZStack(alignment: .bottomTrailing) {
@@ -65,7 +66,12 @@ struct AddContentSheets: ViewModifier {
                 .rotationEffect(.degrees(openAddSelector ? -45 : 0))
                 .shadow(color: .black.opacity(0.1), radius: 10)
                 .contentShape(Circle())
-                .sensoryFeedback(.selection, trigger: openAddSelector)
+                .sensoryFeedback(trigger: openAddSelector) { oldValue, newValue in
+                    if allowHaptic {
+                        return .impact(flexibility: .solid, intensity: 0.75)
+                    }
+                    return nil
+                }
                 .padding(.trailing)
                 .padding(.bottom)
             }
@@ -83,7 +89,11 @@ struct AddContentSheets: ViewModifier {
             AccessoryEditorView()
         }
         .onDisappear {
+            allowHaptic = false
             openAddSelector = false
+        }
+        .onAppear {
+            allowHaptic = true
         }
     }
     
