@@ -15,10 +15,40 @@ struct AddContentSheets: ViewModifier {
     @State var openAddSelector: Bool = false
     
     func body(content: Content) -> some View {
-        content
-            .safeAreaInset(edge: .bottom, alignment: .trailing) {
+        ZStack(alignment: .bottomTrailing) {
+            content
+            if openAddSelector {
+                Color.black.opacity(0.5)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+                    .onTapGesture {
+                        withAnimation {
+                            openAddSelector = false
+                        }
+                    }
+            }
+            VStack(alignment: .trailing) {
+                ZStack(alignment: .bottom) {
+                    if openAddSelector {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(.ultraThinMaterial)
+                            .blur(radius: 50)
+                            .ignoresSafeArea()
+                            .transition(.opacity)
+                            .frame(width: 210, height: 320)
+                        VStack(alignment: .trailing, spacing: 16) {
+                            ForEach(AddOption.allCases, id: \.self) { option in
+                                addButton(option: option)
+                            }
+                        }
+                        .padding([.top, .leading, .bottom])
+                        .transition(.blurReplace.combined(with: .scale(0.5, anchor: .bottomTrailing)))
+                    }
+                }
                 Button {
-                    openAddSelector = true
+                    withAnimation(.interactiveSpring(duration: 0.33)) {
+                        openAddSelector.toggle()
+                    }
                 } label: {
                     Label("Add", systemImage: "plus")
                         .font(.title2)
@@ -29,35 +59,98 @@ struct AddContentSheets: ViewModifier {
                 .labelStyle(.iconOnly)
                 .frame(width: 55, height: 55)
                 .background(.accent.opacity(0.4),
-                    in: Circle())
+                            in: Circle())
                 .background(.background,
                             in: Circle())
+                .rotationEffect(.degrees(openAddSelector ? -45 : 0))
                 .shadow(color: .black.opacity(0.1), radius: 10)
                 .contentShape(Circle())
+                .sensoryFeedback(.selection, trigger: openAddSelector)
                 .padding(.trailing)
                 .padding(.bottom)
-                .transaction { transaction in
-                    transaction.animation = nil
-                }
             }
-            .sheet(isPresented: $openAddItem) {
-                ItemEditorView()
+        }
+        .sheet(isPresented: $openAddItem) {
+            ItemEditorView()
+        }
+        .sheet(isPresented: $openAddStrain) {
+            StrainEditorView()
+        }
+        .sheet(isPresented: $openAddSession) {
+            SessionEditorView()
+        }
+        .sheet(isPresented: $openAddAccessory) {
+            AccessoryEditorView()
+        }
+        .onDisappear {
+            openAddSelector = false
+        }
+    }
+    
+    @ViewBuilder
+    private func addButton(option: AddOption) -> some View {
+        Button {
+            switch option {
+            case .item:
+                openAddSelector = false
+                openAddItem = true
+            case .session:
+                openAddSelector = false
+                openAddSession = true
+            case .accessory:
+                openAddSelector = false
+                openAddAccessory = true
+            case .strain:
+                openAddSelector = false
+                openAddStrain = true
             }
-            .sheet(isPresented: $openAddStrain) {
-                StrainEditorView()
+        } label: {
+            HStack(spacing: 12) {
+                Text(option.label())
+                    .font(.title3)
+                    .fontDesign(.rounded)
+                    .foregroundStyle(.primary)
+                Image(systemName: option.symbol())
+                    .font(.title3)
+                    .foregroundStyle(.accent)
+                    .frame(width: 50, height: 50)
+                    .background(.accent.opacity(0.25),
+                                in: Circle())
+                    .background(.background,
+                                in: Circle())
             }
-            .sheet(isPresented: $openAddSession) {
-                SessionEditorView()
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private enum AddOption: CaseIterable {
+        case item, accessory, strain, session
+        
+        func symbol() -> String {
+            switch self {
+            case .item:
+                "cube.fill"
+            case .session:
+                "book.pages.fill"
+            case .accessory:
+                "wrench.and.screwdriver.fill"
+            case .strain:
+                "leaf.fill"
             }
-            .sheet(isPresented: $openAddAccessory) {
-                AccessoryEditorView()
+        }
+        
+        func label() -> String {
+            switch self {
+            case .item:
+                "Item"
+            case .session:
+                "Session"
+            case .accessory:
+                "Accessory"
+            case .strain:
+                "Strain"
             }
-            .sheet(isPresented: $openAddSelector) {
-                AddView(openAddItem: $openAddItem, openAddSession: $openAddSession, openAddAccessory: $openAddAccessory, openAddStrain: $openAddStrain)
-                    .presentationDetents([.height(200)])
-                    .presentationDragIndicator(.visible)
-                    .presentationBackground(.thickMaterial)
-            }
+        }
     }
 }
 
@@ -65,4 +158,19 @@ extension View {
     func addContentSheets() -> some View {
         modifier(AddContentSheets())
     }
+}
+
+#Preview {
+    NavigationStack {
+        VStack {
+            ScrollView {
+                
+            }
+        }
+        .addContentSheets()
+        .background(
+            BackgroundView()
+        )
+    }
+    .modelContainer(SampleData.shared.container)
 }

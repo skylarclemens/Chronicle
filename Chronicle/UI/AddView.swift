@@ -30,7 +30,6 @@ struct AddView: View {
             Spacer()
         }
         .padding()
-        .background(Color(.systemGroupedBackground))
     }
     
     @ViewBuilder
