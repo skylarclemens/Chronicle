@@ -24,6 +24,7 @@ struct JournalView: View {
                 SessionsListView(date: $selectedDate, searchText: searchText)
             }
             .listStyle(.plain)
+            .contentMargins(.bottom, 80)
             .scrollContentBackground(.hidden)
             .safeAreaInset(edge: .top) {
                 VStack(spacing: 12) {
@@ -60,6 +61,12 @@ struct JournalView: View {
                         .transaction { transaction in
                             transaction.animation = nil
                         }
+                        .sensoryFeedback(trigger: openSearch) { oldValue, newValue in
+                            if newValue {
+                                return .selection
+                            }
+                            return nil
+                        }
                         Button {
                             openCalendar = true
                         } label: {
@@ -77,6 +84,12 @@ struct JournalView: View {
                         )
                         .transaction { transaction in
                             transaction.animation = nil
+                        }
+                        .sensoryFeedback(trigger: openCalendar) { oldValue, newValue in
+                            if newValue {
+                                return .selection
+                            }
+                            return nil
                         }
                     }
                     .padding(.horizontal)
@@ -113,8 +126,8 @@ struct JournalView: View {
             .navigationDestination(for: Session.self) { session in
                 SessionDetailsView(session: session)
             }
+            .addContentSheets()
         }
-        .addContentSheets()
     }
     
     func checkCloseDate() -> String {

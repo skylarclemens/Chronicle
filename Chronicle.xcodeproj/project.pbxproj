@@ -55,6 +55,7 @@
 		7E5E2E2C2CB5B8D100A1C3FC /* AcceptedUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5E2E2B2CB5B8D100A1C3FC /* AcceptedUnit.swift */; };
 		7E5E2E2E2CB5BA2800A1C3FC /* DefaultUnits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5E2E2D2CB5BA2800A1C3FC /* DefaultUnits.swift */; };
 		7E5E2E302CB5BE5C00A1C3FC /* UnitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5E2E2F2CB5BE5C00A1C3FC /* UnitManager.swift */; };
+		7E61CB5E2CC842CB00FE8CBE /* AddButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E61CB5D2CC842CB00FE8CBE /* AddButtonStyle.swift */; };
 		7E656A2B2C94CED300C6FD6A /* PillStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */; };
 		7E656A2D2C94DB4500C6FD6A /* TerpeneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */; };
 		7E6BC8AD2CAC6E35007AC9AF /* GradientButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */; };
@@ -189,6 +190,7 @@
 		7E5E2E2B2CB5B8D100A1C3FC /* AcceptedUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedUnit.swift; sourceTree = "<group>"; };
 		7E5E2E2D2CB5BA2800A1C3FC /* DefaultUnits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUnits.swift; sourceTree = "<group>"; };
 		7E5E2E2F2CB5BE5C00A1C3FC /* UnitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitManager.swift; sourceTree = "<group>"; };
+		7E61CB5D2CC842CB00FE8CBE /* AddButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonStyle.swift; sourceTree = "<group>"; };
 		7E656A2A2C94CECF00C6FD6A /* PillStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillStyle.swift; sourceTree = "<group>"; };
 		7E656A2C2C94DB4500C6FD6A /* TerpeneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerpeneView.swift; sourceTree = "<group>"; };
 		7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButtonStyle.swift; sourceTree = "<group>"; };
@@ -525,6 +527,7 @@
 				7E6BC8AC2CAC6E35007AC9AF /* GradientButtonStyle.swift */,
 				7E6BC8B02CAC8BC7007AC9AF /* CloseButtonStyle.swift */,
 				7EC397C52CC45CC000B1CF7A /* SaveButtonViewModifier.swift */,
+				7E61CB5D2CC842CB00FE8CBE /* AddButtonStyle.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -937,6 +940,7 @@
 				7ED747912C8BB3F100F07679 /* CustomSliderView.swift in Sources */,
 				7EF2D0672CB9C43800D72BAC /* AmountAdjustmentView.swift in Sources */,
 				7EFCDE362CADFB7A002D68AC /* ItemAnalyticsView.swift in Sources */,
+				7E61CB5E2CC842CB00FE8CBE /* AddButtonStyle.swift in Sources */,
 				7EF0BB162C6D3A2D0068542D /* ItemDetailsView.swift in Sources */,
 				7EB685542CA48DCD002C1759 /* ImagesPicker.swift in Sources */,
 				7E08D41E2C6BEE7700F96328 /* BackgroundView.swift in Sources */,

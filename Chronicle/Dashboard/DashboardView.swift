@@ -81,6 +81,7 @@ struct DashboardView: View {
                 }
                 .frame(maxHeight: .infinity)
             }
+            .contentMargins(.bottom, 80)
             .scrollIndicators(.hidden)
             .navigationTitle("Dashboard")
             .toolbar {
@@ -101,8 +102,8 @@ struct DashboardView: View {
             .background(
                 BackgroundView()
             )
+            .addContentSheets()
         }
-        .addContentSheets()
     }
 }
 

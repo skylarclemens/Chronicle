@@ -22,11 +22,11 @@ struct ImageGridView: View {
                 let totalWidth = geometry.size.width
                 let totalHeight = geometry.size.height
                 
-                let halfWidth = totalWidth * 0.5 - (spacing / 2)
-                let halfHeight = (totalHeight - spacing) / 2
+                let halfWidth = abs(totalWidth * 0.5 - (spacing / 2))
+                let halfHeight = abs((totalHeight - spacing) / 2)
                 let primaryWidth = imagesData.count == 1 ? totalWidth : halfWidth
                 let secondaryWidth = halfWidth
-                let tertiaryWidth = (halfWidth - spacing) / 2
+                let tertiaryWidth = abs((halfWidth - spacing) / 2)
                 
                 
                 HStack(spacing: spacing) {

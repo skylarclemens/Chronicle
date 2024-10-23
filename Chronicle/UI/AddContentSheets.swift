@@ -23,7 +23,7 @@ struct AddContentSheets: ViewModifier {
                     .ignoresSafeArea()
                     .transition(.opacity)
                     .onTapGesture {
-                        withAnimation {
+                        withAnimation(.interactiveSpring(duration: 0.33)) {
                             openAddSelector = false
                         }
                     }
@@ -92,7 +92,9 @@ struct AddContentSheets: ViewModifier {
         }
         .onDisappear {
             allowHaptic = false
-            openAddSelector = false
+            withAnimation(.interactiveSpring(duration: 0.33)) {
+                openAddSelector = false
+            }
         }
         .onAppear {
             allowHaptic = true
@@ -104,16 +106,24 @@ struct AddContentSheets: ViewModifier {
         Button {
             switch option {
             case .item:
-                openAddSelector = false
+                withAnimation(.interactiveSpring(duration: 0.33)) {
+                    openAddSelector = false
+                }
                 openAddItem = true
             case .session:
-                openAddSelector = false
+                withAnimation(.interactiveSpring(duration: 0.33)) {
+                    openAddSelector = false
+                }
                 openAddSession = true
             case .accessory:
-                openAddSelector = false
+                withAnimation(.interactiveSpring(duration: 0.33)) {
+                    openAddSelector = false
+                }
                 openAddAccessory = true
             case .strain:
-                openAddSelector = false
+                withAnimation(.interactiveSpring(duration: 0.33)) {
+                    openAddSelector = false
+                }
                 openAddStrain = true
             }
         } label: {
@@ -132,7 +142,7 @@ struct AddContentSheets: ViewModifier {
                                 in: Circle())
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.add)
     }
     
     private enum AddOption: CaseIterable {
