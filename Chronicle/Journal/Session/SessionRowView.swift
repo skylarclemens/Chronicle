@@ -60,7 +60,7 @@ struct SessionRowView: View {
                                     if session.audioData != nil {
                                         Image(systemName: "waveform")
                                     }
-                                    if let mood = session.mood {
+                                    if let mood = session.mood, mood.type != nil {
                                         Image(systemName: "face.smiling.inverse")
                                     }
                                     if let effects = session.effects, !effects.isEmpty {

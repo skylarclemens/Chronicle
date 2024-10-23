@@ -38,6 +38,7 @@ struct InventoryView: View {
                     }
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+                .contentMargins(.bottom, 80)
             }
             .scrollContentBackground(.hidden)
             .background(
@@ -79,8 +80,8 @@ struct InventoryView: View {
                     }
                 }
             }
+            .addContentSheets()
         }
-        .addContentSheets()
     }
     
     private enum InventoryType: String {
