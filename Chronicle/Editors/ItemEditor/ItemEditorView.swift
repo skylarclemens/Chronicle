@@ -14,12 +14,16 @@ struct ItemEditorView: View {
     @State private var viewModel = ItemEditorViewModel()
     var item: Item?
     
+    @State private var openItemTypeSelector: Bool = false
+    @State private var firstItemTypeSelect: Bool = false
+    
     var body: some View {
         NavigationStack {
-            ItemTypeSelectionView(viewModel: $viewModel, parentDismiss: dismiss, item: item)
+            ItemEditorBasicsView(viewModel: $viewModel, item: item, parentDismiss: dismiss, openItemTypeSelector: $openItemTypeSelector, firstItemTypeSelect: $firstItemTypeSelect)
         }
         .onAppear {
             if let item {
+                openItemTypeSelector = false
                 viewModel.itemType = item.type
                 viewModel.name = item.name
                 viewModel.amountValue = item.amount?.value
@@ -36,73 +40,9 @@ struct ItemEditorView: View {
                 viewModel.linkedStrain = item.strain
                 viewModel.tags = item.tags ?? []
                 viewModel.selectedImagesData = item.imagesData ?? []
-            }
-        }
-    }
-}
-
-struct ItemTypeSelectionView: View {
-    @Binding var viewModel: ItemEditorViewModel
-    let parentDismiss: DismissAction
-    let columns: [GridItem] = [GridItem](repeating: GridItem(), count: 3)
-    var item: Item?
-    
-    var body: some View {
-        VStack {
-            LazyVGrid(columns: columns, spacing: 8) {
-                ForEach(ItemType.allCases, id: \.id) { type in
-                    Button {
-                        withAnimation {
-                            viewModel.itemType = type
-                        }
-                    } label: {
-                        VStack {
-                            Image(systemName: type.symbol())
-                                .font(.largeTitle)
-                                .padding(4)
-                                .frame(height: 50)
-                            Text(type.label())
-                        }
-                    }
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100, maxHeight: .infinity)
-                    .foregroundStyle(.primary)
-                    .background(Color(.secondarySystemGroupedBackground).opacity(viewModel.itemType == type ? 0 : 1))
-                    .background(.accent.opacity(viewModel.itemType == type ? 0.33 : 0))
-                    .clipShape(.rect(cornerRadius: 10))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(.white, lineWidth: viewModel.itemType == type ? 1 : 0)
-                    )
-                }
-            }
-            .buttonStyle(.borderless)
-            .padding()
-            Spacer()
-        }
-        .safeAreaInset(edge: .bottom, alignment: .center) {
-            ZStack {
-                NavigationLink {
-                    ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
-                } label: {
-                    Text("Next")
-                        .frame(maxWidth: .infinity)
-                }
-                .saveButton()
-                .disabled(viewModel.itemType == nil)
-            }
-            .frame(height: 120)
-        }
-        .ignoresSafeArea(edges: .bottom)
-        .navigationTitle(item == nil ? "What are you adding?" : "What type of item?")
-        .background(Color(.systemGroupedBackground))
-        .toolbar {
-            ToolbarItem(placement: .destructiveAction) {
-                Button {
-                    parentDismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                }
-                .buttonStyle(.close)
+            } else {
+                openItemTypeSelector = true
+                firstItemTypeSelect = true
             }
         }
     }
@@ -111,10 +51,13 @@ struct ItemTypeSelectionView: View {
 struct ItemEditorBasicsView: View {
     @Environment(\.modelContext) var modelContext
     @Binding var viewModel: ItemEditorViewModel
-    let parentDismiss: DismissAction
     var item: Item?
+    let parentDismiss: DismissAction
     @FocusState var focusedField: ItemEditorField?
     @State private var showingImagesPicker: Bool = false
+    
+    @Binding var openItemTypeSelector: Bool
+    @Binding var firstItemTypeSelect: Bool
     
     @Query(sort: \Strain.name) var strains: [Strain]
     
@@ -135,6 +78,30 @@ struct ItemEditorBasicsView: View {
                                         .focused($focusedField, equals: .name)
                                         .submitLabel(.done)
                                     HStack {
+                                        Button {
+                                            openItemTypeSelector = true
+                                        } label: {
+                                            HStack(spacing: 4) {
+                                                if let type = viewModel.itemType {
+                                                    Text(type.label())
+                                                        .lineLimit(1)
+                                                } else {
+                                                    Text("Type")
+                                                        .foregroundStyle(.secondary)
+                                                }
+                                                Image(systemName: "chevron.right")
+                                                    .font(.caption)
+                                            }
+                                        }
+                                        .buttonStyle(.plain)
+                                        .padding(8)
+                                        .padding(.leading, 2)
+                                        .background(.accent.opacity(0.33),
+                                                    in: Capsule())
+                                        .overlay(
+                                            Capsule()
+                                                .strokeBorder(.accent.opacity(0.5))
+                                        )
                                         HStack {
                                             Image(systemName: "leaf")
                                             Menu {
@@ -170,7 +137,7 @@ struct ItemEditorBasicsView: View {
                                             Capsule()
                                                 .strokeBorder(.accent.opacity(0.5))
                                         )
-                                        Button("Select photos", systemImage: "photo.badge.plus") {
+                                        Button("Photos", systemImage: "photo.badge.plus") {
                                             showingImagesPicker = true
                                         }
                                         .tint(.primary)
@@ -230,17 +197,6 @@ struct ItemEditorBasicsView: View {
                 .buttonStyle(.close)
             }
         }
-        .onAppear {
-            if item == nil {
-                focusedField = .name
-                let amountUnit = UnitManager.shared.getAmountUnit(for: viewModel.itemType ?? ItemType.other)
-                let dosageUnit = UnitManager.shared.getDosageUnit(for: viewModel.itemType ?? ItemType.other)
-                viewModel.amountUnit = amountUnit
-                viewModel.dosageUnit = dosageUnit
-                
-                viewModel.selectedUnits = ItemUnits(amount: amountUnit, dosage: dosageUnit)
-            }
-        }
         .onChange(of: viewModel.amountUnit) { _, newValue in
             if newValue != viewModel.selectedUnits.amount {
                 viewModel.selectedUnits = ItemUnits(amount: viewModel.amountUnit, dosage: viewModel.dosageUnit)
@@ -250,6 +206,14 @@ struct ItemEditorBasicsView: View {
             if newValue != viewModel.selectedUnits.dosage {
                 viewModel.selectedUnits = ItemUnits(amount: viewModel.amountUnit, dosage: viewModel.dosageUnit)
             }
+        }
+        .sheet(isPresented: $openItemTypeSelector, onDismiss: {
+            if firstItemTypeSelect {
+                focusedField = .name
+                firstItemTypeSelect = false
+            }
+        }) {
+            ItemTypeSelectionView(viewModel: $viewModel, item: item)
         }
     }
     
@@ -292,6 +256,8 @@ struct ItemEditorBasicsView: View {
         try modelContext.save()
     }
 }
+
+
 
 struct ItemEditorDetailsView: View {
     @Binding var viewModel: ItemEditorViewModel
@@ -339,66 +305,9 @@ struct ItemEditorDetailsView: View {
     }
 }
 
-struct ItemEditorCompositionView: View {
-    @Binding var viewModel: ItemEditorViewModel
-    
-    var body: some View {
-        Section {
-            VStack(alignment: .leading) {
-                Text("Composition")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                VStack(spacing: 12) {
-                    CannabinoidInputView(compounds: $viewModel.cannabinoids)
-                    TerpeneInputView(compounds: $viewModel.terpenes)
-                    IngredientsInputView(ingredients: $viewModel.ingredients)
-                }
-            }
-        }
-    }
-}
 
-struct ItemEditorAdditionalView: View {
-    @Binding var viewModel: ItemEditorViewModel
-    @State var openTags: Bool = false
-    @FocusState.Binding var focusedField: ItemEditorField?
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("Additional")
-                .font(.title3)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            Button {
-                openTags = true
-                focusedField = nil
-            } label: {
-                HStack {
-                    Text("Tags")
-                        .foregroundStyle(.primary)
-                    Spacer()
-                    HStack {
-                        if !viewModel.tags.isEmpty {
-                            Text("\(viewModel.tags.count)") +
-                            Text(" selected")
-                        }
-                        Image(systemName: "chevron.right")
-                    }
-                    .foregroundStyle(.secondary)
-                }
-                .padding()
-                .background(Color(UIColor.secondarySystemGroupedBackground),
-                            in: RoundedRectangle(cornerRadius: 12))
-            }
-            .buttonStyle(.plain)
-        }
-        .sheet(isPresented: $openTags) {
-            TagEditorView(tags: $viewModel.tags, context: .item)
-                .presentationDragIndicator(.hidden)
-        }
-    }
-}
+
+
 
 public enum ItemEditorField {
     case name
@@ -446,16 +355,6 @@ class ItemEditorViewModel {
 }
 
 #Preview {
-    @Previewable @Environment(\.dismiss) var dismiss
-    @Previewable @State var viewModel = ItemEditorViewModel()
-    viewModel.itemType = .edible
-    return NavigationStack {
-        ItemEditorBasicsView(viewModel: $viewModel, parentDismiss: dismiss)
-            .modelContainer(SampleData.shared.container)
-    }
-}
-
-#Preview {
-    ItemEditorView(item: SampleData.shared.item)
+    ItemEditorView()
         .modelContainer(SampleData.shared.container)
 }
