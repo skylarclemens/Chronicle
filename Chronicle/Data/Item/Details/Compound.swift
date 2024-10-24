@@ -11,13 +11,15 @@ public struct Compound: Codable, Identifiable, Hashable {
     public let id: UUID
     public var name: String
     public var value: Double
+    public var unit: CannabinoidMeasurement?
     public var type: CompoundType
     public var color: ColorData
     
-    init(id: UUID = UUID(), name: String, value: Double = 0, type: CompoundType, color: ColorData = ColorData(color: .accent)) {
+    init(id: UUID = UUID(), name: String, value: Double = 0, unit: CannabinoidMeasurement? = nil, type: CompoundType, color: ColorData = ColorData(color: .accent)) {
         self.id = id
         self.name = name
         self.value = value
+        self.unit = unit
         self.type = type
         self.color = color
     }
@@ -51,4 +53,25 @@ public struct Compound: Codable, Identifiable, Hashable {
 
 public enum CompoundType: String, Codable {
     case cannabinoid, terpene
+}
+
+public enum CannabinoidMeasurement: String, Codable, CaseIterable, Identifiable {
+    case percentage = "%"
+    case milligrams = "mg"
+    case milligramsPerMl = "mg/mL"
+    
+    public var id: String { return self.rawValue }
+    
+    static func defaultFor(itemType: ItemType) -> CannabinoidMeasurement {
+        switch itemType {
+        case .edible, .pill, .topical:
+            .milligrams
+        case .flower, .preroll, .concentrate:
+            .percentage
+        case .tincture:
+            .milligramsPerMl
+        case .other:
+            .milligrams
+        }
+    }
 }

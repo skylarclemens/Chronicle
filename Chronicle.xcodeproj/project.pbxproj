@@ -76,6 +76,9 @@
 		7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951CFF2C73D10E0023922C /* ItemCardView.swift */; };
 		7E951D052C73E7E20023922C /* CompactSessionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E951D042C73E7E20023922C /* CompactSessionCardView.swift */; };
 		7E9ACB522CA1F67700CFF92D /* TagStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9ACB512CA1F67400CFF92D /* TagStyle.swift */; };
+		7EA5DE002CC98EBB00BAEAA5 /* ItemTypeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5DDFF2CC98EBB00BAEAA5 /* ItemTypeSelectionView.swift */; };
+		7EA5DE022CC98ECE00BAEAA5 /* ItemEditorCompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5DE012CC98ECE00BAEAA5 /* ItemEditorCompositionView.swift */; };
+		7EA5DE042CC98ED600BAEAA5 /* ItemEditorAdditionalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5DE032CC98ED600BAEAA5 /* ItemEditorAdditionalView.swift */; };
 		7EB685542CA48DCD002C1759 /* ImagesPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB685532CA48DCD002C1759 /* ImagesPicker.swift */; };
 		7EC008ED2C5EEDE80093217B /* ChronicleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */; };
 		7EC008EF2C5EEDE80093217B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC008EE2C5EEDE80093217B /* ContentView.swift */; };
@@ -211,6 +214,9 @@
 		7E951CFF2C73D10E0023922C /* ItemCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCardView.swift; sourceTree = "<group>"; };
 		7E951D042C73E7E20023922C /* CompactSessionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactSessionCardView.swift; sourceTree = "<group>"; };
 		7E9ACB512CA1F67400CFF92D /* TagStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStyle.swift; sourceTree = "<group>"; };
+		7EA5DDFF2CC98EBB00BAEAA5 /* ItemTypeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeSelectionView.swift; sourceTree = "<group>"; };
+		7EA5DE012CC98ECE00BAEAA5 /* ItemEditorCompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorCompositionView.swift; sourceTree = "<group>"; };
+		7EA5DE032CC98ED600BAEAA5 /* ItemEditorAdditionalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorAdditionalView.swift; sourceTree = "<group>"; };
 		7EB685532CA48DCD002C1759 /* ImagesPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesPicker.swift; sourceTree = "<group>"; };
 		7EC008E92C5EEDE80093217B /* Chronicle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chronicle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EC008EC2C5EEDE80093217B /* ChronicleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChronicleApp.swift; sourceTree = "<group>"; };
@@ -796,6 +802,9 @@
 			isa = PBXGroup;
 			children = (
 				7E7DDC182C66A8730057F983 /* ItemEditorView.swift */,
+				7EA5DE032CC98ED600BAEAA5 /* ItemEditorAdditionalView.swift */,
+				7EA5DE012CC98ECE00BAEAA5 /* ItemEditorCompositionView.swift */,
+				7EA5DDFF2CC98EBB00BAEAA5 /* ItemTypeSelectionView.swift */,
 				7EE6261F2C6AC40D00448F80 /* CannabinoidInputView.swift */,
 				7EE626212C6ACA4B00448F80 /* TerpeneInputView.swift */,
 				7EE626232C6ACE4B00448F80 /* IngredientsInputView.swift */,
@@ -971,6 +980,7 @@
 				7E523C192C77BFD6005B6186 /* ImageGridView.swift in Sources */,
 				7E951D002C73D10E0023922C /* ItemCardView.swift in Sources */,
 				7ECAE69C2CA8937400ECEFD9 /* AccessoryDetailsView.swift in Sources */,
+				7EA5DE002CC98EBB00BAEAA5 /* ItemTypeSelectionView.swift in Sources */,
 				7E8AC9FC2CC2ED70006289CB /* AddNewActivityView.swift in Sources */,
 				7E164A602CA4C565008996F1 /* UsagePatternsView.swift in Sources */,
 				7EC397C62CC45CC000B1CF7A /* SaveButtonViewModifier.swift in Sources */,
@@ -987,6 +997,7 @@
 				7E5E2E2A2CB5B73B00A1C3FC /* UnitsSettingsView.swift in Sources */,
 				7E26DF7F2CAF384500F54E00 /* SearchView.swift in Sources */,
 				7EFCDE382CAE0681002D68AC /* ItemTypeDistributionChartView.swift in Sources */,
+				7EA5DE042CC98ED600BAEAA5 /* ItemEditorAdditionalView.swift in Sources */,
 				7E530BEC2CBF2E3800B8DDE8 /* SelectedItemAnalyticsView.swift in Sources */,
 				7ECDBAAD2CC1C3C80036BA33 /* Activity.swift in Sources */,
 				7EF2D05A2CB8706E00D72BAC /* InventoryTransaction.swift in Sources */,
@@ -1003,6 +1014,7 @@
 				7EE626202C6AC40D00448F80 /* CannabinoidInputView.swift in Sources */,
 				7E5301F12C74FD7F00909048 /* ItemRowView.swift in Sources */,
 				7ED7478D2C8A909E00F07679 /* NotesEditorView.swift in Sources */,
+				7EA5DE022CC98ECE00BAEAA5 /* ItemEditorCompositionView.swift in Sources */,
 				7ECAFC2A2C6421310056A44E /* SampleData.swift in Sources */,
 				7EF2D05C2CB8893900D72BAC /* PurchaseInputView.swift in Sources */,
 				7E5301E82C74F44000909048 /* StrainDetailsView.swift in Sources */,

@@ -19,43 +19,19 @@ struct TerpeneInputView: View {
                         ForEach(compounds, id: \.self) { compound in
                             TerpeneView(compound)
                         }
-                        Button {
-                            openPicker = true
-                        } label: {
-                            HStack {
-                                Text("Add")
-                                Image(systemName: "plus.circle.fill")
-                            }
-                        }
-                        .tint(.accent)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 10)
-                        .background(.accent.opacity(0.15),
-                                    in: RoundedRectangle(cornerRadius: 12))
                     }
                 }
                 .contentMargins(.horizontal, 16)
                 .scrollIndicators(.hidden)
             }
         } headerRight: {
-            Group {
-                if compounds.isEmpty {
-                    Button {
-                        openPicker = true
-                    } label: {
-                        HStack {
-                            Text("Add")
-                            Image(systemName: "plus.circle.fill")
-                        }
-                    }
-                    .tint(.accent)
-                    .padding(.vertical, 6)
-                    .padding(.horizontal, 10)
-                    .background(.accent.opacity(0.15),
-                                in: RoundedRectangle(cornerRadius: 12))
-                    .padding(.trailing)
-                }
+            Button("Add", systemImage: "plus.circle.fill") {
+                openPicker = true
             }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            .tint(.accent)
+            .padding(.trailing)
         }
         .sheet(isPresented: $openPicker) {
             TerpeneSelectorView(compounds: $compounds)
@@ -81,32 +57,65 @@ struct TerpeneSelectorView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottom) {
-                List {
-                    ForEach(terpenes, id: \.self) { terpene in
-                        let selected = selectedTerpenes.contains(terpene)
-                        Button {
+            List {
+                ForEach(terpenes, id: \.self) { terpene in
+                    let selected = selectedTerpenes.contains(terpene)
+                    Button {
+                        withAnimation {
                             if !selected {
                                 selectedTerpenes.insert(terpene)
                             } else {
                                 selectedTerpenes.remove(terpene)
                             }
-                        } label: {
-                            HStack {
-                                Text(terpene.name)
-                                Spacer()
-                                if selected {
-                                    Image(systemName: "checkmark")
-                                        .foregroundStyle(.accent)
+                        }
+                    } label: {
+                        HStack {
+                            Text(terpene.name)
+                            Spacer()
+                            Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                                .foregroundStyle(selected ? .accent : .secondary)
+                        }
+                    }
+                    .tag(terpene as Compound?)
+                    .tint(.primary)
+                }
+            }
+            .searchable(text: $pickerSearchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search terpenes")
+            .contentMargins(.top, 0)
+            .safeAreaInset(edge: .top) {
+                if !selectedTerpenes.isEmpty {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(Array(selectedTerpenes).sorted(by: { $0.name < $1.name })) { terpene in
+                                Button {
+                                    withAnimation {
+                                        if selectedTerpenes.contains(terpene) {
+                                            selectedTerpenes.remove(terpene)
+                                        }
+                                    }
+                                } label: {
+                                    HStack(spacing: 4) {
+                                        Text(terpene.name)
+                                            .font(.footnote)
+                                        Image(systemName: "xmark.circle.fill")
+                                            .font(.caption2)
+                                            .foregroundStyle(.secondary)
+                                    }
                                 }
+                                .buttonStyle(.editorInput)
                             }
                         }
-                        .tag(terpene as Compound?)
-                        .tint(.primary)
                     }
+                    .scrollContentBackground(.hidden)
+                    .contentMargins(.horizontal, 16)
+                    .contentMargins(.vertical, 8)
+                    .scrollIndicators(.hidden)
+                    .frame(maxHeight: 60, alignment: .top)
+                    .background(
+                        Color(.systemGroupedBackground)
+                            .mask(LinearGradient(gradient: Gradient(colors: [.black, .black, .black, .clear]), startPoint: .top, endPoint: .bottom))
+                    )
                 }
-                .searchable(text: $pickerSearchText)
-                .contentMargins(.bottom, 100)
             }
             .navigationTitle("Select Terpenes")
             .navigationBarTitleDisplayMode(.inline)

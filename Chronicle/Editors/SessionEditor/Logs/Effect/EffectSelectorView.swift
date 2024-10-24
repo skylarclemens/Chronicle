@@ -95,6 +95,7 @@ struct EffectSelectorView: View {
                                     HStack(spacing: 4) {
                                         if let emoji = effect.emoji {
                                             Text(emoji)
+                                                .font(.footnote)
                                         }
                                         Text(effect.name)
                                             .font(.footnote)
