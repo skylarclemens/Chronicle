@@ -102,6 +102,7 @@ struct SessionEditorView: View {
                                                     TextField(item.selectedUnits?.amount.promptValue ?? "2.5", value: $viewModel.amountConsumed, format: .number)
                                                         .keyboardType(.decimalPad)
                                                         .textFieldStyle(.plain)
+                                                        .focused($focusedField, equals: .amount)
                                                         .padding(.horizontal)
                                                         .padding(.vertical, 8)
                                                         .background(Color(uiColor: .tertiarySystemGroupedBackground))
@@ -136,7 +137,6 @@ struct SessionEditorView: View {
                                             .padding(.leading, 8)
                                         }
                                     }
-                                    .padding(.top)
                                 }
                                 .alert("Update Inventory?", isPresented: $showingInventoryUpdateConfirmation) {
                                     Button("Yes") { shouldUpdateInventory = true }
@@ -227,6 +227,7 @@ struct SessionEditorView: View {
                                 SessionEditorAdditionalView(viewModel: $viewModel, openTags: $openTags, openAccessories: $openAccessories)
                             }
                         }
+                        .padding(.top)
                     }
                     .padding(.horizontal)
                 }
@@ -342,13 +343,6 @@ struct SessionEditorView: View {
                     .labelStyle(.iconOnly)
                     .tint(.primary)
                     .disabled(viewModel.locationInfo != nil)
-                    Spacer()
-                    Button {
-                        focusedField = nil
-                    } label: {
-                        Image(systemName: "keyboard.chevron.compact.down")
-                    }
-                    .tint(.primary)
                 }
             }
             .toolbarBackground(.visible, for: .bottomBar)
@@ -445,7 +439,7 @@ struct SessionEditorView: View {
     }
     
     enum Field {
-        case title, notes
+        case title, amount
     }
 }
 
