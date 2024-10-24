@@ -14,20 +14,21 @@ struct PurchaseInputView: View {
     @Binding var location: LocationInfo?
     @Binding var date: Date
     @Binding var shouldUpdateInventory: Bool
+    @Binding var openLocationSearch: Bool
     
-    @State private var openLocationSearch: Bool = false
     @State private var showingInventoryUpdateConfirmation: Bool = false
     
     var showUpdateInventoryToggle: Bool
     var transaction: InventoryTransaction?
     
-    init(amountValue: Binding<Double?>, amountUnit: Binding<AcceptedUnit>, price: Binding<Double?>, location: Binding<LocationInfo?>, date: Binding<Date>, shouldUpdateInventory: Binding<Bool> = Binding.constant(true), showUpdateInventoryToggle: Bool = false, transaction: InventoryTransaction? = nil) {
+    init(amountValue: Binding<Double?>, amountUnit: Binding<AcceptedUnit>, price: Binding<Double?>, location: Binding<LocationInfo?>, date: Binding<Date>, shouldUpdateInventory: Binding<Bool> = Binding.constant(true), openLocationSearch: Binding<Bool> = Binding.constant(false), showUpdateInventoryToggle: Bool = false, transaction: InventoryTransaction? = nil) {
         self._amountValue = amountValue
         self._amountUnit = amountUnit
         self._price = price
         self._location = location
         self._date = date
         self._shouldUpdateInventory = shouldUpdateInventory
+        self._openLocationSearch = openLocationSearch
         self.showUpdateInventoryToggle = showUpdateInventoryToggle
         self.transaction = transaction
     }
@@ -112,12 +113,9 @@ struct PurchaseInputView: View {
             .background(Color(UIColor.secondarySystemGroupedBackground),
                         in: RoundedRectangle(cornerRadius: 12))
         }
-        .sheet(isPresented: $openLocationSearch) {
-            LocationSelectorView(locationInfo: $location)
-        }
         .alert("Update Inventory?", isPresented: $showingInventoryUpdateConfirmation) {
-            Button("Yes") { shouldUpdateInventory = true }
             Button("No") { shouldUpdateInventory = false }
+            Button("Yes") { shouldUpdateInventory = true }
         } message: {
             Text("Do you want to automatically update your item's current amount based on this purchase?")
         }

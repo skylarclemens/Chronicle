@@ -59,126 +59,126 @@ struct ItemEditorBasicsView: View {
     @Binding var openItemTypeSelector: Bool
     @Binding var firstItemTypeSelect: Bool
     
+    @State private var openLocationSearch: Bool = false
+    
     @Query(sort: \Strain.name) var strains: [Strain]
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            ScrollView {
-                VStack {
-                    EditableHorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
-                        .frame(height: 180)
-                    VStack(spacing: 24) {
-                        Section {
+        ScrollView {
+            VStack {
+                EditableHorizontalImagesView(selectedImagesData: $viewModel.selectedImagesData, rotateImages: true)
+                    .frame(height: 180)
+                VStack(spacing: 24) {
+                    Section {
+                        VStack(alignment: .leading) {
                             VStack(alignment: .leading) {
-                                VStack(alignment: .leading) {
-                                    TextField("Item Name", text: $viewModel.name)
-                                        .font(.system(size: 24, weight: .medium, design: .rounded))
-                                        .padding(.vertical, 8)
-                                        .padding(.trailing)
-                                        .focused($focusedField, equals: .name)
-                                        .submitLabel(.done)
+                                TextField("Item Name", text: $viewModel.name)
+                                    .font(.system(size: 24, weight: .medium, design: .rounded))
+                                    .padding(.vertical, 8)
+                                    .padding(.trailing)
+                                    .focused($focusedField, equals: .name)
+                                    .submitLabel(.done)
+                                HStack {
+                                    Button {
+                                        openItemTypeSelector = true
+                                    } label: {
+                                        HStack(spacing: 4) {
+                                            if let type = viewModel.itemType {
+                                                Text(type.label())
+                                                    .lineLimit(1)
+                                            } else {
+                                                Text("Type")
+                                                    .foregroundStyle(.secondary)
+                                            }
+                                            Image(systemName: "chevron.right")
+                                                .font(.caption)
+                                        }
+                                    }
+                                    .buttonStyle(.plain)
+                                    .padding(8)
+                                    .padding(.leading, 2)
+                                    .background(.accent.opacity(0.33),
+                                                in: Capsule())
+                                    .overlay(
+                                        Capsule()
+                                            .strokeBorder(.accent.opacity(0.5))
+                                    )
                                     HStack {
-                                        Button {
-                                            openItemTypeSelector = true
+                                        Image(systemName: "leaf")
+                                        Menu {
+                                            Button("None") {
+                                                viewModel.linkedStrain = nil
+                                            }
+                                            ForEach(strains, id: \.self) { strain in
+                                                Button {
+                                                    viewModel.linkedStrain = strain
+                                                } label: {
+                                                    Text(strain.name)
+                                                }
+                                            }
                                         } label: {
                                             HStack(spacing: 4) {
-                                                if let type = viewModel.itemType {
-                                                    Text(type.label())
+                                                if let linkedStrain = viewModel.linkedStrain {
+                                                    Text(linkedStrain.name)
                                                         .lineLimit(1)
                                                 } else {
-                                                    Text("Type")
+                                                    Text("Strain")
                                                         .foregroundStyle(.secondary)
                                                 }
-                                                Image(systemName: "chevron.right")
+                                                Image(systemName: "chevron.up.chevron.down")
                                                     .font(.caption)
                                             }
                                         }
-                                        .buttonStyle(.plain)
-                                        .padding(8)
-                                        .padding(.leading, 2)
-                                        .background(.accent.opacity(0.33),
-                                                    in: Capsule())
-                                        .overlay(
-                                            Capsule()
-                                                .strokeBorder(.accent.opacity(0.5))
-                                        )
-                                        HStack {
-                                            Image(systemName: "leaf")
-                                            Menu {
-                                                Button("None") {
-                                                    viewModel.linkedStrain = nil
-                                                }
-                                                ForEach(strains, id: \.self) { strain in
-                                                    Button {
-                                                        viewModel.linkedStrain = strain
-                                                    } label: {
-                                                        Text(strain.name)
-                                                    }
-                                                }
-                                            } label: {
-                                                HStack(spacing: 4) {
-                                                    if let linkedStrain = viewModel.linkedStrain {
-                                                        Text(linkedStrain.name)
-                                                            .lineLimit(1)
-                                                    } else {
-                                                        Text("Strain")
-                                                            .foregroundStyle(.secondary)
-                                                    }
-                                                    Image(systemName: "chevron.up.chevron.down")
-                                                        .font(.caption)
-                                                }
-                                            }
-                                        }
-                                        .tint(.primary)
-                                        .padding(8)
-                                        .background(.accent.opacity(0.33),
-                                                    in: Capsule())
-                                        .overlay(
-                                            Capsule()
-                                                .strokeBorder(.accent.opacity(0.5))
-                                        )
-                                        Button("Photos", systemImage: "photo.badge.plus") {
-                                            showingImagesPicker = true
-                                        }
-                                        .tint(.primary)
-                                        .buttonStyle(.editorInput)
                                     }
-                                    .frame(maxWidth: 350, alignment: .leading)
+                                    .tint(.primary)
+                                    .padding(8)
+                                    .background(.accent.opacity(0.33),
+                                                in: Capsule())
+                                    .overlay(
+                                        Capsule()
+                                            .strokeBorder(.accent.opacity(0.5))
+                                    )
+                                    Button("Photos", systemImage: "photo.badge.plus") {
+                                        showingImagesPicker = true
+                                    }
+                                    .tint(.primary)
+                                    .buttonStyle(.editorInput)
                                 }
+                                .frame(maxWidth: 350, alignment: .leading)
                             }
                         }
-                        ItemEditorDetailsView(viewModel: $viewModel)
-                        ItemPurchaseInputView(viewModel: $viewModel, item: item)
-                        ItemEditorCompositionView(viewModel: $viewModel, itemType: viewModel.itemType)
-                        ItemEditorAdditionalView(viewModel: $viewModel, focusedField: $focusedField)
                     }
-                    .padding(.horizontal)
+                    ItemEditorDetailsView(viewModel: $viewModel)
+                    ItemPurchaseInputView(viewModel: $viewModel, item: item, openLocationSearch: $openLocationSearch)
+                    ItemEditorCompositionView(viewModel: $viewModel, itemType: viewModel.itemType)
+                    ItemEditorAdditionalView(viewModel: $viewModel, focusedField: $focusedField)
                 }
+                .padding(.horizontal)
             }
-            .safeAreaInset(edge: .bottom, alignment: .center) {
-                ZStack {
-                    Color(UIColor.systemBackground).mask(
-                        LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
-                            .opacity(0.9)
-                    )
-                    .allowsHitTesting(false)
-                    Button {
-                        do {
-                            try save()
-                        } catch {
-                            print("New/edited item could not be saved.")
-                        }
-                        parentDismiss()
-                    } label: {
-                        
-                        Text("Save")
-                            .frame(maxWidth: .infinity)
+        }
+        .safeAreaInset(edge: .bottom, alignment: .center) {
+            ZStack {
+                Color(UIColor.systemBackground).mask(
+                    LinearGradient(gradient: Gradient(colors: [.black, .black, .clear]), startPoint: .bottom, endPoint: .top)
+                        .opacity(0.9)
+                )
+                .allowsHitTesting(false)
+                Button {
+                    do {
+                        try save()
+                    } catch {
+                        print("New/edited item could not be saved.")
                     }
-                    .saveButton()
+                    parentDismiss()
+                } label: {
+                    
+                    Text("Save")
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(height: 120)
-                .ignoresSafeArea(.keyboard)
+                .saveButton()
             }
+            .frame(height: 120)
+            .ignoresSafeArea(.keyboard)
         }
         .ignoresSafeArea(edges: .bottom)
         .interactiveDismissDisabled()
@@ -214,6 +214,9 @@ struct ItemEditorBasicsView: View {
             }
         }) {
             ItemTypeSelectionView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
+        }
+        .sheet(isPresented: $openLocationSearch) {
+            LocationSelectorView(locationInfo: $viewModel.purchaseLocation)
         }
     }
     
