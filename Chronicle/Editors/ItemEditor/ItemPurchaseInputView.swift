@@ -17,6 +17,8 @@ struct ItemPurchaseInputView: View {
     @State private var selectedTransaction: InventoryTransaction?
     @State private var isDeleting: Bool = false
     
+    @Binding var openLocationSearch: Bool
+    
     var body: some View {
         Section {
             if item != nil {
@@ -98,7 +100,7 @@ struct ItemPurchaseInputView: View {
                         .font(.title3)
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    PurchaseInputView(amountValue: $viewModel.amountValue, amountUnit: $viewModel.amountUnit, price: $viewModel.purchasePrice, location: $viewModel.purchaseLocation, date: $viewModel.purchaseDate)
+                    PurchaseInputView(amountValue: $viewModel.amountValue, amountUnit: $viewModel.amountUnit, price: $viewModel.purchasePrice, location: $viewModel.purchaseLocation, date: $viewModel.purchaseDate, openLocationSearch: $openLocationSearch)
                 }
             }
         }
@@ -144,7 +146,7 @@ struct PurchaseEditorView: View {
     
     var body: some View {
         NavigationStack {
-            PurchaseInputView(amountValue: $viewModel.amount, amountUnit: $viewModel.unit, price: $viewModel.price, location: $viewModel.location, date: $viewModel.date, shouldUpdateInventory: $viewModel.shouldUpdateInventory, showUpdateInventoryToggle: transaction?.type != .set ? true : false, transaction: transaction)
+            PurchaseInputView(amountValue: $viewModel.amount, amountUnit: $viewModel.unit, price: $viewModel.price, location: $viewModel.location, date: $viewModel.date, shouldUpdateInventory: $viewModel.shouldUpdateInventory, openLocationSearch: $openLocationSearch, showUpdateInventoryToggle: transaction?.type != .set ? true : false, transaction: transaction)
             .padding(.horizontal)
             .navigationTitle("\(transaction?.purchase != nil ? "Edit" : "New") Purchase")
             .navigationBarTitleDisplayMode(.inline)
@@ -233,7 +235,8 @@ class PurchaseEditorViewModel {
 
 #Preview {
     @Previewable @State var viewModel = ItemEditorViewModel()
+    @Previewable @State var openLocationSearch = false
     
-    ItemPurchaseInputView(viewModel: $viewModel, item: SampleData.shared.item)
+    ItemPurchaseInputView(viewModel: $viewModel, openLocationSearch: $openLocationSearch)
         .modelContainer(SampleData.shared.container)
 }

@@ -51,7 +51,7 @@ struct LocationSelectorView: View {
                     }
                 }
                 .ignoresSafeArea()
-                .sheet(isPresented: .constant(true)) {
+                .sheet(isPresented: $showSearchSheet) {
                     LocationSearchSheetView(locationInfo: $locationInfo, selectedResult: $selectedResult, visibleRegion: $visibleRegion, position: $position, mapResults: $mapResults, selectedMarker: $selectedMarker, selectedDetent: $selectedDetent, openSelectedResult: $openSelectedResult, parentDismiss: dismiss)
                         .interactiveDismissDisabled()
                         .presentationDetents([.height(200), .large], selection: $selectedDetent)
@@ -62,8 +62,6 @@ struct LocationSelectorView: View {
                         }
                         .presentationBackgroundInteraction(.enabled(upThrough: .large))
                 }
-                
-                
             }
             .navigationTitle("Select Location")
             .navigationBarTitleDisplayMode(.inline)
