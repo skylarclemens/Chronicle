@@ -66,7 +66,7 @@ struct LocationSelectorView: View {
             .navigationTitle("Select Location")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button("Close", systemImage: "xmark.circle.fill") {
                         dismiss()
                     }
@@ -97,23 +97,34 @@ struct LocationSearchSheetView: View {
     var body: some View {
         VStack {
             HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(.secondary)
-                TextField("Search for a location", text: $searchText)
-                    .autocorrectionDisabled()
-                    .padding(.vertical, 8)
-                    .focused($isSearchFocused)
-                    .submitLabel(.search)
-                    .onSubmit {
-                        searchLocation(query: searchText, addToMap: true)
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundStyle(.secondary)
+                    TextField("Search for a location", text: $searchText)
+                        .autocorrectionDisabled()
+                        .padding(.vertical, 8)
+                        .focused($isSearchFocused)
+                        .submitLabel(.search)
+                        .onSubmit {
+                            searchLocation(query: searchText, addToMap: true)
+                            selectedDetent = .height(200)
+                        }
+                        .onChange(of: searchText) { _, newValue in
+                            searchLocation(query: newValue)
+                        }
+                    if !searchText.isEmpty {
+                        Button("Clear", systemImage: "xmark.circle.fill") {
+                            searchText = ""
+                        }
+                        .labelStyle(.iconOnly)
+                        .buttonStyle(.plain)
+                        .foregroundStyle(.secondary)
                     }
-                    .onChange(of: searchText) { _, newValue in
-                        searchLocation(query: newValue)
-                    }
+                }
+                .padding(.horizontal, 8)
+                .background(Color(.systemGroupedBackground),
+                            in: RoundedRectangle(cornerRadius: 12))
             }
-            .padding(.horizontal, 8)
-            .background(Color(.systemGroupedBackground),
-                        in: RoundedRectangle(cornerRadius: 12))
             .padding()
             Spacer()
             if !searchResults.isEmpty {
