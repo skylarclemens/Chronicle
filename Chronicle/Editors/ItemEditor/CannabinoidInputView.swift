@@ -29,43 +29,19 @@ struct CannabinoidInputView: View {
                             }
                             .pillStyle()
                         }
-                        Button {
-                            openPicker = true
-                        } label: {
-                            HStack {
-                                Text("Add")
-                                Image(systemName: "plus.circle.fill")
-                            }
-                        }
-                        .tint(.accent)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 10)
-                        .background(.accent.opacity(0.15),
-                                    in: RoundedRectangle(cornerRadius: 12))
                     }
                 }
                 .contentMargins(.horizontal, 16)
                 .scrollIndicators(.hidden)
             }
         } headerRight: {
-            Group {
-                if compounds.isEmpty {
-                    Button {
-                        openPicker = true
-                    } label: {
-                        HStack {
-                            Text("Add")
-                            Image(systemName: "plus.circle.fill")
-                        }
-                    }
-                    .tint(.accent)
-                    .padding(.vertical, 6)
-                    .padding(.horizontal, 10)
-                    .background(.accent.opacity(0.15),
-                                in: RoundedRectangle(cornerRadius: 12))
-                    .padding(.trailing)
-                }
+            Button("Add", systemImage: "plus.circle.fill") {
+                openPicker = true
             }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            .tint(.accent)
+            .padding(.trailing)
         }
         .sheet(isPresented: $openPicker) {
             CannabinoidAddView(compounds: $compounds, itemType: itemType)
@@ -124,7 +100,6 @@ struct CannabinoidAddView: View {
                     if selectedName == "Other" {
                         HStack {
                             Text("Name")
-                            Spacer()
                             TextField("Name", text: $newCannabinoidName)
                                 .multilineTextAlignment(.trailing)
                         }
@@ -168,7 +143,9 @@ struct CannabinoidAddView: View {
                 .controlSize(.large)
                 .tint(.accent)
                 .padding(.horizontal)
+                Spacer()
             }
+            .padding(.top)
             .safeAreaInset(edge: .top) {
                 if !addedCannabinoids.isEmpty {
                     ScrollView(.horizontal) {
@@ -182,8 +159,12 @@ struct CannabinoidAddView: View {
                                     HStack(spacing: 4) {
                                         HStack {
                                             Text(cannabinoid.name)
-                                            Text(cannabinoid.value, format: .number) +
-                                            Text(cannabinoid.unit?.rawValue ?? "")
+                                                .bold()
+                                            Group {
+                                                Text(cannabinoid.value, format: .number) +
+                                                Text(cannabinoid.unit?.rawValue ?? "")
+                                            }
+                                            .foregroundStyle(.secondary)
                                         }
                                         .font(.footnote)
                                         Label("Remove", systemImage: "xmark.circle.fill")
@@ -198,9 +179,8 @@ struct CannabinoidAddView: View {
                     }
                     .scrollContentBackground(.hidden)
                     .contentMargins(.horizontal, 16)
-                    .contentMargins(.vertical, 8)
+                    .contentMargins(.top, 8)
                     .scrollIndicators(.hidden)
-                    .frame(maxHeight: 60, alignment: .top)
                 }
             }
             .toolbar {

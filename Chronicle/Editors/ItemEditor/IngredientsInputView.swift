@@ -20,46 +20,23 @@ struct IngredientsInputView: View {
                             Text(ingredient)
                                 .pillStyle()
                         }
-                        Button {
-                            openPicker = true
-                        } label: {
-                            HStack {
-                                Text("Add")
-                                Image(systemName: "plus.circle.fill")
-                            }
-                        }
-                        .tint(.accent)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 10)
-                        .background(.accent.opacity(0.15),
-                                    in: RoundedRectangle(cornerRadius: 12))
                     }
                 }
                 .contentMargins(.horizontal, 16)
                 .scrollIndicators(.hidden)
             }
         } headerRight: {
-            Group {
-                if ingredients.isEmpty {
-                    Button {
-                        openPicker = true
-                    } label: {
-                        HStack {
-                            Text("Add")
-                            Image(systemName: "plus.circle.fill")
-                        }
-                    }
-                    .tint(.accent)
-                    .padding(.vertical, 6)
-                    .padding(.horizontal, 10)
-                    .background(.accent.opacity(0.15),
-                                in: RoundedRectangle(cornerRadius: 12))
-                    .padding(.trailing)
-                }
+            Button("Add", systemImage: "plus.circle.fill") {
+                openPicker = true
             }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            .tint(.accent)
+            .padding(.trailing)
         }
         .sheet(isPresented: $openPicker) {
             IngredientSelectorView(ingredients: $ingredients)
+                .presentationDetents([.height(250)])
                 .interactiveDismissDisabled()
                 .scrollDismissesKeyboard(.immediately)
         }
@@ -76,45 +53,63 @@ struct IngredientSelectorView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottom) {
-                VStack(spacing: 0) {
-                    VStack(alignment: .leading) {
-                        HStack {
-                            TextField("Ingredient", text: $newIngredient)
-                                .textFieldStyle(.roundedBorder)
-                            Button("Add", systemImage: "plus.circle.fill") {
-                                withAnimation {
-                                    add()
-                                }
-                            }
-                            .labelStyle(.iconOnly)
-                            .disabled(newIngredient.isEmpty)
-                        }
-                        .padding()
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("Name")
+                    TextField("Ingredient", text: $newIngredient)
+                        .multilineTextAlignment(.trailing)
+                        .padding(.vertical, 8)
+                        .padding(.trailing)
+                }
+                .padding(.vertical, 8)
+                .padding(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color(.secondarySystemGroupedBackground),
+                            in: RoundedRectangle(cornerRadius: 12))
+                Button {
+                    withAnimation {
+                        add()
                     }
-                    .background(.ultraThickMaterial,
-                                in: RoundedRectangle(cornerRadius: 12))
-                    .padding(.horizontal)
-                    List {
-                        ForEach(addedIngredients.sorted(), id: \.self) { ingredient in
-                            HStack {
-                                HStack {
-                                    Text(ingredient)
-                                }
-                                Spacer()
-                                Button("Delete", systemImage: "xmark.circle.fill") {
+                } label: {
+                    Label("Add", systemImage: "plus")
+                        .frame(maxWidth: .infinity)
+                }
+                .disabled(newIngredient.isEmpty)
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+                .tint(.accent)
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.top)
+            .safeAreaInset(edge: .top) {
+                if !addedIngredients.isEmpty {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(addedIngredients.sorted(), id: \.self) { ingredient in
+                                Button {
                                     withAnimation {
                                         remove(ingredient: ingredient)
                                     }
+                                } label: {
+                                    HStack(spacing: 4) {
+                                        Text(ingredient)
+                                            .font(.footnote)
+                                        Image(systemName: "xmark.circle.fill")
+                                            .font(.caption2)
+                                            .foregroundStyle(.secondary)
+                                    }
                                 }
-                                .labelStyle(.iconOnly)
+                                .buttonStyle(.editorInput)
                             }
                         }
                     }
+                    .scrollContentBackground(.hidden)
+                    .contentMargins(.horizontal, 16)
+                    .contentMargins(.top, 8)
+                    .scrollIndicators(.hidden)
                 }
             }
-            .navigationTitle("Add Ingredients")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
