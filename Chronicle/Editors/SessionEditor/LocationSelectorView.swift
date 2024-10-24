@@ -25,31 +25,7 @@ struct LocationSelectorView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                Map(position: $position, selection: $selectedMarker) {
-                    ForEach(Array(mapResults)) { result in
-                        Marker(coordinate: result.item.placemark.coordinate) {
-                            Image(systemName: "mappin")
-                        }
-                        .tag(result.item)
-                    }
-                }
-                .mapControls {
-                    MapUserLocationButton()
-                    MapCompass()
-                    MapScaleView()
-                }
-                .onMapCameraChange { context in
-                    visibleRegion = context.region
-                }
-                .onChange(of: selectedMarker) { _, newValue in
-                    if let newValue {
-                        withAnimation {
-                            selectedResult = LocationSearchResult(item: newValue)
-                            position = .region(MKCoordinateRegion(center: newValue.placemark.coordinate, span: .init(latitudeDelta: 0.01, longitudeDelta: 0.01)))
-                        }
-                        openSelectedResult = true
-                    }
-                }
+                LocationMapView(position: $position, mapResults: $mapResults, visibleRegion: $visibleRegion, selectedMarker: $selectedMarker, selectedResult: $selectedResult, openSelectedResult: $openSelectedResult)
                 .ignoresSafeArea()
                 .sheet(isPresented: $showSearchSheet) {
                     LocationSearchSheetView(locationInfo: $locationInfo, selectedResult: $selectedResult, visibleRegion: $visibleRegion, position: $position, mapResults: $mapResults, selectedMarker: $selectedMarker, selectedDetent: $selectedDetent, openSelectedResult: $openSelectedResult, parentDismiss: dismiss)
@@ -68,10 +44,57 @@ struct LocationSelectorView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Close", systemImage: "xmark.circle.fill") {
+                        resetMapState()
                         dismiss()
                     }
                     .buttonStyle(.close)
                 }
+            }
+        }
+    }
+    
+    private func resetMapState() {
+        position = .automatic
+        selectedMarker = nil
+        mapResults.removeAll()
+        visibleRegion = nil
+        selectedDetent = .height(200)
+        openSelectedResult = false
+    }
+}
+
+struct LocationMapView: View {
+    @Binding var position: MapCameraPosition
+    @Binding var mapResults: Set<LocationSearchResult>
+    @Binding var visibleRegion: MKCoordinateRegion?
+    @Binding var selectedMarker: MKMapItem?
+    @Binding var selectedResult: LocationSearchResult?
+    @Binding var openSelectedResult: Bool
+    
+    var body: some View {
+        Map(position: $position, selection: $selectedMarker) {
+            ForEach(Array(mapResults)) { result in
+                Marker(coordinate: result.item.placemark.coordinate) {
+                    Image(systemName: "mappin")
+                }
+                .tag(result.item)
+            }
+        }
+        .mapControls {
+            MapUserLocationButton()
+            MapCompass()
+            MapScaleView()
+        }
+        .onMapCameraChange { context in
+            visibleRegion = context.region
+        }
+        .onChange(of: selectedMarker) { _, newValue in
+            if let newValue {
+                withAnimation {
+                    selectedResult = LocationSearchResult(item: newValue)
+                    position = .region(MKCoordinateRegion(center: newValue.placemark.coordinate, span: .init(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+                }
+                openSelectedResult = true
             }
         }
     }
