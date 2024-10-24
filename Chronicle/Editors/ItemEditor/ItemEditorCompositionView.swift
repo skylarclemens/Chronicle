@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ItemEditorCompositionView: View {
     @Binding var viewModel: ItemEditorViewModel
+    var itemType: ItemType?
     
     var body: some View {
         Section {
@@ -18,7 +19,7 @@ struct ItemEditorCompositionView: View {
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 VStack(spacing: 12) {
-                    CannabinoidInputView(compounds: $viewModel.cannabinoids)
+                    CannabinoidInputView(compounds: $viewModel.cannabinoids, itemType: itemType)
                     TerpeneInputView(compounds: $viewModel.terpenes)
                     IngredientsInputView(ingredients: $viewModel.ingredients)
                 }

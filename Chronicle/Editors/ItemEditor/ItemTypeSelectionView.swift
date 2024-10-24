@@ -11,6 +11,7 @@ struct ItemTypeSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     
     @Binding var viewModel: ItemEditorViewModel
+    let parentDismiss: DismissAction
 
     let columns: [GridItem] = [GridItem](repeating: GridItem(), count: 3)
     var item: Item?
@@ -99,15 +100,19 @@ struct ItemTypeSelectionView: View {
             .navigationBarTitleDisplayMode(viewModel.itemType == nil ? .large : .inline)
             .interactiveDismissDisabled()
             .toolbar {
-                if viewModel.itemType != nil {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button {
+                ToolbarItem(placement: viewModel.itemType != nil ? .topBarLeading : .topBarTrailing) {
+                    Button {
+                        if viewModel.itemType != nil {
                             dismiss()
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
+                        } else {
+                            parentDismiss()
                         }
-                        .buttonStyle(.close)
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
                     }
+                    .buttonStyle(.close)
+                }
+                if viewModel.itemType != nil {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Done") {
                             if let type = selectedType {

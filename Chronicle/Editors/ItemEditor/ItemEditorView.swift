@@ -149,7 +149,7 @@ struct ItemEditorBasicsView: View {
                         }
                         ItemEditorDetailsView(viewModel: $viewModel)
                         ItemPurchaseInputView(viewModel: $viewModel, item: item)
-                        ItemEditorCompositionView(viewModel: $viewModel)
+                        ItemEditorCompositionView(viewModel: $viewModel, itemType: viewModel.itemType)
                         ItemEditorAdditionalView(viewModel: $viewModel, focusedField: $focusedField)
                     }
                     .padding(.horizontal)
@@ -213,7 +213,7 @@ struct ItemEditorBasicsView: View {
                 firstItemTypeSelect = false
             }
         }) {
-            ItemTypeSelectionView(viewModel: $viewModel, item: item)
+            ItemTypeSelectionView(viewModel: $viewModel, parentDismiss: parentDismiss, item: item)
         }
     }
     
